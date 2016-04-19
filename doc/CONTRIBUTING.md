@@ -29,6 +29,16 @@ php-cs-fixer fix --verbose
 
 ### Writing a Pull Requests
 
+#### The content
+
+A Pull Request should concern one and **only one** subject.
+
+If you want to fix a typo and improve the performance of a process, you have to do two **separated** PR.
+
+The goal is to have a clear commit history and make possible revert easier.
+
+If you found an issue/typo while writing your change that is not related to your work, please do another PR for that.
+
 #### The base branch
 
 Before writing a PR, you have to check on which branch your changes should be based.
@@ -59,3 +69,36 @@ Be aware that pull requests with BC breaks could be not accepted
 or reported for next major release if BC is not possible.
 
 If you are not sure of what to do, don't hesitate to open an issue about your PR project.
+
+#### The commit message
+
+The commit message has to be clear and related to the PR content.
+
+The first line of the commit message must be short.
+The other lines must contains a complete description of what you done and why.
+
+The description is optional but recommended. It could be asked by the team if needed.
+
+Bad commit message:
+
+```
+Update Admin.php
+```
+
+Good commit message:
+
+```
+Improve search indexing speed for sub-categories
+```
+
+Good commit message with description
+
+```
+Change web UI background color to pink
+
+This is a consensus made on #4242 in addition to #1337.
+
+We agreed that blank color is boring and so deja vu. Pink is the new way to do.
+```
+
+(Obviously, this commit is fake. :wink:)
