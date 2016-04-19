@@ -54,3 +54,8 @@ Notes:
     * Code deletion? Don't. Please deprecate it instead.
     * If your BC PR is accepted, you can do a new one on the `master` branch which remove the deprecated code.
     * SYMFONY DOC REF (same logic)?
+
+Be aware that pull requests with BC breaks could be not accepted
+or reported for next major release if BC is not possible.
+
+If you are not sure of what to do, don't hesitate to open an issue about your PR project.
