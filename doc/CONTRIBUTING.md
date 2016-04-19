@@ -40,7 +40,7 @@ Here is a short table resuming on which you have to start:
 Kind of modification | Backward Compatible (BC) | Type of release | Branch to target | Label |
 -------------------- | ------------------------ | --------------- | ---------------- | ----- |
 Bug fixes            | Yes                      | Patch           | `[latest].x`     | |
-Bug fixes            | No                       | Patch           | `master`         | |
+Bug fixes            | No (Only if no choice)   | Major           | `master`         | |
 Feature              | Yes                      | Minor           | `[latest].x`     | |
 Feature              | No (Only if no choice)   | Major           | `master`         | |
 Deprecation          | Yes (Have to)            | Minor           | `[latest].x`     | |
