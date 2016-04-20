@@ -27,7 +27,7 @@ and run this command before committing your modifications:
 php-cs-fixer fix --verbose
 ```
 
-### Writing a Pull Requests
+### Writing a Pull Request
 
 #### The content
 
@@ -72,26 +72,61 @@ If you are not sure of what to do, don't hesitate to open an issue about your PR
 
 #### The commit message
 
-The commit message has to be clear and related to the PR content.
+Sonata is a big project with many contributors, and a big part of the job is
+being able to understand the code at all times, be it when submitting a PR or
+looking at the history. Good commit messages are crucial to achieve this goal.
 
-The first line of the commit message must be short.
-The other lines must contains a complete description of what you done and why.
+There are already a few articles (or even single purpose websites) about this,
+we cannot recommend enough the following:
 
-The description is optional but recommended. It could be asked by the team if needed.
+* http://rakeroutes.com/blog/deliberate-git
+* http://stopwritingramblingcommitmessages.com
+* http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 
-Bad commit message:
+To sum them up, the commit message has to be crystal clear and of course,
+related to the PR content.
+
+The first line of the commit message must be short, keep it under 50
+characters. It must say concisely but *precisely* what you did. The other
+lines, if needed, should contain a complete description of *why* you did this.
+
+Bad commit message subject:
 
 ```
-Update Admin.php
+Update README.md
 ```
 
-Good commit message:
+Good commit message subject :
 
 ```
-Improve search indexing speed for sub-categories
+Document how to install the project
 ```
 
-Good commit message with description
+Also, when you specify what you did avoid commit message subjects with "Fix bug
+in such and such feature". Saying you are fixing something implies the previous
+implementation was wrong and yours is right, which might not be even true.
+Instead, humbly say what you did technically and **then** explain how this is
+supposed to fix a bug. Your commit message will probably look like this:
+
+```
+call foo::bar() instead of bar::baz()
+
+This fixes a bug that arises when doing this or that, because baz() needs a
+flux capacitor object that might not be defined.
+Fixes #42
+```
+
+The description is optional but strongly recommended. It could be asked by the
+team if needed. PR will often lead to complicated, hard-to-read conversations
+with many links to other web pages.
+
+he commit description should be able to live without what is said in the PR,
+and should ideally sum it up in a crystal clear way, so that people do not have
+to open a web browser to understand what you did.
+Links to PRs/Issues and external references are of course welcome, but should
+not be considered enough.
+
+Good commit message with description :
 
 ```
 Change web UI background color to pink
@@ -100,5 +135,4 @@ This is a consensus made on #4242 in addition to #1337.
 
 We agreed that blank color is boring and so deja vu. Pink is the new way to do.
 ```
-
 (Obviously, this commit is fake. :wink:)
