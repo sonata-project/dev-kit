@@ -194,7 +194,7 @@ class DispatchCommand extends Command
                 $state = 'Updated';
                 if ($this->apply) {
                     $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, array(
-                        'name'  => $name,
+                        'name' => $name,
                         'color' => $configuredColor,
                     ));
                 }
@@ -215,7 +215,7 @@ class DispatchCommand extends Command
 
             if ($this->apply) {
                 $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, array(
-                    'name'  => $name,
+                    'name' => $name,
                     'color' => $color,
                 ));
             }
