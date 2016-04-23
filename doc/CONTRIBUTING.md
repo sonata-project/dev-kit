@@ -105,9 +105,9 @@ Document how to install the project
 Also, when you specify what you did avoid commit message subjects with "Fix bug
 in such and such feature". Saying you are fixing something implies the previous
 implementation was wrong and yours is right, which might not be even true.
-Instead, humbly say what you did technically and **then** explain how this is
-supposed to fix a bug. Your commit message will probably look like this:
-
+Instead, state unquestionable technical facts about your changes, not opinions.
+Then, in the commit description, explain why you did that and how it fixes
+something.
 ```
 call foo::bar() instead of bar::baz()
 
@@ -120,7 +120,7 @@ The description is optional but strongly recommended. It could be asked by the
 team if needed. PR will often lead to complicated, hard-to-read conversations
 with many links to other web pages.
 
-he commit description should be able to live without what is said in the PR,
+The commit description should be able to live without what is said in the PR,
 and should ideally sum it up in a crystal clear way, so that people do not have
 to open a web browser to understand what you did.
 Links to PRs/Issues and external references are of course welcome, but should
