@@ -9,6 +9,10 @@ labels:
     color: 'fc2929'
   - name: vendor
     color: 'ededed'
+  - name: pending author
+    color: 'dddddd'
+  - name: RTM
+    color: 'ffffff'
 
 projects:
   cache: ~
