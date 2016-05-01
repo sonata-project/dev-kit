@@ -31,13 +31,20 @@ php-cs-fixer fix --verbose
 
 #### The content
 
-A Pull Request should concern one and **only one** subject.
+Ideally, a Pull Request should concern one and **only one** subject, so that it
+remains clear, and independant changes can be merged quickly.
 
-If you want to fix a typo and improve the performance of a process, you have to do two **separated** PR.
+If you want to fix a typo and improve the performance of a process, you should
+try as much as possible to it in a **separate** PR, so that we can quickly
+merge one while discussing the other.
 
 The goal is to have a clear commit history and make possible revert easier.
 
-If you found an issue/typo while writing your change that is not related to your work, please do another PR for that.
+If you found an issue/typo while writing your change that is not related to
+your work, please do another PR for that. In some rare cases, you might be
+forced to do it on the same PR. In this kind of situation, please add a comment
+on your PR explaining why you feel it is the case.
+
 
 #### The base branch
 
