@@ -9,6 +9,8 @@
     ],
     "require-dev": {
         "php": "^5.6 || 7.0",
+        "knplabs/github-api": "^1.6",
+        "knplabs/packagist-api": "^1.3",
         "sllh/php-cs-fixer-styleci-bridge": "^2.0",
         "symfony/console": "^3.0"
     },
@@ -18,5 +20,9 @@
     "config": {
         "sort-packages": true,
         "optimize-autoloader": true
+    },
+    "require": {
+        "symfony/config": "^3.0",
+        "symfony/var-dumper": "^3.0"
     }
 }

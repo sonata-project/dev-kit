@@ -1,0 +1,16 @@
+labels:
+  - name: patch
+    color: '207de5'
+  - name: minor
+    color: '009800'
+  - name: major
+    color: 'e11d21'
+  - name: bug
+    color: 'fc2929'
+  - name: vendor
+    color: 'ededed'
+
+projects:
+  cache: ~
+  exporter: ~
+  admin-bundle: ~

@@ -11,11 +11,15 @@
 
 namespace Sonata\DevKit\Console\Command;
 
+use Packagist\Api\Result\Package;
+use Sonata\DevKit\Config\Configuration;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -26,6 +30,21 @@ class DispatchCommand extends Command
      * @var SymfonyStyle
      */
     private $io;
+
+    /**
+     * @var array
+     */
+    private $configs;
+
+    /**
+     * @var \Packagist\Api\Client
+     */
+    private $packagistClient;
+
+    /**
+     * @var \Github\Client
+     */
+    private $githubClient = false;
 
     /**
      * {@inheritdoc}
@@ -45,6 +64,21 @@ class DispatchCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
+
+        $configs = Yaml::parse(file_get_contents(__DIR__.'/../../../.sonata-project.yml'));
+        $processor = new Processor();
+        $this->configs = $processor->processConfiguration(new Configuration(), array('sonata' => $configs));
+
+        $this->packagistClient = new \Packagist\Api\Client();
+
+        $this->githubClient = new \Github\Client(
+            new \Github\HttpClient\CachedHttpClient(array(
+                'cache_dir' => sys_get_temp_dir().'/github-api-cache',
+            ))
+        );
+        if (getenv('GITHUB_OAUTH_TOKEN')) {
+            $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'));
+        }
     }
 
     /**
@@ -52,6 +86,72 @@ class DispatchCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        foreach ($this->configs['projects'] as $name => $projectConfig) {
+            $package = $this->packagistClient->get('sonata-project/'.$name);
+            $this->io->title($package->getName());
+            $this->updateLabels($this->getRepositoryName($package));
+        }
+
         return 0;
+    }
+
+    /**
+     * Returns repository name without vendor prefix.
+     *
+     * @param Package $package
+     *
+     * @return string
+     */
+    private function getRepositoryName(Package $package)
+    {
+        $repositoryArray = explode('/', $package->getRepository());
+
+        return str_replace('.git', '', end($repositoryArray));
+    }
+
+    /**
+     * @param string $repositoryName
+     */
+    private function updateLabels($repositoryName)
+    {
+        $this->io->section('Labels');
+
+        $configuredLabels = $this->configs['labels'];
+        $missingLabels = $configuredLabels;
+
+        $headers = array('Name', 'Actual color', 'Needed Color', 'State');
+        $rows = array();
+
+        foreach ($this->githubClient->repository()->labels()->all('sonata-project', $repositoryName) as $label) {
+            $name = $label['name'];
+            $color = $label['color'];
+
+            $shouldExists = array_key_exists($name, $configuredLabels);
+            $configuredColor = $shouldExists ? $configuredLabels[$name]['color'] : null;
+            $shouldBeUpdated = $shouldExists && $color !== $configuredColor;
+
+            if ($shouldExists) {
+                unset($missingLabels[$name]);
+            }
+
+            array_push($rows, array(
+                $name,
+                '#'.$color,
+                $configuredColor ? '#'.$configuredColor : 'N/A',
+                $shouldExists ? $shouldBeUpdated ? 'Updated' : '-' : 'Deleted',
+            ));
+        }
+
+        foreach ($missingLabels as $name => $label) {
+            $color = $label['color'];
+
+            array_push($rows, array($name, 'N/A', '#'.$color, 'Created'));
+        }
+
+        usort($rows, function ($row1, $row2) {
+            return strcasecmp($row1[0], $row2[0]);
+        });
+
+        $this->io->table($headers, $rows);
     }
 }
