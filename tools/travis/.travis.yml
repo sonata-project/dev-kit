@@ -12,6 +12,7 @@ php:
 env:
   global:
     - PATH="$HOME/.composer/vendor/bin:$PATH"
+    - SYMFONY_DEPRECATIONS_HELPER=weak
 
 matrix:
   fast_finish: true
@@ -26,9 +27,12 @@ matrix:
       env: SYMFONY_VERSION=3.0.*
     - php: 5.6
       env: SYMFONY_VERSION=3.1.*@dev
+    - php: 5.6
+      env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: nightly
     - env: SYMFONY_VERSION=3.1.*@dev
+    - env: SYMFONY_DEPRECATIONS_HELPER=0
 
 sudo: false
 
