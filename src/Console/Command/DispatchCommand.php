@@ -88,7 +88,6 @@ class DispatchCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        dump($this->apply);
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             $package = $this->packagistClient->get('sonata-project/'.$name);
             $this->io->title($package->getName());
