@@ -77,7 +77,7 @@ class DispatchCommand extends Command
             ))
         );
         if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'));
+            $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'), null, \Github\Client::AUTH_HTTP_TOKEN);
         }
     }
 
