@@ -152,12 +152,14 @@ class DispatchCommand extends Command
                 }
             }
 
-            array_push($rows, array(
-                $name,
-                '#'.$color,
-                $configuredColor ? '#'.$configuredColor : 'N/A',
-                $state ?: '-',
-            ));
+            if ($state) {
+                array_push($rows, array(
+                    $name,
+                    '#'.$color,
+                    $configuredColor ? '#'.$configuredColor : 'N/A',
+                    $state,
+                ));
+            }
         }
 
         foreach ($missingLabels as $name => $label) {
