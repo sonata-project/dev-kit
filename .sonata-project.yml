@@ -7,6 +7,8 @@ labels:
     color: 'e11d21'
   - name: bug
     color: 'fc2929'
+  - name: critical
+    color: 'fc2929'
   - name: vendor
     color: 'ededed'
   - name: pending author
