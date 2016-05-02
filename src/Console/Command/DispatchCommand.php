@@ -128,16 +128,16 @@ class DispatchCommand extends Command
             $name = $label['name'];
             $color = $label['color'];
 
-            $shouldExists = array_key_exists($name, $configuredLabels);
-            $configuredColor = $shouldExists ? $configuredLabels[$name]['color'] : null;
-            $shouldBeUpdated = $shouldExists && $color !== $configuredColor;
+            $shouldExist = array_key_exists($name, $configuredLabels);
+            $configuredColor = $shouldExist ? $configuredLabels[$name]['color'] : null;
+            $shouldBeUpdated = $shouldExist && $color !== $configuredColor;
 
-            if ($shouldExists) {
+            if ($shouldExist) {
                 unset($missingLabels[$name]);
             }
 
             $state = null;
-            if (!$shouldExists) {
+            if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->input->getOption('apply')) {
                     $this->githubClient->repo()->labels()->remove('sonata-project', $repositoryName, $name);
