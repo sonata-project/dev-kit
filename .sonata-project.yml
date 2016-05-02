@@ -19,35 +19,35 @@ labels:
     color: 'd4c5f9'
 
 projects:
-  admin-bundle: ~
-  admin-search-bundle: ~
-  block-bundle: ~
+#  admin-bundle: ~
+#  admin-search-bundle: ~
+#  block-bundle: ~
   cache: ~
-  cache-bundle: ~
-  classification-bundle: ~
-  comment-bundle: ~
-  composer-archive-creator: ~
-  core-bundle: ~
-  dashboard-bundle: ~
-  datagrid-bundle: ~
-  doctrine-extensions: ~
-  doctrine-mongodb-admin-bundle: ~
-  doctrine-orm-admin-bundle: ~
-  doctrine-phpcr-admin-bundle: ~
-  easy-extends-bundle: ~
-  ecommerce: ~
+#  cache-bundle: ~
+#  classification-bundle: ~
+#  comment-bundle: ~
+#  composer-archive-creator: ~
+#  core-bundle: ~
+#  dashboard-bundle: ~
+#  datagrid-bundle: ~
+#  doctrine-extensions: ~
+#  doctrine-mongodb-admin-bundle: ~
+#  doctrine-orm-admin-bundle: ~
+#  doctrine-phpcr-admin-bundle: ~
+#  easy-extends-bundle: ~
+#  ecommerce: ~
   exporter: ~
-  formatter-bundle: ~
-  google-authenticator: ~
-  intl-bundle: ~
-  media-bundle: ~
-  news-bundle: ~
-  notification-bundle: ~
-  page-bundle: ~
-  propel-admin-bundle: ~
-  sandbox: ~
-  seo-bundle: ~
-  sonata-composer: ~
-  timeline-bundle: ~
-  translation-bundle: ~
-  user-bundle: ~
+#  formatter-bundle: ~
+#  google-authenticator: ~
+#  intl-bundle: ~
+#  media-bundle: ~
+#  news-bundle: ~
+#  notification-bundle: ~
+#  page-bundle: ~
+#  propel-admin-bundle: ~
+#  sandbox: ~
+#  seo-bundle: ~
+#  sonata-composer: ~
+#  timeline-bundle: ~
+#  translation-bundle: ~
+#  user-bundle: ~
