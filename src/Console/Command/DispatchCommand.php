@@ -27,6 +27,11 @@ use Symfony\Component\Yaml\Yaml;
 class DispatchCommand extends Command
 {
     /**
+     * @var InputInterface
+     */
+    private $input;
+
+    /**
      * @var SymfonyStyle
      */
     private $io;
@@ -64,6 +69,7 @@ class DispatchCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
+        $this->input = $input;
 
         $configs = Yaml::parse(file_get_contents(__DIR__.'/../../../.sonata-project.yml'));
         $processor = new Processor();
@@ -122,7 +128,7 @@ class DispatchCommand extends Command
         $headers = array('Name', 'Actual color', 'Needed Color', 'State');
         $rows = array();
 
-        foreach ($this->githubClient->repository()->labels()->all('sonata-project', $repositoryName) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all('sonata-project', $repositoryName) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -134,17 +140,39 @@ class DispatchCommand extends Command
                 unset($missingLabels[$name]);
             }
 
+            $state = null;
+            if (!$shouldExists) {
+                $state = 'Deleted';
+                if ($this->input->getOption('apply')) {
+                    $this->githubClient->repo()->labels()->remove('sonata-project', $repositoryName, $name);
+                }
+            } elseif ($shouldBeUpdated) {
+                $state = 'Updated';
+                if ($this->input->getOption('apply')) {
+                    $this->githubClient->repo()->labels()->update('sonata-project', $repositoryName, $name, array(
+                        'name'  => $name,
+                        'color' => $configuredColor,
+                    ));
+                }
+            }
+
             array_push($rows, array(
                 $name,
                 '#'.$color,
                 $configuredColor ? '#'.$configuredColor : 'N/A',
-                $shouldExists ? $shouldBeUpdated ? 'Updated' : '-' : 'Deleted',
+                $state ?: '-',
             ));
         }
 
         foreach ($missingLabels as $name => $label) {
             $color = $label['color'];
 
+            if ($this->input->getOption('apply')) {
+                $this->githubClient->repo()->labels()->create('sonata-project', $repositoryName, array(
+                    'name'  => $name,
+                    'color' => $color,
+                ));
+            }
             array_push($rows, array($name, 'N/A', '#'.$color, 'Created'));
         }
 
