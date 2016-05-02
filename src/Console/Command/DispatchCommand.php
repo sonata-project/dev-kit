@@ -27,9 +27,9 @@ use Symfony\Component\Yaml\Yaml;
 class DispatchCommand extends Command
 {
     /**
-     * @var InputInterface
+     * @var bool
      */
-    private $input;
+    private $apply;
 
     /**
      * @var SymfonyStyle
@@ -69,7 +69,7 @@ class DispatchCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->input = $input;
+        $this->apply = $input->getOption('apply');
 
         $configs = Yaml::parse(file_get_contents(__DIR__.'/../../../.sonata-project.yml'));
         $processor = new Processor();
@@ -88,6 +88,7 @@ class DispatchCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        dump($this->apply);
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             $package = $this->packagistClient->get('sonata-project/'.$name);
             $this->io->title($package->getName());
@@ -139,12 +140,12 @@ class DispatchCommand extends Command
             $state = null;
             if (!$shouldExist) {
                 $state = 'Deleted';
-                if ($this->input->getOption('apply')) {
+                if ($this->apply) {
                     $this->githubClient->repo()->labels()->remove('sonata-project', $repositoryName, $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
-                if ($this->input->getOption('apply')) {
+                if ($this->apply) {
                     $this->githubClient->repo()->labels()->update('sonata-project', $repositoryName, $name, array(
                         'name'  => $name,
                         'color' => $configuredColor,
@@ -163,7 +164,7 @@ class DispatchCommand extends Command
         foreach ($missingLabels as $name => $label) {
             $color = $label['color'];
 
-            if ($this->input->getOption('apply')) {
+            if ($this->apply) {
                 $this->githubClient->repo()->labels()->create('sonata-project', $repositoryName, array(
                     'name'  => $name,
                     'color' => $color,
