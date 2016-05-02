@@ -77,11 +77,7 @@ class DispatchCommand extends Command
 
         $this->packagistClient = new \Packagist\Api\Client();
 
-        $this->githubClient = new \Github\Client(
-            new \Github\HttpClient\CachedHttpClient(array(
-                'cache_dir' => sys_get_temp_dir().'/github-api-cache',
-            ))
-        );
+        $this->githubClient = new \Github\Client();
         if (getenv('GITHUB_OAUTH_TOKEN')) {
             $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'), null, \Github\Client::AUTH_HTTP_TOKEN);
         }
