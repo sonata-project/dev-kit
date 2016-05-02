@@ -11,6 +11,7 @@
 
 namespace Sonata\DevKit\Console\Command;
 
+use Github\Exception\ExceptionInterface;
 use Packagist\Api\Result\Package;
 use Sonata\DevKit\Config\Configuration;
 use Symfony\Component\Config\Definition\Processor;
@@ -93,9 +94,13 @@ class DispatchCommand extends Command
         }
 
         foreach ($this->configs['projects'] as $name => $projectConfig) {
-            $package = $this->packagistClient->get('sonata-project/'.$name);
-            $this->io->title($package->getName());
-            $this->updateLabels($this->getRepositoryName($package));
+            try {
+                $package = $this->packagistClient->get('sonata-project/'.$name);
+                $this->io->title($package->getName());
+                $this->updateLabels($this->getRepositoryName($package));
+            } catch (ExceptionInterface $e) {
+                $this->io->error('Failed with message: '.$e->getMessage());
+            }
         }
 
         return 0;
