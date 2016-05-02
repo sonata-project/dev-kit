@@ -88,6 +88,10 @@ class DispatchCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->apply) {
+            $this->io->warning('This is a dry run execution. No change will be applied here.');
+        }
+
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             $package = $this->packagistClient->get('sonata-project/'.$name);
             $this->io->title($package->getName());
@@ -178,6 +182,14 @@ class DispatchCommand extends Command
             return strcasecmp($row1[0], $row2[0]);
         });
 
-        $this->io->table($headers, $rows);
+        if (empty($rows)) {
+            $this->io->comment('Nothing to be changed.');
+        } else {
+            $this->io->table($headers, $rows);
+
+            if ($this->apply) {
+                $this->io->success('Labels successfully updated.');
+            }
+        }
     }
 }
