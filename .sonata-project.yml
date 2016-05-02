@@ -13,6 +13,10 @@ labels:
     color: 'dddddd'
   - name: RTM
     color: 'ffffff'
+  - name: docs
+    color: 'fbca04'
+  - name: review required
+    color: 'd4c5f9'
 
 projects:
   admin-bundle: ~
