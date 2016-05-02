@@ -10,10 +10,10 @@ cache:
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - composer config -g github-oauth.github.com $GITHUB_OAUTH_TOKEN
+  - composer config -q -g github-oauth.github.com $GITHUB_OAUTH_TOKEN
 
 install:
   - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script:
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then ./dev-kit dispatch --apply; else ./dev-kit dispatch; fi;
+  - if [[ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./dev-kit dispatch --apply; else ./dev-kit dispatch; fi;
