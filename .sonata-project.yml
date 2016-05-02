@@ -10,7 +10,9 @@ labels:
   - name: vendor
     color: 'ededed'
   - name: pending author
-    color: 'dddddd'
+    color: 'ededed'
+  - name: in progress
+    color: 'ededed'
   - name: RTM
     color: 'ffffff'
   - name: docs
