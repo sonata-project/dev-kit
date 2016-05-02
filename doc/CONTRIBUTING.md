@@ -4,9 +4,46 @@ Thanks for you interest onto Sonata projects!
 
 ## Summary
 
-* [Issues]()
+* [Issues](#issues)
 * [Pull Requests](#pull-requests)
 * [Label rules]()
+
+## Issues
+
+First, check if you are up to date: is your version still supported, and are
+you using the latest patch version?
+
+If you are not sure this is a bug, consider posting your question on [Stack
+Overflow](http://stackoverflow.com), using one of the sonata tags.
+If you happen to find a bug, we kindly request you to report it. However,
+before submitting it, please check the [project documentation available
+online](https://sonata-project.org/bundles/).
+
+Then, if it appears that it is indeed a real bug, you may report it using
+Github by following these points are taken care of:
+
+* Check if the bug is not already reported!
+* A clear title to sum up the issue
+* A description of the workflow needed to reproduce the bug. Please try to make
+  sentence, dumping an error message by itself is not great.
+* If your issue is an error page, you must provide us with a stack trace.  With
+  recent versions of Symfony, you can even get stack traces as plain text at the
+end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
+you see. **Do not** make a screenshot of the stack trace, as screenshots are
+not indexed by search engines and will make it difficult for other people to
+find your bug report.
+* Screenshots should be considered additional data, and therefore, you should
+  always provide a textual description of the bug. It is strongly recommended
+to provide them when reporting UI-related bugs.
+* If you need to provide code, make sure you know how to get syntactic
+  coloration, in particular with [fenced code
+blocks](https://help.github.com/articles/creating-and-highlighting-code-blocks/).
+When you feel the code is to long, use external code pastebin like
+https://gist.github.com/ or http://hastebin.com/ . If this is not sufficient,
+just create a repository to show the issue.
+
+> _NOTE:_ Don't hesitate giving as much information as you can (OS, PHP
+> version, extensions...)
 
 ## Pull Requests
 
