@@ -24,6 +24,10 @@ labels:
   - name: help wanted
     color: '0e8a16'
 
+files:
+  - doc/CONTRIBUTING.md:CONTRIBUTING.md
+  - tools/editorconfig/.editorconfig:.editorconfig
+
 projects:
   admin-bundle: ~
   admin-search-bundle: ~

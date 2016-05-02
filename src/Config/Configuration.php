@@ -39,6 +39,18 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('files')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('scalar')
+                        ->validate()
+                            ->ifTrue(function ($value) {
+                                return 2 !== count(explode(':', $value));
+                            })
+                            ->thenInvalid('Invalid %s. Should be two paths separated by `:`.')
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('projects')
                     ->isRequired()
                     ->requiresAtLeastOneElement()

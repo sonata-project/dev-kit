@@ -13,13 +13,14 @@ namespace Sonata\DevKit\Console\Command;
 
 use Github\Exception\ExceptionInterface;
 use Packagist\Api\Result\Package;
+use SebastianBergmann\Diff\Differ;
 use Sonata\DevKit\Config\Configuration;
+use Sonata\DevKit\Console\Style\SonataStyle;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -33,7 +34,7 @@ class DispatchCommand extends Command
     private $apply;
 
     /**
-     * @var SymfonyStyle
+     * @var SonataStyle
      */
     private $io;
 
@@ -69,7 +70,7 @@ class DispatchCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->io = new SymfonyStyle($input, $output);
+        $this->io = new SonataStyle($input, $output);
         $this->apply = $input->getOption('apply');
 
         $configs = Yaml::parse(file_get_contents(__DIR__.'/../../../.sonata-project.yml'));
@@ -82,6 +83,8 @@ class DispatchCommand extends Command
         if (getenv('GITHUB_OAUTH_TOKEN')) {
             $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'), null, \Github\Client::AUTH_HTTP_TOKEN);
         }
+
+        $this->differ = new Differ();
     }
 
     /**
@@ -97,7 +100,9 @@ class DispatchCommand extends Command
             try {
                 $package = $this->packagistClient->get('sonata-project/'.$name);
                 $this->io->title($package->getName());
-                $this->updateLabels($this->getRepositoryName($package));
+                $repositoryName = $this->getRepositoryName($package);
+                $this->updateLabels($repositoryName);
+                $this->dispatchFiles($repositoryName);
             } catch (ExceptionInterface $e) {
                 $this->io->error('Failed with message: '.$e->getMessage());
             }
@@ -196,5 +201,28 @@ class DispatchCommand extends Command
                 $this->io->success('Labels successfully updated.');
             }
         }
+    }
+
+    /**
+     * @param $repositoryName
+     */
+    private function dispatchFiles($repositoryName)
+    {
+        $this->io->section('Documentation');
+
+//        $contributingLocal = file_get_contents(__DIR__.'/../../../doc/CONTRIBUTING.md');
+//        $file = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, 'CONTRIBUTING.md', 'master');
+//        $contributingDist = base64_decode($file['content']);
+//
+//        echo $this->differ->diff($contributingDist, $contributingLocal);
+
+        $styleCILocal = file_get_contents(__DIR__.'/../../../tools/php-cs/.styleci.yml');
+        $styleCIDist = '';
+        if ($this->githubClient->repo()->contents()->exists('sonata-project', $repositoryName, '.styleci.yml', 'master')) {
+            $file = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, '.styleci.yml', 'master');
+            $styleCIDist = base64_decode($file['content']);
+        }
+
+        $this->io->diff($styleCIDist, $styleCILocal);
     }
 }
