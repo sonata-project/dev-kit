@@ -32,7 +32,6 @@ projects:
   cache-bundle: ~
   classification-bundle: ~
   comment-bundle: ~
-  composer-archive-creator: ~
   core-bundle: ~
   dashboard-bundle: ~
   datagrid-bundle: ~
