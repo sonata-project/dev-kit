@@ -251,12 +251,11 @@ class DispatchCommand extends Command
         $this->io->writeln($git->diff('--color')->getOutput());
     }
 
-    private function renderFile($repositoryName, $localPath, $distPath, $clonePath = null)
+    private function renderFile($repositoryName, $localPath, $distPath)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);
         $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
-        $clonePath = $clonePath ?: $distPath;
 
         if ($localFileType !== $distFileType && false !== $distFileType) {
             throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
@@ -266,14 +265,12 @@ class DispatchCommand extends Command
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
                 if (!in_array($entry, array('.', '..'), true)) {
-                    $this->renderFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry, $clonePath);
+                    $this->renderFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry);
                 }
             }
 
             return;
         }
-
-        $this->io->comment(str_replace($clonePath.'/', '', $distPath));
 
         $localContent = file_get_contents($localFullPath);
 
