@@ -247,6 +247,8 @@ class DispatchCommand extends Command
         );
 
         $this->renderFile($repositoryName, 'project', $clonePath);
+
+        $this->io->writeln($git->diff('--color')->getOutput());
     }
 
     private function renderFile($repositoryName, $localPath, $distPath, $clonePath = null)
@@ -274,8 +276,10 @@ class DispatchCommand extends Command
         $this->io->comment(str_replace($clonePath.'/', '', $distPath));
 
         $localContent = file_get_contents($localFullPath);
-        $distContent = $this->fileSystem->exists($distPath) ? file_get_contents($distPath) : '';
 
-        $this->io->diff($distContent, $localContent);
+        if (!$this->fileSystem->exists(dirname($distPath))) {
+            $this->fileSystem->mkdir(dirname($distPath));
+        }
+        file_put_contents($distPath, $localContent);
     }
 }
