@@ -28,6 +28,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DispatchCommand extends Command
 {
+    const GITHUB_GROUP = 'sonata-project';
+    const PACKAGIST_GROUP = 'sonata-project';
+
     /**
      * @var bool
      */
@@ -98,7 +101,7 @@ class DispatchCommand extends Command
 
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
-                $package = $this->packagistClient->get('sonata-project/'.$name);
+                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
                 $repositoryName = $this->getRepositoryName($package);
                 $this->updateLabels($repositoryName);
@@ -138,7 +141,7 @@ class DispatchCommand extends Command
         $headers = array('Name', 'Actual color', 'Needed Color', 'State');
         $rows = array();
 
-        foreach ($this->githubClient->repo()->labels()->all('sonata-project', $repositoryName) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -154,12 +157,12 @@ class DispatchCommand extends Command
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->remove('sonata-project', $repositoryName, $name);
+                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repositoryName, $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update('sonata-project', $repositoryName, $name, array(
+                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, array(
                         'name'  => $name,
                         'color' => $configuredColor,
                     ));
@@ -180,7 +183,7 @@ class DispatchCommand extends Command
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create('sonata-project', $repositoryName, array(
+                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, array(
                     'name'  => $name,
                     'color' => $color,
                 ));
@@ -236,8 +239,8 @@ class DispatchCommand extends Command
         $localContent = file_get_contents($localFullPath);
         $distContent = '';
 
-        if ($this->githubClient->repo()->contents()->exists('sonata-project', $repositoryName, $distPath, 'master')) {
-            $distFile = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, $distPath, 'master');
+        if ($this->githubClient->repo()->contents()->exists(static::GITHUB_GROUP, $repositoryName, $distPath, 'master')) {
+            $distFile = $this->githubClient->repo()->contents()->show(static::GITHUB_GROUP, $repositoryName, $distPath, 'master');
             $distFileType = array_key_exists('content', $distFile) ? 'file' : 'dir';
 
             if ($localFileType !== $distFileType) {
