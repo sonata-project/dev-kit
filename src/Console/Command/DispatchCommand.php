@@ -12,8 +12,8 @@
 namespace Sonata\DevKit\Console\Command;
 
 use Github\Exception\ExceptionInterface;
+use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
-use SebastianBergmann\Diff\Differ;
 use Sonata\DevKit\Config\Configuration;
 use Sonata\DevKit\Console\Style\SonataStyle;
 use Symfony\Component\Config\Definition\Processor;
@@ -21,6 +21,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -29,6 +30,7 @@ use Symfony\Component\Yaml\Yaml;
 class DispatchCommand extends Command
 {
     const GITHUB_GROUP = 'sonata-project';
+    const GITHUB_USER = 'SonataCI';
     const PACKAGIST_GROUP = 'sonata-project';
 
     /**
@@ -47,6 +49,11 @@ class DispatchCommand extends Command
     private $configs;
 
     /**
+     * @var string|null
+     */
+    private $githubAuthKey = null;
+
+    /**
      * @var \Packagist\Api\Client
      */
     private $packagistClient;
@@ -55,6 +62,16 @@ class DispatchCommand extends Command
      * @var \Github\Client
      */
     private $githubClient = false;
+
+    /**
+     * @var GitWrapper
+     */
+    private $gitWrapper;
+
+    /**
+     * @var Filesystem
+     */
+    private $fileSystem;
 
     /**
      * {@inheritdoc}
@@ -80,14 +97,19 @@ class DispatchCommand extends Command
         $processor = new Processor();
         $this->configs = $processor->processConfiguration(new Configuration(), array('sonata' => $configs));
 
+        if (getenv('GITHUB_OAUTH_TOKEN')) {
+            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
+        }
+
         $this->packagistClient = new \Packagist\Api\Client();
 
         $this->githubClient = new \Github\Client();
-        if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'), null, \Github\Client::AUTH_HTTP_TOKEN);
+        if ($this->githubAuthKey) {
+            $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
         }
 
-        $this->differ = new Differ();
+        $this->gitWrapper = new GitWrapper();
+        $this->fileSystem = new Filesystem();
     }
 
     /**
@@ -213,39 +235,46 @@ class DispatchCommand extends Command
     {
         $this->io->section('Documentation');
 
-        $this->dispatchFile($repositoryName, 'project', '.');
+        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
+
+        if ($this->fileSystem->exists($clonePath)) {
+            $this->fileSystem->remove($clonePath);
+        }
+
+        $git = $this->gitWrapper->cloneRepository(
+            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
+            $clonePath
+        );
+
+        $this->renderFile($repositoryName, 'project', $clonePath);
     }
 
-    private function dispatchFile($repositoryName, $localPath, $distPath)
+    private function renderFile($repositoryName, $localPath, $distPath, $clonePath = null)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);
+        $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
+        $clonePath = $clonePath ?: $distPath;
+
+        if ($localFileType !== $distFileType && false !== $distFileType) {
+            throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
+        }
 
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
                 if (!in_array($entry, array('.', '..'), true)) {
-                    $this->dispatchFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry);
+                    $this->renderFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry, $clonePath);
                 }
             }
 
             return;
         }
 
-        $this->io->comment(str_replace('./', '', $distPath));
+        $this->io->comment(str_replace($clonePath.'/', '', $distPath));
+
         $localContent = file_get_contents($localFullPath);
-        $distContent = '';
-
-        if ($this->githubClient->repo()->contents()->exists(static::GITHUB_GROUP, $repositoryName, $distPath, 'master')) {
-            $distFile = $this->githubClient->repo()->contents()->show(static::GITHUB_GROUP, $repositoryName, $distPath, 'master');
-            $distFileType = array_key_exists('content', $distFile) ? 'file' : 'dir';
-
-            if ($localFileType !== $distFileType) {
-                throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
-            }
-
-            $distContent = base64_decode($distFile['content']);
-        }
+        $distContent = $this->fileSystem->exists($distPath) ? file_get_contents($distPath) : '';
 
         $this->io->diff($distContent, $localContent);
     }
