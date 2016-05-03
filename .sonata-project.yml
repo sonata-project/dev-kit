@@ -24,12 +24,6 @@ labels:
   - name: help wanted
     color: '0e8a16'
 
-files:
-  - doc:.
-  - tools/editorconfig:.
-  - tools/php-cs:.
-  - tools/travis:.
-
 projects:
   admin-bundle: ~
   admin-search-bundle: ~

@@ -213,10 +213,7 @@ class DispatchCommand extends Command
     {
         $this->io->section('Documentation');
 
-        foreach ($this->configs['files'] as $fileBlock) {
-            list($localPath, $distPath) = explode(':', $fileBlock);
-            $this->dispatchFile($repositoryName, $localPath, $distPath);
-        }
+        $this->dispatchFile($repositoryName, 'project', '.');
     }
 
     private function dispatchFile($repositoryName, $localPath, $distPath)
