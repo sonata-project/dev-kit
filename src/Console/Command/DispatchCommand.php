@@ -210,19 +210,18 @@ class DispatchCommand extends Command
     {
         $this->io->section('Documentation');
 
-//        $contributingLocal = file_get_contents(__DIR__.'/../../../doc/CONTRIBUTING.md');
-//        $file = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, 'CONTRIBUTING.md', 'master');
-//        $contributingDist = base64_decode($file['content']);
-//
-//        echo $this->differ->diff($contributingDist, $contributingLocal);
+        foreach ($this->configs['files'] as $fileBlock) {
+            list($localPath, $distPath) = explode(':', $fileBlock);
 
-        $styleCILocal = file_get_contents(__DIR__.'/../../../tools/php-cs/.styleci.yml');
-        $styleCIDist = '';
-        if ($this->githubClient->repo()->contents()->exists('sonata-project', $repositoryName, '.styleci.yml', 'master')) {
-            $file = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, '.styleci.yml', 'master');
-            $styleCIDist = base64_decode($file['content']);
+            $this->io->comment($distPath);
+            $localContent = file_get_contents(__DIR__.'/../../../'.$localPath);
+            $distContent = '';
+            if ($this->githubClient->repo()->contents()->exists('sonata-project', $repositoryName, $distPath, 'master')) {
+                $file = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, $distPath, 'master');
+                $distContent = base64_decode($file['content']);
+            }
+
+            $this->io->diff($distContent, $localContent);
         }
-
-        $this->io->diff($styleCIDist, $styleCILocal);
     }
 }
