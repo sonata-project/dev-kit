@@ -204,7 +204,7 @@ class DispatchCommand extends Command
     }
 
     /**
-     * @param $repositoryName
+     * @param string $repositoryName
      */
     private function dispatchFiles($repositoryName)
     {
@@ -212,16 +212,41 @@ class DispatchCommand extends Command
 
         foreach ($this->configs['files'] as $fileBlock) {
             list($localPath, $distPath) = explode(':', $fileBlock);
+            $this->dispatchFile($repositoryName, $localPath, $distPath);
+        }
+    }
 
-            $this->io->comment($distPath);
-            $localContent = file_get_contents(__DIR__.'/../../../'.$localPath);
-            $distContent = '';
-            if ($this->githubClient->repo()->contents()->exists('sonata-project', $repositoryName, $distPath, 'master')) {
-                $file = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, $distPath, 'master');
-                $distContent = base64_decode($file['content']);
+    private function dispatchFile($repositoryName, $localPath, $distPath)
+    {
+        $localFullPath = __DIR__.'/../../../'.$localPath;
+        $localFileType = filetype($localFullPath);
+
+        if ('dir' === $localFileType) {
+            $localDirectory = dir($localFullPath);
+            while (false !== ($entry = $localDirectory->read())) {
+                if (!in_array($entry, array('.', '..'), true)) {
+                    $this->dispatchFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry);
+                }
             }
 
-            $this->io->diff($distContent, $localContent);
+            return;
         }
+
+        $this->io->comment(str_replace('./', '', $distPath));
+        $localContent = file_get_contents($localFullPath);
+        $distContent = '';
+
+        if ($this->githubClient->repo()->contents()->exists('sonata-project', $repositoryName, $distPath, 'master')) {
+            $distFile = $this->githubClient->repo()->contents()->show('sonata-project', $repositoryName, $distPath, 'master');
+            $distFileType = array_key_exists('content', $distFile) ? 'file' : 'dir';
+
+            if ($localFileType !== $distFileType) {
+                throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
+            }
+
+            $distContent = base64_decode($distFile['content']);
+        }
+
+        $this->io->diff($distContent, $localContent);
     }
 }

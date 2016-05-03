@@ -25,8 +25,10 @@ labels:
     color: '0e8a16'
 
 files:
-  - doc/CONTRIBUTING.md:CONTRIBUTING.md
-  - tools/editorconfig/.editorconfig:.editorconfig
+  - doc:.
+  - tools/editorconfig:.
+  - tools/php-cs:.
+  - tools/travis:.
 
 projects:
   admin-bundle: ~
