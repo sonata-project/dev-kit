@@ -251,6 +251,11 @@ class DispatchCommand extends Command
         $this->io->writeln($git->diff('--color')->getOutput());
     }
 
+    /**
+     * @param string $repositoryName
+     * @param string $localPath
+     * @param string $distPath
+     */
     private function renderFile($repositoryName, $localPath, $distPath)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
