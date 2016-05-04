@@ -332,7 +332,8 @@ class DispatchCommand extends Command
         }
 
         $branchConfig = $projectConfig['branches'][$branchName];
-        if ('twig' === pathinfo($localPath)['extension']) {
+        $localPathInfo = pathinfo($localPath);
+        if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = dirname($distPath).'/'.basename($distPath, '.twig');
             file_put_contents($distPath, $this->twig->render($localPath, $branchConfig));
         } else {
