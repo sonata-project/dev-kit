@@ -52,6 +52,7 @@ class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->arrayNode('php_versions')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->arrayNode('symfony_versions')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
                                     ->end()
                                 ->end()
                             ->end()
