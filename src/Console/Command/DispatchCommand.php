@@ -12,6 +12,7 @@
 namespace Sonata\DevKit\Console\Command;
 
 use Github\Exception\ExceptionInterface;
+use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
 use Sonata\DevKit\Config\Configuration;
 use Symfony\Component\Config\Definition\Processor;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -27,6 +29,13 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DispatchCommand extends Command
 {
+    const GITHUB_GROUP = 'sonata-project';
+    const GITHUB_USER = 'SonataCI';
+    const GITHUB_EMAIL = 'soullivaneuh@gmail.com'; // Has to be changed by SonataCI e-mail
+    const PACKAGIST_GROUP = 'sonata-project';
+
+    const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
+
     /**
      * @var bool
      */
@@ -43,6 +52,11 @@ class DispatchCommand extends Command
     private $configs;
 
     /**
+     * @var string|null
+     */
+    private $githubAuthKey = null;
+
+    /**
      * @var \Packagist\Api\Client
      */
     private $packagistClient;
@@ -51,6 +65,21 @@ class DispatchCommand extends Command
      * @var \Github\Client
      */
     private $githubClient = false;
+
+    /**
+     * @var GitWrapper
+     */
+    private $gitWrapper;
+
+    /**
+     * @var Filesystem
+     */
+    private $fileSystem;
+
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
 
     /**
      * {@inheritdoc}
@@ -76,12 +105,20 @@ class DispatchCommand extends Command
         $processor = new Processor();
         $this->configs = $processor->processConfiguration(new Configuration(), array('sonata' => $configs));
 
+        if (getenv('GITHUB_OAUTH_TOKEN')) {
+            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
+        }
+
         $this->packagistClient = new \Packagist\Api\Client();
 
         $this->githubClient = new \Github\Client();
-        if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubClient->authenticate(getenv('GITHUB_OAUTH_TOKEN'), null, \Github\Client::AUTH_HTTP_TOKEN);
+        if ($this->githubAuthKey) {
+            $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
         }
+
+        $this->gitWrapper = new GitWrapper();
+        $this->fileSystem = new Filesystem();
+        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../../..'));
     }
 
     /**
@@ -95,9 +132,10 @@ class DispatchCommand extends Command
 
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
-                $package = $this->packagistClient->get('sonata-project/'.$name);
+                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
-                $this->updateLabels($this->getRepositoryName($package));
+                $this->updateLabels($package);
+                $this->dispatchFiles($package);
             } catch (ExceptionInterface $e) {
                 $this->io->error('Failed with message: '.$e->getMessage());
             }
@@ -121,10 +159,11 @@ class DispatchCommand extends Command
     }
 
     /**
-     * @param string $repositoryName
+     * @param Package $package
      */
-    private function updateLabels($repositoryName)
+    private function updateLabels(Package $package)
     {
+        $repositoryName = $this->getRepositoryName($package);
         $this->io->section('Labels');
 
         $configuredLabels = $this->configs['labels'];
@@ -133,7 +172,7 @@ class DispatchCommand extends Command
         $headers = array('Name', 'Actual color', 'Needed Color', 'State');
         $rows = array();
 
-        foreach ($this->githubClient->repo()->labels()->all('sonata-project', $repositoryName) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -149,12 +188,12 @@ class DispatchCommand extends Command
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->remove('sonata-project', $repositoryName, $name);
+                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repositoryName, $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update('sonata-project', $repositoryName, $name, array(
+                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, array(
                         'name'  => $name,
                         'color' => $configuredColor,
                     ));
@@ -175,7 +214,7 @@ class DispatchCommand extends Command
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create('sonata-project', $repositoryName, array(
+                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, array(
                     'name'  => $name,
                     'color' => $color,
                 ));
@@ -188,13 +227,128 @@ class DispatchCommand extends Command
         });
 
         if (empty($rows)) {
-            $this->io->comment('Nothing to be changed.');
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
         } else {
             $this->io->table($headers, $rows);
 
             if ($this->apply) {
                 $this->io->success('Labels successfully updated.');
             }
+        }
+    }
+
+    /**
+     * @param Package $package
+     */
+    private function dispatchFiles(Package $package)
+    {
+        $repositoryName = $this->getRepositoryName($package);
+        $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
+
+        // No branch to manage, continue to next project.
+        if (0 === count($projectConfig['branches'])) {
+            return;
+        }
+
+        // Clone the repository.
+        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
+        if ($this->fileSystem->exists($clonePath)) {
+            $this->fileSystem->remove($clonePath);
+        }
+        $git = $this->gitWrapper->cloneRepository(
+            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
+            $clonePath
+        );
+        $git
+            ->config('user.name', static::GITHUB_USER)
+            ->config('user.email', static::GITHUB_EMAIL)
+        ;
+
+        foreach ($projectConfig['branches'] as $branch => $branchConfig) {
+            $this->io->section('Files for '.$branch);
+
+            $git->reset(array('hard' => true));
+
+            if (in_array($branch, $git->getBranches()->all(), true)) {
+                $git->checkout($branch);
+            } else {
+                $git->checkout('-b', $branch, '--track', 'origin/'.$branch);
+            }
+
+            $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
+
+            $git->add('.', array('all' => true))->getOutput();
+            $diff = $git->diff('--color', '--cached')->getOutput();
+
+            if (!empty($diff)) {
+                $this->io->writeln($diff);
+                if ($this->apply) {
+                    $git->commit('DevKit updates')->push();
+                }
+            } else {
+                $this->io->comment(static::LABEL_NOTHING_CHANGED);
+            }
+        }
+    }
+
+    /**
+     * @param string $repositoryName
+     * @param string $localPath
+     * @param string $distPath
+     * @param array  $projectConfig
+     * @param string $branchName
+     */
+    private function renderFile($repositoryName, $localPath, $distPath, array $projectConfig, $branchName)
+    {
+        $localFullPath = __DIR__.'/../../../'.$localPath;
+        $localFileType = filetype($localFullPath);
+        $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
+
+        if ($localFileType !== $distFileType && false !== $distFileType) {
+            throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
+        }
+
+        if ('dir' === $localFileType) {
+            $localDirectory = dir($localFullPath);
+            while (false !== ($entry = $localDirectory->read())) {
+                if (!in_array($entry, array('.', '..'), true)) {
+                    $this->renderFile(
+                        $repositoryName,
+                        $localPath.'/'.$entry,
+                        $distPath.'/'.$entry,
+                        $projectConfig,
+                        $branchName
+                    );
+                }
+            }
+
+            return;
+        }
+
+        $localContent = file_get_contents($localFullPath);
+
+        if (!$this->fileSystem->exists(dirname($distPath))) {
+            $this->fileSystem->mkdir(dirname($distPath));
+        }
+
+        $branchConfig = $projectConfig['branches'][$branchName];
+        $localPathInfo = pathinfo($localPath);
+        if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
+            $distPath = dirname($distPath).'/'.basename($distPath, '.twig');
+            file_put_contents($distPath, $this->twig->render($localPath, $branchConfig));
+        } else {
+            reset($projectConfig['branches']);
+            $unstableBranch = key($projectConfig['branches']);
+            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
+            file_put_contents($distPath, str_replace(array(
+                '{{ unstable_branch }}',
+                '{{ stable_branch }}',
+                '{{ docs_path }}',
+            ), array(
+                $unstableBranch,
+                $stableBranch,
+                $branchConfig['docs_path'],
+            ), $localContent));
         }
     }
 }

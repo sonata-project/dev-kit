@@ -91,14 +91,14 @@ Each project follows [semver](http://semver.org/) convention for release managem
 
 Here is a short table resuming on which you have to start:
 
-Kind of modification | Backward Compatible (BC) | Type of release | Branch to target | Label |
--------------------- | ------------------------ | --------------- | ---------------- | ----- |
-Bug fixes            | Yes                      | Patch           | `[latest].x`     | |
-Bug fixes            | No (Only if no choice)   | Major           | `master`         | |
-Feature              | Yes                      | Minor           | `[latest].x`     | |
-Feature              | No (Only if no choice)   | Major           | `master`         | |
-Deprecation          | Yes (Have to)            | Minor           | `[latest].x`     | |
-Deprecation removal  | No (Can't be)            | Major           | `master`         | |
+Kind of modification | Backward Compatible (BC) | Type of release | Branch to target        | Label |
+-------------------- | ------------------------ | --------------- | ----------------------- | ----- |
+Bug fixes            | Yes                      | Patch           | `{{ stable_branch }}`   | |
+Bug fixes            | No (Only if no choice)   | Major           | `{{ unstable_branch }}` | |
+Feature              | Yes                      | Minor           | `{{ stable_branch }}`   | |
+Feature              | No (Only if no choice)   | Major           | `{{ unstable_branch }}` | |
+Deprecation          | Yes (Have to)            | Minor           | `{{ stable_branch }}`   | |
+Deprecation removal  | No (Can't be)            | Major           | `{{ unstable_branch }}` | |
 
 Notes:
   * Branch `[latest].x` means the branch of the **latest stable** minor release (e.g. `3.x`).
