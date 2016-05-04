@@ -6,7 +6,7 @@ language: php
 
 php:
 {% for version in php_versions %}
-  - {{ version }}
+  - '{{ version }}'
 {% endfor %}
   - nightly
   - hhvm
@@ -26,19 +26,19 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: {{ php_versions|last }}
+    - php: '{{ php_versions|last }}'
       env: TARGET=docs
-    - php: {{ php_versions|first }}
+    - php: '{{ php_versions|first }}'
       env: COMPOSER_FLAGS="--prefer-lowest"
 {% for version in symfony_versions %}
-    - php: {{ php_versions|last }}
+    - php: '{{ php_versions|last }}'
       env: SYMFONY_VERSION={{ version }}.*
 {% endfor %}
 {% if symfony_versions|length > 0 %}
-    - php: {{ php_versions|last }}
+    - php: '{{ php_versions|last }}'
       env: SYMFONY_VERSION=dev-master@dev
 {% endif %}
-    - php: {{ php_versions|last }}
+    - php: '{{ php_versions|last }}'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: nightly
