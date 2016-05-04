@@ -33,6 +33,8 @@ class DispatchCommand extends Command
     const GITHUB_USER = 'SonataCI';
     const PACKAGIST_GROUP = 'sonata-project';
 
+    const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
+
     /**
      * @var bool
      */
@@ -224,7 +226,7 @@ class DispatchCommand extends Command
         });
 
         if (empty($rows)) {
-            $this->io->comment('Nothing to be changed.');
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
         } else {
             $this->io->table($headers, $rows);
 
@@ -260,13 +262,25 @@ class DispatchCommand extends Command
         foreach ($projectConfig['branches'] as $branch => $branchConfig) {
             $this->io->section('Files for '.$branch);
 
-            $git->reset(['hard' => true]);
-            $git->checkout('-b', $branch, '-t', 'origin/'.$branch);
+            $git
+                ->reset(array('hard' => true))
+                ->checkout('-b', $branch, '-t', 'origin/'.$branch)
+                ->pull()
+            ;
 
             $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
 
-            $git->add('.', ['all' => true])->getOutput();
-            $this->io->writeln($git->diff('--color', '--cached')->getOutput());
+            $git->add('.', array('all' => true))->getOutput();
+            $diff = $git->diff('--color', '--cached')->getOutput();
+
+            if (!empty($diff)) {
+                $this->io->writeln($diff);
+                if ($this->apply) {
+                    $git->commit('DevKit updates')->push();
+                }
+            } else {
+                $this->io->comment(static::LABEL_NOTHING_CHANGED);
+            }
         }
     }
 
@@ -310,21 +324,23 @@ class DispatchCommand extends Command
             $this->fileSystem->mkdir(dirname($distPath));
         }
 
+        $branchConfig = $projectConfig['branches'][$branchName];
         if ('twig' === pathinfo($localPath)['extension']) {
             $distPath = dirname($distPath).'/'.basename($distPath, '.twig');
-            file_put_contents($distPath, $this->twig->render($localPath, $projectConfig['branches'][$branchName]));
+            file_put_contents($distPath, $this->twig->render($localPath, $branchConfig));
         } else {
             reset($projectConfig['branches']);
             $unstableBranch = key($projectConfig['branches']);
             $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-            file_put_contents($distPath, str_replace([
+            file_put_contents($distPath, str_replace(array(
                 '{{ unstable_branch }}',
-                '{{ stable_branch }}'
-            ], [
+                '{{ stable_branch }}',
+                '{{ docs_path }}',
+            ), array(
                 $unstableBranch,
                 $stableBranch,
-            ], $localContent));
+                $branchConfig['docs_path'],
+            ), $localContent));
         }
-
     }
 }
