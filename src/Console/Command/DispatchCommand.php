@@ -269,7 +269,7 @@ class DispatchCommand extends Command
 
             $git
                 ->reset(array('hard' => true))
-                ->checkout('-b', $branch, '-t', 'origin/'.$branch)
+                ->checkout('-b', $branch, '--track', 'origin/'.$branch)
                 ->pull()
             ;
 
