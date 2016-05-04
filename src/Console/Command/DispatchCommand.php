@@ -74,6 +74,11 @@ class DispatchCommand extends Command
     private $fileSystem;
 
     /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -110,6 +115,7 @@ class DispatchCommand extends Command
 
         $this->gitWrapper = new GitWrapper();
         $this->fileSystem = new Filesystem();
+        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../../..'));
     }
 
     /**
@@ -251,13 +257,13 @@ class DispatchCommand extends Command
             $clonePath
         );
 
-        foreach ($projectConfig['branches'] as $branch) {
+        foreach ($projectConfig['branches'] as $branch => $branchConfig) {
             $this->io->section('Files for '.$branch);
 
             $git->reset(['hard' => true]);
             $git->checkout($branch);
 
-            $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig);
+            $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
 
             $this->io->writeln($git->diff('--color')->getOutput());
         }
@@ -268,8 +274,9 @@ class DispatchCommand extends Command
      * @param string $localPath
      * @param string $distPath
      * @param array  $projectConfig
+     * @param string $branchName
      */
-    private function renderFile($repositoryName, $localPath, $distPath, array $projectConfig)
+    private function renderFile($repositoryName, $localPath, $distPath, array $projectConfig, $branchName)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);
@@ -283,7 +290,13 @@ class DispatchCommand extends Command
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
                 if (!in_array($entry, array('.', '..'), true)) {
-                    $this->renderFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry, $projectConfig);
+                    $this->renderFile(
+                        $repositoryName,
+                        $localPath.'/'.$entry,
+                        $distPath.'/'.$entry,
+                        $projectConfig,
+                        $branchName
+                    );
                 }
             }
 
@@ -296,13 +309,21 @@ class DispatchCommand extends Command
             $this->fileSystem->mkdir(dirname($distPath));
         }
 
-        file_put_contents($distPath, str_replace([
-            '{{ unstable_branch }}',
-            '{{ stable_branch }}'
-        ], [
-            $projectConfig['branches'][0],
-            array_key_exists(1, $projectConfig['branches'])
-                ? $projectConfig['branches'][1] : $projectConfig['branches'][0],
-        ], $localContent));
+        if ('twig' === pathinfo($localPath)['extension']) {
+            $distPath = dirname($distPath).'/'.basename($distPath, '.twig');
+            file_put_contents($distPath, $this->twig->render($localPath, $projectConfig['branches'][$branchName]));
+        } else {
+            reset($projectConfig['branches']);
+            $unstableBranch = key($projectConfig['branches']);
+            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
+            file_put_contents($distPath, str_replace([
+                '{{ unstable_branch }}',
+                '{{ stable_branch }}'
+            ], [
+                $unstableBranch,
+                $stableBranch,
+            ], $localContent));
+        }
+
     }
 }
