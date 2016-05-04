@@ -43,7 +43,7 @@ projects:
   ecommerce: ~
   exporter:
     branches:
-      test:
+      master:
         php_versions: ['5.3', '5.4', '5.5', '5.6', '7.0']
         symfony_versions: ['2.3', '2.6', '2.7', '2.8', '3.0']
         docs_path: docs
