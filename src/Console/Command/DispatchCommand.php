@@ -267,11 +267,13 @@ class DispatchCommand extends Command
         foreach ($projectConfig['branches'] as $branch => $branchConfig) {
             $this->io->section('Files for '.$branch);
 
-            $git
-                ->reset(array('hard' => true))
-                ->checkout('-b', $branch, '--track', 'origin/'.$branch)
-                ->pull()
-            ;
+            $git->reset(array('hard' => true));
+
+            if (in_array($branch, $git->getBranches()->all(), true)) {
+                $git->checkout($branch);
+            } else {
+                $git->checkout('-b', $branch, '--track', 'origin/'.$branch);
+            }
 
             $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
 
