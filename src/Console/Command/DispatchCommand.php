@@ -31,7 +31,7 @@ class DispatchCommand extends Command
 {
     const GITHUB_GROUP = 'sonata-project';
     const GITHUB_USER = 'SonataCI';
-    const GITHUB_EMAIL = 'ci@sonata-project.org';
+    const GITHUB_EMAIL = 'soullivaneuh@gmail.com'; // Has to be changed by SonataCI e-mail
     const PACKAGIST_GROUP = 'sonata-project';
 
     const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
