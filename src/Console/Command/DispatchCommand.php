@@ -265,7 +265,8 @@ class DispatchCommand extends Command
 
             $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
 
-            $this->io->writeln($git->diff('--color')->getOutput());
+            $git->add('.', ['all' => true])->getOutput();
+            $this->io->writeln($git->diff('--color', '--cached')->getOutput());
         }
     }
 
