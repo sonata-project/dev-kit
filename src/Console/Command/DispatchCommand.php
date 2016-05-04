@@ -125,9 +125,8 @@ class DispatchCommand extends Command
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
-                $repositoryName = $this->getRepositoryName($package);
-                $this->updateLabels($repositoryName);
-                $this->dispatchFiles($repositoryName);
+                $this->updateLabels($package);
+                $this->dispatchFiles($package);
             } catch (ExceptionInterface $e) {
                 $this->io->error('Failed with message: '.$e->getMessage());
             }
@@ -151,10 +150,11 @@ class DispatchCommand extends Command
     }
 
     /**
-     * @param string $repositoryName
+     * @param Package $package
      */
-    private function updateLabels($repositoryName)
+    private function updateLabels(Package $package)
     {
+        $repositoryName = $this->getRepositoryName($package);
         $this->io->section('Labels');
 
         $configuredLabels = $this->configs['labels'];
@@ -229,34 +229,47 @@ class DispatchCommand extends Command
     }
 
     /**
-     * @param string $repositoryName
+     * @param Package $package
      */
-    private function dispatchFiles($repositoryName)
+    private function dispatchFiles(Package $package)
     {
-        $this->io->section('Files');
+        $repositoryName = $this->getRepositoryName($package);
+        $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
 
+        // No branch to manage, continue to next project.
+        if (0 === count($projectConfig['branches'])) {
+            return;
+        }
+
+        // Clone the repository.
         $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
-
         if ($this->fileSystem->exists($clonePath)) {
             $this->fileSystem->remove($clonePath);
         }
-
         $git = $this->gitWrapper->cloneRepository(
             'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
         );
 
-        $this->renderFile($repositoryName, 'project', $clonePath);
+        foreach ($projectConfig['branches'] as $branch) {
+            $this->io->section('Files for '.$branch);
 
-        $this->io->writeln($git->diff('--color')->getOutput());
+            $git->reset(['hard' => true]);
+            $git->checkout($branch);
+
+            $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig);
+
+            $this->io->writeln($git->diff('--color')->getOutput());
+        }
     }
 
     /**
      * @param string $repositoryName
      * @param string $localPath
      * @param string $distPath
+     * @param array  $projectConfig
      */
-    private function renderFile($repositoryName, $localPath, $distPath)
+    private function renderFile($repositoryName, $localPath, $distPath, array $projectConfig)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);
@@ -270,7 +283,7 @@ class DispatchCommand extends Command
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
                 if (!in_array($entry, array('.', '..'), true)) {
-                    $this->renderFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry);
+                    $this->renderFile($repositoryName, $localPath.'/'.$entry, $distPath.'/'.$entry, $projectConfig);
                 }
             }
 
@@ -282,6 +295,14 @@ class DispatchCommand extends Command
         if (!$this->fileSystem->exists(dirname($distPath))) {
             $this->fileSystem->mkdir(dirname($distPath));
         }
-        file_put_contents($distPath, $localContent);
+
+        file_put_contents($distPath, str_replace([
+            '{{ unstable_branch }}',
+            '{{ stable_branch }}'
+        ], [
+            $projectConfig['branches'][0],
+            array_key_exists(1, $projectConfig['branches'])
+                ? $projectConfig['branches'][1] : $projectConfig['branches'][0],
+        ], $localContent));
     }
 }

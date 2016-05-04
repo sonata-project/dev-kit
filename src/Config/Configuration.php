@@ -43,7 +43,11 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->requiresAtLeastOneElement()
                     ->normalizeKeys(false)
-                    ->prototype('scalar')->end()
+                    ->prototype('array')
+                        ->children()
+                            ->arrayNode('branches')->prototype('scalar')->defaultValue([])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;

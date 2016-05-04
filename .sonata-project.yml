@@ -25,10 +25,12 @@ labels:
     color: '0e8a16'
 
 projects:
-  admin-bundle: ~
+  admin-bundle:
+    branches: [master, 2.3]
   admin-search-bundle: ~
   block-bundle: ~
-  cache: ~
+  cache:
+    branches: [master]
   cache-bundle: ~
   classification-bundle: ~
   comment-bundle: ~
@@ -41,7 +43,8 @@ projects:
   doctrine-phpcr-admin-bundle: ~
   easy-extends-bundle: ~
   ecommerce: ~
-  exporter: ~
+  exporter:
+    branches: [master]
   formatter-bundle: ~
   google-authenticator: ~
   intl-bundle: ~
