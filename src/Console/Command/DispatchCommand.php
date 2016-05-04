@@ -31,6 +31,7 @@ class DispatchCommand extends Command
 {
     const GITHUB_GROUP = 'sonata-project';
     const GITHUB_USER = 'SonataCI';
+    const GITHUB_EMAIL = 'ci@sonata-project.org';
     const PACKAGIST_GROUP = 'sonata-project';
 
     const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
@@ -258,6 +259,10 @@ class DispatchCommand extends Command
             'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
         );
+        $git
+            ->config('user.name', static::GITHUB_USER)
+            ->config('user.email', static::GITHUB_EMAIL)
+        ;
 
         foreach ($projectConfig['branches'] as $branch => $branchConfig) {
             $this->io->section('Files for '.$branch);
