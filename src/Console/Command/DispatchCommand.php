@@ -233,7 +233,7 @@ class DispatchCommand extends Command
      */
     private function dispatchFiles($repositoryName)
     {
-        $this->io->section('Documentation');
+        $this->io->section('Files');
 
         $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
 
