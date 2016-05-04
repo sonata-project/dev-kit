@@ -261,7 +261,7 @@ class DispatchCommand extends Command
             $this->io->section('Files for '.$branch);
 
             $git->reset(['hard' => true]);
-            $git->checkout($branch);
+            $git->checkout('-b', $branch, '-t', 'origin/'.$branch);
 
             $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
 
