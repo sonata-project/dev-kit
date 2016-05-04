@@ -42,6 +42,7 @@ matrix:
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: nightly
+    - php: hhvm
     - env: SYMFONY_DEPRECATIONS_HELPER=0
 {% if symfony_versions|length > 0 %}
     - env: SYMFONY_VERSION=dev-master@dev
