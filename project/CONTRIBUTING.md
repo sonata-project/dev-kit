@@ -185,7 +185,9 @@ The commit description should be able to live without what is said in the PR,
 and should ideally sum it up in a crystal clear way, so that people do not have
 to open a web browser to understand what you did.
 Links to PRs/Issues and external references are of course welcome, but should
-not be considered enough.
+not be considered enough. When you reference an issue, make sure to use one of
+the keywords described in [the dedicated github
+article](https://help.github.com/articles/closing-issues-via-commit-messages/).
 
 Good commit message with description :
 
