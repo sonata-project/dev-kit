@@ -16,4 +16,4 @@ install:
   - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script:
-  - if [[ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./dev-kit dispatch --apply; else ./dev-kit dispatch; fi;
+  - if [[ "$TRAVIS_BRANCH" = "build" && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./dev-kit dispatch --apply; else ./dev-kit dispatch; fi;
