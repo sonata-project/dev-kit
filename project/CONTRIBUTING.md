@@ -101,12 +101,12 @@ Deprecation          | Yes (Have to)            | Minor           | `{{ stable_b
 Deprecation removal  | No (Can't be)            | Major           | `{{ unstable_branch }}` | |
 
 Notes:
-  * Branch `[latest].x` means the branch of the **latest stable** minor release (e.g. `3.x`).
-  Please refer to the branch list of the project and pick the **higher** one.
+  * Branch `{{ stable_branch }}` is the branch of the **latest stable** minor release and
+  has to be used for Backward compatible PRs.
   * If you PR is not **Backward Compatible** but can be, it **must** be:
     * Changing a function/method signature? Prefer create a new one and deprecated the old one.
     * Code deletion? Don't. Please deprecate it instead.
-    * If your BC PR is accepted, you can do a new one on the `master` branch which remove the deprecated code.
+    * If your BC PR is accepted, you can do a new one on the `{{ unstable_branch }}` branch which remove the deprecated code.
     * SYMFONY DOC REF (same logic)?
 
 Be aware that pull requests with BC breaks could be not accepted
