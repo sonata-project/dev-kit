@@ -82,6 +82,23 @@ your work, please do another PR for that. In some rare cases, you might be
 forced to do it on the same PR. In this kind of situation, please add a comment
 on your PR explaining why you feel it is the case.
 
+#### The Change log
+
+On each PR, the `CHANGELOG.md` file **has to be updated**.
+The only case where it should not be updated is when you fix a bug on an unreleased feature.
+
+The change log note has to be put below the `## [Unreleased]` section.
+
+Your note can be put on one of these sections:
+
+* `Added` for new features.
+* `Changed` for changes in existing functionality.
+* `Deprecated` for deprecation of features that will be removed in next major release.
+* `Removed` for deprecated features removed in this release.
+* `Fixed` for any bug fixes.
+* `Security` to invite users to upgrade in case of vulnerabilities.
+
+More information about the followed changelog format: [keepachangelog.com](http://keepachangelog.com/)
 
 #### The base branch
 
