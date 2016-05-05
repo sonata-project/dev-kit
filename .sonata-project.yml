@@ -23,6 +23,14 @@ labels:
     color: 'd4c5f9'
   - name: help wanted
     color: '0e8a16'
+  - name: 'Needs: Documentation'
+    color: '006b75'
+  - name: 'Needs: Tests'
+    color: '006b75'
+  - name: 'Needs: Changelog note'
+    color: '006b75'
+  - name: 'Needs: Upgrade note'
+    color: '006b75'
 
 projects:
   admin-bundle: ~
