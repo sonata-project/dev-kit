@@ -84,16 +84,16 @@ on your PR explaining why you feel it is the case.
 
 #### The Change log
 
-On each PR, the `CHANGELOG.md` file **have to be updated**.
-The only case that it should not be updated is when you fix a bug on a unreleased feature.
+On each PR, the `CHANGELOG.md` file **has to be updated**.
+The only case where it should not be updated is when you fix a bug on an unreleased feature.
 
-The change log note have to be put below the `## [Unreleased]` section.
+The change log note has to be put below the `## [Unreleased]` section.
 
-Your note can be put on one of these several sections:
+Your note can be put on one of these sections:
 
 * `Added` for new features.
 * `Changed` for changes in existing functionality.
-* `Deprecated` for deprecation of features that will be removed on next major release.
+* `Deprecated` for deprecation of features that will be removed in next major release.
 * `Removed` for deprecated features removed in this release.
 * `Fixed` for any bug fixes.
 * `Security` to invite users to upgrade in case of vulnerabilities.
