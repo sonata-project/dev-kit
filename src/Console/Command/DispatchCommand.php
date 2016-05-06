@@ -275,7 +275,7 @@ class DispatchCommand extends Command
                 $git->checkout('-b', $branch, '--track', 'origin/'.$branch);
             }
 
-            $this->renderFile($repositoryName, 'project', $clonePath, $projectConfig, $branch);
+            $this->renderFile('project', $clonePath, $projectConfig, $branch);
 
             $git->add('.', array('all' => true))->getOutput();
             $diff = $git->diff('--color', '--cached')->getOutput();
@@ -292,13 +292,12 @@ class DispatchCommand extends Command
     }
 
     /**
-     * @param string $repositoryName
      * @param string $localPath
      * @param string $distPath
      * @param array  $projectConfig
      * @param string $branchName
      */
-    private function renderFile($repositoryName, $localPath, $distPath, array $projectConfig, $branchName)
+    private function renderFile($localPath, $distPath, array $projectConfig, $branchName)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);
@@ -313,7 +312,6 @@ class DispatchCommand extends Command
             while (false !== ($entry = $localDirectory->read())) {
                 if (!in_array($entry, array('.', '..'), true)) {
                     $this->renderFile(
-                        $repositoryName,
                         $localPath.'/'.$entry,
                         $distPath.'/'.$entry,
                         $projectConfig,
