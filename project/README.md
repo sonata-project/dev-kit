@@ -12,7 +12,9 @@
 
 [![Build Status](https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ current_branch }})](https://travis-ci.org/sonata-project/{{ repository_name }})
 
+## Documentation
 
+Check out the documentation on the [official website](https://sonata-project.org/bundles/{{ website_path }}).
 
 ## License
 

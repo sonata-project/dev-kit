@@ -303,6 +303,7 @@ final class DispatchCommand extends AbstractCommand
                 '{{ unstable_branch }}',
                 '{{ stable_branch }}',
                 '{{ docs_path }}',
+                '{{ website_path }}',
             ), array(
                 Inflector::ucwords(str_replace(array('-project', '/', '-'), array('', ' ', ' '), $package->getName())),
                 $package->getDescription(),
@@ -312,6 +313,7 @@ final class DispatchCommand extends AbstractCommand
                 $unstableBranch,
                 $stableBranch,
                 $branchConfig['docs_path'],
+                str_replace(array(static::PACKAGIST_GROUP.'/', '-bundle'), '', $package->getName()),
             ), $localContent));
         }
     }
