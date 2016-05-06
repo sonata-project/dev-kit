@@ -85,7 +85,11 @@ on your PR explaining why you feel it is the case.
 #### The Change log
 
 On each PR, the `CHANGELOG.md` file **has to be updated**.
-The only case where it should not be updated is when you fix a bug on an unreleased feature.
+
+There are few cases where the `CHANGELOG.md` file should not be touched:
+
+* When you fix a bug on an unreleased feature.
+* When your PR concerns only the documentation (fix or improvement).
 
 The change log note has to be put below the `## [Unreleased]` section.
 
