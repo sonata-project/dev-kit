@@ -14,57 +14,22 @@ namespace Sonata\DevKit\Console\Command;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
-use Sonata\DevKit\Config\Configuration;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class DispatchCommand extends Command
+final class DispatchCommand extends AbstractCommand
 {
-    const GITHUB_GROUP = 'sonata-project';
-    const GITHUB_USER = 'SonataCI';
-    const GITHUB_EMAIL = 'soullivaneuh@gmail.com'; // Has to be changed by SonataCI e-mail
-    const PACKAGIST_GROUP = 'sonata-project';
-
     const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
 
     /**
      * @var bool
      */
     private $apply;
-
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
-
-    /**
-     * @var array
-     */
-    private $configs;
-
-    /**
-     * @var string|null
-     */
-    private $githubAuthKey = null;
-
-    /**
-     * @var \Packagist\Api\Client
-     */
-    private $packagistClient;
-
-    /**
-     * @var \Github\Client
-     */
-    private $githubClient = false;
 
     /**
      * @var GitWrapper
@@ -93,28 +58,10 @@ class DispatchCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->io = new SymfonyStyle($input, $output);
+        parent::initialize($input, $output);
         $this->apply = $input->getOption('apply');
-
-        $configs = Yaml::parse(file_get_contents(__DIR__.'/../../../.sonata-project.yml'));
-        $processor = new Processor();
-        $this->configs = $processor->processConfiguration(new Configuration(), array('sonata' => $configs));
-
-        if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
-        }
-
-        $this->packagistClient = new \Packagist\Api\Client();
-
-        $this->githubClient = new \Github\Client();
-        if ($this->githubAuthKey) {
-            $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
-        }
 
         $this->gitWrapper = new GitWrapper();
         $this->fileSystem = new Filesystem();

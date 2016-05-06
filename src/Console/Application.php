@@ -11,6 +11,7 @@
 
 namespace Sonata\DevKit\Console;
 
+use Sonata\DevKit\Console\Command\DependsCommand;
 use Sonata\DevKit\Console\Command\DispatchCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 
@@ -27,5 +28,6 @@ class Application extends BaseApplication
         parent::__construct();
 
         $this->add(new DispatchCommand());
+        $this->add(new DependsCommand());
     }
 }
