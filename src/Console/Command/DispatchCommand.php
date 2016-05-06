@@ -257,6 +257,10 @@ final class DispatchCommand extends AbstractCommand
             throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
         }
 
+        if (in_array(substr($localPath, 8), $projectConfig['excluded_files'], true)) {
+            return;
+        }
+
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {

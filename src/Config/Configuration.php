@@ -45,6 +45,7 @@ class Configuration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
+                            ->arrayNode('excluded_files')->prototype('scalar')->defaultValue(array())->end()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
                                 ->defaultValue(array())
