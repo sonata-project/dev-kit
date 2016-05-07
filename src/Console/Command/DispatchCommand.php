@@ -11,6 +11,7 @@
 
 namespace Sonata\DevKit\Console\Command;
 
+use Doctrine\Common\Inflector\Inflector;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
@@ -222,7 +223,7 @@ final class DispatchCommand extends AbstractCommand
                 $git->checkout('-b', $branch, '--track', 'origin/'.$branch);
             }
 
-            $this->renderFile('project', $clonePath, $projectConfig, $branch);
+            $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $branch);
 
             $git->add('.', array('all' => true))->getOutput();
             $diff = $git->diff('--color', '--cached')->getOutput();
@@ -239,12 +240,14 @@ final class DispatchCommand extends AbstractCommand
     }
 
     /**
-     * @param string $localPath
-     * @param string $distPath
-     * @param array  $projectConfig
-     * @param string $branchName
+     * @param Package $package
+     * @param string  $repositoryName
+     * @param string  $localPath
+     * @param string  $distPath
+     * @param array   $projectConfig
+     * @param string  $branchName
      */
-    private function renderFile($localPath, $distPath, array $projectConfig, $branchName)
+    private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName)
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);
@@ -254,11 +257,17 @@ final class DispatchCommand extends AbstractCommand
             throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
         }
 
+        if (in_array(substr($localPath, 8), $projectConfig['excluded_files'], true)) {
+            return;
+        }
+
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
                 if (!in_array($entry, array('.', '..'), true)) {
                     $this->renderFile(
+                        $package,
+                        $repositoryName,
                         $localPath.'/'.$entry,
                         $distPath.'/'.$entry,
                         $projectConfig,
@@ -286,13 +295,25 @@ final class DispatchCommand extends AbstractCommand
             $unstableBranch = key($projectConfig['branches']);
             $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
             file_put_contents($distPath, str_replace(array(
+                '{{ package_title }}',
+                '{{ package_description }}',
+                '{{ packagist_name }}',
+                '{{ repository_name }}',
+                '{{ current_branch }}',
                 '{{ unstable_branch }}',
                 '{{ stable_branch }}',
                 '{{ docs_path }}',
+                '{{ website_path }}',
             ), array(
+                Inflector::ucwords(str_replace(array('-project', '/', '-'), array('', ' ', ' '), $package->getName())),
+                $package->getDescription(),
+                $package->getName(),
+                $repositoryName,
+                $branchName,
                 $unstableBranch,
                 $stableBranch,
                 $branchConfig['docs_path'],
+                str_replace(array(static::PACKAGIST_GROUP.'/', '-bundle'), '', $package->getName()),
             ), $localContent));
         }
     }
