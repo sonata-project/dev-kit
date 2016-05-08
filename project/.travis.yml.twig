@@ -57,7 +57,7 @@ before_install:
 
 install:
   - travis_wait composer global update --prefer-dist --no-interaction
-  - travis_wait composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
+  - travis_wait composer update --prefer-dist --no-interaction --prefer-stable $COMPOSER_FLAGS
   - pip install -r {{ docs_path }}/requirements.txt --user `whoami`
 
 before_script:
