@@ -217,10 +217,18 @@ final class DispatchCommand extends AbstractCommand
 
             $git->reset(array('hard' => true));
 
+            // Checkout the targeted branch
             if (in_array($branch, $git->getBranches()->all(), true)) {
                 $git->checkout($branch);
             } else {
                 $git->checkout('-b', $branch, '--track', 'origin/'.$branch);
+            }
+            // Checkout the dev-kit branch
+            $devKitBranch = $branch.'-dev-kit';
+            if (in_array('remotes/origin/'.$devKitBranch, $git->getBranches()->all(), true)) {
+                $git->checkout('-b', $devKitBranch, '--track', 'origin/'.$devKitBranch);
+            } else {
+                $git->checkout('-b', $devKitBranch);
             }
 
             $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $branch);
@@ -231,7 +239,21 @@ final class DispatchCommand extends AbstractCommand
             if (!empty($diff)) {
                 $this->io->writeln($diff);
                 if ($this->apply) {
-                    $git->commit('DevKit updates')->push();
+                    $git->commit('DevKit updates')->push('-u', 'origin', $devKitBranch);
+
+                    // If the Pull Request does not exists yet, create it.
+                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, array(
+                        'state' => 'open',
+                        'head'  => 'sonata-project:'.$devKitBranch,
+                    ));
+                    if (0 === count($pulls)) {
+                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, array(
+                            'title' => 'DevKit updates for '.$branch.' branch',
+                            'head'  => 'sonata-project:'.$devKitBranch,
+                            'base'  => $branch,
+                            'body'  => '',
+                        ));
+                    }
                 }
             } else {
                 $this->io->comment(static::LABEL_NOTHING_CHANGED);
