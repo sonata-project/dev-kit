@@ -142,7 +142,7 @@ final class DispatchCommand extends AbstractCommand
                 $state = 'Updated';
                 if ($this->apply) {
                     $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, array(
-                        'name'  => $name,
+                        'name' => $name,
                         'color' => $configuredColor,
                     ));
                 }
@@ -163,7 +163,7 @@ final class DispatchCommand extends AbstractCommand
 
             if ($this->apply) {
                 $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, array(
-                    'name'  => $name,
+                    'name' => $name,
                     'color' => $color,
                 ));
             }
