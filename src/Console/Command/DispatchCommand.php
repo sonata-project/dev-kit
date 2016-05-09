@@ -244,14 +244,14 @@ final class DispatchCommand extends AbstractCommand
                     // If the Pull Request does not exists yet, create it.
                     $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, array(
                         'state' => 'open',
-                        'head'  => 'sonata-project:'.$devKitBranch,
+                        'head' => 'sonata-project:'.$devKitBranch,
                     ));
                     if (0 === count($pulls)) {
                         $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, array(
                             'title' => 'DevKit updates for '.$branch.' branch',
-                            'head'  => 'sonata-project:'.$devKitBranch,
-                            'base'  => $branch,
-                            'body'  => '',
+                            'head' => 'sonata-project:'.$devKitBranch,
+                            'base' => $branch,
+                            'body' => '',
                         ));
                     }
                 }
