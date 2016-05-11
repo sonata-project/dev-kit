@@ -23,6 +23,8 @@ labels:
     color: 'd4c5f9'
   - name: help wanted
     color: '0e8a16'
+  - name: Easy Pick
+    color: 'd7e102'
   - name: 'Needs: Documentation'
     color: '006b75'
   - name: 'Needs: Tests'
