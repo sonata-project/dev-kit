@@ -11,7 +11,8 @@
 
 namespace Sonata\DevKit\Console\Command;
 
-use Sonata\DevKit\Config\Configuration;
+use Sonata\DevKit\Config\DevKitConfiguration;
+use Sonata\DevKit\Config\ProjectsConfiguration;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,9 +62,14 @@ abstract class AbstractCommand extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-        $configs = Yaml::parse(file_get_contents(__DIR__.'/../../../.sonata-project.yml'));
         $processor = new Processor();
-        $this->configs = $processor->processConfiguration(new Configuration(), array('sonata' => $configs));
+        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), array(
+            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/dev-kit.yml')),
+        ));
+        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), array(
+            'sonata' => array('projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))),
+        ));
+        $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
         if (getenv('GITHUB_OAUTH_TOKEN')) {
             $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
