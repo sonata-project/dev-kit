@@ -17,8 +17,21 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class Configuration implements ConfigurationInterface
+class ProjectsConfiguration implements ConfigurationInterface
 {
+    /**
+     * @var array
+     */
+    private $devKitConfigs;
+
+    /**
+     * @param array $devKitConfigs
+     */
+    public function __construct(array $devKitConfigs)
+    {
+        $this->devKitConfigs = $devKitConfigs;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,16 +42,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('labels')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('color')->isRequired()->cannotBeEmpty()->end()
-                        ->end()
-                    ->end()
-                ->end()
                 ->arrayNode('projects')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
@@ -51,8 +54,8 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue(array())
                                 ->prototype('array')
                                     ->children()
-                                        ->arrayNode('php_versions')->prototype('scalar')->defaultValue(array())->end()->end()
-                                        ->arrayNode('symfony_versions')->prototype('scalar')->defaultValue(array())->end()->end()
+                                        ->arrayNode('php')->prototype('scalar')->defaultValue(array())->end()->end()
+                                        ->append($this->addVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
                                     ->end()
                                 ->end()
@@ -64,5 +67,21 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $treeBuilder;
+    }
+
+    private function addVersionsNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('versions');
+
+        $childrenNode = $node->children();
+
+        foreach ($this->devKitConfigs['packages'] as $key => $name) {
+            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue(array())->end()->end();
+        }
+
+        $childrenNode->end();
+
+        return $node;
     }
 }

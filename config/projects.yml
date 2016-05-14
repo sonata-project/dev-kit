@@ -1,0 +1,120 @@
+admin-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+    3.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+
+admin-search-bundle: ~
+
+block-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+    3.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+
+cache: ~
+
+cache-bundle: ~
+
+classification-bundle: ~
+
+comment-bundle: ~
+
+core-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+    3.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+
+dashboard-bundle: ~
+
+datagrid-bundle: ~
+
+doctrine-extensions: ~
+
+doctrine-mongodb-admin-bundle: ~
+
+doctrine-orm-admin-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+    3.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+
+doctrine-phpcr-admin-bundle: ~
+
+easy-extends-bundle: ~
+
+ecommerce: ~
+
+exporter:
+  excluded_files:
+    - README.md
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+      docs_path: docs
+
+formatter-bundle: ~
+
+google-authenticator: ~
+
+intl-bundle: ~
+
+media-bundle: ~
+
+news-bundle: ~
+
+notification-bundle: ~
+
+page-bundle: ~
+
+propel-admin-bundle: ~
+
+sandbox: ~
+
+seo-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+    2.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
+
+sonata-composer: ~
+
+timeline-bundle: ~
+
+translation-bundle: ~
+
+user-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.6', '2.7', '2.8']
+        fos_user: ['1.3']
