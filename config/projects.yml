@@ -28,7 +28,8 @@ block-bundle:
       versions:
         symfony: ['2.3', '2.6', '2.7', '2.8', '3.0']
         sonata_core: ['3']
-        sonata_admin: ['3']
+        # This has to be resolved: https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/130298942#L230
+        #sonata_admin: ['3']
 
 cache: ~
 
