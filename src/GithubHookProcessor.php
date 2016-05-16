@@ -43,6 +43,10 @@ final class GithubHookProcessor
      */
     public function processPendingAuthor($eventName, array $payload)
     {
+        if ('created' !== $payload['action']) {
+            return;
+        }
+
         $issueKey = 'issue_comment' === $eventName ? 'issue' : 'pull_request';
 
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
