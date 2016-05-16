@@ -25,6 +25,8 @@ $app->post('/github', function (Request $request) {
     $eventName = $request->headers->get('X-GitHub-Event');
 
     switch ($eventName) {
+        case 'ping':
+            return new Response();
         default:
             return new JsonResponse(array('message' => 'Not Implemented: '.$eventName), 501);
     }
