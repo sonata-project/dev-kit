@@ -20,7 +20,8 @@
         "symfony/console": "^3.0",
         "symfony/filesystem": "^3.0",
         "symfony/var-dumper": "^3.0",
-        "twig/twig": "^1.24"
+        "twig/twig": "^1.24",
+        "vlucas/phpdotenv": "^2.2"
     },
     "autoload": {
         "psr-4": { "Sonata\\DevKit\\": "src" }
