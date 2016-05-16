@@ -20,6 +20,7 @@ $dotenv = new Dotenv\Dotenv(__DIR__.'/..');
 $dotenv->load();
 
 $githubHookProcessor = new GithubHookProcessor(getenv('GITHUB_OAUTH_TOKEN') ? getenv('GITHUB_OAUTH_TOKEN') : null);
+$devKitToken = getenv('DEK_KIT_TOKEN');
 
 $app = new Silex\Application();
 
@@ -27,9 +28,13 @@ $app->get('/', function () {
     return new Response("Sonata DevKit\n");
 });
 
-$app->post('/github', function (Request $request) use ($githubHookProcessor) {
+$app->post('/github', function (Request $request) use ($app, $githubHookProcessor, $devKitToken) {
     $eventName = $request->headers->get('X-GitHub-Event');
     $payload = json_decode($request->getContent(), true);
+
+    if (!$devKitToken || $request->query->get('token') !== $devKitToken) {
+        return $app->json(array('message' => 'Invalid credentials'), 403);
+    }
 
     switch ($eventName) {
         case 'ping':
