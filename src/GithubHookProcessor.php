@@ -51,14 +51,11 @@ final class GithubHookProcessor
         $commentAuthorId = $payload['comment']['user']['id'];
 
         if ($commentAuthorId === $issueAuthorId) {
-            $hasLabel = in_array(
-                'pending author',
-                $this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId),
-                true
-            );
-
-            if ($hasLabel) {
-                $this->githubClient->issues()->labels()->remove($repoUser, $repoName, $issueId, 'pending author');
+            foreach ($this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId) as $label) {
+                if ('pending author' === $label['name']) {
+                    $this->githubClient->issues()->labels()->remove($repoUser, $repoName, $issueId, 'pending author');
+                    break;
+                }
             }
         }
     }
