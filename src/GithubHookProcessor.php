@@ -46,7 +46,7 @@ final class GithubHookProcessor
         $issueKey = 'issue_comment' === $eventName ? 'issue' : 'pull_request';
 
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
-        $issueId = $payload[$issueKey]['id'];
+        $issueId = $payload[$issueKey]['number'];
         $issueAuthorId = $payload[$issueKey]['user']['id'];
         $commentAuthorId = $payload['comment']['user']['id'];
 
