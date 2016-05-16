@@ -48,7 +48,7 @@ $app->post('/github', function (Request $request) use ($app, $githubHookProcesso
 
             return new Response();
         default:
-            return new JsonResponse(array('message' => 'Not Implemented: '.$eventName), 501);
+            return new JsonResponse(array('message' => 'Nothing to do for: '.$eventName), 200);
     }
 });
 
