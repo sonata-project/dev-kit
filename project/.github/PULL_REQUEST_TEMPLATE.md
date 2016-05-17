@@ -32,7 +32,7 @@ Closes #
 
 ### Subject
 
-<!-- Describe here your Pull Request content -->
+<!-- Describe your Pull Request content here -->
 
 ### To do
 
