@@ -17,7 +17,7 @@ Closes #
 
 ```markdown
 ### Added
-- Added some stuff
+- Added some `Class::newMethod` to do great stuff
 
 ### Changed
 
