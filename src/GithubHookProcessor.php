@@ -55,11 +55,67 @@ final class GithubHookProcessor
         $commentAuthorId = $payload['comment']['user']['id'];
 
         if ($commentAuthorId === $issueAuthorId) {
-            foreach ($this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId) as $label) {
-                if ('pending author' === $label['name']) {
-                    $this->githubClient->issues()->labels()->remove($repoUser, $repoName, $issueId, 'pending author');
-                    break;
-                }
+            $this->removeIssueLabel($repoUser, $repoName, $issueId, 'pending author');
+        }
+    }
+
+    /**
+     * Manages RTM and 'review required' labels.
+     *
+     * - If a PR is opened or updated, 'review required' is set.
+     * - If a PR is updated and 'RTM' is set, it is removed.
+     *
+     * @param string $eventName
+     * @param array  $payload
+     */
+    public function processReviewLabels($eventName, array $payload)
+    {
+        if (!in_array($payload['action'], array('opened', 'synchronize'), true)) {
+            return;
+        }
+
+        list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
+        // Add the label for opened and synchronized PRs.
+        $this->addIssueLabel($repoUser, $repoName, $payload['number'], 'review required');
+
+        if ('synchronize' === $payload['action']) {
+            $this->removeIssueLabel($repoUser, $repoName, $payload['number'], 'RTM');
+        }
+    }
+
+    /**
+     * Adds a label from an issue if this one is not set.
+     *
+     * @param string $repoUser
+     * @param string $repoName
+     * @param int    $issueId
+     * @param string $label
+     */
+    private function addIssueLabel($repoUser, $repoName, $issueId, $label)
+    {
+        foreach ($this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
+            if ($label === $labelInfo['name']) {
+                return;
+            }
+        }
+
+        $this->githubClient->issues()->labels()->add($repoUser, $repoName, $issueId, $label);
+    }
+
+    /**
+     * Removes a label from an issue if this one is set.
+     *
+     * @param string $repoUser
+     * @param string $repoName
+     * @param int    $issueId
+     * @param string $label
+     */
+    private function removeIssueLabel($repoUser, $repoName, $issueId, $label)
+    {
+        foreach ($this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
+            if ($label === $labelInfo['name']) {
+                $this->githubClient->issues()->labels()->remove($repoUser, $repoName, $issueId, $label);
+                break;
             }
         }
     }
