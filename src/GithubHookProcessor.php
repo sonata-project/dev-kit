@@ -43,7 +43,7 @@ final class GithubHookProcessor
      */
     public function processPendingAuthor($eventName, array $payload)
     {
-        if ('created' !== $payload['action']) {
+        if (!in_array($payload['action'], array('created', 'synchronize'), true)) {
             return;
         }
 
@@ -52,7 +52,8 @@ final class GithubHookProcessor
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
         $issueId = $payload[$issueKey]['number'];
         $issueAuthorId = $payload[$issueKey]['user']['id'];
-        $commentAuthorId = $payload['comment']['user']['id'];
+        // If it's a PR synchronization, it's obviously done from the author.
+        $commentAuthorId = 'synchronize' === $payload['action'] ? $issueAuthorId : $payload['comment']['user']['id'];
 
         if ($commentAuthorId === $issueAuthorId) {
             $this->removeIssueLabel($repoUser, $repoName, $issueId, 'pending author');
