@@ -45,6 +45,7 @@ $app->post('/github', function (Request $request) use ($app, $githubHookProcesso
             return new Response();
         case 'pull_request':
             $githubHookProcessor->processReviewLabels($eventName, $payload);
+            $githubHookProcessor->processPendingAuthor($eventName, $payload);
 
             return new Response();
         case 'pull_request_review_comment':
