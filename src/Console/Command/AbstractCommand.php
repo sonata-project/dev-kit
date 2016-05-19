@@ -58,6 +58,11 @@ abstract class AbstractCommand extends Command
     protected $githubClient = false;
 
     /**
+     * @var \Github\ResultPager
+     */
+    protected $githubPaginator;
+
+    /**
      * {@inheritdoc}
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -80,6 +85,7 @@ abstract class AbstractCommand extends Command
         $this->packagistClient = new \Packagist\Api\Client();
 
         $this->githubClient = new GithubClient();
+        $this->githubPaginator = new \Github\ResultPager($this->githubClient);
         if ($this->githubAuthKey) {
             $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
         }
