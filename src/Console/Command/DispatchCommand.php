@@ -16,21 +16,15 @@ use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class DispatchCommand extends AbstractCommand
+final class DispatchCommand extends AbstractNeedApplyCommand
 {
     const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
-
-    /**
-     * @var bool
-     */
-    private $apply;
 
     /**
      * @var GitWrapper
@@ -52,17 +46,17 @@ final class DispatchCommand extends AbstractCommand
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('dispatch')
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
-            ->addOption('apply', null, InputOption::VALUE_NONE, 'Applies differences across repositories')
         ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
-        $this->apply = $input->getOption('apply');
 
         $this->gitWrapper = new GitWrapper();
         $this->fileSystem = new Filesystem();
@@ -74,10 +68,6 @@ final class DispatchCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->apply) {
-            $this->io->warning('This is a dry run execution. No change will be applied here.');
-        }
-
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
@@ -90,20 +80,6 @@ final class DispatchCommand extends AbstractCommand
         }
 
         return 0;
-    }
-
-    /**
-     * Returns repository name without vendor prefix.
-     *
-     * @param Package $package
-     *
-     * @return string
-     */
-    private function getRepositoryName(Package $package)
-    {
-        $repositoryArray = explode('/', $package->getRepository());
-
-        return str_replace('.git', '', end($repositoryArray));
     }
 
     /**

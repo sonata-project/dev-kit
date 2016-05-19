@@ -13,6 +13,7 @@ namespace Sonata\DevKit\Console;
 
 use Sonata\DevKit\Console\Command\DependsCommand;
 use Sonata\DevKit\Console\Command\DispatchCommand;
+use Sonata\DevKit\Console\Command\MergeConflictsCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 
 /**
@@ -29,5 +30,6 @@ class Application extends BaseApplication
 
         $this->add(new DispatchCommand());
         $this->add(new DependsCommand());
+        $this->add(new MergeConflictsCommand());
     }
 }
