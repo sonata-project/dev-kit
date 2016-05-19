@@ -9,15 +9,12 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../autoload.php';
 
 use Sonata\DevKit\GithubHookProcessor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-$dotenv = new Dotenv\Dotenv(__DIR__.'/..');
-$dotenv->load();
 
 $githubHookProcessor = new GithubHookProcessor(getenv('GITHUB_OAUTH_TOKEN') ? getenv('GITHUB_OAUTH_TOKEN') : null);
 $devKitToken = getenv('DEK_KIT_TOKEN');
