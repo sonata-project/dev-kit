@@ -14,7 +14,7 @@
         "knplabs/github-api": "^1.6",
         "knplabs/packagist-api": "^1.3",
         "sebastian/diff": "^1.4",
-        "silex/silex": "^1.3",
+        "silex/silex": "^2.0",
         "sllh/php-cs-fixer-styleci-bridge": "^2.0",
         "symfony/config": "^3.0",
         "symfony/console": "^3.0",
