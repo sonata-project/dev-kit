@@ -26,7 +26,7 @@ final class GithubHookProcessor
      */
     public function __construct($githubAuthKey = null)
     {
-        $this->githubClient = new \Github\Client();
+        $this->githubClient = new GithubClient();
 
         if ($githubAuthKey) {
             $this->githubClient->authenticate($githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
@@ -56,7 +56,7 @@ final class GithubHookProcessor
         $commentAuthorId = 'synchronize' === $payload['action'] ? $issueAuthorId : $payload['comment']['user']['id'];
 
         if ($commentAuthorId === $issueAuthorId) {
-            $this->removeIssueLabel($repoUser, $repoName, $issueId, 'pending author');
+            $this->githubClient->removeIssueLabel($repoUser, $repoName, $issueId, 'pending author');
         }
     }
 
@@ -77,47 +77,10 @@ final class GithubHookProcessor
 
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
         // Add the label for opened and synchronized PRs.
-        $this->addIssueLabel($repoUser, $repoName, $payload['number'], 'review required');
+        $this->githubClient->addIssueLabel($repoUser, $repoName, $payload['number'], 'review required');
 
         if ('synchronize' === $payload['action']) {
-            $this->removeIssueLabel($repoUser, $repoName, $payload['number'], 'RTM');
-        }
-    }
-
-    /**
-     * Adds a label from an issue if this one is not set.
-     *
-     * @param string $repoUser
-     * @param string $repoName
-     * @param int    $issueId
-     * @param string $label
-     */
-    private function addIssueLabel($repoUser, $repoName, $issueId, $label)
-    {
-        foreach ($this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
-            if ($label === $labelInfo['name']) {
-                return;
-            }
-        }
-
-        $this->githubClient->issues()->labels()->add($repoUser, $repoName, $issueId, $label);
-    }
-
-    /**
-     * Removes a label from an issue if this one is set.
-     *
-     * @param string $repoUser
-     * @param string $repoName
-     * @param int    $issueId
-     * @param string $label
-     */
-    private function removeIssueLabel($repoUser, $repoName, $issueId, $label)
-    {
-        foreach ($this->githubClient->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
-            if ($label === $labelInfo['name']) {
-                $this->githubClient->issues()->labels()->remove($repoUser, $repoName, $issueId, $label);
-                break;
-            }
+            $this->githubClient->removeIssueLabel($repoUser, $repoName, $payload['number'], 'RTM');
         }
     }
 }

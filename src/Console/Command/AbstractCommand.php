@@ -11,8 +11,10 @@
 
 namespace Sonata\DevKit\Console\Command;
 
+use Packagist\Api\Result\Package;
 use Sonata\DevKit\Config\DevKitConfiguration;
 use Sonata\DevKit\Config\ProjectsConfiguration;
+use Sonata\DevKit\GithubClient;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,7 +53,7 @@ abstract class AbstractCommand extends Command
     protected $packagistClient;
 
     /**
-     * @var \Github\Client
+     * @var GithubClient
      */
     protected $githubClient = false;
 
@@ -77,9 +79,23 @@ abstract class AbstractCommand extends Command
 
         $this->packagistClient = new \Packagist\Api\Client();
 
-        $this->githubClient = new \Github\Client();
+        $this->githubClient = new GithubClient();
         if ($this->githubAuthKey) {
             $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
         }
+    }
+
+    /**
+     * Returns repository name without vendor prefix.
+     *
+     * @param Package $package
+     *
+     * @return string
+     */
+    final protected function getRepositoryName(Package $package)
+    {
+        $repositoryArray = explode('/', $package->getRepository());
+
+        return str_replace('.git', '', end($repositoryArray));
     }
 }
