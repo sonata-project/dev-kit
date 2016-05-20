@@ -314,5 +314,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 str_replace(array(static::PACKAGIST_GROUP.'/', '-bundle'), '', $package->getName()),
             ), $localContent));
         }
+        // Restore file permissions after content copy
+        $this->fileSystem->chmod($distPath, fileperms($localPath));
     }
 }
