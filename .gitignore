@@ -2,3 +2,6 @@
 /vendor
 /.php_cs.cache
 /.env
+/.bundle
+/Gemfile.lock
+/log
