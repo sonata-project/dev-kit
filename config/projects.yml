@@ -95,7 +95,20 @@ exporter:
         symfony: ['2.3', '2.7', '2.8', '3.0']
       docs_path: docs
 
-formatter-bundle: ~
+formatter-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0']
+        sonata_core: ['3']
+        sonata_block: ['3']
+    3.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0']
+        sonata_core: ['3']
+        sonata_block: ['3']
 
 google-authenticator: ~
 
