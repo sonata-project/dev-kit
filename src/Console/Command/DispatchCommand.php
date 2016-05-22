@@ -287,7 +287,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $localPathInfo = pathinfo($localPath);
         if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = dirname($distPath).'/'.basename($distPath, '.twig');
-            file_put_contents($distPath, $this->twig->render($localPath, array_merge($this->configs, $branchConfig)));
+            file_put_contents($distPath, $this->twig->render($localPath, array_merge(
+                $this->configs,
+                $projectConfig,
+                $branchConfig
+            )));
         } else {
             reset($projectConfig['branches']);
             $unstableBranch = key($projectConfig['branches']);

@@ -49,6 +49,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue(array())->end()->end()
+                            ->booleanNode('docs_target')->defaultTrue()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
                                 ->defaultValue(array())
