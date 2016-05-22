@@ -40,3 +40,4 @@ packages:
   sonata_core: sonata-project/core-bundle
   sonata_admin: sonata-project/admin-bundle
   sonata_block: sonata-project/block-bundle
+  ruflin_elastica: ruflin/elastica
