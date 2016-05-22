@@ -22,7 +22,13 @@ $devKitToken = getenv('DEK_KIT_TOKEN');
 $app = new Silex\Application();
 
 $app->get('/', function () {
-    return new Response("Sonata DevKit\n");
+    $body = "Sonata DevKit\n";
+
+    if (file_exists(__DIR__.'/../REVISION')) {
+        $body .= file_get_contents(__DIR__.'/../REVISION');
+    }
+
+    return new Response($body);
 });
 
 $app->post('/github', function (Request $request) use ($app, $githubHookProcessor, $devKitToken) {
