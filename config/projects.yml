@@ -41,9 +41,26 @@ block-bundle:
         # This has to be resolved: https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/130298942#L230
         #sonata_admin: ['3']
 
-cache: ~
+cache:
+  excluded_files:
+    - README.md
+  docs_target: false
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+    1.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
 
-cache-bundle: ~
+cache-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0']
+    2.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0']
 
 classification-bundle: ~
 
