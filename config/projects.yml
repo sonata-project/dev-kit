@@ -22,7 +22,7 @@ admin-search-bundle:
       versions:
         symfony: ['2.3', '2.7', '2.8']
         sonata_admin: ['3']
-        ruflin_elastica: ['2', '3']
+        ruflin_elastica: ['2']
 
 block-bundle:
   branches:
