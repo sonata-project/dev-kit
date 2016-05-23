@@ -204,8 +204,6 @@ seo-bundle:
         sonata_block: ['3']
         sonata_admin: ['3']
 
-sonata-composer: ~
-
 timeline-bundle: ~
 
 translation-bundle: ~
