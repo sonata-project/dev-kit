@@ -11,6 +11,7 @@
 
 namespace Sonata\DevKit\Console;
 
+use Sonata\DevKit\Console\Command\AutoMergeCommand;
 use Sonata\DevKit\Console\Command\DependsCommand;
 use Sonata\DevKit\Console\Command\DispatchCommand;
 use Sonata\DevKit\Console\Command\MergeConflictsCommand;
@@ -31,5 +32,6 @@ class Application extends BaseApplication
         $this->add(new DispatchCommand());
         $this->add(new DependsCommand());
         $this->add(new MergeConflictsCommand());
+        $this->add(new AutoMergeCommand());
     }
 }
