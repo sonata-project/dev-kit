@@ -1,5 +1,7 @@
 # CREDITS
 
+The Sonata Project would like to say thank you to the following projects!
+
 ## Django Project (http://www.djangoproject.com/)
 
 *The Admin class architecture is inspired by the Django Admin.
