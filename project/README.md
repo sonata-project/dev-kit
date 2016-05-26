@@ -10,7 +10,9 @@
 [![Monthly Downloads](https://poser.pugx.org/{{ packagist_name }}/d/monthly)](https://packagist.org/packages/{{ packagist_name }})
 [![Daily Downloads](https://poser.pugx.org/{{ packagist_name }}/d/daily)](https://packagist.org/packages/{{ packagist_name }})
 
-[![Build Status](https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ current_branch }})](https://travis-ci.org/sonata-project/{{ repository_name }})
+{{ stable_branch }} status: [![Build Status](https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ stable_branch }})](https://travis-ci.org/sonata-project/{{ repository_name }})
+
+{{ unstable_branch }} status: [![Build Status](https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ unstable_branch }})](https://travis-ci.org/sonata-project/{{ repository_name }})
 
 ## Documentation
 
