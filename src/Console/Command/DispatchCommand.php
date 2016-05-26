@@ -15,6 +15,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -42,6 +43,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private $twig;
 
     /**
+     * @var string[]
+     */
+    private $projects;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -51,6 +57,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this
             ->setName('dispatch')
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', array())
         ;
     }
 
@@ -61,6 +68,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this->gitWrapper = new GitWrapper();
         $this->fileSystem = new Filesystem();
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../../..'));
+
+        $this->projects = count($input->getArgument('projects'))
+            ? $input->getArgument('projects')
+            : array_keys($this->configs['projects'])
+        ;
     }
 
     /**
@@ -68,7 +80,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->configs['projects'] as $name => $projectConfig) {
+        $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
+        if (count($notConfiguredProjects)) {
+            $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
+
+            return 1;
+        }
+
+        foreach ($this->projects as $name) {
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
