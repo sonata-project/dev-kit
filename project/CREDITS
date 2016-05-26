@@ -4,9 +4,14 @@
   You can find more information about the django admin definition
   here : http://www.djangobook.com/en/1.0/chapter06/
 
-* Font-Awesome (http://fontawesome.io/icons/)
+* Font Awesome (http://fontawesome.io/icons/)
+
+  Font Awesome gives you scalable vector icons that can instantly
+  be customized — size, color, drop shadow, and anything that can
+  be done with the power of CSS.
 
   Font Awesome by Dave Gandy
+
   License http://fontawesome.io/license/
 
 * jQuery (http://jquery.com/)
