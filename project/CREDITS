@@ -16,4 +16,20 @@
 
 * jQuery (http://jquery.com/)
 
-  The javascript library used to integrate Ajax and GUI interactions.
+  jQuery is a fast, small, and feature-rich JavaScript library. It makes
+  things like HTML document traversal and manipulation, event handling,
+  animation, and Ajax much simpler with an easy-to-use API that works across
+  a multitude of browsers. With a combination of versatility and extensibility,
+  jQuery has changed the way that millions of people write JavaScript.
+
+  License https://github.com/jquery/jquery/blob/master/LICENSE.txt
+
+* AdminLTE (https://almsaeedstudio.com/)
+
+  Best open source admin dashboard & control panel theme. Built on top
+  of Bootstrap 3, AdminLTE provides a range of responsive, reusable, and
+  commonly used components.
+
+  AdminLTE by Abdullah Almsaeed
+
+  License https://github.com/almasaeed2010/AdminLTE/blob/master/LICENSE
