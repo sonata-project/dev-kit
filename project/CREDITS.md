@@ -1,6 +1,6 @@
 # CREDITS
 
-The Sonata Project would like to say thank you to the following projects!
+**The Sonata Project would like to say thank you to the following projects!**
 
 ## Django Project (http://www.djangoproject.com/)
 
@@ -28,6 +28,10 @@ jQuery has changed the way that millions of people write JavaScript.*
 
 **License** https://github.com/jquery/jquery/blob/master/LICENSE.txt
 
+### Sonata Usecase
+
+The javascript library used to integrate Ajax and GUI interactions.
+
 ## AdminLTE (https://almsaeedstudio.com/)
 
 *Best open source admin dashboard & control panel theme. Built on top
@@ -37,3 +41,7 @@ commonly used components.*
 AdminLTE by Abdullah Almsaeed
 
 **License** https://github.com/almasaeed2010/AdminLTE/blob/master/LICENSE
+
+### Sonata Usecase
+
+For all components of the user interface.
