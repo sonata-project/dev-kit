@@ -56,6 +56,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                 ->prototype('array')
                                     ->children()
                                         ->arrayNode('php')->prototype('scalar')->defaultValue(array())->end()->end()
+                                        ->scalarNode('target_php')->defaultNull()->end()
                                         ->append($this->addVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
                                     ->end()
