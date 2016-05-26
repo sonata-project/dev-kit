@@ -17,4 +17,4 @@ install:
 
 script:
   - touch .env
-  - if [[ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./dev-kit dispatch --apply; else ./dev-kit dispatch; fi;
+  - ./dev-kit dispatch
