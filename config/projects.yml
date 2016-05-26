@@ -188,7 +188,24 @@ intl-bundle:
         symfony: ['2.3', '2.7', '2.8', '3.0']
         sonata_user: ['2', '3']
 
-media-bundle: ~
+media-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      target_php: 5.6
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0']
+        doctrine_odm: ['1']
+        sonata_core: ['3']
+        sonata_admin: ['3']
+    3.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+      target_php: 5.6
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0']
+        doctrine_odm: ['1']
+        sonata_core: ['3']
+        sonata_admin: ['3']
 
 news-bundle: ~
 

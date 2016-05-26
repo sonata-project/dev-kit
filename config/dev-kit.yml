@@ -42,3 +42,4 @@ packages:
   sonata_block: sonata-project/block-bundle
   sonata_user: sonata-project/user-bundle
   ruflin_elastica: ruflin/elastica
+  doctrine_odm: doctrine/mongodb-odm
