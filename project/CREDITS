@@ -1,0 +1,14 @@
+* Django Project (http://www.djangoproject.com/)
+
+  The Admin class architecture is inspired by the Django Admin.
+  You can find more information about the django admin definition
+  here : http://www.djangobook.com/en/1.0/chapter06/
+
+* Font-Awesome (http://fontawesome.io/icons/)
+
+  Font Awesome by Dave Gandy
+  License http://fontawesome.io/license/
+
+* jQuery (http://jquery.com/)
+
+  The javascript library used to integrate Ajax and GUI interactions.
