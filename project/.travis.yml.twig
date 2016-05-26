@@ -34,11 +34,11 @@ matrix:
       env: COMPOSER_FLAGS="--prefer-lowest"
 {% for package_name,package_versions in versions %}
 {% for version in package_versions %}
-    - php: '{{ php|last }}'
+    - php: '{{ target_php|default(php|last) }}'
       env: {{ package_name|upper }}={{ version }}.*
 {% endfor %}
 {% if package_versions|length > 0 %}
-    - php: '{{ php|last }}'
+    - php: '{{ target_php|default(php|last) }}'
       env: {{ package_name|upper }}=dev-master@dev
 {% endif %}
 {% endfor %}
