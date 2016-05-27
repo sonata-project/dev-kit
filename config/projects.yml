@@ -184,7 +184,15 @@ formatter-bundle:
         sonata_core: ['3']
         sonata_block: ['3']
 
-google-authenticator: ~
+google-authenticator:
+  excluded_files:
+    - README.md
+  docs_target: false
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
+    1.x:
+      php: ['5.3', '5.4', '5.5', '5.6', '7.0']
 
 intl-bundle:
   branches:
