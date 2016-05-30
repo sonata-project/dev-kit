@@ -125,7 +125,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $squash ? '' : $pull['title'],
                         $pull['head']['sha'],
                         $squash,
-                        $squash ? $commitMessages[0] : null
+                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pull['number']) : null
                     );
 
                     if ('sonata-project' === $pull['head']['repo']['owner']['login']) {
