@@ -207,26 +207,50 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ->config('user.email', static::GITHUB_EMAIL)
         ;
 
-        foreach ($projectConfig['branches'] as $branch => $branchConfig) {
-            $this->io->section('Files for '.$branch);
+        $branches = array_reverse($projectConfig['branches']);
+
+        $previousBranch = null;
+        $previousDevKit = null;
+        while (($branchConfig = current($branches))) {
+            // We have to fetch all branches on each step in case a PR is submitted.
+            $remoteBranches = array_map(function ($branch) {
+                return $branch['name'];
+            }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repositoryName));
+
+            $currentBranch = key($branches);
+            $currentDevKit = $currentBranch.'-dev-kit';
+            next($branches);
+
+            // A PR is already here for previous branch, do nothing on the current one.
+            if (in_array($previousDevKit, $remoteBranches, true)) {
+                continue;
+            }
+            // If the previous branch is not merged into the current one, do nothing.
+            if ($previousBranch && $this->githubClient->repos()->commits()->compare(
+                    static::GITHUB_GROUP, $repositoryName, $currentBranch, $previousBranch
+                )['ahead_by']) {
+                continue;
+            }
+
+            // Diff application
+            $this->io->section('Files for '.$currentBranch);
 
             $git->reset(array('hard' => true));
 
             // Checkout the targeted branch
-            if (in_array($branch, $git->getBranches()->all(), true)) {
-                $git->checkout($branch);
+            if (in_array($currentBranch, $git->getBranches()->all(), true)) {
+                $git->checkout($currentBranch);
             } else {
-                $git->checkout('-b', $branch, '--track', 'origin/'.$branch);
+                $git->checkout('-b', $currentBranch, '--track', 'origin/'.$currentBranch);
             }
             // Checkout the dev-kit branch
-            $devKitBranch = $branch.'-dev-kit';
-            if (in_array('remotes/origin/'.$devKitBranch, $git->getBranches()->all(), true)) {
-                $git->checkout('-b', $devKitBranch, '--track', 'origin/'.$devKitBranch);
+            if (in_array('remotes/origin/'.$currentDevKit, $git->getBranches()->all(), true)) {
+                $git->checkout('-b', $currentDevKit, '--track', 'origin/'.$currentDevKit);
             } else {
-                $git->checkout('-b', $devKitBranch);
+                $git->checkout('-b', $currentDevKit);
             }
 
-            $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $branch);
+            $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $currentBranch);
 
             $git->add('.', array('all' => true))->getOutput();
             $diff = $git->diff('--color', '--cached')->getOutput();
@@ -234,18 +258,18 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (!empty($diff)) {
                 $this->io->writeln($diff);
                 if ($this->apply) {
-                    $git->commit('DevKit updates')->push('-u', 'origin', $devKitBranch);
+                    $git->commit('DevKit updates')->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
                     $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, array(
                         'state' => 'open',
-                        'head' => 'sonata-project:'.$devKitBranch,
+                        'head' => 'sonata-project:'.$currentDevKit,
                     ));
                     if (0 === count($pulls)) {
                         $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, array(
-                            'title' => 'DevKit updates for '.$branch.' branch',
-                            'head' => 'sonata-project:'.$devKitBranch,
-                            'base' => $branch,
+                            'title' => 'DevKit updates for '.$currentBranch.' branch',
+                            'head' => 'sonata-project:'.$currentDevKit,
+                            'base' => $currentBranch,
                             'body' => '',
                         ));
                     }
@@ -253,6 +277,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             } else {
                 $this->io->comment(static::LABEL_NOTHING_CHANGED);
             }
+
+            // Save the current branch to the previous and go to next step
+            $previousBranch = $currentBranch;
+            $previousDevKit = $currentDevKit;
         }
     }
 
