@@ -11,6 +11,7 @@
 
 namespace Sonata\DevKit\Console\Command;
 
+use Github\HttpClient\HttpClient;
 use Packagist\Api\Result\Package;
 use Sonata\DevKit\Config\DevKitConfiguration;
 use Sonata\DevKit\Config\ProjectsConfiguration;
@@ -84,7 +85,10 @@ abstract class AbstractCommand extends Command
 
         $this->packagistClient = new \Packagist\Api\Client();
 
-        $this->githubClient = new GithubClient();
+        $this->githubClient = new GithubClient(new HttpClient(array(
+            // This version is needed for squash. https://developer.github.com/v3/pulls/#input-2
+            'api_version' => 'polaris-preview',
+        )));
         $this->githubPaginator = new \Github\ResultPager($this->githubClient);
         if ($this->githubAuthKey) {
             $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
