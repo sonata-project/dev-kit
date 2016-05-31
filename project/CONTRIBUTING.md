@@ -1,6 +1,6 @@
 # Sonata project contribution
 
-Thanks for your interest onto Sonata projects!
+Thanks for your interest in Sonata projects!
 
 ## Summary
 
