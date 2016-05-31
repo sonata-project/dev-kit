@@ -157,7 +157,7 @@ interface BarInterface
 ```
 
 Be aware that pull requests with BC breaks could be rejected
-or reported for next major release if BC is not possible.
+or postponed to next major release if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
 
