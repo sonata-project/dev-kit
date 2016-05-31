@@ -273,6 +273,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                             'body' => '',
                         ));
                     }
+
+                    // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
+                    usleep(200000);
                 }
             } else {
                 $this->io->comment(static::LABEL_NOTHING_CHANGED);
