@@ -1,6 +1,6 @@
 # Sonata project contribution
 
-Thanks for you interest onto Sonata projects!
+Thanks for your interest onto Sonata projects!
 
 ## Summary
 
@@ -72,10 +72,10 @@ Ideally, a Pull Request should concern one and **only one** subject, so that it
 remains clear, and independent changes can be merged quickly.
 
 If you want to fix a typo and improve the performance of a process, you should
-try as much as possible to it in a **separate** PR, so that we can quickly
+try as much as possible to do it in a **separate** PR, so that we can quickly
 merge one while discussing the other.
 
-The goal is to have a clear commit history and make possible revert easier.
+The goal is to have a clear commit history and make a possible revert easier.
 
 If you found an issue/typo while writing your change that is not related to
 your work, please do another PR for that. In some rare cases, you might be
