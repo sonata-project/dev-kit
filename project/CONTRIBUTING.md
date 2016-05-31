@@ -25,7 +25,7 @@ Github by following these points are taken care of:
 * Check if the bug is not already reported!
 * The title sums up the issue with clarity.
 * A description of the workflow needed to reproduce the bug. Please try to make
-  sentences, dumping an error message by itself is not great.
+  sentences, dumping an error message by itself is frowned upon.
 * If your issue is an error page, you must provide us with a stack trace.  With
   recent versions of Symfony, you can even get stack traces as plain text at the
 end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
@@ -159,7 +159,7 @@ interface BarInterface
 Be aware that pull requests with BC breaks could be not accepted
 or reported for next major release if BC is not possible.
 
-If you are not sure of what to do, don't hesitate to open an issue about your PR project.
+If you are not sure what should be done, don't hesitate to open an issue about your PR project.
 
 #### The commit message
 
