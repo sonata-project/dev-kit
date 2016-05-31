@@ -23,7 +23,7 @@ Then, if it appears that it is indeed a real bug, you may report it using
 Github by following these points are taken care of:
 
 * Check if the bug is not already reported!
-* A clear title to sum up the issue
+* The title sums up the issue with clarity.
 * A description of the workflow needed to reproduce the bug. Please try to make
   sentence, dumping an error message by itself is not great.
 * If your issue is an error page, you must provide us with a stack trace.  With
