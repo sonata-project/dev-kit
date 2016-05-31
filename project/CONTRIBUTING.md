@@ -25,7 +25,7 @@ Github by following these points are taken care of:
 * Check if the bug is not already reported!
 * The title sums up the issue with clarity.
 * A description of the workflow needed to reproduce the bug. Please try to make
-  sentence, dumping an error message by itself is not great.
+  sentences, dumping an error message by itself is not great.
 * If your issue is an error page, you must provide us with a stack trace.  With
   recent versions of Symfony, you can even get stack traces as plain text at the
 end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
@@ -42,7 +42,7 @@ When you feel the code is to long, use external code pastebin like
 https://gist.github.com/ or http://hastebin.com/ . If this is not sufficient,
 just create a repository to show the issue.
 
-> _NOTE:_ Don't hesitate giving as much information as you can (OS, PHP
+> _NOTE:_ Don't hesitate to give as much information as you can (OS, PHP
 > version, extensions...)
 
 ## Pull Requests
@@ -125,9 +125,9 @@ Notes:
   * Branch `{{ stable_branch }}` is the branch of the **latest stable** minor release and
   has to be used for Backward compatible PRs.
   * If you PR is not **Backward Compatible** but can be, it **must** be:
-    * Changing a function/method signature? Prefer create a new one and deprecated the old one.
+    * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
-    * If your BC PR is accepted, you can do a new one on the `{{ unstable_branch }}` branch which remove the deprecated code.
+    * If your BC PR is accepted, you can do a new one on the `{{ unstable_branch }}` branch which removes the deprecated code.
     * SYMFONY DOC REF (same logic)?
 
 If you have a non-BC PR to propose, please try to create a related BC PR first.
