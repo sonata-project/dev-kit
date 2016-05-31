@@ -195,7 +195,7 @@ Document how to install the project
 
 Also, when you specify what you did avoid commit message subjects with "Fix bug
 in such and such feature". Saying you are fixing something implies the previous
-implementation was wrong and yours is right, which might not be even true.
+implementation was wrong and yours is right, which might not even be true.
 Instead, state unquestionable technical facts about your changes, not opinions.
 Then, in the commit description, explain why you did that and how it fixes
 something.
