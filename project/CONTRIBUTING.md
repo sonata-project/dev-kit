@@ -15,7 +15,7 @@ you using the latest patch version?
 
 If you are not sure this is a bug, consider posting your question on [Stack
 Overflow](http://stackoverflow.com), using one of the sonata tags.
-If you happen to find a bug, we kindly request you to report it. However,
+If you happen to find a bug, we kindly request you report it. However,
 before submitting it, please check the [project documentation available
 online](https://sonata-project.org/bundles/).
 
