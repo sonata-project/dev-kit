@@ -26,7 +26,7 @@ Github by following these points are taken care of:
 * The title sums up the issue with clarity.
 * A description of the workflow needed to reproduce the bug. Please try to make
   sentences, dumping an error message by itself is frowned upon.
-* If your issue is an error page, you must provide us with a stack trace.  With
+* If your issue is an error page, you must provide us with a stack trace. With
   recent versions of Symfony, you can even get stack traces as plain text at the
 end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
 you see. **Do not** make a screenshot of the stack trace, as screenshots are
