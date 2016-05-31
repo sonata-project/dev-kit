@@ -340,7 +340,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $this->configs,
                 $projectConfig,
-                $branchConfig
+                $branchConfig,
+                array('repository_name' => $repositoryName)
             )));
         } else {
             reset($projectConfig['branches']);
