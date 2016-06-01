@@ -186,6 +186,25 @@ interface BarInterface
 }
 ```
 
+In some cases, you will have the possibility to warn the user that things will change,
+and recommend a new way of doing things. You can do so by triggering the dedicated kind of error, like this:
+
+```php
+<?php
+if (/* some condition showing the user is using the legacy way */) {
+    @trigger_error(
+        'The '.__METHOD__.' method is deprecated since 42.x, to be removed in 43.0. '.
+        'Use FooClass::barMethod() instead.',
+        E_USER_DEPRECATED
+    );
+} else {
+    // new way of doing things
+}
+```
+
+In that case, unit tests might show your deprecation notice. You must mark such tests with the `@group legacy` annotation,
+and if need be, isolate them in a new test method that can simply be removed in the non-BC PR.
+
 Be aware that pull requests with BC breaks could be rejected
 or postponed to next major release if BC is not possible.
 
