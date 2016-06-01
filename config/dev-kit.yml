@@ -5,6 +5,8 @@ labels:
     color: '009800'
   - name: major
     color: 'e11d21'
+  - name: pedantic
+    color: 'd1e4fa'
   - name: bug
     color: 'fc2929'
   - name: critical
