@@ -86,7 +86,7 @@ Some rules have to be respected about the test:
   * `@coversNothing`
   * `@codeCoverageIgnore`
   * `@codeCoverageIgnoreStart`
-  * `codeCoverageIgnoreEnd`
+  * `@codeCoverageIgnoreEnd`
 * All test methods should be prefixed by `test`. Example: `public function testItReturnsNull()`.
 * As opposed, the `@test` annotation is prohibited.
 * Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
