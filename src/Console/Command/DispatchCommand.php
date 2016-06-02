@@ -91,6 +91,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
+                $this->updateDevKitHook($package);
                 $this->updateLabels($package);
                 $this->dispatchFiles($package);
             } catch (ExceptionInterface $e) {
@@ -177,6 +178,71 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if ($this->apply) {
                 $this->io->success('Labels successfully updated.');
             }
+        }
+    }
+
+    private function updateDevKitHook(Package $package)
+    {
+        $repositoryName = $this->getRepositoryName($package);
+        $this->io->section('DevKit hook');
+
+        // Construct the hook url.
+        $hookToken = getenv('DEK_KIT_TOKEN') ? getenv('DEK_KIT_TOKEN') : 'INVALID_TOKEN';
+        $hookBaseUrl = 'http://sonata-dev-kit.sullivansenechal.com/github';
+        $hookCompleteUrl = $hookBaseUrl.'?'.http_build_query(array('token' => $hookToken));
+
+        // Set hook configs
+        $config = array(
+            'url' => $hookCompleteUrl,
+            'insecure_ssl' => '0',
+            'content_type' => 'json',
+        );
+        $events = array(
+            'issue_comment',
+            'pull_request',
+            'pull_request_review_comment',
+        );
+
+        // First, check if the hook exists.
+        $devKitHook = null;
+        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName) as $hook) {
+            if (array_key_exists('url', $hook['config'])
+                && 0 === strncmp($hook['config']['url'], $hookBaseUrl, strlen($hookBaseUrl))) {
+                $devKitHook = $hook;
+                break;
+            }
+        }
+
+        if (!$devKitHook) {
+            $this->io->comment('Has to be created.');
+
+            if ($this->apply) {
+                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, array(
+                    'name' => 'web',
+                    'config' => $config,
+                    'events' => $events,
+                    'active' => true,
+                ));
+                $this->io->success('Hook created.');
+            }
+        } elseif (count(array_diff_assoc($devKitHook['config'], $config))
+            || count(array_diff($devKitHook['events'], $events))
+            || !$devKitHook['active']
+        ) {
+            $this->io->comment('Has to be updated.');
+
+            if ($this->apply) {
+                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], array(
+                    'name' => 'web',
+                    'config' => $config,
+                    'events' => $events,
+                    'active' => true,
+                ));
+                $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repositoryName, $devKitHook['id']);
+                $this->io->success('Hook updated.');
+            }
+        } else {
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
     }
 
