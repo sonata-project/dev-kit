@@ -17,6 +17,7 @@ use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -58,6 +59,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ->setName('dispatch')
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
             ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', array())
+            ->addOption('with-files', null, InputOption::VALUE_NONE, 'Applies Pull Request actions for projects files')
         ;
     }
 
@@ -93,7 +95,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $this->io->title($package->getName());
                 $this->updateDevKitHook($package);
                 $this->updateLabels($package);
-                $this->dispatchFiles($package);
+
+                if ($input->getOption('with-files')) {
+                    $this->dispatchFiles($package);
+                }
             } catch (ExceptionInterface $e) {
                 $this->io->error('Failed with message: '.$e->getMessage());
             }
