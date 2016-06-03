@@ -14,6 +14,7 @@ namespace Sonata\DevKit\Console\Command;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Packagist\Api\Result\Package;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,6 +23,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class AutoMergeCommand extends AbstractNeedApplyCommand
 {
+    /**
+     * @var string[]
+     */
+    private $projects;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +38,20 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         $this
             ->setName('auto-merge')
             ->setDescription('Merges branches of repositories if there is no conflict.')
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', array())
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        parent::initialize($input, $output);
+
+        $this->projects = count($input->getArgument('projects'))
+            ? $input->getArgument('projects')
+            : array_keys($this->configs['projects'])
         ;
     }
 
@@ -40,7 +60,15 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->configs['projects'] as $name => $projectConfig) {
+        $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
+        if (count($notConfiguredProjects)) {
+            $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
+
+            return 1;
+        }
+
+        foreach ($this->projects as $name) {
+            $projectConfig = $this->configs['projects'][$name];
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
