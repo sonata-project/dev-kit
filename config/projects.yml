@@ -130,12 +130,12 @@ doctrine-mongodb-admin-bundle:
       versions:
         symfony: ['2.3', '2.7', '2.8', '3.0', '3.1']
         sonata_admin: ['3']
-    2.x:
+    3.x:
       php: ['5.3', '5.4', '5.5', '5.6']
       services: [mongodb]
       versions:
-        symfony: ['2.3', '2.7', '2.8']
-        sonata_admin: ['2']
+        symfony: ['2.3', '2.7', '2.8', '3.0', '3.1']
+        sonata_admin: ['3']
 
 doctrine-orm-admin-bundle:
   branches:
