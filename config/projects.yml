@@ -122,7 +122,20 @@ doctrine-extensions:
     1.x:
       php: ['5.3', '5.4', '5.5', '5.6', '7.0']
 
-doctrine-mongodb-admin-bundle: ~
+doctrine-mongodb-admin-bundle:
+  branches:
+    master:
+      php: ['5.3', '5.4', '5.5', '5.6']
+      services: [mongodb]
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0', '3.1']
+        sonata_admin: ['3']
+    2.x:
+      php: ['5.3', '5.4', '5.5', '5.6']
+      services: [mongodb]
+      versions:
+        symfony: ['2.3', '2.7', '2.8', '3.0', '3.1']
+        sonata_admin: ['2']
 
 doctrine-orm-admin-bundle:
   branches:
