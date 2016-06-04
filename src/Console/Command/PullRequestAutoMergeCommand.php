@@ -64,7 +64,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         ));
         foreach ($pulls as $pull) {
             // Do not managed not configured branches.
-            if (!in_array($pull['base']['ref'], $branches, true)) {
+            if (!in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
                 continue;
             }
 
