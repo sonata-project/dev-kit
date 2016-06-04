@@ -17,6 +17,13 @@ php:
   - nightly
   - hhvm
 
+{% if services is not empty %}
+services:
+{% for service in services %}
+  - {{ service }}
+{% endfor %}
+
+{% endif %}
 sudo: false
 
 cache:
