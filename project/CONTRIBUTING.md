@@ -88,6 +88,7 @@ Some rules have to be respected about the test:
   * `@codeCoverageIgnoreStart`
   * `@codeCoverageIgnoreEnd`
 * All test methods should be prefixed by `test`. Example: `public function testItReturnsNull()`.
+* All test method names must be in camel case format.
 * As opposed, the `@test` annotation is prohibited.
 * Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
