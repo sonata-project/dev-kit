@@ -9,6 +9,7 @@ all:
 
 lint:
 	composer validate
+	find . -name '*.yml' -not -path './vendor/*' | xargs yaml-lint
 
 test:
 	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
