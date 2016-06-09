@@ -14,14 +14,17 @@
 | Symfony version| composer show symfony/*
 | php version    | php --version
 
-## Error message
+## Subject
 
-```
-Error message goes here
-```
+<!--
+    Give here as many details as possible.
+    Next sections are for ERRORS only.
+-->
 
 ## Steps to reproduce
 
 ## Expected results
 
 ## Actual results
+
+<!-- If it's an error message or piece of code, use code block tags. -->
