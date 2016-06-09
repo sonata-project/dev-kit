@@ -11,10 +11,10 @@ Closes #
 
 <!-- MANDATORY
     Fill the changelog part inside the code block.
-    Remove unneeded sections.
     Follow this schema: http://keepachangelog.com/
 -->
 
+<!-- REMOVE EMPTY SECTIONS -->
 ```markdown
 ### Added
 - Added some `Class::newMethod` to do great stuff
