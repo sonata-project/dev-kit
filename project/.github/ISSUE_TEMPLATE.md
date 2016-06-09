@@ -8,11 +8,28 @@
     Otherwise remove it.
 -->
 
-| Question       | Answer
-|----------------|-------------------------------
-| Bundle version | composer show sonata-project/*
-| Symfony version| composer show symfony/*
-| php version    | php --version
+### Environment
+
+#### Sonata packages
+
+```bash
+$ composer show sonata-project/*
+# Put the result here.
+```
+
+#### Symfony packages
+
+```bash
+$ composer show symfony/*
+# Put the result here.
+```
+
+#### PHP version
+
+```bash
+$ php -v
+# Put the result here.
+```
 
 ## Subject
 
