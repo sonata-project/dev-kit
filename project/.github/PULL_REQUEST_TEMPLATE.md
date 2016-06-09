@@ -30,10 +30,6 @@ Closes #
 ### Security
 ```
 
-## Subject
-
-<!-- Describe your Pull Request content here -->
-
 ## To do
 
 <!--
@@ -46,3 +42,7 @@ Closes #
 - [ ] Update the tests
 - [ ] Update the documentation
 - [ ] Add an upgrade note
+
+## Subject
+
+<!-- Describe your Pull Request content here -->
