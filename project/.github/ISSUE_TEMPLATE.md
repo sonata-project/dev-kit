@@ -14,14 +14,14 @@
 | Symfony version| composer show symfony/*
 | php version    | php --version
 
-# Error message
+## Error message
 
 ```
 Error message goes here
 ```
 
-# Steps to reproduce
+## Steps to reproduce
 
-# Expected results
+## Expected results
 
-# Actual results
+## Actual results
