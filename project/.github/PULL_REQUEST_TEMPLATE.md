@@ -33,12 +33,11 @@ Closes #
 ## To do
 
 <!--
-    Complete the tasks.
+    If this is a work in progress, COMPLETE and ADD needed tasks.
     You can add as many tasks as you want.
-    If some are not relevant, just remove them.
+    If some are not relevant, just REMOVE them.
 -->
 
-- [ ] My PR stuff
 - [ ] Update the tests
 - [ ] Update the documentation
 - [ ] Add an upgrade note
