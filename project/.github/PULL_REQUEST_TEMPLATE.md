@@ -7,7 +7,7 @@
 
 Closes #
 
-### Changelog
+## Changelog
 
 <!-- MANDATORY
     Fill the changelog part inside the code block.
@@ -30,11 +30,11 @@ Closes #
 ### Security
 ```
 
-### Subject
+## Subject
 
 <!-- Describe your Pull Request content here -->
 
-### To do
+## To do
 
 <!--
     Complete the tasks.
