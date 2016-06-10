@@ -7,6 +7,7 @@
 preset: symfony
 
 enabled:
+  - combine_consecutive_unsets
   - long_array_syntax
   - newline_after_open_tag
   - ordered_class_elements
