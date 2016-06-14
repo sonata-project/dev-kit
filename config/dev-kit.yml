@@ -7,8 +7,14 @@ labels:
     color: 'e11d21'
   - name: pedantic
     color: 'd1e4fa'
+  - name: enhancement
+    color: '02d7e1'
+  - name: feature
+    color: '02e10c'
   - name: bug
     color: 'fc2929'
+  - name: unconfirmed
+    color: '444444'
   - name: critical
     color: 'fc2929'
   - name: vendor
