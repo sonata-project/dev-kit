@@ -12,7 +12,7 @@
 |----------------|-------------------------------
 | Bundle version | composer show sonata-project/*
 | Symfony version| composer show symfony/*
-| php version    | php --version
+| PHP version    | php --version
 
 # Error message
 
