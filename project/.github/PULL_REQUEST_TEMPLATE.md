@@ -15,15 +15,16 @@ I am targetting this branch, because…
 -->
 
 Closes #
+Fixes #
 
-### Changelog
+## Changelog
 
 <!-- MANDATORY
     Fill the changelog part inside the code block.
-    Remove unneeded sections.
     Follow this schema: http://keepachangelog.com/
 -->
 
+<!-- REMOVE EMPTY SECTIONS -->
 ```markdown
 ### Added
 - Added some `Class::newMethod` to do great stuff
@@ -39,19 +40,18 @@ Closes #
 ### Security
 ```
 
-### Subject
-
-<!-- Describe your Pull Request content here -->
-
-### To do
+## To do
 
 <!--
-    Complete the tasks.
+    If this is a work in progress, COMPLETE and ADD needed tasks.
     You can add as many tasks as you want.
-    If some are not relevant, just remove them.
+    If some are not relevant, just REMOVE them.
 -->
 
-- [ ] My PR stuff
 - [ ] Update the tests
 - [ ] Update the documentation
 - [ ] Add an upgrade note
+
+## Subject
+
+<!-- Describe your Pull Request content here -->
