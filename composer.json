@@ -20,7 +20,8 @@
         "symfony/console": "^3.0",
         "symfony/filesystem": "^3.0",
         "twig/twig": "^1.24",
-        "vlucas/phpdotenv": "^2.2"
+        "vlucas/phpdotenv": "^2.2",
+        "symfony/http-kernel": "^3.1"
     },
     "require-dev": {
         "symfony/var-dumper": "^3.0"

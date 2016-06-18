@@ -1,0 +1,5 @@
+# Kernel config.
+# All bundle configurations will be here.
+
+imports:
+    - { resource: services.yml }

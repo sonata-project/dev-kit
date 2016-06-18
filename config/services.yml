@@ -1,0 +1,13 @@
+services:
+  packagist.client:
+    class: Packagist\Api\Client
+
+  github.http_client:
+    class: Github\HttpClient\HttpClient
+    arguments:
+      - { api_version: 'polaris-preview' }
+
+  github.client:
+    class: Sonata\DevKit\GithubClient
+    arguments:
+      - '@github.http_client'
