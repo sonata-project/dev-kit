@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+OS=$(uname -s)
+
+##
+## Docker
+##
+cp docker-compose.env.dist docker-compose.env
+
+# Sed commands were not working on mac osx
+# http://stackoverflow.com/questions/34596156/sed-commands-working-on-ubuntu-but-not-on-osx
+# Note: -i "" does not work on Ubuntu Linux.
+if [ "${OS}" == 'Darwin' ]; then
+    sed -i "" -e "s/{unix_username}/$(id -un)/" docker-compose.env
+    sed -i "" -e "s/{unix_group}/$(id -gn)/" docker-compose.env
+    sed -i "" -e "s/{unix_uid}/$(id -u)/" docker-compose.env
+    sed -i "" -e "s/{unix_gid}/$(id -g)/" docker-compose.env
+else
+    sed -i docker-compose.env -e "s/{unix_username}/$(id -un)/"
+    sed -i docker-compose.env -e "s/{unix_group}/$(id -gn)/"
+    sed -i docker-compose.env -e "s/{unix_uid}/$(id -u)/"
+    sed -i docker-compose.env -e "s/{unix_gid}/$(id -g)/"
+fi
+
+##
+## Parameters
+##
+if [ ! -e ".env" ]; then
+    cp .env .env.dist
+fi

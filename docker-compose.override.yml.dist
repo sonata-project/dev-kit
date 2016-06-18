@@ -1,0 +1,4 @@
+data:
+  volumes:
+    - ~/.ssh:/home/developer/.ssh:ro
+    - ~/.bashrc:/home/developer/.bashrc:ro

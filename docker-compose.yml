@@ -1,0 +1,35 @@
+data:
+  image: debian
+  volumes:
+    - .:/code
+
+nginx:
+  image: nginx
+  ports:
+    - '8000:8000'
+  volumes_from:
+    - data
+  volumes:
+    - ./docker/conf/nginx_vhost.conf:/etc/nginx/conf.d/app.conf:ro
+  links:
+    - fpm
+
+fpm:
+  build: docker/php-fpm
+  volumes_from:
+    - data
+  volumes:
+    - ./docker/conf/php.ini:/usr/local/etc/php/php.ini:ro
+  env_file:
+    - docker-compose.env
+
+console:
+  build: docker/php-console
+  volumes_from:
+    - data
+  volumes:
+    - ./docker/conf/php.ini:/usr/local/etc/php/php.ini:ro
+  links:
+    - nginx
+  env_file:
+    - docker-compose.env
