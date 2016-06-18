@@ -8,6 +8,6 @@ set :linked_files, fetch(:linked_files, []).push('.env')
 # Default value for linked_dirs is []
 # set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system')
 
-set :composer_install_flags, '--no-interaction --quiet --optimize-autoloader'
+set :composer_install_flags, '--no-interaction --quiet --optimize-autoloader --no-dev'
 
 server ENV['DEPLOY_SERVER'], user: ENV['DEPLOY_USER'], roles: %w{web app db}
