@@ -11,3 +11,7 @@ set :linked_files, fetch(:linked_files, []).push('.env')
 set :composer_install_flags, '--no-interaction --quiet --optimize-autoloader --no-dev'
 
 server ENV['DEPLOY_SERVER'], user: ENV['DEPLOY_USER'], roles: %w{web app db}
+
+namespace :deploy do
+  after :starting, 'composer:install_executable'
+end
