@@ -14,6 +14,13 @@ fi
 composer self-update --stable
 sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
 
+
+if [ ${TRAVIS_PHP_VERSION} '>=' '7.0' ]; then
+    {% if 'mongodb' in services %}
+    pecl install --force mongodb-stable
+    composer require "alcaeus/mongo-php-adapter" --ignore-platform-reqs --no-update
+    {% endif %}
+fi
 {% for package_name,package_versions in versions if package_versions|length > 0 %}
 if [ "${{ package_name|upper }}" != "" ]; then composer require "{{ packages[package_name] }}:${{ package_name|upper }}" --no-update; fi;
 {% endfor %}
