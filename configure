@@ -26,5 +26,5 @@ fi
 ## Parameters
 ##
 if [ ! -e ".env" ]; then
-    cp .env .env.dist
+    cp .env.dist .env
 fi
