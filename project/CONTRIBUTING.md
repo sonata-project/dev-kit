@@ -6,7 +6,6 @@ Thanks for your interest in Sonata projects!
 
 * [Issues](#issues)
 * [Pull Requests](#pull-requests)
-* [Label rules]()
 
 ## Issues
 
