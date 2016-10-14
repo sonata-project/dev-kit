@@ -41,6 +41,8 @@ labels:
     color: '006b75'
   - name: 'Needs: Upgrade note'
     color: '006b75'
+  - name: 'Hacktoberfest'
+    color: 'b0581d'
 
 packages:
   symfony: symfony/symfony
