@@ -13,13 +13,13 @@
 #### Sonata packages
 
 ```bash
-$ composer show --latest sonata-project/*
+$ composer show --latest 'sonata-project/*'
 ```
 
 #### Symfony packages
 
 ```bash
-$ composer show --latest symfony/*
+$ composer show --latest 'symfony/*'
 ```
 
 #### PHP version
