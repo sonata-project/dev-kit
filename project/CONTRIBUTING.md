@@ -8,6 +8,7 @@ This document is about issues and pull requests.
 
 * [Issues](#issues)
 * [Pull Requests](#pull-requests)
+* [Releases](#releases)
 * [Code Reviews](#code-reviews)
 
 ## Issues
@@ -514,6 +515,85 @@ So it's preferable to give priority to bugfixes over version-dropping PRs.
 Thank them for contributing. Encourage them if you feel this is going to be long.
 In short, try to make them want to contribute again. If they are stuck, try to provide them with
 code yourself, or ping someone who can help.
+
+## Drafting a new release
+
+### Minor releases and patch releases
+
+Releasing software is the last step to getting your bugfixes or new features to your user base,
+and should be done regularly, so that users are not tempted to use development branches.
+To know what you are going to release on branch 42.x, given that the last release on this branch is 42.3.1,
+go to `https://github.com/sonata-project/SonataCoreBundle/compare/42.3.1...42.x`.
+You should see a list of commits, some of which should contain links to pull requests.
+
+#### Determining the next release number
+
+If any of those pull requests is labeled `minor`, then the next release should be a minor release (42.4.0).
+Otherwise, if there are any pull requests labeled `patch`,
+the next release should be a patch release (42.3.2).
+If there are neither minor nor patch pull requests, all the others should be labeled `docs` or `pedantic`,
+and you should not make a release.
+
+#### Adding the release to the UPGRADE file
+
+If there are any deprecations, then the release should be minor and the UPGRADE-42.x file should be changed,
+moving the instructions explaining how to bypass the deprecation messages,
+that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 42.4.0`.
+
+#### Compiling the changelog
+
+Each non-pedantic (and therefore non-docs) PR should contain a `CHANGELOG` section,
+that you need to copy manually into the `CHANGELOG.md` file.
+The title is in the following format :
+`[42.3.2](https://github.com/sonata-project/SonataNewsBundle/compare/42.3.1...42.3.2) - YYYY-MM-DD`.
+
+#### Creating the release commit
+
+The changes above should be added to a commit with the following message : 42.3.2
+You should sign the tag with your GPG key, after which all you have to do is push it.
+If you don't have push access, you can still create a PR with the relevant changes
+and have them signed off by someone who has it.
+
+### Major releases
+
+Major releases should be done on a regular basis,
+to avoid branches getting too far from their more stable counterparts:
+the biggest the gap, the harder the merges are.
+We use a 3 branch system, which means releasing 42.0.0 implies that:
+
+- the master branch is aliased to 43.x;
+- 42.x becomes the stable branch;
+- 41.x becomes the legacy branch;
+- 40.x is abandoned.
+
+#### Preparing the unstable branch
+
+- Every `NEXT_MAJOR` instruction should be followed.
+- If possible, the latest version of every dependency should be supported
+(`composer outdated` shouldn't output anything).
+- If sensible, the old major versions of every dependency should be dropped.
+
+#### Pre-release cleanup
+
+Before releasing anything, it is best to reduce the gap between branches:
+
+- Merge the legacy branch into the stable branch.
+- Merge the stable branch into the unstable branch.
+
+#### Releasing last versions
+
+Before abandoning it, the legacy branch MUST receive a last patch version.
+Likewise, the stable branch MUST receive a last version if that version is minor,
+it SHOULD receive one is that version is a patch version.
+
+#### Creating the new stable branch
+
+If the current major is `42`, a new `43.x` branch should be created from master,
+then a commit should be done on master to bump the `branch-alias` and version numbers in the README.
+
+#### Tagging the release
+
+Finally, a signed tag should be created on the newly-created stable branch.
 
 [sphinx_install]: http://www.sphinx-doc.org/en/stable/
 [pip_install]: https://pip.pypa.io/en/stable/installing/
