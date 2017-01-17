@@ -13,7 +13,9 @@
 Branch | Travis | Coveralls |
 ------ | ------ | --------- |
 {{ stable_branch }}   | [![Build Status][travis_stable_badge]][travis_stable_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     |
-{{ unstable_branch }} | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
+{% if unstable_branch != stable_branch %}
+    {{ unstable_branch }} | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
+{% endif %}
 
 ## Documentation
 
