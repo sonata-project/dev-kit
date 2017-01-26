@@ -21,6 +21,12 @@ admin-search-bundle:
         symfony: ['2.8']
         sonata_admin: ['3']
         ruflin_elastica: ['2']
+    1.x:
+      php: ['5.6', '7.0']
+      versions:
+        symfony: ['2.8']
+        sonata_admin: ['3']
+        ruflin_elastica: ['2']
 
 article-bundle:
   branches:
