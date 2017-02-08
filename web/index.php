@@ -11,6 +11,7 @@
 
 require_once __DIR__.'/../autoload.php';
 
+use Silex\Provider\TwigServiceProvider;
 use Sonata\DevKit\GithubHookProcessor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,14 +22,18 @@ $devKitToken = getenv('DEK_KIT_TOKEN');
 
 $app = new Silex\Application();
 
-$app->get('/', function () {
-    $body = "Sonata DevKit\n";
+$app
+    ->register(new TwigServiceProvider(), array(
+        'twig.path' => __DIR__.'/../views',
+    ))
+;
 
-    if (file_exists(__DIR__.'/../REVISION')) {
-        $body .= file_get_contents(__DIR__.'/../REVISION');
-    }
+$app->get('/', function () use ($app) {
+    $revision = file_exists(__DIR__.'/../REVISION') ? trim(file_get_contents(__DIR__.'/../REVISION')) : null;
 
-    return new Response($body);
+    return $app['twig']->render('index.html.twig', array(
+        'revision' => $revision,
+    ));
 });
 
 $app->post('/github', function (Request $request) use ($app, $githubHookProcessor, $devKitToken) {
