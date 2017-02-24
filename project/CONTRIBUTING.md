@@ -97,6 +97,17 @@ Some rules have to be respected about the test:
 * Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
 
+Setup phpunit to run the tests using:
+```
+composer install
+wget "https://phar.phpunit.de/phpunit.phar" --output-document="${HOME}/bin/phpunit"
+chmod u+x "${HOME}/bin/phpunit"
+```
+To run all tests, simply run:
+```
+./phpunit
+```
+
 ### Writing a Pull Request
 
 #### The subject
