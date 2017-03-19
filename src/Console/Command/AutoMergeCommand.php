@@ -110,13 +110,25 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 );
 
                 if (is_array($response) && array_key_exists('sha', $response)) {
-                    $this->io->success('Merged '.$head.' into '.$base);
+                    $message = sprintf('Merged %s into %s', $head, $base);
+
+                    $this->io->success($message);
+                    $this->slackClient->attach(array(
+                        'text' => $message,
+                        'color' => 'good',
+                    ))->send('Merging: '.$repositoryName);
                 } else {
                     $this->io->comment('Nothing to merge on '.$base);
                 }
             } catch (RuntimeException $e) {
                 if (409 === $e->getCode()) {
-                    $this->io->warning('Merging of '.$head.' into '.$base.' contains conflicts. Skipped.');
+                    $message = sprintf('Merging of %s into %s contains conflicts. Skipped.', $head, $base);
+
+                    $this->io->warning($message);
+                    $this->slackClient->attach(array(
+                        'text' => $message,
+                        'color' => 'danger',
+                    ))->send('Merging: '.$repositoryName);
 
                     continue;
                 }
