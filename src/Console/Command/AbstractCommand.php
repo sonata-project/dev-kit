@@ -12,6 +12,7 @@
 namespace Sonata\DevKit\Console\Command;
 
 use Github\HttpClient\HttpClient;
+use Maknz\Slack\Client as SlackClient;
 use Packagist\Api\Result\Package;
 use Sonata\DevKit\Config\DevKitConfiguration;
 use Sonata\DevKit\Config\ProjectsConfiguration;
@@ -64,6 +65,11 @@ abstract class AbstractCommand extends Command
     protected $githubPaginator;
 
     /**
+     * @var SlackClient
+     */
+    protected $slackClient;
+
+    /**
      * {@inheritdoc}
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -93,6 +99,8 @@ abstract class AbstractCommand extends Command
         if ($this->githubAuthKey) {
             $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
         }
+
+        $this->slackClient = new SlackClient(getenv('SLACK_HOOK'));
     }
 
     /**
