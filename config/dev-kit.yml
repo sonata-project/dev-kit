@@ -23,12 +23,8 @@ labels:
     color: 'ededed'
   - name: in progress
     color: 'ededed'
-  - name: RTM
-    color: 'ffffff'
   - name: docs
     color: 'fbca04'
-  - name: review required
-    color: 'd4c5f9'
   - name: help wanted
     color: '0e8a16'
   - name: Easy Pick
