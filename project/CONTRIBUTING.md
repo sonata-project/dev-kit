@@ -162,9 +162,9 @@ Notes:
   * Branch `{{ legacy_branch }}` is the branch of the **latest stable** patch releases and
   has to be used for Backward Compatible bug fixes only.
   * Branch `{{ stable_branch }}` is the branch of the **latest stable** minor release and
-  has to be used for Backward compatible PRs.
+  has to be used for Backward compatible enhancement PRs.
   **No bug fix will be accepted here**, except if the bug fix concerns `{{ stable_branch }}` and **only this one**.
-  Bug fixes merged on `{{ legacy_branch }}` will be reported on other branches by fallback merging.
+  Bug fixes merged on `{{ legacy_branch }}` will be ported on other branches by fallback merging.
   * If you PR is not **Backward Compatible** but can be, it **must** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
