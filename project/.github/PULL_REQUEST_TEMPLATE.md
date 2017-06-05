@@ -9,6 +9,8 @@
 -->
 I am targetting this branch, because {reason}.
 
+In case of bug fix, `{{ legacy_branch }}` **MUST** be targeted.
+
 <!--
     Specify which issues will be fixed/closed.
     Remove it if this is not related.

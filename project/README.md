@@ -12,6 +12,7 @@
 
 Branch | Travis | Coveralls |
 ------ | ------ | --------- |
+{{ legacy_branch }}   | [![Build Status][travis_legacy_badge]][travis_legacy_link]     | [![Coverage Status][coveralls_legacy_badge]][coveralls_legacy_link]     |
 {{ stable_branch }}   | [![Build Status][travis_stable_badge]][travis_stable_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     |
 {{ unstable_branch }} | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
 
@@ -30,11 +31,15 @@ If you think you find a bug or you have a feature idea to propose, feel free to 
 
 This package is available under the [MIT license](LICENSE).
 
+[travis_legacy_badge]: https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ legacy_branch }}
+[travis_legacy_link]: https://travis-ci.org/sonata-project/{{ repository_name }}
 [travis_stable_badge]: https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ stable_branch }}
 [travis_stable_link]: https://travis-ci.org/sonata-project/{{ repository_name }}
 [travis_unstable_badge]: https://travis-ci.org/sonata-project/{{ repository_name }}.svg?branch={{ unstable_branch }}
 [travis_unstable_link]: https://travis-ci.org/sonata-project/{{ repository_name }}
 
+[coveralls_legacy_badge]: https://coveralls.io/repos/github/sonata-project/{{ repository_name }}/badge.svg?branch={{ legacy_branch }}
+[coveralls_legacy_link]: https://coveralls.io/github/sonata-project/{{ repository_name }}?branch={{ legacy_branch }}
 [coveralls_stable_badge]: https://coveralls.io/repos/github/sonata-project/{{ repository_name }}/badge.svg?branch={{ stable_branch }}
 [coveralls_stable_link]: https://coveralls.io/github/sonata-project/{{ repository_name }}?branch={{ stable_branch }}
 [coveralls_unstable_badge]: https://coveralls.io/repos/github/sonata-project/{{ repository_name }}/badge.svg?branch={{ unstable_branch }}
