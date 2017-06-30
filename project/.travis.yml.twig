@@ -15,7 +15,6 @@ php:
   - '{{ version }}'
 {% endfor %}
   - nightly
-  - hhvm
 
 {% if services is not empty %}
 services:
@@ -64,6 +63,8 @@ matrix:
 {% endfor %}
     - php: '{{ php|last }}'
       env: SYMFONY_DEPRECATIONS_HELPER=0
+    - php: hhvm
+      dist: trusty
   allow_failures:
     - php: nightly
     - php: hhvm
