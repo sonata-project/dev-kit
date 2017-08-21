@@ -214,6 +214,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (array_key_exists('url', $hook['config'])
                 && 0 === strncmp($hook['config']['url'], $hookBaseUrl, strlen($hookBaseUrl))) {
                 $devKitHook = $hook;
+
                 break;
             }
         }

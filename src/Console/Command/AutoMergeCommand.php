@@ -69,6 +69,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
         foreach ($this->projects as $name) {
             $projectConfig = $this->configs['projects'][$name];
+
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
@@ -116,8 +117,10 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             } catch (RuntimeException $e) {
                 if (409 === $e->getCode()) {
                     $this->io->warning('Merging of '.$head.' into '.$base.' contains conflicts. Skipped.');
+
                     continue;
                 }
+
                 throw $e;
             }
         }
