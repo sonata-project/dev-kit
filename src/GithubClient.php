@@ -50,6 +50,7 @@ final class GithubClient extends Client
         foreach ($this->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
                 $this->issues()->labels()->remove($repoUser, $repoName, $issueId, $label);
+
                 break;
             }
         }
