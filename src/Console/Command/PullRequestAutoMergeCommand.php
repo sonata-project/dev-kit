@@ -110,6 +110,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             // Some commit have the same message, but this cannot be squashed.
             if ($commitsCount !== $uniqueCommitsCount && 1 !== $uniqueCommitsCount) {
                 $this->io->caution('This PR need a manual rebase.');
+
                 continue;
             }
             $squash = 1 === $uniqueCommitsCount;
