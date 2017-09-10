@@ -59,8 +59,10 @@ cache:
   branches:
     master:
       php: ['7.1']
+      docs_path: docs
     2.x:
       php: ['7.1']
+      docs_path: docs
 
 cache-bundle:
   branches:
@@ -133,10 +135,12 @@ datagrid-bundle:
       php: ['7.1']
       versions:
         symfony: ['2.8', '3.2', '3.3']
+      docs_path: docs
     2.x:
       php: ['7.1']
       versions:
         symfony: ['2.8', '3.2', '3.3']
+      docs_path: docs
 
 doctrine-extensions:
   excluded_files:
@@ -145,8 +149,10 @@ doctrine-extensions:
   branches:
     master:
       php: ['7.1']
+      docs_path: docs
     1.x:
       php: ['7.1']
+      docs_path: docs
 
 doctrine-mongodb-admin-bundle:
   branches:
@@ -186,12 +192,14 @@ doctrine-phpcr-admin-bundle:
         symfony: ['2.8', '3.2', '3.3']
         sonata_admin: ['3']
         sonata_block: ['3']
+      docs_path: docs
     2.x:
       php: ['7.1']
       versions:
         symfony: ['2.8', '3.2', '3.3']
         sonata_admin: ['3']
         sonata_block: ['3']
+      docs_path: docs
 
 easy-extends-bundle:
   branches:
@@ -258,8 +266,10 @@ google-authenticator:
   branches:
     master:
       php: ['7.1']
+      docs_path: docs
     2.x:
       php: ['7.1']
+      docs_path: docs
 
 intl-bundle:
   branches:
@@ -352,12 +362,14 @@ seo-bundle:
         symfony: ['2.8', '3.2', '3.3']
         sonata_block: ['3']
         sonata_admin: ['3']
+      docs_path: docs
     2.x:
       php: ['7.1']
       versions:
         symfony: ['2.8', '3.2', '3.3']
         sonata_block: ['3']
         sonata_admin: ['3']
+      docs_path: docs
 
 timeline-bundle:
   branches:
@@ -368,6 +380,7 @@ timeline-bundle:
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
+      docs_path: docs
     3.x:
       php: ['7.1']
       versions:
@@ -375,6 +388,7 @@ timeline-bundle:
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
+      docs_path: docs
 
 translation-bundle:
   branches:
