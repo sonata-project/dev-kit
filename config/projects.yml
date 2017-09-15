@@ -219,11 +219,13 @@ ecommerce:
       versions:
         symfony: ['2.8']
       docs_path: docs
+      tests_path: tests
     2.x:
       php: ['5.6', '7.0', '7.1']
       versions:
         symfony: ['2.8']
       docs_path: docs
+      tests_path: tests
 
 exporter:
   excluded_files:
@@ -236,6 +238,7 @@ exporter:
         doctrine_odm: ['1']
       services: [mongodb]
       docs_path: docs
+      tests_path: tests
     1.x:
       php: ['5.6', '7.0', '7.1']
       versions:
@@ -243,6 +246,7 @@ exporter:
         doctrine_odm: ['1']
       services: [mongodb]
       docs_path: docs
+      tests_path: tests
 
 formatter-bundle:
   branches:
@@ -381,6 +385,7 @@ timeline-bundle:
         sonata_admin: ['3']
         sonata_block: ['3']
       docs_path: docs
+      tests_path: tests
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
@@ -389,6 +394,7 @@ timeline-bundle:
         sonata_admin: ['3']
         sonata_block: ['3']
       docs_path: docs
+      tests_path: tests
 
 translation-bundle:
   branches:
