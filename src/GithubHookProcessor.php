@@ -61,9 +61,8 @@ final class GithubHookProcessor
     }
 
     /**
-     * Manages RTM and 'review required' labels.
+     * Manages RTM label.
      *
-     * - If a PR is opened or updated, 'review required' is set.
      * - If a PR is updated and 'RTM' is set, it is removed.
      *
      * @param string $eventName
@@ -76,8 +75,6 @@ final class GithubHookProcessor
         }
 
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
-        // Add the label for opened and synchronized PRs.
-        $this->githubClient->addIssueLabel($repoUser, $repoName, $payload['number'], 'review required');
 
         if ('synchronize' === $payload['action']) {
             $this->githubClient->removeIssueLabel($repoUser, $repoName, $payload['number'], 'RTM');
