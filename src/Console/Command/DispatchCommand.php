@@ -327,10 +327,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 'dismiss_stale_reviews' => true,
                 'require_code_owner_reviews' => true,
             ),
-            'restrictions' => array(
-                'users' => array(),
-                'teams' => array(),
-            ),
+            'restrictions' => null,
             'enforce_admins' => false,
         );
         foreach ($branches as $branch) {
