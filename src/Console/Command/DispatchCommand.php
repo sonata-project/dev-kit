@@ -92,10 +92,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         foreach ($this->projects as $name) {
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+                $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
-                $this->updateRepositories($package, $this->configs['projects'][$name]);
+                $this->updateRepositories($package, $projectConfig);
                 $this->updateDevKitHook($package);
                 $this->updateLabels($package);
+                $this->updateBranchesProtection($package, $projectConfig);
 
                 if ($input->getOption('with-files')) {
                     $this->dispatchFiles($package);
@@ -293,6 +295,50 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
+    }
+
+    /**
+     * @param Package $package
+     * @param array   $projectConfig
+     */
+    private function updateBranchesProtection(Package $package, array $projectConfig)
+    {
+        $repositoryName = $this->getRepositoryName($package);
+        $branches = array_keys($projectConfig['branches']);
+        $this->io->section('Branches protection');
+
+        if (!$this->apply) {
+            return;
+        }
+
+        $protectionConfig = array(
+            'required_status_checks' => array(
+                'strict' => false,
+                'contexts' => array(
+                    'continuous-integration/travis-ci',
+                    'continuous-integration/styleci/pr',
+                ),
+            ),
+            'required_pull_request_reviews' => array(
+                'dismissal_restrictions' => array(
+                    'users' => array(),
+                    'teams' => array(),
+                ),
+                'dismiss_stale_reviews' => true,
+                'require_code_owner_reviews' => true,
+            ),
+            'restrictions' => array(
+                'users' => array(),
+                'teams' => array(),
+            ),
+            'enforce_admins' => false,
+        );
+        foreach ($branches as $branch) {
+            $this->githubClient->repo()->protection()
+                ->update(static::GITHUB_GROUP, $repositoryName, $branch, $protectionConfig)
+            ;
+        }
+        $this->io->comment('Branches protection applied.');
     }
 
     /**
