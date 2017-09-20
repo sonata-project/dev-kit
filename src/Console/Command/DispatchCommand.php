@@ -93,6 +93,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
+                $this->updateRepositories($package, $this->configs['projects'][$name]);
                 $this->updateDevKitHook($package);
                 $this->updateLabels($package);
 
@@ -105,6 +106,48 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         return 0;
+    }
+
+    /**
+     * Sets repository information and general settings.
+     *
+     * @param Package $package
+     * @param array   $projectConfig
+     */
+    private function updateRepositories(Package $package, array $projectConfig)
+    {
+        $repositoryName = $this->getRepositoryName($package);
+        $branches = array_keys($projectConfig['branches']);
+        $this->io->section('Repository');
+
+        $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repositoryName);
+        $infoToUpdate = array(
+            'homepage' => 'https://sonata-project.org/',
+            'has_issues' => true,
+            'has_projects' => true,
+            'has_wiki' => false,
+            'default_branch' => end($branches),
+            'allow_squash_merge' => true,
+            'allow_merge_commit' => false,
+            'allow_rebase_merge' => true,
+        );
+
+        foreach ($infoToUpdate as $info => $value) {
+            if ($value === $repositoryInfo[$info]) {
+                unset($infoToUpdate[$info]);
+            }
+        }
+
+        if (count($infoToUpdate)) {
+            $this->io->comment('Following info have to be changed: '.implode(', ', array_keys($infoToUpdate)).'.');
+            if ($this->apply) {
+                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, array(
+                    'name' => $repositoryName,
+                )));
+            }
+        } elseif (!count($infoToUpdate)) {
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
+        }
     }
 
     /**
