@@ -91,10 +91,7 @@ abstract class AbstractCommand extends Command
 
         $this->packagistClient = new \Packagist\Api\Client();
 
-        $this->githubClient = new GithubClient(new HttpClient(array(
-            // This version is needed for squash. https://developer.github.com/v3/pulls/#input-2
-            'api_version' => 'polaris-preview',
-        )));
+        $this->githubClient = new GithubClient();
         $this->githubPaginator = new \Github\ResultPager($this->githubClient);
         if ($this->githubAuthKey) {
             $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
