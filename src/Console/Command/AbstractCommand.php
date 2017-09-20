@@ -11,7 +11,6 @@
 
 namespace Sonata\DevKit\Console\Command;
 
-use Github\HttpClient\HttpClient;
 use Maknz\Slack\Client as SlackClient;
 use Packagist\Api\Result\Package;
 use Sonata\DevKit\Config\DevKitConfiguration;
