@@ -110,13 +110,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 );
 
                 if (is_array($response) && array_key_exists('sha', $response)) {
-                    $message = sprintf('Merged %s into %s', $head, $base);
-
-                    $this->io->success($message);
-                    $this->slackClient->attach(array(
-                        'text' => $message,
-                        'color' => 'good',
-                    ))->send('Merging: '.$repositoryName);
+                    $this->io->success(sprintf('Merged %s into %s', $head, $base));
                 } else {
                     $this->io->comment('Nothing to merge on '.$base);
                 }
