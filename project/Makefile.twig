@@ -23,6 +23,6 @@ docs:
 {% if assets_path %}
 
 assets:
-	pushd {{ assets_path }} && npm install && popd
+	pushd {{ assets_path }} && yarn install && popd
 	pushd {{ assets_path }} && gulp && popd
 {% endif %}
