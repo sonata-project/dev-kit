@@ -190,8 +190,7 @@ Here is a short table resuming on which you have to start:
 
 Kind of modification | Backward Compatible (BC) | Type of release | Branch to target        | Label |
 -------------------- | ------------------------ | --------------- | ----------------------- | ----- |
-Bug fixes            | Yes                      | Patch           | `{{ legacy_branch }}`   | |
-Bug fixes            | Not on legacy            | Patch           | `{{ stable_branch }}`   | |
+Bug fixes            | Yes                      | Patch           | `{{ stable_branch }}`   | |
 Bug fixes            | No (Only if no choice)   | Major           | `{{ unstable_branch }}` | |
 Feature              | Yes                      | Minor           | `{{ stable_branch }}`   | |
 Feature              | No (Only if no choice)   | Major           | `{{ unstable_branch }}` | |
@@ -199,12 +198,8 @@ Deprecation          | Yes (Have to)            | Minor           | `{{ stable_b
 Deprecation removal  | No (Can't be)            | Major           | `{{ unstable_branch }}` | |
 
 Notes:
-  * Branch `{{ legacy_branch }}` is the branch of the **latest stable** patch releases and
-  has to be used for Backward Compatible bug fixes only.
   * Branch `{{ stable_branch }}` is the branch of the **latest stable** minor release and
-  has to be used for Backward compatible enhancement PRs.
-  **No bug fix will be accepted here**, except if the bug fix concerns `{{ stable_branch }}` and **only this one**.
-  Bug fixes merged on `{{ legacy_branch }}` will be ported on other branches by fallback merging.
+  has to be used for Backward compatible PRs.
   * If you PR is not **Backward Compatible** but can be, it **must** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
