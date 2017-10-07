@@ -58,7 +58,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this
             ->setName('dispatch')
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
-            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', array())
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
             ->addOption('with-files', null, InputOption::VALUE_NONE, 'Applies Pull Request actions for projects files')
         ;
     }
@@ -123,7 +123,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this->io->section('Repository');
 
         $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repositoryName);
-        $infoToUpdate = array(
+        $infoToUpdate = [
             'homepage' => 'https://sonata-project.org/',
             'has_issues' => true,
             'has_projects' => true,
@@ -132,7 +132,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'allow_squash_merge' => true,
             'allow_merge_commit' => false,
             'allow_rebase_merge' => true,
-        );
+        ];
 
         foreach ($infoToUpdate as $info => $value) {
             if ($value === $repositoryInfo[$info]) {
@@ -143,9 +143,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if (count($infoToUpdate)) {
             $this->io->comment('Following info have to be changed: '.implode(', ', array_keys($infoToUpdate)).'.');
             if ($this->apply) {
-                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, array(
+                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, [
                     'name' => $repositoryName,
-                )));
+                ]));
             }
         } elseif (!count($infoToUpdate)) {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
@@ -163,8 +163,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $configuredLabels = $this->configs['labels'];
         $missingLabels = $configuredLabels;
 
-        $headers = array('Name', 'Actual color', 'Needed Color', 'State');
-        $rows = array();
+        $headers = ['Name', 'Actual color', 'Needed Color', 'State'];
+        $rows = [];
 
         foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
             $name = $label['name'];
@@ -187,20 +187,20 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, array(
+                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, [
                         'name' => $name,
                         'color' => $configuredColor,
-                    ));
+                    ]);
                 }
             }
 
             if ($state) {
-                array_push($rows, array(
+                array_push($rows, [
                     $name,
                     '#'.$color,
                     $configuredColor ? '#'.$configuredColor : 'N/A',
                     $state,
-                ));
+                ]);
             }
         }
 
@@ -208,12 +208,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, array(
+                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, [
                     'name' => $name,
                     'color' => $color,
-                ));
+                ]);
             }
-            array_push($rows, array($name, 'N/A', '#'.$color, 'Created'));
+            array_push($rows, [$name, 'N/A', '#'.$color, 'Created']);
         }
 
         usort($rows, function ($row1, $row2) {
@@ -239,19 +239,19 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         // Construct the hook url.
         $hookToken = getenv('DEK_KIT_TOKEN') ? getenv('DEK_KIT_TOKEN') : 'INVALID_TOKEN';
         $hookBaseUrl = 'http://sonata-dev-kit.sullivansenechal.com/github';
-        $hookCompleteUrl = $hookBaseUrl.'?'.http_build_query(array('token' => $hookToken));
+        $hookCompleteUrl = $hookBaseUrl.'?'.http_build_query(['token' => $hookToken]);
 
         // Set hook configs
-        $config = array(
+        $config = [
             'url' => $hookCompleteUrl,
             'insecure_ssl' => '0',
             'content_type' => 'json',
-        );
-        $events = array(
+        ];
+        $events = [
             'issue_comment',
             'pull_request',
             'pull_request_review_comment',
-        );
+        ];
 
         // First, check if the hook exists.
         $devKitHook = null;
@@ -268,12 +268,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be created.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, array(
+                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
-                ));
+                ]);
                 $this->io->success('Hook created.');
             }
         } elseif (count(array_diff_assoc($devKitHook['config'], $config))
@@ -283,12 +283,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], array(
+                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
-                ));
+                ]);
                 $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repositoryName, $devKitHook['id']);
                 $this->io->success('Hook updated.');
             }
@@ -311,25 +311,25 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        $protectionConfig = array(
-            'required_status_checks' => array(
+        $protectionConfig = [
+            'required_status_checks' => [
                 'strict' => false,
-                'contexts' => array(
+                'contexts' => [
                     'continuous-integration/travis-ci',
                     'continuous-integration/styleci/pr',
-                ),
-            ),
-            'required_pull_request_reviews' => array(
-                'dismissal_restrictions' => array(
-                    'users' => array(),
-                    'teams' => array(),
-                ),
+                ],
+            ],
+            'required_pull_request_reviews' => [
+                'dismissal_restrictions' => [
+                    'users' => [],
+                    'teams' => [],
+                ],
                 'dismiss_stale_reviews' => true,
                 'require_code_owner_reviews' => true,
-            ),
+            ],
             'restrictions' => null,
             'enforce_admins' => false,
-        );
+        ];
         foreach ($branches as $branch) {
             $this->githubClient->repo()->protection()
                 ->update(static::GITHUB_GROUP, $repositoryName, $branch, $protectionConfig)
@@ -393,7 +393,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             // Diff application
             $this->io->section('Files for '.$currentBranch);
 
-            $git->reset(array('hard' => true));
+            $git->reset(['hard' => true]);
 
             // Checkout the targeted branch
             if (in_array($currentBranch, $git->getBranches()->all(), true)) {
@@ -410,7 +410,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $currentBranch);
 
-            $git->add('.', array('all' => true))->getOutput();
+            $git->add('.', ['all' => true])->getOutput();
             $diff = $git->diff('--color', '--cached')->getOutput();
 
             if (!empty($diff)) {
@@ -419,17 +419,17 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $git->commit('DevKit updates')->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, array(
+                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, [
                         'state' => 'open',
                         'head' => 'sonata-project:'.$currentDevKit,
-                    ));
+                    ]);
                     if (0 === count($pulls)) {
-                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, array(
+                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
                             'head' => 'sonata-project:'.$currentDevKit,
                             'base' => $currentBranch,
                             'body' => '',
-                        ));
+                        ]);
                     }
 
                     // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
@@ -470,7 +470,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
-                if (!in_array($entry, array('.', '..'), true)) {
+                if (!in_array($entry, ['.', '..'], true)) {
                     $this->renderFile(
                         $package,
                         $repositoryName,
@@ -499,13 +499,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $this->configs,
                 $projectConfig,
                 $branchConfig,
-                array('repository_name' => $repositoryName)
+                ['repository_name' => $repositoryName]
             )));
         } else {
             reset($projectConfig['branches']);
             $unstableBranch = key($projectConfig['branches']);
             $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-            file_put_contents($distPath, str_replace(array(
+            file_put_contents($distPath, str_replace([
                 '{{ package_title }}',
                 '{{ package_description }}',
                 '{{ packagist_name }}',
@@ -515,8 +515,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ stable_branch }}',
                 '{{ docs_path }}',
                 '{{ website_path }}',
-            ), array(
-                Inflector::ucwords(str_replace(array('-project', '/', '-'), array('', ' ', ' '), $package->getName())),
+            ], [
+                Inflector::ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
                 $package->getDescription(),
                 $package->getName(),
                 $repositoryName,
@@ -524,8 +524,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $unstableBranch,
                 $stableBranch,
                 $branchConfig['docs_path'],
-                str_replace(array(static::PACKAGIST_GROUP.'/', '-bundle'), '', $package->getName()),
-            ), $localContent));
+                str_replace([static::PACKAGIST_GROUP.'/', '-bundle'], '', $package->getName()),
+            ], $localContent));
         }
         // Restore file permissions after content copy
         $this->fileSystem->chmod($distPath, fileperms($localPath));

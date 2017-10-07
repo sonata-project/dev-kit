@@ -65,11 +65,11 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
             // @see: https://developer.github.com/v3/pulls/#get-a-single-pull-request
             if (false === $pullRequest['mergeable']) {
                 $comments = array_filter(
-                    $this->githubPaginator->fetchAll($this->githubClient->issues()->comments(), 'all', array(
+                    $this->githubPaginator->fetchAll($this->githubClient->issues()->comments(), 'all', [
                         static::GITHUB_GROUP,
                         $repositoryName,
                         $number,
-                    )),
+                    ]),
                     function ($comment) {
                         return static::GITHUB_USER === $comment['user']['login'];
                     }
@@ -77,19 +77,19 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $lastComment = end($comments);
                 $lastCommentDate = $lastComment ? new \DateTime($lastComment['created_at']) : null;
 
-                $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequest(), 'commits', array(
+                $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequest(), 'commits', [
                     static::GITHUB_GROUP,
                     $repositoryName,
                     $number,
-                ));
+                ]);
                 $lastCommit = end($commits);
                 $lastCommitDate = new \DateTime($lastCommit['commit']['committer']['date']);
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, array(
+                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
-                        ));
+                        ]);
                         $this->githubClient->addIssueLabel(static::GITHUB_GROUP, $repositoryName, $number, 'pending author');
                     }
 
