@@ -271,6 +271,18 @@ or postponed to next major release if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
 
+##### Dependency changes
+
+If you want to change some dependencies, here are the rules:
+
+- Don't add support for a version lower than the current one.
+- Don't change the highest supported version to a lower one.
+- Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
+but some extra rules must be respected here:
+  - PHP versions that are under the [green zone][php_supported_versions] (actively maintained) **MUST NO** be dropped, even on master.
+  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
+  - Generally, don't drop dependency version it it doesn't have a big impact on the code.
+
 ##### Legacy branches
 
 Legacy branches are **NOT** supported at all. Any submitted Pull Request will be immediately closed.
@@ -423,6 +435,17 @@ use the "Rebase and merge" feature.
 And finally, use your common sense : if you see a PR about a typo,
 or if there is a situation (faulty commit, revert needed) maybe you can merge it directly.
 
+#### Dependencies version dropping
+
+Do not merge any merge request dropping a dependency version support.
+To achieve that, mark them as `RTM`, and mention then on Slack when asking for a release.
+
+This rule should be applied for these reasons:
+
+- Even if it's semver compatible, we don't maintain minor branches.
+So it's preferable to give priority to bugfixes over version-dropping PRs.
+- Some dependencies need a dev-kit update. By the way, you can make a PR on dev-kit and link it to your own.
+
 ### Be nice to the contributor
 
 Thank them for contributing. Encourage them if you feel this is going to be long.
@@ -432,3 +455,5 @@ code yourself, or ping someone who can help.
 [sphinx_install]: http://www.sphinx-doc.org/en/stable/
 [pip_install]: https://pip.pypa.io/en/stable/installing/
 [sf_docs_standards]: https://symfony.com/doc/current/contributing/documentation/standards.html
+[semver_dependencies_update]: http://semver.org/#what-should-i-do-if-i-update-my-own-dependencies-without-changing-the-public-api
+[php_supported_versions]: http://php.net/supported-versions.php
