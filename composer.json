@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "php": "^5.5 || ^7.0",
+        "php": "^7.1",
         "cpliakas/git-wrapper": "^1.7",
         "doctrine/inflector": "^1.1",
         "knplabs/github-api": "^2.5",
