@@ -271,6 +271,13 @@ or postponed to next major release if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
 
+##### Legacy branches
+
+Legacy branches are **NOT** supported at all. Any submitted Pull Request will be immediately closed.
+
+Core team members *may* cherry-pick some fixes from the stable branch to the legacy one if it's really needed
+and if the legacy one is not too old (~less than one month).
+
 #### The commit message
 
 Sonata is a big project with many contributors, and a big part of the job is
