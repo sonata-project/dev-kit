@@ -505,7 +505,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             reset($projectConfig['branches']);
             $unstableBranch = key($projectConfig['branches']);
             $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-            $legacyBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $stableBranch;
             file_put_contents($distPath, str_replace(array(
                 '{{ package_title }}',
                 '{{ package_description }}',
@@ -514,7 +513,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ current_branch }}',
                 '{{ unstable_branch }}',
                 '{{ stable_branch }}',
-                '{{ legacy_branch }}',
                 '{{ docs_path }}',
                 '{{ website_path }}',
             ), array(
@@ -525,7 +523,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $branchName,
                 $unstableBranch,
                 $stableBranch,
-                $legacyBranch,
                 $branchConfig['docs_path'],
                 str_replace(array(static::PACKAGIST_GROUP.'/', '-bundle'), '', $package->getName()),
             ), $localContent));
