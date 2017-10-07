@@ -58,10 +58,10 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $repositoryName = $this->getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
 
-        $pulls = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'all', array(
+        $pulls = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'all', [
             static::GITHUB_GROUP,
             $repositoryName,
-        ));
+        ]);
         foreach ($pulls as $pull) {
             // Do not managed not configured branches.
             if (!in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
@@ -95,11 +95,11 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 continue;
             }
 
-            $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'commits', array(
+            $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'commits', [
                 static::GITHUB_GROUP,
                 $repositoryName,
                 $pull['number'],
-            ));
+            ]);
 
             $commitMessages = array_map(function ($commit) {
                 return $commit['commit']['message'];

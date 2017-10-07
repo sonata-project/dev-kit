@@ -23,17 +23,17 @@ $devKitToken = getenv('DEK_KIT_TOKEN');
 $app = new Silex\Application();
 
 $app
-    ->register(new TwigServiceProvider(), array(
+    ->register(new TwigServiceProvider(), [
         'twig.path' => __DIR__.'/../views',
-    ))
+    ])
 ;
 
 $app->get('/', function () use ($app) {
     $revision = file_exists(__DIR__.'/../REVISION') ? trim(file_get_contents(__DIR__.'/../REVISION')) : null;
 
-    return $app['twig']->render('index.html.twig', array(
+    return $app['twig']->render('index.html.twig', [
         'revision' => $revision,
-    ));
+    ]);
 });
 
 $app->post('/github', function (Request $request) use ($app, $githubHookProcessor, $devKitToken) {
@@ -41,7 +41,7 @@ $app->post('/github', function (Request $request) use ($app, $githubHookProcesso
     $payload = json_decode($request->getContent(), true);
 
     if (!$devKitToken || $request->query->get('token') !== $devKitToken) {
-        return $app->json(array('message' => 'Invalid credentials'), 403);
+        return $app->json(['message' => 'Invalid credentials'], 403);
     }
 
     switch ($eventName) {
@@ -61,7 +61,7 @@ $app->post('/github', function (Request $request) use ($app, $githubHookProcesso
 
             return new Response();
         default:
-            return new JsonResponse(array('message' => 'Nothing to do for: '.$eventName), 200);
+            return new JsonResponse(['message' => 'Nothing to do for: '.$eventName], 200);
     }
 });
 

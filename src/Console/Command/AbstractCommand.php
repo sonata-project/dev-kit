@@ -76,12 +76,12 @@ abstract class AbstractCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
 
         $processor = new Processor();
-        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), array(
+        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
             'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/dev-kit.yml')),
-        ));
-        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), array(
-            'sonata' => array('projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))),
-        ));
+        ]);
+        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), [
+            'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))],
+        ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
         if (getenv('GITHUB_OAUTH_TOKEN')) {
