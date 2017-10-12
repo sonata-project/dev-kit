@@ -27,7 +27,7 @@ final class DependsCommand extends AbstractCommand
     {
         $this
             ->setName('depends')
-            ->setDescription('Show internal sonata dependencies of each project.')
+            ->setDescription('Show internal symfony-cmf dependencies of each project.')
             ->addOption('branch-depth', null, InputOption::VALUE_OPTIONAL, 'Number of branches to show.', 2)
         ;
     }

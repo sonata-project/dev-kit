@@ -48,15 +48,16 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
-                            ->arrayNode('excluded_files')->prototype('scalar')->defaultValue(array())->end()->end()
+                            ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->booleanNode('docs_target')->defaultTrue()->end()
+                            ->scalarNode('description')->defaultValue('')->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
-                                ->defaultValue(array())
+                                ->defaultValue([])
                                 ->prototype('array')
                                     ->children()
-                                        ->arrayNode('php')->prototype('scalar')->defaultValue(array())->end()->end()
-                                        ->arrayNode('services')->prototype('scalar')->defaultValue(array())->end()->end()
+                                        ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->append($this->addVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
@@ -80,7 +81,7 @@ class ProjectsConfiguration implements ConfigurationInterface
         $childrenNode = $node->children();
 
         foreach ($this->devKitConfigs['packages'] as $key => $name) {
-            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue(array())->end()->end();
+            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue([])->end()->end();
         }
 
         $childrenNode->end();

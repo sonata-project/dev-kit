@@ -1,53 +1,70 @@
 labels:
-  - name: patch
+  # describe priority
+  - name: 'patch'
     color: '207de5'
-  - name: minor
+  - name: 'minor'
     color: '009800'
-  - name: major
+  - name: 'major'
     color: 'e11d21'
-  - name: pedantic
+  - name: 'pedantic'
     color: 'd1e4fa'
-  - name: enhancement
-    color: '02d7e1'
-  - name: feature
-    color: '02e10c'
-  - name: bug
+  - name: 'bug'
     color: 'fc2929'
-  - name: unconfirmed
-    color: '444444'
-  - name: critical
+  - name: 'critical'
     color: 'fc2929'
-  - name: vendor
+
+  # state on a board
+  - name: 'in progress'
     color: 'ededed'
-  - name: pending author
+  - name: 'review'
     color: 'ededed'
-  - name: in progress
+  - name: 'wip/poc'
     color: 'ededed'
-  - name: RTM
-    color: 'ffffff'
-  - name: docs
-    color: 'fbca04'
-  - name: help wanted
-    color: '0e8a16'
-  - name: Easy Pick
+  - name: 'ready'
+    color: 'ededed'
+  - name: 'won`t fix'
+    color: 'ededed'
+
+  # issue classes
+  - name: 'help wanted'
+    color: '128A0C'
+  - name: 'good first issue'
+    color: '5319e7'
+  - name: 'question'
+    color: 'cc317c'
+  - name: 'Easy Pick'
     color: 'd7e102'
-  - name: 'Needs: Documentation'
-    color: '006b75'
-  - name: 'Needs: Tests'
-    color: '006b75'
-  - name: 'Needs: Changelog note'
-    color: '006b75'
-  - name: 'Needs: Upgrade note'
-    color: '006b75'
-  - name: 'hacktoberfest'
-    color: 'b0581d'
+  - name: 'DX'
+    color: '5319e7'
+  - name: 'UX'
+    color: '19E791'
+    color: '333333'
+  - name: 'discussion'
+    color: 'cc317c'
+  - name: 'enhancement'
+    color: '02d7e1'
+  - name: 'feature'
+    color: '207de5'
+  - name: 'nice to have'
+    color: '0052cc'
+
+  # persistence layer
+  - name: 'ORM'
+    color: 'bfd4f2'
+  - name: 'PHPCR'
+    color: 'bfd4f2'
+
+  # else
+  - name: 'pending author'
+    color: 'ededed'
+  - name: 'blocked'
+    color: 'cccccc'
+  - name: 'duplicate'
+    color: 'cccccc'
 
 packages:
   symfony: symfony/symfony
-  fos_user: friendsofsymfony/user-bundle
-  sonata_core: sonata-project/core-bundle
-  sonata_admin: sonata-project/admin-bundle
-  sonata_block: sonata-project/block-bundle
-  sonata_user: sonata-project/user-bundle
-  ruflin_elastica: ruflin/elastica
-  doctrine_odm: doctrine/mongodb-odm
+  core_bundle: symfony-cmf/core-bundle
+  website: symfony-cmf/symfony-cmf-website
+  seo_bundle: symfony-cmf/seo-bundle
+

@@ -28,10 +28,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class AbstractCommand extends Command
 {
-    const GITHUB_GROUP = 'sonata-project';
-    const GITHUB_USER = 'SonataCI';
-    const GITHUB_EMAIL = 'thomas+ci@sonata-project.org';
-    const PACKAGIST_GROUP = 'sonata-project';
+    const GITHUB_GROUP = 'symfony-cmf';
+    const GITHUB_USER = 'electricmaxxx';
+    const GITHUB_EMAIL = 'maximilian.berghoff@gmx.de';
+    const PACKAGIST_GROUP = 'symfony-cmf';
+    const HOMEPAGE = 'http://cmf.symfony.com/';
 
     /**
      * @var SymfonyStyle
@@ -77,10 +78,10 @@ abstract class AbstractCommand extends Command
 
         $processor = new Processor();
         $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), array(
-            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/dev-kit.yml')),
+            'cmf' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/dev-kit.yml')),
         ));
         $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), array(
-            'sonata' => array('projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))),
+            'cmf' => array('projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))),
         ));
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 

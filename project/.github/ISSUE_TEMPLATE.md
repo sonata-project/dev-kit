@@ -10,23 +10,10 @@
 
 ### Environment
 
-#### Sonata packages
-
-```
-$ composer show --latest 'sonata-project/*'
-```
-
 #### Symfony packages
 
 ```
-$ composer show --latest 'symfony/*'
-```
-
-#### PHP version
-
-```
-$ php -v
-# Put the result here.
+$ composer show --latest 'symfony-cmf/*'
 ```
 
 ## Subject
@@ -46,5 +33,5 @@ $ php -v
     If it's an error message or piece of code, use code block tags,
     and make sure you provide the whole stack trace(s),
     not just the first error message you can see.
-    More details here: https://github.com/sonata-project/{{ repository_name }}/blob/{{ stable_branch }}/CONTRIBUTING.md#issues
+    More details here: https://github.com/symfony-cmf/{{ repository_name }}/blob/{{ stable_branch }}/CONTRIBUTING.md#issues
 -->

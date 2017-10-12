@@ -1,58 +1,10 @@
-<!-- THE PR TEMPLATE IS NOT AN OPTION. DO NOT DELETE IT, MAKE SURE YOU READ AND EDIT IT! -->
-
-<!--
-    Show us you choose the right branch.
-    Different branches are used for different things :
-    - {{ stable_branch }} is for everything backwards compatible, like patches, features and deprecation notices
-    - {{ unstable_branch }} is for deprecation removals and other changes that cannot be done without a BC-break
-    More details here: https://github.com/sonata-project/{{ repository_name }}/blob/{{ stable_branch }}/CONTRIBUTING.md#the-base-branch
--->
-I am targeting this branch, because {reason}.
-
-In case of bug fix, `{{ legacy_branch }}` **MUST** be targeted.
-
-<!--
-    Specify which issues will be fixed/closed.
-    Remove it if this is not related.
--->
-
-Closes #{put_issue_number_here}
-
-## Changelog
-
-<!-- MANDATORY
-    Fill the changelog part inside the code block.
-    Follow this schema: http://keepachangelog.com/
--->
-
-<!-- REMOVE EMPTY SECTIONS -->
-```markdown
-### Added
-- Added some `Class::newMethod` to do great stuff
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-```
-
-## To do
-
-<!--
-    If this is a work in progress, COMPLETE and ADD needed tasks.
-    You can add as many tasks as you want.
-    If some are not relevant, just REMOVE them.
--->
-
-- [ ] Update the tests
-- [ ] Update the documentation
-- [ ] Add an upgrade note
-
-## Subject
-
-<!-- Describe your Pull Request content here -->
+| Q             | A
+| ------------- | ---
+| Branch?       | "master" for new features / the branch of the current release for fixes
+| Bug fix?      | yes/no
+| New feature?  | yes/no
+| BC breaks?    | yes/no
+| Deprecations? | yes/no
+| Fixed tickets | comma-separated list of tickets fixed by the PR, if any
+| License       | MIT
+| Doc PR        | reference to the documentation PR, if any
