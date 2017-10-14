@@ -336,8 +336,6 @@ page-bundle:
         sonata_admin: ['3']
         sonata_block: ['3']
 
-propel-admin-bundle: ~
-
 sandbox: ~
 
 seo-bundle:
