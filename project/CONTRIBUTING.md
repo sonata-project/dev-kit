@@ -263,8 +263,9 @@ public function baz()
 }
 ```
 
-In that case, unit tests might show your deprecation notice. You must mark such tests with the `@group legacy` annotation,
-and if need be, isolate them in a new test method that can simply be removed in the non-BC PR.
+In that case, unit tests might show your deprecation notice.
+You must mark such tests with the `@group legacy` annotation and if need be,
+isolate them in a new test method that can simply be removed in the non-BC PR.
 
 Be aware that pull requests with BC breaks could be rejected
 or postponed to next major release if BC is not possible.
