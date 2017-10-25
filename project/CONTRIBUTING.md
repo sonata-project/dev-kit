@@ -325,6 +325,9 @@ but some extra rules must be respected here:
   - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the master branch.
   - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
   - Generally, don't drop dependency version it it doesn't have a big impact on the code.
+  - Backward Compatible code related to the dropped version **MUST** be dropped on the same PR.
+    This will allow to see if this version drop **is really worth it** or not.
+    Please note that we can refuse a version drop at any moment if the gain does not seem sufficient.
 
 ##### Legacy branches
 
