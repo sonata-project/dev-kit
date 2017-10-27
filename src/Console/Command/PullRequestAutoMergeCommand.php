@@ -21,6 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 {
+    private const TIME_BEFORE_MERGE = 60;
+
     protected function configure()
     {
         parent::configure();
@@ -92,6 +94,13 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             // Ignore the PR is status is not good.
             if ('success' !== $state['state']) {
+                continue;
+            }
+
+            $updatedAt = new \DateTime($pull['updated_at'], new \DateTimeZone('UTC'));
+            // Wait a bit to be sure the PR state is updated.
+            if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
+                - $updatedAt->getTimestamp() < self::TIME_BEFORE_MERGE) {
                 continue;
             }
 
