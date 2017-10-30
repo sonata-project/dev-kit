@@ -71,7 +71,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                         $number,
                     ]),
                     function ($comment) {
-                        return static::GITHUB_USER === $comment['user']['login'];
+                        return $comment['user']['login'] === static::GITHUB_USER;
                     }
                 );
                 $lastComment = end($comments);
