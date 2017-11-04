@@ -22,7 +22,8 @@ enabled:
 
 finder:
   exclude:
-    - '{{ tests_path }}/Fixtures'
+    - 'Tests/Fixtures'
+    - 'tests/Fixtures'
     # ecommerce special case:
     - 'Resources/skeleton'
     # ignore vendor assets
