@@ -18,6 +18,7 @@ use Github\Client;
  */
 final class GithubClient extends Client
 {
+
     /**
      * Adds a label from an issue if this one is not set.
      *
