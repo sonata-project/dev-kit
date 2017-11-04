@@ -59,7 +59,7 @@ matrix:
 {% endfor %}
 {% if package_versions|length > 0 %}
     - php: '{{ target_php|default(php|last) }}'
-      env: {{ package_name|upper }}=dev-master@dev
+      env: {{ package_name|upper }}='dev-master as {{ package_versions|last }}'
 {% endif %}
 {% endfor %}
     - php: '{{ php|last }}'
@@ -71,7 +71,7 @@ matrix:
     - env: SYMFONY_DEPRECATIONS_HELPER=0
 {% for package_name,package_versions in versions %}
 {% if package_versions|length > 0 %}
-    - env: {{ package_name|upper }}=dev-master@dev
+    - env: {{ package_name|upper }}='dev-master as {{ package_versions|last }}'
 {% endif %}
 {% endfor %}
 
