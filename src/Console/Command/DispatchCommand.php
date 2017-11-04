@@ -59,8 +59,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ->setName('dispatch')
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
             ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
-            ->addOption('with-files', null, InputOption::VALUE_NONE, 'Applies Pull Request actions for projects files')
-        ;
+            ->addOption('with-files', null, InputOption::VALUE_NONE, 'Applies Pull Request actions for projects files');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -73,8 +72,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $this->projects = count($input->getArgument('projects'))
             ? $input->getArgument('projects')
-            : array_keys($this->configs['projects'])
-        ;
+            : array_keys($this->configs['projects']);
     }
 
     /**
@@ -124,11 +122,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repositoryName);
         $infoToUpdate = [
-            'homepage' => 'https://sonata-project.org/',
-            'has_issues' => true,
-            'has_projects' => true,
-            'has_wiki' => false,
-            'default_branch' => end($branches),
+            'homepage'           => 'https://sonata-project.org/',
+            'has_issues'         => true,
+            'has_projects'       => true,
+            'has_wiki'           => false,
+            'default_branch'     => end($branches),
             'allow_squash_merge' => true,
             'allow_merge_commit' => false,
             'allow_rebase_merge' => true,
@@ -188,7 +186,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $state = 'Updated';
                 if ($this->apply) {
                     $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, [
-                        'name' => $name,
+                        'name'  => $name,
                         'color' => $configuredColor,
                     ]);
                 }
@@ -209,7 +207,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             if ($this->apply) {
                 $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, [
-                    'name' => $name,
+                    'name'  => $name,
                     'color' => $color,
                 ]);
             }
@@ -243,7 +241,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         // Set hook configs
         $config = [
-            'url' => $hookCompleteUrl,
+            'url'          => $hookCompleteUrl,
             'insecure_ssl' => '0',
             'content_type' => 'json',
         ];
@@ -269,7 +267,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             if ($this->apply) {
                 $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, [
-                    'name' => 'web',
+                    'name'   => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
@@ -284,7 +282,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             if ($this->apply) {
                 $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], [
-                    'name' => 'web',
+                    'name'   => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
@@ -313,7 +311,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $protectionConfig = [
             'required_status_checks' => [
-                'strict' => false,
+                'strict'   => false,
                 'contexts' => [
                     'continuous-integration/travis-ci',
                     'continuous-integration/styleci/pr',
@@ -324,16 +322,15 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     'users' => [],
                     'teams' => [],
                 ],
-                'dismiss_stale_reviews' => true,
+                'dismiss_stale_reviews'      => true,
                 'require_code_owner_reviews' => true,
             ],
-            'restrictions' => null,
+            'restrictions'   => null,
             'enforce_admins' => false,
         ];
         foreach ($branches as $branch) {
             $this->githubClient->repo()->protection()
-                ->update(static::GITHUB_GROUP, $repositoryName, $branch, $protectionConfig)
-            ;
+                ->update(static::GITHUB_GROUP, $repositoryName, $branch, $protectionConfig);
         }
         $this->io->comment('Branches protection applied.');
     }
@@ -362,8 +359,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         );
         $git
             ->config('user.name', static::GITHUB_USER)
-            ->config('user.email', static::GITHUB_EMAIL)
-        ;
+            ->config('user.email', static::GITHUB_EMAIL);
 
         $branches = array_reverse($projectConfig['branches']);
 
@@ -421,14 +417,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     // If the Pull Request does not exists yet, create it.
                     $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, [
                         'state' => 'open',
-                        'head' => 'sonata-project:'.$currentDevKit,
+                        'head'  => 'sonata-project:'.$currentDevKit,
                     ]);
                     if (0 === count($pulls)) {
                         $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
-                            'head' => 'sonata-project:'.$currentDevKit,
-                            'base' => $currentBranch,
-                            'body' => '',
+                            'head'  => 'sonata-project:'.$currentDevKit,
+                            'base'  => $currentBranch,
+                            'body'  => '',
                         ]);
                     }
 

@@ -29,8 +29,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('pull-request-auto-merge')
-            ->setDescription('Merge RTM pull requests. Only active for StyleCI/SonataCI PR.')
-        ;
+            ->setDescription('Merge RTM pull requests. Only active for StyleCI/SonataCI PR.');
     }
 
     /**
