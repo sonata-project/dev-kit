@@ -64,10 +64,8 @@ matrix:
 {% endfor %}
     - php: '{{ php|last }}'
       env: SYMFONY_DEPRECATIONS_HELPER=0
-    - php: hhvm
   allow_failures:
     - php: nightly
-    - php: hhvm
     - env: SYMFONY_DEPRECATIONS_HELPER=0
 {% for package_name,package_versions in versions %}
 {% if package_versions|length > 0 %}
