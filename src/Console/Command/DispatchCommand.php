@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -51,7 +53,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -63,7 +65,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
 
@@ -116,7 +118,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      * @param Package $package
      * @param array   $projectConfig
      */
-    private function updateRepositories(Package $package, array $projectConfig)
+    private function updateRepositories(Package $package, array $projectConfig): void
     {
         $repositoryName = $this->getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
@@ -155,7 +157,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     /**
      * @param Package $package
      */
-    private function updateLabels(Package $package)
+    private function updateLabels(Package $package): void
     {
         $repositoryName = $this->getRepositoryName($package);
         $this->io->section('Labels');
@@ -231,7 +233,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function updateDevKitHook(Package $package)
+    private function updateDevKitHook(Package $package): void
     {
         $repositoryName = $this->getRepositoryName($package);
         $this->io->section('DevKit hook');
@@ -301,7 +303,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      * @param Package $package
      * @param array   $projectConfig
      */
-    private function updateBranchesProtection(Package $package, array $projectConfig)
+    private function updateBranchesProtection(Package $package, array $projectConfig): void
     {
         $repositoryName = $this->getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
@@ -316,7 +318,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 'strict' => false,
                 'contexts' => [
                     'continuous-integration/travis-ci',
-                    'continuous-integration/styleci/pr',
                 ],
             ],
             'required_pull_request_reviews' => [
@@ -341,7 +342,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     /**
      * @param Package $package
      */
-    private function dispatchFiles(Package $package)
+    private function dispatchFiles(Package $package): void
     {
         $repositoryName = $this->getRepositoryName($package);
         $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
@@ -453,7 +454,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      * @param array   $projectConfig
      * @param string  $branchName
      */
-    private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName)
+    private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName): void
     {
         $localFullPath = __DIR__.'/../../../'.$localPath;
         $localFileType = filetype($localFullPath);

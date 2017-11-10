@@ -12,12 +12,19 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
+env:
+  global:
+    - PATH="$HOME/.local/bin:$PATH"
+
 before_install:
   - phpenv config-rm xdebug.ini
+  - mkdir --parents ~/.local/bin
+  - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar --output-document=php-cs-fixer.phar
 
 install:
   - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script:
+  - php php-cs-fixer.phar fix --verbose --dry-run --diff
   - touch .env
   - ./dev-kit dispatch

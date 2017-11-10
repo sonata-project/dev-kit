@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -41,7 +43,7 @@ final class GithubHookProcessor
      * @param string $eventName
      * @param array  $payload
      */
-    public function processPendingAuthor($eventName, array $payload)
+    public function processPendingAuthor($eventName, array $payload): void
     {
         if (!in_array($payload['action'], ['created', 'synchronize'], true)) {
             return;
@@ -68,7 +70,7 @@ final class GithubHookProcessor
      * @param string $eventName
      * @param array  $payload
      */
-    public function processReviewLabels($eventName, array $payload)
+    public function processReviewLabels($eventName, array $payload): void
     {
         if (!in_array($payload['action'], ['opened', 'synchronize'], true)) {
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,7 +26,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -52,7 +54,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function checkPullRequests(Package $package)
+    private function checkPullRequests(Package $package): void
     {
         $repositoryName = $this->getRepositoryName($package);
 

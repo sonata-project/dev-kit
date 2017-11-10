@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,7 +25,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 {
     private const TIME_BEFORE_MERGE = 60;
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -51,7 +53,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function mergePullRequest(Package $package, array $projectConfig)
+    private function mergePullRequest(Package $package, array $projectConfig): void
     {
         if (!array_key_exists('branches', $projectConfig)) {
             return;

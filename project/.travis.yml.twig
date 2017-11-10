@@ -47,7 +47,7 @@ matrix:
       env: TARGET=docs
 {% endif %}
 {% if docs_target %}
-    - php: '{{ php|last }}'
+    - php: '{{ php|first }}'
       env: TARGET=lint
 {% endif %}
     - php: '{{ php|first }}'
