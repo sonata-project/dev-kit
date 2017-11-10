@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -26,7 +28,7 @@ final class GithubClient extends Client
      * @param int    $issueId
      * @param string $label
      */
-    public function addIssueLabel($repoUser, $repoName, $issueId, $label)
+    public function addIssueLabel($repoUser, $repoName, $issueId, $label): void
     {
         foreach ($this->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
@@ -45,7 +47,7 @@ final class GithubClient extends Client
      * @param int    $issueId
      * @param string $label
      */
-    public function removeIssueLabel($repoUser, $repoName, $issueId, $label)
+    public function removeIssueLabel($repoUser, $repoName, $issueId, $label): void
     {
         foreach ($this->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {

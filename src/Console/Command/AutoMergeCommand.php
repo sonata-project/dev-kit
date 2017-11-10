@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -31,7 +33,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -45,7 +47,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
 
@@ -82,7 +84,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function mergeBranches(Package $package, array $projectConfig)
+    private function mergeBranches(Package $package, array $projectConfig): void
     {
         if (!$this->apply || !array_key_exists('branches', $projectConfig)) {
             return;
