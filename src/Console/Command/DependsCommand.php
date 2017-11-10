@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Sonata\DevKit\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,7 +39,7 @@ final class DependsCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $branchDepth = intval($input->getOption('branch-depth'));
+        $branchDepth = (int) ($input->getOption('branch-depth'));
 
         foreach ($this->configs['projects'] as $name => $config) {
             $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
