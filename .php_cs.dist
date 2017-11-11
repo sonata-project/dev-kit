@@ -19,7 +19,6 @@ $finder = PhpCsFixer\Finder::create()
 
 return PhpCsFixer\Config::create()
     ->setFinder($finder)
-    ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
         'array_syntax' => [
@@ -28,12 +27,10 @@ return PhpCsFixer\Config::create()
         'braces' => [
             'allow_single_line_closure' => true,
         ],
-        'declare_strict_types' => true,
         'header_comment' => [
             'header' => $header,
             'location' => 'after_open',
         ],
-        'modernize_types_casting' => true,
         'no_extra_consecutive_blank_lines' => [
             'break',
             'continue',
