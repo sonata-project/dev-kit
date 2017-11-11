@@ -22,7 +22,6 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
-        '@Symfony:risky' => true,
         'array_syntax' => [
             'syntax' => 'short',
         ],
@@ -46,14 +45,9 @@ return PhpCsFixer\Config::create()
             'throw',
             'use',
         ],
-        'no_useless_else' => true,
         'no_useless_return' => true,
         'ordered_imports' => true,
         'phpdoc_order' => true,
-        'psr4' => true,
-        'semicolon_after_instruction' => true,
-        'strict_comparison' => true,
-        'strict_param' => true,
         'ternary_to_null_coalescing' => true,
     ])
     ->setUsingCache(true)
