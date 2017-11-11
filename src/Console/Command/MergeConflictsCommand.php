@@ -30,8 +30,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('merge-conflicts')
-            ->setDescription('Comments non-mergeable pull requests, asking the author to solve conflicts.')
-        ;
+            ->setDescription('Comments non-mergeable pull requests, asking the author to solve conflicts.');
     }
 
     /**
