@@ -28,7 +28,8 @@ final class DependsCommand extends AbstractCommand
         $this
             ->setName('depends')
             ->setDescription('Show internal sonata dependencies of each project.')
-            ->addOption('branch-depth', null, InputOption::VALUE_OPTIONAL, 'Number of branches to show.', 2);
+            ->addOption('branch-depth', null, InputOption::VALUE_OPTIONAL, 'Number of branches to show.', 2)
+        ;
     }
 
     /**
@@ -36,7 +37,7 @@ final class DependsCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $branchDepth = (int) ($input->getOption('branch-depth'));
+        $branchDepth = intval($input->getOption('branch-depth'));
 
         foreach ($this->configs['projects'] as $name => $config) {
             $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);

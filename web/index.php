@@ -25,7 +25,8 @@ $app = new Silex\Application();
 $app
     ->register(new TwigServiceProvider(), [
         'twig.path' => __DIR__.'/../views',
-    ]);
+    ])
+;
 
 $app->get('/', function () use ($app) {
     $revision = file_exists(__DIR__.'/../REVISION') ? trim(file_get_contents(__DIR__.'/../REVISION')) : null;

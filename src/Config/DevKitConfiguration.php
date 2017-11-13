@@ -42,7 +42,8 @@ class DevKitConfiguration implements ConfigurationInterface
                 ->arrayNode('packages')
                     ->prototype('scalar')->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }

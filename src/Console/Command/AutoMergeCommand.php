@@ -38,7 +38,8 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         $this
             ->setName('auto-merge')
             ->setDescription('Merges branches of repositories if there is no conflict.')
-            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', []);
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
+        ;
     }
 
     /**
@@ -50,7 +51,8 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
         $this->projects = count($input->getArgument('projects'))
             ? $input->getArgument('projects')
-            : array_keys($this->configs['projects']);
+            : array_keys($this->configs['projects'])
+        ;
     }
 
     /**
@@ -118,7 +120,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
                     $this->io->warning($message);
                     $this->slackClient->attach([
-                        'text'  => $message,
+                        'text' => $message,
                         'color' => 'danger',
                     ])->send('Merging: '.$repositoryName);
 
