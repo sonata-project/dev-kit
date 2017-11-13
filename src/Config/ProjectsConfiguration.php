@@ -60,6 +60,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->append($this->addVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
+                                        ->scalarNode('assets_path')->defaultNull()->end()
                                         ->scalarNode('tests_path')->defaultValue('Tests')->end()
                                     ->end()
                                 ->end()

@@ -514,6 +514,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ unstable_branch }}',
                 '{{ stable_branch }}',
                 '{{ docs_path }}',
+                '{{ assets_path }}',
                 '{{ tests_path }}',
                 '{{ website_path }}',
             ], [
@@ -525,6 +526,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $unstableBranch,
                 $stableBranch,
                 $branchConfig['docs_path'],
+                $branchConfig['assets_path'],
                 $branchConfig['tests_path'],
                 str_replace([static::PACKAGIST_GROUP.'/', '-bundle'], '', $package->getName()),
             ], $localContent));

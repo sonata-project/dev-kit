@@ -132,6 +132,7 @@ core-bundle:
       tests_path: tests
 
 dashboard-bundle:
+  assets_path: 'Resources/assets_src'
   branches:
     master:
       php: ['7.1']
@@ -350,6 +351,7 @@ notification-bundle:
         sonata_core: ['3']
 
 page-bundle:
+  assets_path: 'Resources/assets_src'
   branches:
     master:
       php: ['7.1']
