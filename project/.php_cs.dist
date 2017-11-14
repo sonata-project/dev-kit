@@ -28,9 +28,9 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        'PHP56Migration' => true,
-        'PHP56Migration:risky' => true,
-        'PHPUnit57Migration:risky' => true,
+        '@PHP56Migration' => true,
+        '@PHP56Migration:risky' => true,
+        '@PHPUnit57Migration:risky' => true,
         'braces' => [
             'allow_single_line_closure' => true,
         ],
