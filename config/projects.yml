@@ -6,12 +6,16 @@ admin-bundle:
         symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_block: ['3']
+      docs_path: docs
+      tests_path: tests
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
         symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_block: ['3']
+      docs_path: docs
+      tests_path: tests
 
 admin-search-bundle:
   branches:
