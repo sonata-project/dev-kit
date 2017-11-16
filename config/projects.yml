@@ -44,8 +44,6 @@ block-bundle:
         sonata_core: ['3']
         # https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/131844587#L222
         #sonata_admin: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
@@ -53,8 +51,6 @@ block-bundle:
         sonata_core: ['3']
         # This has to be resolved: https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/130298942#L230
         #sonata_admin: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
 
 cache:
   excluded_files:
@@ -104,15 +100,11 @@ comment-bundle:
       versions:
         symfony: ['2.8']
         sonata_core: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
         symfony: ['2.8']
         sonata_core: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
 
 core-bundle:
   branches:
@@ -164,16 +156,12 @@ doctrine-mongodb-admin-bundle:
       versions:
         symfony: ['2.8', '3.2', '3.3']
         sonata_admin: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
     3.x:
       php: ['5.6', '7.0', '7.1']
       services: [mongodb]
       versions:
         symfony: ['2.8', '3.2', '3.3']
         sonata_admin: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
 
 doctrine-orm-admin-bundle:
   branches:
@@ -392,16 +380,12 @@ translation-bundle:
         symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_admin: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
     2.x:
       php: ['5.6', '7.0', '7.1']
       versions:
         symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_admin: ['3']
-      docs_path: Resources/doc
-      tests_path: Tests
 
 user-bundle:
   branches:
