@@ -98,12 +98,12 @@ comment-bundle:
     master:
       php: ['7.1']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
 
 core-bundle:
@@ -294,14 +294,14 @@ news-bundle:
     master:
       php: ['7.1']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_user: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_user: ['3']
@@ -324,14 +324,14 @@ page-bundle:
     master:
       php: ['7.1']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
