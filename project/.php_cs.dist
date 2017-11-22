@@ -16,6 +16,38 @@ file that was distributed with this source code.
 HEADER;
 
 $projectPath = (preg_match('/dev-kit\/project$/', __DIR__, $matches)) ? __DIR__.'/..' : __DIR__;
+$rules = [
+    '@Symfony' => true,
+    '@Symfony:risky' => true,
+    'braces' => [
+        'allow_single_line_closure' => true,
+    ],
+    'header_comment' => [
+        'header' => $header,
+        'location' => 'after_open',
+    ],
+    'no_extra_consecutive_blank_lines' => true,
+    'no_useless_return' => true,
+    'ordered_imports' => true,
+    'phpdoc_order' => true,
+    'ternary_to_null_coalescing' => true,
+];
+
+if (\PHP_VERSION_ID >= 50600 && \PHP_VERSION_ID < 70000) {
+    $rules = array_merge($rules, [
+        '@PHP56Migration' => true,
+        '@PHP56Migration:risky' => true,
+        '@PHPUnit57Migration:risky' => true,
+    ]);
+} else if (\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70100) {
+    $rules = array_merge($rules, [
+        'PHP70Migration:risky' => true,
+    ]);
+} else if (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70200) {
+   $rules = array_merge($rules, [
+       '@PHP71Migration:risky' => true,
+    ]);
+}
 
 $finder = PhpCsFixer\Finder::create()
     ->in($projectPath)
@@ -28,25 +60,6 @@ $finder = PhpCsFixer\Finder::create()
 return PhpCsFixer\Config::create()
     ->setFinder($finder)
     ->setRiskyAllowed(true)
-    ->setRules([
-        '@Symfony' => true,
-        '@Symfony:risky' => true,
-        '@PHP56Migration' => true,
-        '@PHP56Migration:risky' => true,
-        '@PHPUnit57Migration:risky' => true,
-        '@PHP71Migration:risky' => true,
-        'braces' => [
-            'allow_single_line_closure' => true,
-        ],
-        'header_comment' => [
-            'header' => $header,
-            'location' => 'after_open',
-        ],
-        'no_extra_consecutive_blank_lines' => true,
-        'no_useless_return' => true,
-        'ordered_imports' => true,
-        'phpdoc_order' => true,
-        'ternary_to_null_coalescing' => true,
-    ])
+    ->setRules($rules)
     ->setUsingCache(true)
 ;
