@@ -14,7 +14,7 @@ cache:
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.1/php-cs-fixer.phar
+  - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 
 install:
   - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
