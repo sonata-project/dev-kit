@@ -49,6 +49,7 @@ matrix:
 {% if docs_target %}
     - php: '{{ php|last }}'
       env: TARGET=lint
+      env: lint=1
 {% endif %}
     - php: '{{ php|first }}'
       env: COMPOSER_FLAGS="--prefer-lowest"
@@ -75,6 +76,7 @@ matrix:
 
 before_install:
   - git remote add upstream ${UPSTREAM_URL} && git fetch --all
+  - if [[ $lint = 1 ]]; then wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.2/php-cs-fixer.phar; fi
   - if [[ -x .travis/check_relevant_${TARGET}.sh && "$TRAVIS_PULL_REQUEST" != "false" ]]; then export RELEVANT=$(.travis/check_relevant_${TARGET}.sh); fi;
   - if [[ ! -z ${RELEVANT} ]];then exit 0; fi;
   - if [ -x .travis/before_install_${TARGET}.sh ]; then .travis/before_install_${TARGET}.sh; fi;
@@ -84,6 +86,7 @@ install:
 
 before_script:
   - if [ -x .travis/before_script_${TARGET}.sh ]; then .travis/before_script_${TARGET}.sh; fi;
+  - if [[ $lint = 1 ]]; then php php-cs-fixer.phar fix --dry-run --diff; fi
 
 script: make $TARGET
 
