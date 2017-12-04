@@ -87,6 +87,8 @@ protected function bar($foo, string $name, int $limit)
 }
 ```
 
+Please also note that multiline signatures are allowed when the line is longer than 120 characters.
+
 #### The documentation
 
 The documentation is mostly written with the `rst` format, and can be found in the `{{ docs_path }}` directory.
