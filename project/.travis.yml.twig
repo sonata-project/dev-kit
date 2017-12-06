@@ -51,7 +51,7 @@ matrix:
     - php: '{{ php|last }}'
       env: TARGET=docs
 {% endif %}
-    - php: '{{ php|first }}'
+    - php: '{{ php|last }}'
       env: TARGET=lint
     - php: '{{ php|first }}'
       env: COMPOSER_FLAGS="--prefer-lowest"
