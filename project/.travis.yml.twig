@@ -26,6 +26,11 @@ services:
 sudo: false
 dist: trusty
 
+addons:
+  apt:
+    packages:
+      - libxml2-utils
+
 cache:
   pip: true
   directories:
