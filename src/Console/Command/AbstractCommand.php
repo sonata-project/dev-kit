@@ -30,10 +30,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class AbstractCommand extends Command
 {
-    const GITHUB_GROUP = 'sonata-project';
-    const GITHUB_USER = 'SonataCI';
-    const GITHUB_EMAIL = 'thomas+ci@sonata-project.org';
-    const PACKAGIST_GROUP = 'sonata-project';
+    public const GITHUB_GROUP = 'sonata-project';
+    public const GITHUB_USER = 'SonataCI';
+    public const GITHUB_EMAIL = 'thomas+ci@sonata-project.org';
+    public const PACKAGIST_GROUP = 'sonata-project';
 
     /**
      * @var SymfonyStyle

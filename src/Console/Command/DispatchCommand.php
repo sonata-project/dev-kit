@@ -28,7 +28,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class DispatchCommand extends AbstractNeedApplyCommand
 {
-    const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
+    public const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
 
     /**
      * @var GitWrapper
