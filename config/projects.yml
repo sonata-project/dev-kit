@@ -209,7 +209,7 @@ ecommerce:
     master:
       php: ['7.1', '7.2']
       versions:
-        symfony: ['2.8']
+        symfony: ['2.8', '3.2', '3.3', '3.4']
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
