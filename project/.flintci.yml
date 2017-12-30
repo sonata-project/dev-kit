@@ -1,3 +1,6 @@
 services:
   phpcsfixer: true
   yamllint: true
+  shellcheck:
+    config:
+      shell: bash
