@@ -1,8 +1,8 @@
 {
     "name": "sonata-project/dev-kit",
+    "type": "project",
     "description": "Sonata project tools kit.",
     "license": "MIT",
-    "type": "project",
     "authors": [
         {
             "name": "Sullivan SENECHAL",
@@ -30,6 +30,8 @@
         "symfony/var-dumper": "^3.0"
     },
     "autoload": {
-        "psr-4": { "Sonata\\DevKit\\": "src" }
+        "psr-4": {
+            "Sonata\\DevKit\\": "src"
+        }
     }
 }
