@@ -1,6 +1,8 @@
 {
     "name": "sonata-project/dev-kit",
+    "description": "Sonata project tools kit.",
     "license": "MIT",
+    "type": "project",
     "authors": [
         {
             "name": "Sullivan SENECHAL",
