@@ -53,7 +53,7 @@ matrix:
     - php: '{{ php|last }}'
       env: TARGET=lint
     - php: '{{ php|first }}'
-      env: COMPOSER_FLAGS="--prefer-lowest"
+      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY={{ versions.symfony|first }}.*
 {% for package_name,package_versions in versions %}
 {% for version in package_versions %}
     - php: '{{ target_php|default(php|last) }}'
