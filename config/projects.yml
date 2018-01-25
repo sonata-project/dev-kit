@@ -249,6 +249,11 @@ formatter-bundle:
         sonata_core: ['3']
         sonata_block: ['3']
 
+form-extensions:
+  branches:
+    master:
+      php: ['7.1', '7.2']
+
 google-authenticator:
   excluded_files:
     - README.md
@@ -388,6 +393,11 @@ translation-bundle:
         symfony: ['2.8', '3.3', '3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
+
+twig-extensions:
+  branches:
+    master:
+      php: ['7.1', '7.2']
 
 user-bundle:
   branches:
