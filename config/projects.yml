@@ -122,7 +122,7 @@ dashboard-bundle:
     master:
       php: ['7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.2', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
