@@ -39,17 +39,17 @@ Closes #{put_issue_number_here}
 ### Security
 ```
 
-## To do
-
 <!--
-    If this is a work in progress, COMPLETE and ADD needed tasks.
+    If this is a work in progress, uncomment this section.
     You can add as many tasks as you want.
-    If some are not relevant, just REMOVE them.
+    If some are not relevant, just remove them.
+    
+    ## To do
+    
+    - [ ] Update the tests
+    - [ ] Update the documentation
+    - [ ] Add an upgrade note
 -->
-
-- [ ] Update the tests
-- [ ] Update the documentation
-- [ ] Add an upgrade note
 
 ## Subject
 
