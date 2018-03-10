@@ -42,17 +42,24 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER=weak
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/{{ repository_name }}.git
+stages:
+  - lint
+  - docs
+  - test
 
-matrix:
+jobs:
   fast_finish: true
   include:
 {% if docs_target %}
-    - php: '{{ php|last }}'
+    - stage: docs
+      php: '{{ php|last }}'
       env: TARGET=docs
 {% endif %}
-    - php: '{{ php|last }}'
+    - stage: lint
+      php: '{{ php|last }}'
       env: TARGET=lint
-    - php: '{{ php|first }}'
+    - stage: test
+      php: '{{ php|first }}'
       env: COMPOSER_FLAGS="--prefer-lowest"
 {% for package_name,package_versions in versions %}
 {% for version in package_versions %}
