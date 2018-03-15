@@ -5,7 +5,6 @@ admin-bundle:
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
-        sonata_block: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
@@ -125,7 +124,6 @@ dashboard-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
-        sonata_block: ['3']
 
 datagrid-bundle:
   branches:
@@ -185,7 +183,6 @@ doctrine-phpcr-admin-bundle:
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
-        sonata_block: ['3']
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
@@ -239,7 +236,6 @@ formatter-bundle:
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
-        sonata_block: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
@@ -327,7 +323,6 @@ page-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
-        sonata_block: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
@@ -344,7 +339,6 @@ seo-bundle:
       php: ['7.1', '7.2']
       versions:
         symfony: ['3.4']
-        sonata_block: ['3']
         sonata_admin: ['3']
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
@@ -361,7 +355,6 @@ timeline-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
-        sonata_block: ['3']
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
