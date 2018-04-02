@@ -24,7 +24,7 @@ before_install:
 install:
   - |
       composer global show hirak/prestissimo --quiet ||
-      travis_retry composer global require hirak/prestissimo --prefer-dist --no-interaction --no-progress $COMPOSER_FLAGS
+      travis_retry composer global require hirak/prestissimo --prefer-dist --no-interaction --no-progress
   - composer update --prefer-dist --no-interaction --no-progress $COMPOSER_FLAGS
 
 script:
