@@ -22,7 +22,7 @@ before_install:
   - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar --output-document=php-cs-fixer.phar
 
 install:
-  - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
+  - composer update --prefer-dist --no-interaction
 
 script:
   - php php-cs-fixer.phar fix --verbose --dry-run --diff
