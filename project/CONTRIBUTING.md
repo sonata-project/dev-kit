@@ -540,6 +540,11 @@ If there are any deprecations, then the release should be minor and the UPGRADE-
 moving the instructions explaining how to bypass the deprecation messages,
 that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 42.4.0`.
 
+#### Upgrading code comments and deprecation messages
+
+All occurences of `42.x` in comments or deprecation messages should be updating
+by resolving `x` to its value at the time of the release.
+
 #### Compiling the changelog
 
 Each non-pedantic (and therefore non-docs) PR should contain a `CHANGELOG` section,
