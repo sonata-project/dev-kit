@@ -549,8 +549,8 @@ The title is in the following format :
 
 #### Creating the release commit
 
-The changes above should be added to a commit with the following message : 42.3.2
-You should sign the tag with your GPG key, after which all you have to do is push it.
+The changes above should be added to a signed commit with the following message : 42.3.2
+You MUST sign the tag with your GPG key, after which all you have to do is push it.
 If you don't have push access, you can still create a PR with the relevant changes
 and have them signed off by someone who has it.
 
