@@ -540,6 +540,16 @@ If there are any deprecations, then the release should be minor and the UPGRADE-
 moving the instructions explaining how to bypass the deprecation messages,
 that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 42.4.0`.
 
+```patch
+ UPGRADE 42.x
+ ===========
+
++UPGRADE FROM 42.3.1 to 42.4.0
++=============================
++
+ ## Deprecated use of `getSchmeckles` in `Sonata\Defraculator\Vortex`
+```
+
 #### Upgrading code comments and deprecation messages
 
 All occurences of `42.x` in comments or deprecation messages should be updating
