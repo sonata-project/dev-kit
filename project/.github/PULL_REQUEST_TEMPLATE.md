@@ -30,7 +30,6 @@ Closes #{put_issue_number_here}
 -->
 
 <!-- REMOVE EMPTY SECTIONS -->
-
 ```markdown
 ### Added
 - Added some `Class::newMethod` to do great stuff
