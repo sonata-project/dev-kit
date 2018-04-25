@@ -23,13 +23,13 @@ Closes #{put_issue_number_here}
     Follow this schema: http://keepachangelog.com/
 -->
 
-<!-- REMOVE EMPTY SECTIONS -->
-
 <!-- 
     If you are updating something that doesn't require
     a release, you can delete whole Changelog section.
     (eg. update to docs, tests)
 -->
+
+<!-- REMOVE EMPTY SECTIONS -->
 
 ```markdown
 ### Added
