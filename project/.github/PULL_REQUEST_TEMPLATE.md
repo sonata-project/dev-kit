@@ -24,6 +24,13 @@ Closes #{put_issue_number_here}
 -->
 
 <!-- REMOVE EMPTY SECTIONS -->
+
+<!-- 
+    If you are updating something that doesn't require
+    a release, you can delete whole Changelog section.
+    (eg. update to docs, tests)
+-->
+
 ```markdown
 ### Added
 - Added some `Class::newMethod` to do great stuff
