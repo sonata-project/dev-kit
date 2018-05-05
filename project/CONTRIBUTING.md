@@ -516,7 +516,7 @@ Thank them for contributing. Encourage them if you feel this is going to be long
 In short, try to make them want to contribute again. If they are stuck, try to provide them with
 code yourself, or ping someone who can help.
 
-## Drafting a new release
+## Releases
 
 ### Minor releases and patch releases
 
