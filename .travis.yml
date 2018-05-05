@@ -25,7 +25,7 @@ install:
   - |
       composer global show hirak/prestissimo --quiet ||
       travis_retry composer global require hirak/prestissimo --prefer-dist --no-interaction --no-progress
-  - composer update --prefer-dist --no-interaction --no-progress $COMPOSER_FLAGS
+  - composer update --prefer-dist --no-interaction --no-progress
 
 script:
   - php php-cs-fixer.phar fix --verbose --dry-run --diff
