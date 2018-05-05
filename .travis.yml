@@ -10,7 +10,7 @@ sudo: false
 
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer
 
 env:
   global:
@@ -22,7 +22,10 @@ before_install:
   - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar --output-document=php-cs-fixer.phar
 
 install:
-  - composer update --prefer-dist --no-interaction
+  - |
+      composer global show hirak/prestissimo --quiet ||
+      travis_retry composer global require hirak/prestissimo --prefer-dist --no-interaction --no-progress
+  - composer update --prefer-dist --no-interaction --no-progress
 
 script:
   - php php-cs-fixer.phar fix --verbose --dry-run --diff
