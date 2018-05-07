@@ -338,7 +338,9 @@ page-bundle:
         sonata_admin: ['3']
         sonata_block: ['3']
 
-sandbox: ~
+sandbox:
+  excluded_files:
+    - phpunit.xml.dist
 
 seo-bundle:
   branches:
