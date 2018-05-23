@@ -1,6 +1,6 @@
 ---
-name: ❓ Support Question
-about: If you have a question 💬, please check out our Slack or StackOverflow!
+name: ⛔ NO support questions
+about: If you have a question, please check out our Slack or StackOverflow!
 ---
 
 Hi, we try to keep Github issues for bug reports and feature requests only.
