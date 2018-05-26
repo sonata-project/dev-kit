@@ -1,0 +1,34 @@
+#!/bin/bash -eu
+function stable_branch()
+{
+	git branch --format='%(refname:lstrip=2)'|grep '^[0-9].x$'|sort|tail --lines=1
+}
+
+function latest_tag_date()
+{
+	git --no-pager show --format=%aI --no-patch "$(git describe --abbrev=0 --tags)"|tail --lines 1
+}
+
+function urlencode()
+{
+	read -r toEncode
+	php --run "echo urlencode('$toEncode');"
+}
+
+function current_branch()
+{
+	git rev-parse --abbrev-ref HEAD
+}
+
+function repo_path()
+{
+	git remote --verbose \
+		| grep ':sonata' \
+		| grep 'git@' \
+		| head --lines=1 \
+		| cut --delimiter=':' --fields=2 \
+		| cut --delimiter='.' --fields=1
+}
+git checkout "$(stable_branch)"
+git pull --all --prune
+xdg-open "https://github.com/$(repo_path)/pulls?q=base:$(current_branch)+merged:>$(latest_tag_date|urlencode)"

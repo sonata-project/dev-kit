@@ -562,6 +562,8 @@ After that, go on the pull requests page of the repo and replace the default fil
 base:3.x merged:>2018-04-20T09:47:48Z
 ```
 
+All the previous steps are automated up in [this shell script](https://github.com/sonata-project/dev-kit/latest-prs).
+
  - `base`: The base branch where the PR are merged.
  It MUST be the current stable branch, or the legacy branch where you want to make a release.
  - `merged`: All the pull request merged **after** the given datetime.
