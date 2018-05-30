@@ -179,6 +179,8 @@ doctrine-orm-admin-bundle:
         sonata_admin: ['3']
 
 doctrine-phpcr-admin-bundle:
+  excluded_files:
+    - phpunit.xml.dist
   branches:
     master:
       php: ['7.1', '7.2']
@@ -336,7 +338,9 @@ page-bundle:
         sonata_admin: ['3']
         sonata_block: ['3']
 
-sandbox: ~
+sandbox:
+  excluded_files:
+    - phpunit.xml.dist
 
 seo-bundle:
   branches:
