@@ -42,6 +42,7 @@ labels:
 
 packages:
   symfony: symfony/symfony
+  symfony_maker: symfony/maker-bundle
   fos_user: friendsofsymfony/user-bundle
   sonata_core: sonata-project/core-bundle
   sonata_admin: sonata-project/admin-bundle
