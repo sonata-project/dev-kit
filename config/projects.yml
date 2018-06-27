@@ -68,6 +68,10 @@ cache-bundle:
       php: ['7.1', '7.2']
       versions:
         symfony: ['3.4']
+    3.x:
+      php: ['7.1', '7.2']
+      versions:
+        symfony: ['3.4']
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
