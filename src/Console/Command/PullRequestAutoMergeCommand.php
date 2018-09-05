@@ -68,7 +68,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         ]);
         foreach ($pulls as $pull) {
             // Do not managed not configured branches.
-            if (!in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
+            if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
                 continue;
             }
 
@@ -115,8 +115,8 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $commitMessages = array_map(function ($commit) {
                 return $commit['commit']['message'];
             }, $commits);
-            $commitsCount = count($commitMessages);
-            $uniqueCommitsCount = count(array_unique($commitMessages));
+            $commitsCount = \count($commitMessages);
+            $uniqueCommitsCount = \count(array_unique($commitMessages));
 
             // Some commit have the same message, but this cannot be squashed.
             if ($commitsCount !== $uniqueCommitsCount && 1 !== $uniqueCommitsCount) {
