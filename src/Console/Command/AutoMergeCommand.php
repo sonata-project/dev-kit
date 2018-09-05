@@ -51,7 +51,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     {
         parent::initialize($input, $output);
 
-        $this->projects = count($input->getArgument('projects'))
+        $this->projects = \count($input->getArgument('projects'))
             ? $input->getArgument('projects')
             : array_keys($this->configs['projects'])
         ;
@@ -63,7 +63,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
-        if (count($notConfiguredProjects)) {
+        if (\count($notConfiguredProjects)) {
             $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
 
             return 1;
@@ -111,7 +111,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                     sprintf('Merge %s into %s', $head, $base)
                 );
 
-                if (is_array($response) && array_key_exists('sha', $response)) {
+                if (\is_array($response) && array_key_exists('sha', $response)) {
                     $this->io->success(sprintf('Merged %s into %s', $head, $base));
                 } else {
                     $this->io->comment('Nothing to merge on '.$base);
