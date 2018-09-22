@@ -73,7 +73,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this->fileSystem = new Filesystem();
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../../..'));
 
-        $this->projects = count($input->getArgument('projects'))
+        $this->projects = \count($input->getArgument('projects'))
             ? $input->getArgument('projects')
             : array_keys($this->configs['projects'])
         ;
@@ -85,7 +85,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
-        if (count($notConfiguredProjects)) {
+        if (\count($notConfiguredProjects)) {
             $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
 
             return 1;
@@ -142,14 +142,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             }
         }
 
-        if (count($infoToUpdate)) {
+        if (\count($infoToUpdate)) {
             $this->io->comment('Following info have to be changed: '.implode(', ', array_keys($infoToUpdate)).'.');
             if ($this->apply) {
                 $this->githubClient->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, [
                     'name' => $repositoryName,
                 ]));
             }
-        } elseif (!count($infoToUpdate)) {
+        } elseif (!\count($infoToUpdate)) {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
     }
@@ -259,7 +259,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $devKitHook = null;
         foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName) as $hook) {
             if (array_key_exists('url', $hook['config'])
-                && 0 === strncmp($hook['config']['url'], $hookBaseUrl, strlen($hookBaseUrl))) {
+                && 0 === strncmp($hook['config']['url'], $hookBaseUrl, \strlen($hookBaseUrl))) {
                 $devKitHook = $hook;
 
                 break;
@@ -278,8 +278,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 ]);
                 $this->io->success('Hook created.');
             }
-        } elseif (count(array_diff_assoc($devKitHook['config'], $config))
-            || count(array_diff($devKitHook['events'], $events))
+        } elseif (\count(array_diff_assoc($devKitHook['config'], $config))
+            || \count(array_diff($devKitHook['events'], $events))
             || !$devKitHook['active']
         ) {
             $this->io->comment('Has to be updated.');
@@ -348,7 +348,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
 
         // No branch to manage, continue to next project.
-        if (0 === count($projectConfig['branches'])) {
+        if (0 === \count($projectConfig['branches'])) {
             return;
         }
 
@@ -381,7 +381,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             next($branches);
 
             // A PR is already here for previous branch, do nothing on the current one.
-            if (in_array($previousDevKit, $remoteBranches, true)) {
+            if (\in_array($previousDevKit, $remoteBranches, true)) {
                 continue;
             }
             // If the previous branch is not merged into the current one, do nothing.
@@ -397,13 +397,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $git->reset(['hard' => true]);
 
             // Checkout the targeted branch
-            if (in_array($currentBranch, $git->getBranches()->all(), true)) {
+            if (\in_array($currentBranch, $git->getBranches()->all(), true)) {
                 $git->checkout($currentBranch);
             } else {
                 $git->checkout('-b', $currentBranch, '--track', 'origin/'.$currentBranch);
             }
             // Checkout the dev-kit branch
-            if (in_array('remotes/origin/'.$currentDevKit, $git->getBranches()->all(), true)) {
+            if (\in_array('remotes/origin/'.$currentDevKit, $git->getBranches()->all(), true)) {
                 $git->checkout('-b', $currentDevKit, '--track', 'origin/'.$currentDevKit);
             } else {
                 $git->checkout('-b', $currentDevKit);
@@ -424,7 +424,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                         'state' => 'open',
                         'head' => 'sonata-project:'.$currentDevKit,
                     ]);
-                    if (0 === count($pulls)) {
+                    if (0 === \count($pulls)) {
                         $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
                             'head' => 'sonata-project:'.$currentDevKit,
@@ -464,14 +464,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
         }
 
-        if (in_array(substr($localPath, 8), $projectConfig['excluded_files'], true)) {
+        if (\in_array(substr($localPath, 8), $projectConfig['excluded_files'], true)) {
             return;
         }
 
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
-                if (!in_array($entry, ['.', '..'], true)) {
+                if (!\in_array($entry, ['.', '..'], true)) {
                     $this->renderFile(
                         $package,
                         $repositoryName,
@@ -488,14 +488,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $localContent = file_get_contents($localFullPath);
 
-        if (!$this->fileSystem->exists(dirname($distPath))) {
-            $this->fileSystem->mkdir(dirname($distPath));
+        if (!$this->fileSystem->exists(\dirname($distPath))) {
+            $this->fileSystem->mkdir(\dirname($distPath));
         }
 
         $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localPath);
         if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
-            $distPath = dirname($distPath).'/'.basename($distPath, '.twig');
+            $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
             file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $this->configs,
                 $projectConfig,

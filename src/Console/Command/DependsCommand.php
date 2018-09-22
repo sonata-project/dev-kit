@@ -52,7 +52,7 @@ final class DependsCommand extends AbstractCommand
                 }
                 $this->io->section($version->getVersion());
 
-                if (!is_array($version->getRequire())) {
+                if (!\is_array($version->getRequire())) {
                     continue;
                 }
                 foreach ($version->getRequire() as $packageName => $constraint) {
