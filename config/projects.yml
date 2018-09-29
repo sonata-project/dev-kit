@@ -243,15 +243,15 @@ exporter:
 formatter-bundle:
   branches:
     master:
-      php: ['7.1', '7.2']
+      php: ['7.2']
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_block: ['3']
-    3.x:
-      php: ['5.6', '7.0', '7.1', '7.2']
+    4.x:
+      php: ['7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_block: ['3']
 
