@@ -18,7 +18,7 @@ admin-bundle:
 admin-search-bundle:
   branches:
     master:
-      php: ['7.1', '7.2', '7.3', '7.3']
+      php: ['7.1', '7.2', '7.3']
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
