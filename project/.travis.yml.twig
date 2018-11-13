@@ -50,8 +50,6 @@ matrix:
     - php: '{{ php|last }}'
       env: TARGET=docs
 {% endif %}
-    - php: '{{ php|last }}'
-      env: TARGET=lint
     - php: '{{ php|first }}'
       env: COMPOSER_FLAGS="--prefer-lowest"
 {% for package_name,package_versions in versions %}
