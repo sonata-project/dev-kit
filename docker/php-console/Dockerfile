@@ -1,4 +1,4 @@
-FROM nexylan/php-dev:7.0
+FROM nexylan/php-dev:7.2
 
 COPY entrypoint.sh /
 RUN chmod u+x /entrypoint.sh
