@@ -37,7 +37,7 @@ article-bundle:
       versions:
         symfony: ['3.4']
     1.x:
-      php: ['7.1', '7.2', '7.3']
+      php: ['7.1', '7.2']
       versions:
         symfony: ['3.4']
 
