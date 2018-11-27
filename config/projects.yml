@@ -10,7 +10,7 @@ admin-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_block: ['3']
         symfony_maker: ['1.7']
@@ -26,7 +26,7 @@ admin-search-bundle:
     1.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_admin: ['3']
         ruflin_elastica: ['2']
 
@@ -53,7 +53,7 @@ block-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         # This has to be resolved: https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/130298942#L230
         #sonata_admin: ['3']
@@ -89,7 +89,7 @@ classification-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_admin: ['3']
 
 classification-media-bundle:
@@ -109,7 +109,7 @@ comment-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
 
 core-bundle:
@@ -121,7 +121,7 @@ core-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
 
 dashboard-bundle:
   branches:
@@ -142,7 +142,7 @@ datagrid-bundle:
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
 
 doctrine-extensions:
   excluded_files:
@@ -166,7 +166,7 @@ doctrine-mongodb-admin-bundle:
       php: ['5.6', '7.0', '7.1', '7.2']
       services: [mongodb]
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_admin: ['3']
 
 doctrine-orm-admin-bundle:
@@ -180,7 +180,7 @@ doctrine-orm-admin-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
 
@@ -197,7 +197,7 @@ doctrine-phpcr-admin-bundle:
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_admin: ['3']
         sonata_block: ['3']
 
@@ -210,7 +210,7 @@ easy-extends-bundle:
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
 
 ecommerce:
   branches:
@@ -236,7 +236,7 @@ exporter:
     1.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         doctrine_odm: ['1']
       services: [mongodb]
 
@@ -280,7 +280,7 @@ intl-bundle:
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_user: ['3']
 
 media-bundle:
@@ -297,7 +297,7 @@ media-bundle:
       php: ['5.6', '7.0', '7.1', '7.2']
       services: [mongodb]
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         doctrine_odm: ['1']
         sonata_core: ['3']
         sonata_admin: ['3']
@@ -314,7 +314,7 @@ news-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_user: ['3']
@@ -329,7 +329,7 @@ notification-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
 
 page-bundle:
@@ -344,7 +344,7 @@ page-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
@@ -364,7 +364,7 @@ seo-bundle:
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_block: ['3']
         sonata_admin: ['3']
 
@@ -380,7 +380,7 @@ timeline-bundle:
     3.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
@@ -396,7 +396,7 @@ translation-bundle:
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
 
@@ -417,7 +417,7 @@ user-bundle:
     4.x:
       php: ['7.1', '7.2']
       versions:
-        symfony: ['2.8', '3.3', '3.4']
+        symfony: ['3.4']
         fos_user: ['2']
         sonata_core: ['3']
         sonata_admin: ['3']
