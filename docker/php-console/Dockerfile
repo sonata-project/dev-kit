@@ -6,4 +6,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /code
 
-CMD ["tail", "--follow", "--lines=0", "/var/log/dmesg"]
+CMD ["tail", "--follow", "--lines=0", "/var/log/lastlog"]
