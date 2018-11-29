@@ -20,8 +20,11 @@ fpm:
     - data
   volumes:
     - ./docker/conf/php.ini:/usr/local/etc/php/php.ini:ro
-  env_file:
-    - docker-compose.env
+  environment:
+    - UNIX_USERNAME
+    - UNIX_GROUP
+    - UNIX_UID
+    - UNIX_GID
 
 console:
   build: docker/php-console
@@ -31,5 +34,8 @@ console:
     - ./docker/conf/php.ini:/usr/local/etc/php/php.ini:ro
   links:
     - nginx
-  env_file:
-    - docker-compose.env
+  environment:
+    - UNIX_USERNAME
+    - UNIX_GROUP
+    - UNIX_UID
+    - UNIX_GID

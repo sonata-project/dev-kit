@@ -5,5 +5,4 @@
 /.bundle
 /Gemfile.lock
 /log
-/docker-compose.env
 /docker-compose.override.yml
