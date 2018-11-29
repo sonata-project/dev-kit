@@ -3,13 +3,8 @@ set -e
 
 setup
 
-# Wait for composer vendor
 if [ ! -f vendor/autoload.php ]; then
-    echo "Run 'composer install' command to continue."
+	su "$UNIX_USERNAME" -c 'composer install'
 fi
-while [ ! -f vendor/autoload.php ]; do
-    sleep 1
-done
-echo "Composer vendor found, processing."
 
 exec "$@"
