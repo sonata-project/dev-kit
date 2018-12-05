@@ -24,6 +24,8 @@ Closes #{put_issue_number_here}
 <!-- MANDATORY
     Fill the changelog part inside the code block.
     Follow this schema: http://keepachangelog.com/
+    This will end up on https://github.com/sonata-project/{{ repository_name }}/releases,
+    please keep it short and clear and to the point
 -->
 
 <!-- 
