@@ -28,7 +28,7 @@ Closes #{put_issue_number_here}
 
 <!-- 
     If you are updating something that doesn't require
-    a release, you can delete whole Changelog section.
+    a release, you can delete the whole Changelog section.
     (eg. update to docs, tests)
 -->
 
