@@ -256,6 +256,7 @@ formatter-bundle:
         sonata_block: ['3']
 
 form-extensions:
+  docs_target: false
   branches:
     master:
       php: ['7.2']
@@ -401,6 +402,7 @@ translation-bundle:
         sonata_admin: ['3']
 
 twig-extensions:
+  docs_target: false
   branches:
     master:
       php: ['7.2']
