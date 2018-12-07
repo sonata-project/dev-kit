@@ -36,12 +36,12 @@ $rules = [
     '@PHP56Migration' => true,
     '@PHP56Migration:risky' => true,
     '@PHPUnit57Migration:risky' => true,
-{% if php|first in ['7.0', '7.1'] %}
+{% if php|first in ['7.0', '7.1', '7.2', '7.3'] %}
     '@PHP70Migration' => true,
     '@PHP70Migration:risky' => true,
     '@PHPUnit60Migration:risky' => true,
 {% endif %}
-{% if php|first == '7.1' %}
+{% if php|first in ['7.1', '7.2', '7.3'] %}
     '@PHP71Migration' => true,
     '@PHP71Migration:risky' => true,
     'compact_nullable_typehint' => true,
