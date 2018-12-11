@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -ev
 
-{% if 'phpcr' in services %}
-TESTING_SCRIPTS_DIR=vendor/symfony-cmf/testing/bin
-CONSOLE=${TESTING_SCRIPTS_DIR}/console
+{% if repository_name is same as('SonataDoctrinePhpcrAdminBundle') %}
+CONSOLE=vendor/symfony-cmf/testing/bin/console
 
 export KERNEL_CLASS="Sonata\\DoctrinePHPCRAdminBundle\\Tests\\Fixtures\\App\\Kernel"
 echo '+++ create PHPCR +++'

@@ -190,14 +190,12 @@ doctrine-phpcr-admin-bundle:
   branches:
     master:
       php: ['7.2', '7.3']
-      services: [phpcr]
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
         sonata_block: ['3']
     2.x:
       php: ['5.6', '7.0', '7.1', '7.2', '7.3']
-      services: [phpcr]
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
