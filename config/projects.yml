@@ -233,8 +233,8 @@ exporter:
         symfony: ['3.4']
         doctrine_odm: ['1']
       services: [mongodb]
-    1.x:
-      php: ['5.6', '7.0', '7.1', '7.2', '7.3']
+    2.x:
+      php: ['7.2', '7.3']
       versions:
         symfony: ['3.4']
         doctrine_odm: ['1']
