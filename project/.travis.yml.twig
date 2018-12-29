@@ -48,7 +48,7 @@ matrix:
   fast_finish: true
   include:
 {% if docs_target %}
-    - php: '{{ php|last }}'
+    - php: '{{ '7.3' in php ? '7.2' : php|last }}'
       env: TARGET=docs
 {% endif %}
     - php: '{{ php|last }}'
