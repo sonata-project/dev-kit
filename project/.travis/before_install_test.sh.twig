@@ -22,13 +22,9 @@ sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
 
 {% for package_name,package_versions in versions if package_versions|length > 0 %}
     {% if packages[package_name] == 'symfony/maker-bundle' %}
-# TODO: remove when drop PHP 5 support
-# symfony/maker-bundle only works with PHP 7 and higher
-if [ "${TRAVIS_PHP_VERSION:0:3}" != "5.6" ]; then
-    # but only with Symfony 3.4 and higher
-    if [[ -z "${SYMFONY}" || ("${SYMFONY:0:3}" != "2.8" && "${SYMFONY:0:3}" != "3.3") ]]; then
-        composer require "{{ "symfony/maker-bundle:${" ~ package_name|upper ~ ":=" ~ package_versions|first ~ "}"}}" --no-update
-    fi
+# TODO: remove when dropping sf < 3.4 support
+if [[ -z "${SYMFONY}" || ("${SYMFONY:0:3}" != "2.8" && "${SYMFONY:0:3}" != "3.3") ]]; then
+    composer require "{{ "symfony/maker-bundle:${" ~ package_name|upper ~ ":=" ~ package_versions|first ~ "}"}}" --no-update
 fi
     {% else %}
 if [ "${{ package_name|upper }}" != "" ]; then composer require "{{ packages[package_name] }}:${{ package_name|upper }}" --no-update; fi;
