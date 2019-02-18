@@ -172,7 +172,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $name = $label['name'];
             $color = $label['color'];
 
-            $shouldExist = array_key_exists($name, $configuredLabels);
+            $shouldExist = \array_key_exists($name, $configuredLabels);
             $configuredColor = $shouldExist ? $configuredLabels[$name]['color'] : null;
             $shouldBeUpdated = $shouldExist && $color !== $configuredColor;
 
@@ -258,7 +258,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         // First, check if the hook exists.
         $devKitHook = null;
         foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName) as $hook) {
-            if (array_key_exists('url', $hook['config'])
+            if (\array_key_exists('url', $hook['config'])
                 && 0 === strncmp($hook['config']['url'], $hookBaseUrl, \strlen($hookBaseUrl))) {
                 $devKitHook = $hook;
 
@@ -494,7 +494,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localPath);
-        if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
+        if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
             file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $this->configs,
