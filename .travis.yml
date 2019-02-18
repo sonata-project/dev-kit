@@ -28,6 +28,7 @@ install:
   - composer update --prefer-dist --no-interaction --no-progress
 
 script:
+  - echo $SSH_PRIVATE_KEY
   - php php-cs-fixer.phar fix --verbose --dry-run --diff
   - touch .env
   - ./dev-kit dispatch
