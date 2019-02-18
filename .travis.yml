@@ -10,11 +10,14 @@ sudo: false
 
 cache:
   directories:
-    - $HOME/.composer
+  - "$HOME/.composer"
 
 env:
   global:
     - PATH="$HOME/.local/bin:$PATH"
+    - DEPLOY_SERVER="dev-kit.sonata-project.org"
+    - DEPLOY_USER="dev-kit"
+    - secure: cvauNa94oC09+WBM827o87iuaTfKCJIMYxzblOooWvrrTv8EoU0kuxixqpVz2/xapxxwnsN7SeFpGkUMQEFAtzWVmsSkpWS0uU/KT6jZIRRcPn2yFhfglLczS0DWxhwy5jg4uws/Y6Gas3Jxes7uh2HVnaCd+IcMAQ03tcYrs7d+AOfUHvCBfH5A655sFvtU2ZXfTZd5L1JVXf1moYJaccU/CYVQoKPt6x+QgEfMH0KPIPrqULHo0bYa5uMjFVTRpzDVPRIxb/IUSkUXl+ZmQl4+JtPsk4IuEfuUKKsmnTWAnrU3XZW6M8XYGBbX/amAW3vXQ9JNfZIyDq3gI2Mq0zDXR4owbfazjMubfgjOSONMJ4mRdKfLXARIlR3dD0m4ILkLAJ8zYsf6dTTEIDvHblhUrFVEU1a3L59nBwJJUQB1jjf7DWp3HqgNmS7QqiKN/HpUAE94MlbpReQU9G2fyUFSojMXXsnQUlP1RSmKPvKrEt5/fDHgPZRS4DlKpAkEfDV/4IkFrqa0Bu2wMJ/sj4N9P/MunRR+NpNaCI/fQA3Atn1rNb9hKEMuaoBqLcGO5XCZELrnBayQWp5B+apb15dTlVDyCodC+GcZZDNMXLgq/vYHkFPTAHewcjwygp1hW/RPAQK90HbGftXSIahBod3uEiW24zAmH7UCZBpGpJ0=
 
 before_install:
   - phpenv config-rm xdebug.ini
@@ -23,11 +26,17 @@ before_install:
 
 install:
   - |
-      composer global show hirak/prestissimo --quiet ||
-      travis_retry composer global require hirak/prestissimo --prefer-dist --no-interaction --no-progress
+    composer global show hirak/prestissimo --quiet ||
+    travis_retry composer global require hirak/prestissimo --prefer-dist --no-interaction --no-progress
   - composer update --prefer-dist --no-interaction --no-progress
 
 script:
   - php php-cs-fixer.phar fix --verbose --dry-run --diff
   - touch .env
-  - ./dev-kit dispatch
+  - "./dev-kit dispatch"
+
+deploy:
+  provider: script
+  script: deploy.sh
+  on:
+    branch: deploy
