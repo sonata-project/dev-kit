@@ -1,6 +1,7 @@
 branches:
   only:
     - master
+    - deploy
 
 language: php
 
@@ -15,8 +16,12 @@ cache:
 env:
   global:
     - PATH="$HOME/.local/bin:$PATH"
+    - DEPLOY_SERVER="dev-kit.sonata-project.org"
+    - DEPLOY_USER="dev.kit"
+    - IMAGE_NAME="dev_kit_${TRAVIS_BUILD_ID}"
 
 before_install:
+  - echo ${SSH_PRIVATE_KEY}
   - phpenv config-rm xdebug.ini
   - mkdir --parents ~/.local/bin
   - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar --output-document=php-cs-fixer.phar
@@ -31,3 +36,9 @@ script:
   - php php-cs-fixer.phar fix --verbose --dry-run --diff
   - touch .env
   - ./dev-kit dispatch
+
+deploy:
+  provider: script
+  script: bash deploy.sh
+  on:
+    branch: deploy

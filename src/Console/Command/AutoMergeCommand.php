@@ -86,7 +86,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
     private function mergeBranches(Package $package, array $projectConfig): void
     {
-        if (!$this->apply || !array_key_exists('branches', $projectConfig)) {
+        if (!$this->apply || !\array_key_exists('branches', $projectConfig)) {
             return;
         }
 
@@ -111,7 +111,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                     sprintf('Merge %s into %s', $head, $base)
                 );
 
-                if (\is_array($response) && array_key_exists('sha', $response)) {
+                if (\is_array($response) && \array_key_exists('sha', $response)) {
                     $this->io->success(sprintf('Merged %s into %s', $head, $base));
                 } else {
                     $this->io->comment('Nothing to merge on '.$base);
