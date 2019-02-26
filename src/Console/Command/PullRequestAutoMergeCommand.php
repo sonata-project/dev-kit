@@ -55,7 +55,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
     private function mergePullRequest(Package $package, array $projectConfig): void
     {
-        if (!array_key_exists('branches', $projectConfig)) {
+        if (!\array_key_exists('branches', $projectConfig)) {
             return;
         }
 
