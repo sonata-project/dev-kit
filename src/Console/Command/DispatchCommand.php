@@ -218,7 +218,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             array_push($rows, [$name, 'N/A', '#'.$color, 'Created']);
         }
 
-        usort($rows, function ($row1, $row2) {
+        usort($rows, static function ($row1, $row2) {
             return strcasecmp($row1[0], $row2[0]);
         });
 
@@ -372,7 +372,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $previousDevKit = null;
         while (($branchConfig = current($branches))) {
             // We have to fetch all branches on each step in case a PR is submitted.
-            $remoteBranches = array_map(function ($branch) {
+            $remoteBranches = array_map(static function ($branch) {
                 return $branch['name'];
             }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repositoryName));
 

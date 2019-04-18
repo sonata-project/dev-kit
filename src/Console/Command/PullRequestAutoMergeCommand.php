@@ -112,7 +112,7 @@ class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pull['number'],
             ]);
 
-            $commitMessages = array_map(function ($commit) {
+            $commitMessages = array_map(static function ($commit) {
                 return $commit['commit']['message'];
             }, $commits);
             $commitsCount = \count($commitMessages);
