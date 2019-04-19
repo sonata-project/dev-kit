@@ -30,7 +30,7 @@ $app
     ])
 ;
 
-$app->get('/', function () use ($app) {
+$app->get('/', static function () use ($app) {
     $revision = file_exists(__DIR__.'/../REVISION') ? trim(file_get_contents(__DIR__.'/../REVISION')) : null;
 
     return $app['twig']->render('index.html.twig', [
@@ -38,7 +38,7 @@ $app->get('/', function () use ($app) {
     ]);
 });
 
-$app->post('/github', function (Request $request) use ($app, $githubHookProcessor, $devKitToken) {
+$app->post('/github', static function (Request $request) use ($app, $githubHookProcessor, $devKitToken) {
     $eventName = $request->headers->get('X-GitHub-Event');
     $payload = json_decode($request->getContent(), true);
 
