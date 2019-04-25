@@ -313,14 +313,12 @@ news-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
-        sonata_user: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3']
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
-        sonata_user: ['3']
 
 notification-bundle:
   branches:
