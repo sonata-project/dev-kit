@@ -139,7 +139,7 @@ datagrid-bundle:
       php: ['7.2', '7.3']
       versions:
         symfony: ['3.4']
-    2.x:
+    3.x:
       php: ['7.1', '7.2', '7.3']
       versions:
         symfony: ['3.4']
