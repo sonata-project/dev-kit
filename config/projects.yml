@@ -412,6 +412,8 @@ twig-extensions:
   branches:
     master:
       php: ['7.2', '7.3']
+    1.x:
+      php: ['7.2', '7.3']
 
 user-bundle:
   branches:
