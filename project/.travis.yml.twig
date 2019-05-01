@@ -41,7 +41,7 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/{{ repository_name }}.git
-    - PHPUNIT_VERSION=7
+    - PHPUNIT_VERSION={{ phpunit_version|default('7') }}
 
 matrix:
   fast_finish: true
