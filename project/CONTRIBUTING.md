@@ -271,7 +271,7 @@ For class definitions, methods (or first level functions) and properties, use th
 
 ```php
 /**
- * @deprecated since 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
+ * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
  */
 final class IAmOldAndUseless
 {
@@ -280,12 +280,12 @@ final class IAmOldAndUseless
 final class StillUsedClass
 {
     /**
-     * @deprecated since 42.x, to be removed in 43.0.
+     * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public $butNotThisProperty;
 
     /**
-     * @deprecated since 42.x, to be removed in 43.0.
+     * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public function iAmBatman()
     {
@@ -299,7 +299,7 @@ If the deprecated thing is a service, you **MUST** specify it on the service def
 ```xml
 <service id="sonata.block.old" class="Sonata\Block\Old">
     <argument type="service" id="security.token_storage" />
-    <deprecated>The "%service_id%" service is deprecated since 42.x and will be removed in 43.0.</deprecated>
+    <deprecated>The "%service_id%" service is deprecated since sonata-project/bar-bundle 42.x and will be removed in 43.0.</deprecated>
  </service>
  ```
 
@@ -311,7 +311,7 @@ For everything else, not managed by the `@deprecated` tag, you **MUST** trigger 
 <?php
 if (/* some condition showing the user is using the legacy way */) {
     @trigger_error(
-        'The '.__METHOD__.' method is deprecated since 42.x, to be removed in 43.0. '.
+        'The '.__METHOD__.' method is deprecated since sonata-project/bar-bundle 42.x, to be removed in 43.0. '.
         'Use FooClass::barMethod() instead.',
         E_USER_DEPRECATED
     );
