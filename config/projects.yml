@@ -262,6 +262,7 @@ form-extensions:
   branches:
     master:
       php: ['7.2', '7.3']
+      phpunit_version: 8
 
 google-authenticator:
   excluded_files:
