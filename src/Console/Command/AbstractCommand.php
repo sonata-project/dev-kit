@@ -104,7 +104,6 @@ abstract class AbstractCommand extends Command
     /**
      * Returns repository name without vendor prefix.
      *
-     * @param Package $package
      *
      * @return string
      */

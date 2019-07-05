@@ -26,9 +26,6 @@ class ProjectsConfiguration implements ConfigurationInterface
      */
     private $devKitConfigs;
 
-    /**
-     * @param array $devKitConfigs
-     */
     public function __construct(array $devKitConfigs)
     {
         $this->devKitConfigs = $devKitConfigs;

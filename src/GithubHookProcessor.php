@@ -41,7 +41,6 @@ final class GithubHookProcessor
      * Github events: issue_comment, pull_request_review_comment
      *
      * @param string $eventName
-     * @param array  $payload
      */
     public function processPendingAuthor($eventName, array $payload): void
     {
@@ -68,7 +67,6 @@ final class GithubHookProcessor
      * - If a PR is updated and 'RTM' is set, it is removed.
      *
      * @param string $eventName
-     * @param array  $payload
      */
     public function processReviewLabels($eventName, array $payload): void
     {
