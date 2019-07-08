@@ -230,12 +230,14 @@ exporter:
         symfony: ['3.4']
         doctrine_odm: ['1']
       services: [mongodb]
+      phpunit_version: 8
     2.x:
       php: ['7.2', '7.3']
       versions:
         symfony: ['3.4']
         doctrine_odm: ['1']
       services: [mongodb]
+      phpunit_version: 8
 
 formatter-bundle:
   branches:
