@@ -114,9 +114,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     /**
      * Sets repository information and general settings.
-     *
-     * @param Package $package
-     * @param array   $projectConfig
      */
     private function updateRepositories(Package $package, array $projectConfig): void
     {
@@ -154,9 +151,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    /**
-     * @param Package $package
-     */
     private function updateLabels(Package $package): void
     {
         $repositoryName = $this->getRepositoryName($package);
@@ -299,10 +293,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    /**
-     * @param Package $package
-     * @param array   $projectConfig
-     */
     private function updateBranchesProtection(Package $package, array $projectConfig): void
     {
         $repositoryName = $this->getRepositoryName($package);
@@ -339,9 +329,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this->io->comment('Branches protection applied.');
     }
 
-    /**
-     * @param Package $package
-     */
     private function dispatchFiles(Package $package): void
     {
         $repositoryName = $this->getRepositoryName($package);
@@ -447,12 +434,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     }
 
     /**
-     * @param Package $package
-     * @param string  $repositoryName
-     * @param string  $localPath
-     * @param string  $distPath
-     * @param array   $projectConfig
-     * @param string  $branchName
+     * @param string $repositoryName
+     * @param string $localPath
+     * @param string $distPath
+     * @param string $branchName
      */
     private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName): void
     {
