@@ -56,9 +56,9 @@ build:
 
 test:
 ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
-	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 else
-	phpunit -c phpunit.xml.dist
+	vendor/bin/simple-phpunit -c phpunit.xml.dist
 endif
 .PHONY: test
 
