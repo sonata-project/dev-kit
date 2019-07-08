@@ -44,12 +44,9 @@ article-bundle:
 block-bundle:
   branches:
     master:
-      php: ['7.2', '7.3']
+      php: ['7.3']
       versions:
-        symfony: ['3.4']
-        sonata_core: ['3']
-        # https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/131844587#L222
-        #sonata_admin: ['3']
+        symfony: ['4.3']
     3.x:
       php: ['7.1', '7.2', '7.3']
       versions:
