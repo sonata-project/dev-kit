@@ -376,8 +376,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->githubClient->repos()->commits()->compare(
-                    static::GITHUB_GROUP, $repositoryName, $currentBranch, $previousBranch
-                )['ahead_by']) {
+                static::GITHUB_GROUP,
+                $repositoryName,
+                $currentBranch,
+                $previousBranch
+            )['ahead_by']) {
                 $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
 
                 continue;
