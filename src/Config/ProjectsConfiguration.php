@@ -56,6 +56,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                     ->children()
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->arrayNode('tools')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->scalarNode('phpunit_version')->defaultNull()->end()
                                         ->append($this->addVersionsNode())

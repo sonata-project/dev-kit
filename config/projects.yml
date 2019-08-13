@@ -47,6 +47,8 @@ block-bundle:
       php: ['7.3']
       versions:
         symfony: ['4.3']
+      tools:
+        - phpstan
     3.x:
       php: ['7.1', '7.2', '7.3']
       versions:
