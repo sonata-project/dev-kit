@@ -52,3 +52,4 @@ packages:
   sonata_user: sonata-project/user-bundle
   ruflin_elastica: ruflin/elastica
   doctrine_odm: doctrine/mongodb-odm
+  imagine: imagine/imagine
