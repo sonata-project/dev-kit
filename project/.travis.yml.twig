@@ -67,6 +67,7 @@ matrix:
     - php: '{{ php|last }}'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
+    - php: 7.4snapshot
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
 {% for package_name,package_versions in versions %}
