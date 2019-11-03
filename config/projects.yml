@@ -109,17 +109,6 @@ comment-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
 
-core-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4snapshot']
-      versions:
-        symfony: ['3.4']
-    3.x:
-      php: ['7.1', '7.2', '7.3', '7.4snapshot']
-      versions:
-        symfony: ['3.4']
-
 dashboard-bundle:
   branches:
     master:
@@ -299,6 +288,7 @@ media-bundle:
         doctrine_odm: ['1']
         sonata_core: ['3']
         sonata_admin: ['3']
+        imagine: ['0.7', '1']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
       services: [mongodb]
@@ -307,6 +297,7 @@ media-bundle:
         doctrine_odm: ['1']
         sonata_core: ['3']
         sonata_admin: ['3']
+        imagine: ['0.7', '1']
 
 news-bundle:
   branches:
