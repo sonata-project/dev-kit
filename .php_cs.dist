@@ -44,6 +44,7 @@ $rules = [
     'compact_nullable_typehint' => true,
     'static_lambda' => true,
     'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
+    'single_line_throw' => false,
     // To be tested before insertion:
 //    'strict_comparison' => true,
 //    'strict_param' => true,
