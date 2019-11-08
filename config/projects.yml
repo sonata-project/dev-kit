@@ -47,6 +47,7 @@ block-bundle:
       php: ['7.3']
       versions:
         symfony: ['4.3']
+      phpunit_version: 8
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
       versions:
