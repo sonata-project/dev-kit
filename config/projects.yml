@@ -138,8 +138,10 @@ doctrine-extensions:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      services: [mongodb]
     1.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      services: [mongodb]
 
 doctrine-mongodb-admin-bundle:
   branches:
