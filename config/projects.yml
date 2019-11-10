@@ -2,6 +2,7 @@ admin-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -9,6 +10,7 @@ admin-bundle:
         symfony_maker: ['1.7']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -19,12 +21,14 @@ admin-search-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
         ruflin_elastica: ['2']
     1.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
@@ -34,22 +38,26 @@ article-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
     1.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
 
 block-bundle:
   branches:
     master:
-      php: ['7.3']
+      php: ['7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['4.3']
       phpunit_version: 8
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -63,17 +71,21 @@ cache:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
 
 cache-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
 
@@ -81,11 +93,13 @@ classification-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
@@ -94,6 +108,7 @@ classification-media-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
 
@@ -101,11 +116,13 @@ comment-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -114,6 +131,7 @@ dashboard-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -124,10 +142,12 @@ datagrid-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
     3.x:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
 
@@ -138,21 +158,25 @@ doctrine-extensions:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       services: [mongodb]
     1.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       services: [mongodb]
 
 doctrine-mongodb-admin-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       services: [mongodb]
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       services: [mongodb]
       versions:
         symfony: ['3.4']
@@ -162,12 +186,14 @@ doctrine-orm-admin-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -179,12 +205,14 @@ doctrine-phpcr-admin-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
         sonata_block: ['3']
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
@@ -194,10 +222,12 @@ easy-extends-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
 
@@ -205,10 +235,12 @@ ecommerce:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['2.8']
 
@@ -218,6 +250,7 @@ exporter:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         doctrine_odm: ['1']
@@ -225,6 +258,7 @@ exporter:
       phpunit_version: 8
     2.x:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         doctrine_odm: ['1']
@@ -235,12 +269,14 @@ formatter-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_block: ['3']
     4.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -253,9 +289,11 @@ form-extensions:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       phpunit_version: 8
     1.x:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       phpunit_version: 8
 
 google-authenticator:
@@ -265,18 +303,22 @@ google-authenticator:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
 
 intl-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_user: ['3']
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_user: ['3']
@@ -285,6 +327,7 @@ media-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       services: [mongodb]
       versions:
         symfony: ['3.4']
@@ -294,6 +337,7 @@ media-bundle:
         imagine: ['0.7', '1']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       services: [mongodb]
       versions:
         symfony: ['3.4']
@@ -306,12 +350,14 @@ news-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -321,11 +367,13 @@ notification-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -334,6 +382,7 @@ page-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -341,6 +390,7 @@ page-bundle:
         sonata_block: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -355,12 +405,14 @@ seo-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_block: ['3']
         sonata_admin: ['3']
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_block: ['3']
@@ -370,6 +422,7 @@ timeline-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -377,6 +430,7 @@ timeline-bundle:
         sonata_block: ['3']
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -387,12 +441,14 @@ translation-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_admin: ['3']
     2.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_core: ['3']
@@ -405,13 +461,16 @@ twig-extensions:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
     1.x:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
 
 user-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         fos_user: ['2']
@@ -419,6 +478,7 @@ user-bundle:
         sonata_admin: ['3']
     4.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
+      target_php: '7.3'
       versions:
         symfony: ['3.4']
         fos_user: ['2']
