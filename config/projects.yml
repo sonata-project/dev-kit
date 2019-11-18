@@ -238,11 +238,11 @@ ecommerce:
       target_php: '7.3'
       versions:
         symfony: ['3.4']
-    2.x:
-      php: ['7.1', '7.2', '7.3', '7.4snapshot']
+    3.x:
+      php: ['7.2', '7.3', '7.4snapshot']
       target_php: '7.3'
       versions:
-        symfony: ['2.8']
+        symfony: ['3.4']
 
 exporter:
   excluded_files:
