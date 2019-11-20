@@ -97,12 +97,14 @@ classification-bundle:
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
+      services: [mongodb]
     3.x:
       php: ['7.1', '7.2', '7.3', '7.4snapshot']
       target_php: '7.3'
       versions:
         symfony: ['3.4']
         sonata_admin: ['3']
+      services: [mongodb]
 
 classification-media-bundle:
   branches:
