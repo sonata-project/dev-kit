@@ -460,9 +460,11 @@ twig-extensions:
     master:
       php: ['7.2', '7.3', '7.4snapshot']
       target_php: '7.3'
+      phpunit_version: 8
     1.x:
       php: ['7.2', '7.3', '7.4snapshot']
       target_php: '7.3'
+      phpunit_version: 8
 
 user-bundle:
   branches:
