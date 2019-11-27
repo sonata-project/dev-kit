@@ -55,14 +55,12 @@ block-bundle:
       versions:
         symfony: ['4.3']
       phpunit_version: 8
-    3.x:
-      php: ['7.1', '7.2', '7.3', '7.4snapshot']
+    4.x:
+      php: ['7.3', '7.4snapshot']
       target_php: '7.3'
       versions:
-        symfony: ['3.4']
-        sonata_core: ['3']
-        # This has to be resolved: https://travis-ci.org/sonata-project/SonataBlockBundle/jobs/130298942#L230
-        #sonata_admin: ['3']
+        symfony: ['4.3']
+      phpunit_version: 8
 
 cache:
   excluded_files:
