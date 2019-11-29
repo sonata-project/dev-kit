@@ -53,13 +53,13 @@ block-bundle:
       php: ['7.3', '7.4snapshot']
       target_php: '7.3'
       versions:
-        symfony: ['4.3']
+        symfony: ['4.3', '5.0']
       phpunit_version: 8
     4.x:
       php: ['7.3', '7.4snapshot']
       target_php: '7.3'
       versions:
-        symfony: ['4.3']
+        symfony: ['4.3', '5.0']
       phpunit_version: 8
 
 cache:
