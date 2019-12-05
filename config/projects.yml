@@ -7,7 +7,6 @@ admin-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_block: ['3']
-        symfony_maker: ['1.7']
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -15,7 +14,6 @@ admin-bundle:
         symfony: ['3.4']
         sonata_core: ['3']
         sonata_block: ['3']
-        symfony_maker: ['1.7']
 
 admin-search-bundle:
   branches:
