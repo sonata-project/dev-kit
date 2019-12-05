@@ -17,7 +17,6 @@ env:
     - PATH="$HOME/.local/bin:$PATH"
 
 before_install:
-  - phpenv config-rm xdebug.ini
   - mkdir --parents ~/.local/bin
   - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar --output-document=php-cs-fixer.phar
 
