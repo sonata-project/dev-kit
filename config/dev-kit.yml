@@ -41,6 +41,8 @@ labels:
     color: '006b75'
   - name: 'hacktoberfest'
     color: 'b0581d'
+  - name: 'keep'
+    color: '59b3c1'
 
 packages:
   symfony: symfony/symfony
