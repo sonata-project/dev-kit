@@ -419,6 +419,7 @@ timeline-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
+      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['3.4']
@@ -427,6 +428,7 @@ timeline-bundle:
         sonata_block: ['3']
     3.x:
       php: ['7.2', '7.3', '7.4']
+      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['3.4']
