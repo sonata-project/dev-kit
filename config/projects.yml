@@ -2,10 +2,10 @@ admin-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
+      phpunit_version: 8
       target_php: '7.3'
       versions:
-        symfony: ['3.4']
-        sonata_block: ['3']
+        symfony: ['4.4', '5.0']
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -325,6 +325,7 @@ media-bundle:
         doctrine_odm: ['1']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
+      phpunit_version: 8
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -335,6 +336,7 @@ media-bundle:
         sonata_core: ['3']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
+      phpunit_version: 8
 
 news-bundle:
   branches:
@@ -409,6 +411,7 @@ timeline-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
+      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['3.4']
@@ -416,6 +419,7 @@ timeline-bundle:
         sonata_block: ['3']
     3.x:
       php: ['7.2', '7.3', '7.4']
+      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['3.4']
