@@ -330,6 +330,7 @@ media-bundle:
         sonata_core: ['3']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
+      phpunit_version: 8
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -340,6 +341,7 @@ media-bundle:
         sonata_core: ['3']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
+      phpunit_version: 8
 
 news-bundle:
   branches:
