@@ -2,7 +2,6 @@ admin-bundle:
   branches:
     master:
       php: ['7.3', '7.4']
-      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['4.4', '5.0']
@@ -51,13 +50,11 @@ block-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.3', '5.0']
-      phpunit_version: 8
     4.x:
       php: ['7.3', '7.4']
       target_php: '7.3'
       versions:
         symfony: ['4.3', '5.0']
-      phpunit_version: 8
 
 cache:
   excluded_files:
@@ -249,7 +246,6 @@ exporter:
         symfony: ['3.4']
         doctrine_odm: ['1']
       services: [mongodb]
-      phpunit_version: 8
     2.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -257,7 +253,6 @@ exporter:
         symfony: ['3.4']
         doctrine_odm: ['1']
       services: [mongodb]
-      phpunit_version: 8
 
 formatter-bundle:
   branches:
@@ -283,11 +278,9 @@ form-extensions:
     master:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
-      phpunit_version: 8
     1.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
-      phpunit_version: 8
 
 google-authenticator:
   excluded_files:
@@ -325,7 +318,6 @@ media-bundle:
         doctrine_odm: ['1']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
-      phpunit_version: 8
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -336,7 +328,6 @@ media-bundle:
         sonata_core: ['3']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
-      phpunit_version: 8
 
 news-bundle:
   branches:
@@ -411,7 +402,6 @@ timeline-bundle:
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
-      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['3.4']
@@ -419,7 +409,6 @@ timeline-bundle:
         sonata_block: ['3']
     3.x:
       php: ['7.2', '7.3', '7.4']
-      phpunit_version: 8
       target_php: '7.3'
       versions:
         symfony: ['3.4']
@@ -451,11 +440,9 @@ twig-extensions:
     master:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
-      phpunit_version: 8
     1.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
-      phpunit_version: 8
 
 user-bundle:
   branches:
