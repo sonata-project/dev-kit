@@ -351,10 +351,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
         );
-        $git
-            ->config('user.name', static::GITHUB_USER)
-            ->config('user.email', static::GITHUB_EMAIL)
-        ;
+
+        $git->config('user.name', static::GITHUB_USER);
+        $git->config('user.email', static::GITHUB_EMAIL);
 
         $branches = array_reverse($projectConfig['branches']);
 
@@ -401,13 +400,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $currentBranch);
 
-            $git->add('.', ['all' => true])->getOutput();
-            $diff = $git->diff('--color', '--cached')->getOutput();
+            $git->add('.', ['all' => true]);
+            $diff = $git->diff('--color', '--cached');
 
             if (!empty($diff)) {
                 $this->io->writeln($diff);
                 if ($this->apply) {
-                    $git->commit('DevKit updates')->push('-u', 'origin', $currentDevKit);
+                    $git->commit('DevKit updates');
+                    $git->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
                     $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, [
