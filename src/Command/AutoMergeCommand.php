@@ -55,8 +55,6 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             ? $input->getArgument('projects')
             : array_keys($this->configs['projects'])
         ;
-
-        dd($this->projects);
     }
 
     /**

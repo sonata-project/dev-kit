@@ -47,7 +47,7 @@ final class DependsCommand extends AbstractCommand
 
             $bd = 0;
             foreach ($package->getVersions() as $version) {
-                if ('-dev' !== substr($version->getVersion(), '-4') && 'dev-master' !== $version->getVersion()) {
+                if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
                     continue;
                 }
                 $this->io->section($version->getVersion());
