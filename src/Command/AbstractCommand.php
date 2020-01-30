@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -106,9 +107,9 @@ abstract class AbstractCommand extends Command
      *
      * @return string
      */
-    final protected function getRepositoryName(Package $package)
+    final protected function getRepositoryName(Package $package): string
     {
-        $repositoryArray = explode('/', $package->getRepository());
+        $repositoryArray = u($package->getRepository())->split('/');
 
         return str_replace('.git', '', end($repositoryArray));
     }
