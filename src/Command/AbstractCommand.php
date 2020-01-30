@@ -1,0 +1,115 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace App\Command;
+
+use Maknz\Slack\Client as SlackClient;
+use Packagist\Api\Result\Package;
+use App\Config\DevKitConfiguration;
+use App\Config\ProjectsConfiguration;
+use App\Github\GithubClient;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Yaml\Yaml;
+
+/**
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ */
+abstract class AbstractCommand extends Command
+{
+    public const GITHUB_GROUP = 'sonata-project';
+    public const GITHUB_USER = 'SonataCI';
+    public const GITHUB_EMAIL = 'thomas+ci@sonata-project.org';
+    public const PACKAGIST_GROUP = 'sonata-project';
+
+    /**
+     * @var SymfonyStyle
+     */
+    protected $io;
+
+    /**
+     * @var array
+     */
+    protected $configs;
+
+    /**
+     * @var string|null
+     */
+    protected $githubAuthKey = null;
+
+    /**
+     * @var \Packagist\Api\Client
+     */
+    protected $packagistClient;
+
+    /**
+     * @var GithubClient
+     */
+    protected $githubClient = false;
+
+    /**
+     * @var \Github\ResultPager
+     */
+    protected $githubPaginator;
+
+    /**
+     * @var SlackClient
+     */
+    protected $slackClient;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->io = new SymfonyStyle($input, $output);
+
+        $processor = new Processor();
+        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
+            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../config/dev-kit.yml')),
+        ]);
+        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), [
+            'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yml'))],
+        ]);
+        $this->configs = array_merge($devKitConfigs, $projectsConfigs);
+
+        if (getenv('GITHUB_OAUTH_TOKEN')) {
+            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
+        }
+
+        $this->packagistClient = new \Packagist\Api\Client();
+
+        $this->githubClient = new GithubClient();
+        $this->githubPaginator = new \Github\ResultPager($this->githubClient);
+        if ($this->githubAuthKey) {
+            $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
+        }
+
+        $this->slackClient = new SlackClient(getenv('SLACK_HOOK'));
+    }
+
+    /**
+     * Returns repository name without vendor prefix.
+     *
+     * @return string
+     */
+    final protected function getRepositoryName(Package $package)
+    {
+        $repositoryArray = explode('/', $package->getRepository());
+
+        return str_replace('.git', '', end($repositoryArray));
+    }
+}

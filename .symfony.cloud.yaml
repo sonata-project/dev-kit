@@ -1,0 +1,46 @@
+name: app
+
+type: php:7.3
+
+runtime:
+    extensions:
+        - mbstring
+        - sodium
+        - ctype
+        - iconv
+        - json
+
+build:
+    flavor: none
+
+web:
+    locations:
+        "/":
+            root: "public"
+            expires: 1h
+            passthru: "/index.php"
+
+disk: 512
+
+mounts:
+    "/var": { source: local, source_path: var }
+
+hooks:
+    build: |
+        set -x -e
+
+        curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
+        (>&2 symfony-build)
+
+    deploy: |
+        set -x -e
+
+        (>&2 symfony-deploy)
+
+crons:
+    parse_emails:
+        spec: '*/10 * * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape bin/console app:parse-email-for-wlan-password
+            fi
