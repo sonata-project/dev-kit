@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\DevKit\Config;
+namespace App\Config;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -21,13 +21,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class DevKitConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sonata');
+        $treeBuilder = new TreeBuilder('sonata');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

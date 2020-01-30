@@ -16,6 +16,8 @@ composer require "alcaeus/mongo-php-adapter"
 
 sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
 
-{% for package_name,package_versions in versions if package_versions|length > 0 %}
+{% for package_name, package_versions in versions %}
+{% if package_versions|length > 0 %}
 if [ "${{ package_name|upper }}" != "" ]; then composer require "{{ packages[package_name] }}:${{ package_name|upper }}" --no-update; fi;
+{% endif %}
 {% endfor %}
