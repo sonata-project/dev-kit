@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Maknz\Slack\Client as SlackClient;
-use Packagist\Api\Result\Package;
 use App\Config\DevKitConfiguration;
 use App\Config\ProjectsConfiguration;
 use App\Github\GithubClient;
+use Maknz\Slack\Client as SlackClient;
+use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
