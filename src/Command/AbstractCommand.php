@@ -23,8 +23,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Yaml\Yaml;
 use function Symfony\Component\String\u;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -104,8 +104,6 @@ abstract class AbstractCommand extends Command
 
     /**
      * Returns repository name without vendor prefix.
-     *
-     * @return string
      */
     final protected function getRepositoryName(Package $package): string
     {
