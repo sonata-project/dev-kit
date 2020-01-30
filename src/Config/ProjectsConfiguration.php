@@ -75,8 +75,8 @@ class ProjectsConfiguration implements ConfigurationInterface
 
     private function addVersionsNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('versions');
+        $builder = new TreeBuilder('versions');
+        $node = $builder->getRootNode();
 
         $childrenNode = $node->children();
 
