@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [ "$#" -ge 1 ]; then
-    docker exec -u $(whoami) -it devkit_console_1 "$@"
-else
-    docker exec -u $(whoami) -it devkit_console_1 bash
-fi

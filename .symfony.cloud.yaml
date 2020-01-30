@@ -1,0 +1,70 @@
+name: app
+
+type: php:7.3
+
+runtime:
+    extensions:
+        - mbstring
+        - sodium
+        - ctype
+        - iconv
+        - json
+
+build:
+    flavor: none
+
+web:
+    locations:
+        "/":
+            root: "public"
+            expires: 1h
+            passthru: "/index.php"
+
+disk: 512
+
+mounts:
+    "/var": {source: local, source_path: var}
+
+hooks:
+    build: |
+        set -x -e
+
+        curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
+        (>&2 symfony-build)
+
+    deploy: |
+        set -x -e
+
+        (>&2 symfony-deploy)
+
+crons:
+    merge-conflicts:
+        spec: '*/10 * * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape bin/console merge-conflicts --apply
+            fi
+    pull-request-auto-merge:
+        spec: '*/5 * * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape bin/console pull-request-auto-merge --apply
+            fi
+    auto-merge:
+        spec: '0 2 * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape bin/console auto-merge --apply
+            fi
+    dispatch:
+        spec: '*/30 * * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape bin/console dispatch --apply
+            fi
+    dispatch-with-files:
+        spec: '5 2 * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape bin/console dispatch --with-files --apply
+            fi
