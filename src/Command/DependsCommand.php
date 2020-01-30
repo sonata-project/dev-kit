@@ -16,6 +16,7 @@ namespace App\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -56,7 +57,7 @@ final class DependsCommand extends AbstractCommand
                     continue;
                 }
                 foreach ($version->getRequire() as $packageName => $constraint) {
-                    if (!strstr($packageName, 'sonata-project/')) {
+                    if (!u($packageName)->startsWith('sonata-project/')) {
                         continue;
                     }
                     $this->io->writeln($packageName.':'.$constraint);

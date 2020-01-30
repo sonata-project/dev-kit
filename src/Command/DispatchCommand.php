@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -366,7 +367,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repositoryName));
 
             $currentBranch = key($branches);
-            $currentDevKit = $currentBranch.'-dev-kit';
+            $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
             next($branches);
 
             // A PR is already here for previous branch, do nothing on the current one.
