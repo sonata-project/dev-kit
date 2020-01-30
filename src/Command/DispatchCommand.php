@@ -443,7 +443,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName): void
     {
-        $localFullPath = __DIR__.'/../../../'.$localPath;
+        $localFullPath = __DIR__.'/../../'.$localPath;
         $localFileType = filetype($localFullPath);
         $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
 
