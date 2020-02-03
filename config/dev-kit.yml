@@ -43,6 +43,8 @@ labels:
     color: 'b0581d'
   - name: 'keep'
     color: '59b3c1'
+  - name: 'wontfix'
+    color: 'ffffff'
 
 packages:
   symfony: symfony/symfony
