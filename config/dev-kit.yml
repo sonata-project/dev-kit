@@ -21,6 +21,8 @@ labels:
     color: 'ededed'
   - name: pending author
     color: 'ededed'
+  - name: stale
+    color: 'ededed'
   - name: in progress
     color: 'ededed'
   - name: RTM
