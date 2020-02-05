@@ -24,10 +24,10 @@ rules:
     no_bash_prompt: ~
     no_composer_phar: ~
     no_inheritdoc: ~
-    
+
     # can be enabled when no Symfony 3.4 support anymore
     #no_app_bundle: ~
     #no_config_yaml: ~
     #kernel_instead_of_app_kernel: ~
     #no_app_console: ~
-    
+
