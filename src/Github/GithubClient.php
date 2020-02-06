@@ -18,20 +18,27 @@ use Github\Client;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class GithubClient extends Client
+final class GithubClient
 {
+    private $client;
+
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
+
     /**
      * Adds a label from an issue if this one is not set.
      */
     public function addIssueLabel(string $repoUser, string $repoName, int $issueId, string $label): void
     {
-        foreach ($this->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
+        foreach ($this->client->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
                 return;
             }
         }
 
-        $this->issues()->labels()->add($repoUser, $repoName, $issueId, $label);
+        $this->client->issues()->labels()->add($repoUser, $repoName, $issueId, $label);
     }
 
     /**
@@ -39,9 +46,9 @@ final class GithubClient extends Client
      */
     public function removeIssueLabel(string $repoUser, string $repoName, int $issueId, string $label): void
     {
-        foreach ($this->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
+        foreach ($this->client->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
-                $this->issues()->labels()->remove($repoUser, $repoName, $issueId, $label);
+                $this->client->issues()->labels()->remove($repoUser, $repoName, $issueId, $label);
 
                 break;
             }
