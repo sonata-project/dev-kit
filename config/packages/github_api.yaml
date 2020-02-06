@@ -1,5 +1,5 @@
 services:
-    Github\Client:
+    App\Github\GithubClient:
         arguments:
             - '@Github\HttpClient\Builder'
         calls:
