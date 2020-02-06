@@ -15,7 +15,7 @@ jobs:
             - name: "Checkout"
               uses: actions/checkout@v1.2.0
               with:
-                ref: master
+                  ref: master
 
             - name: "Update REVISION file"
               run: echo $(git rev-parse HEAD) > REVISION
