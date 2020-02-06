@@ -3,7 +3,7 @@ services:
         arguments:
             - '@Github\HttpClient\Builder'
         calls:
-            - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, 'http_token']]
+            - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, !php/const \Github\Client::AUTH_HTTP_TOKEN]]
 
     Github\HttpClient\Builder:
         arguments:
