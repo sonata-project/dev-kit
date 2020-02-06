@@ -35,8 +35,6 @@ final class GithubHookProcessor
      */
     public function processPendingAuthor(string $eventName, array $payload): void
     {
-        dd($this->client);
-
         if (!\in_array($payload['action'], ['created', 'synchronize'], true)) {
             return;
         }
@@ -61,8 +59,6 @@ final class GithubHookProcessor
      */
     public function processReviewLabels(string $eventName, array $payload): void
     {
-        dd($this->client);
-
         if (!\in_array($payload['action'], ['opened', 'synchronize'], true)) {
             return;
         }
