@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace App\Github;
 
-use Github\Client;
-
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class GithubHookProcessor
 {
     /**
-     * @var Client
+     * @var GithubClient
      */
     private $client;
 
-    public function __construct(Client $client)
+    public function __construct(GithubClient $client)
     {
         $this->client = $client;
     }
