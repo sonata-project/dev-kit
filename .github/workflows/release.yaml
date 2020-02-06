@@ -3,7 +3,7 @@ on:
         branches:
             - master
 
-name: CI
+name: Release
 
 jobs:
     update-revision-file:
@@ -27,4 +27,4 @@ jobs:
                   commit_message: "Update REVISION file"
                   file_pattern: REVISION
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.SONATA_CI_GIHUB_TOKEN }}
