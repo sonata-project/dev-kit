@@ -15,7 +15,6 @@ namespace App\Command;
 
 use App\Config\DevKitConfiguration;
 use App\Config\ProjectsConfiguration;
-use App\Github\GithubClient;
 use Github\Client;
 use Maknz\Slack\Client as SlackClient;
 use Packagist\Api\Result\Package;
@@ -58,7 +57,7 @@ abstract class AbstractCommand extends Command
     protected $packagistClient;
 
     /**
-     * @var GithubClient
+     * @var Client
      */
     protected $githubClient = false;
 
