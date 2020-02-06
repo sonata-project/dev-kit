@@ -29,7 +29,7 @@ final class GithubController
         $eventName = $request->headers->get('X-GitHub-Event');
         $payload = json_decode($request->getContent(), true);
 
-        if (!$devKitToken || $request->query->get('token') !== $devKitToken) {
+        if ('' === $devKitToken || $request->query->get('token') !== $devKitToken) {
             return new JsonResponse(['message' => 'Invalid credentials'], 403);
         }
 
