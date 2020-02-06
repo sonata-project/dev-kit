@@ -9,7 +9,7 @@ jobs:
             - name: PHP-CS-Fixer
               uses: docker://oskarstark/php-cs-fixer-ga:latest
               with:
-                args: --diff --dry-run
+                  args: --diff --dry-run
     composer-normalize:
         name: composer-normalize
         runs-on: ubuntu-latest
