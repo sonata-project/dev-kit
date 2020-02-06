@@ -16,6 +16,7 @@ namespace App\Command;
 use App\Config\DevKitConfiguration;
 use App\Config\ProjectsConfiguration;
 use App\Github\GithubClient;
+use Github\Client;
 use Maknz\Slack\Client as SlackClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
@@ -87,19 +88,20 @@ abstract class AbstractCommand extends Command
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
+        $this->packagistClient = new \Packagist\Api\Client();
+        $this->slackClient = new SlackClient(getenv('SLACK_HOOK_URL'));
+
+        $client = new Client();
         if (getenv('GITHUB_OAUTH_TOKEN')) {
             $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
         }
 
-        $this->packagistClient = new \Packagist\Api\Client();
-
-        $this->githubClient = new GithubClient();
-        $this->githubPaginator = new \Github\ResultPager($this->githubClient);
         if ($this->githubAuthKey) {
-            $this->githubClient->authenticate($this->githubAuthKey, null, \Github\Client::AUTH_HTTP_TOKEN);
+            $client->authenticate($this->githubAuthKey, null, Client::AUTH_HTTP_TOKEN);
         }
 
-        $this->slackClient = new SlackClient(getenv('SLACK_HOOK_URL'));
+        $this->githubClient = $client;
+        $this->githubPaginator = new \Github\ResultPager($client);
     }
 
     /**
