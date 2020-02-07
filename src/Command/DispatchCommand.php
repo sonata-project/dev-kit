@@ -370,15 +370,18 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (\in_array($previousDevKit, $remoteBranches, true)) {
                 continue;
             }
+
+            // Diff application
+            $this->io->section('Files for '.$currentBranch);
+
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->githubClient->repos()->commits()->compare(
                     static::GITHUB_GROUP, $repositoryName, $currentBranch, $previousBranch
                 )['ahead_by']) {
+                $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
+
                 continue;
             }
-
-            // Diff application
-            $this->io->section('Files for '.$currentBranch);
 
             $git->reset(['hard' => true]);
 
