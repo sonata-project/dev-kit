@@ -234,7 +234,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         // Construct the hook url.
         $hookToken = getenv('DEK_KIT_TOKEN') ? getenv('DEK_KIT_TOKEN') : 'INVALID_TOKEN';
-        $hookBaseUrl = 'http://sonata-dev-kit.sullivansenechal.com/github';
+        $hookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
         $hookCompleteUrl = $hookBaseUrl.'?'.http_build_query(['token' => $hookToken]);
 
         // Set hook configs
@@ -276,7 +276,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             || \count(array_diff($devKitHook['events'], $events))
             || !$devKitHook['active']
         ) {
-            $this->io->comment('Has to be updated.');
+                $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
                 $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], [
