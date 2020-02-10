@@ -482,6 +482,17 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localPath);
+
+        if (u($localPathInfo['basename'])->startsWith('DELETE_')) {
+            $fileToDelete = u($distPath)->replace('DELETE_', '')->toString();
+
+            if ($this->fileSystem->exists($fileToDelete)) {
+                $this->fileSystem->remove($fileToDelete);
+            }
+
+            return;
+        }
+
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
             file_put_contents($distPath, $this->twig->render($localPath, array_merge(
@@ -518,6 +529,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 str_replace([static::PACKAGIST_GROUP.'/', '-bundle'], '', $package->getName()),
             ], $localContent));
         }
+
         // Restore file permissions after content copy
         $this->fileSystem->chmod($distPath, fileperms($localPath));
     }
