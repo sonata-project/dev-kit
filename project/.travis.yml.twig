@@ -46,10 +46,6 @@ env:
 matrix:
   fast_finish: true
   include:
-{% if docs_target %}
-    - php: '{{ target_php|default(php|last) }}'
-      env: TARGET=docs
-{% endif %}
     - php: '{{ target_php|default(php|last) }}'
       env: TARGET=lint
     - php: '{{ php|first }}'
