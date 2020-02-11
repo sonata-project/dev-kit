@@ -91,7 +91,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $this->io->comment(sprintf('Branch: %s', $pull['base']['ref']));
             $this->io->comment(sprintf('Status: %s', $state['state']));
 
-            // Ignore the PR is status is not good.
+            // Ignore the PR if status is not good.
             if ('success' !== $state['state']) {
                 continue;
             }
