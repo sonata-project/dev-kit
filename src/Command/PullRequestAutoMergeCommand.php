@@ -70,7 +70,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             // Proceed only bot PR for now.
-            if ('SonataCI' !== $pull['user']['login']) {
+            if (self::BOT_NAME !== $pull['user']['login']) {
                 continue;
             }
 
