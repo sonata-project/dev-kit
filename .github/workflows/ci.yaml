@@ -3,17 +3,24 @@ name: CI
 jobs:
     php-cs-fixer:
         name: PHP-CS-Fixer
+
         runs-on: ubuntu-latest
+
         steps:
             - uses: actions/checkout@v2
+
             - name: PHP-CS-Fixer
               uses: docker://oskarstark/php-cs-fixer-ga:latest
               with:
                   args: --diff --dry-run
+
     composer-normalize:
         name: composer-normalize
+
         runs-on: ubuntu-latest
+
         steps:
             - uses: actions/checkout@v2
+
             - name: composer-normalize
               uses: docker://localheinz/composer-normalize-action:latest
