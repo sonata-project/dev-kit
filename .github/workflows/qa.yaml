@@ -3,10 +3,14 @@ name: Quality assurance
 jobs:
   phpstan:
     name: PHPStan
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@master
-      - name: PHPStan
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Run PHPStan"
         uses: "docker://oskarstark/phpstan-ga"
         with:
           args: analyse
