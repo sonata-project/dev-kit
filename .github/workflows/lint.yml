@@ -1,0 +1,32 @@
+on: [push, pull_request]
+
+name: Lint
+
+jobs:
+    php-cs-fixer:
+        name: PHP-CS-Fixer
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v2
+
+            - name: "Run PHP-CS-Fixer"
+              uses: docker://oskarstark/php-cs-fixer-ga:2.16.1
+              with:
+                  args: --ansi --verbose --diff --dry-run
+
+    composer-normalize:
+        name: composer-normalize
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v2
+
+            - name: "Run composer-normalize"
+              uses: docker://localheinz/composer-normalize-action:0.5.2
+              with:
+                  args: --dry-run
