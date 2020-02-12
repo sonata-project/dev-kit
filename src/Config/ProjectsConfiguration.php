@@ -45,6 +45,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
+                            ->scalarNode('custom_gitignore_part')->defaultNull()->end()
                             ->booleanNode('docs_target')->defaultTrue()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
