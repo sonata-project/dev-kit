@@ -80,14 +80,14 @@ admin-search-bundle:
       versions:
         symfony: ['4.4']
         sonata_admin: ['3']
-        ruflin_elastica: ['2']
+        ruflin_elastica: ['5', '6']
     1.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
       versions:
         symfony: ['4.4']
         sonata_admin: ['3']
-        ruflin_elastica: ['2']
+        ruflin_elastica: ['5', '6']
 
 article-bundle:
   branches:
