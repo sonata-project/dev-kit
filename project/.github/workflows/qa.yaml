@@ -1,0 +1,26 @@
+on:
+    push:
+        paths:
+            - 'src/**'
+            - 'phpstan.neon.dist'
+
+    pull_request:
+        paths:
+            - 'src/**'
+            - 'phpstan.neon.dist'
+
+name: Quality assurance
+jobs:
+    phpstan:
+        name: PHPStan
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: PHPStan
+              uses: "docker://oskarstark/phpstan-ga"
+              env:
+                  REQUIRE_DEV: 'true'
+              with:
+                  args: analyse
