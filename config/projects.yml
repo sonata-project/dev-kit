@@ -358,19 +358,6 @@ google-authenticator:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
 
-intl-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
-      versions:
-        symfony: ['4.4']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
-      versions:
-        symfony: ['4.4']
-
 media-bundle:
   branches:
     master:
