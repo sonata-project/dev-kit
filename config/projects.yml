@@ -273,19 +273,6 @@ doctrine-phpcr-admin-bundle:
         sonata_admin: ['3']
         sonata_block: ['3']
 
-easy-extends-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
-      versions:
-        symfony: ['4.4']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
-      versions:
-        symfony: ['4.4']
-
 ecommerce:
   branches:
     master:
