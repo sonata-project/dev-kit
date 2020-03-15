@@ -115,18 +115,6 @@ block-bundle:
       versions:
         symfony: ['4.3', '5.0']
 
-cache:
-  excluded_files:
-    - README.md
-  docs_target: false
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
-
 classification-bundle:
   branches:
     master:
