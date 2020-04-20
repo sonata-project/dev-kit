@@ -50,7 +50,7 @@ matrix:
       env: {{ package_name|upper }}='dev-master as {{ package_versions|last }}.x-dev'
 {% endif %}
 {% endfor %}
-    - php: '{{ target_php|default(php|last) }}'
+    - php: '{{ php|last }}'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: nightly
