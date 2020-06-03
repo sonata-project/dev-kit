@@ -144,6 +144,9 @@
     "symfony/dependency-injection": {
         "version": "v4.4.3"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.1.2"
+    },
     "symfony/dotenv": {
         "version": "v4.4.3"
     },
@@ -218,9 +221,6 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/mime": {
-        "version": "v4.4.3"
-    },
     "symfony/monolog-bridge": {
         "version": "v4.4.4"
     },
@@ -255,6 +255,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
     },
     "symfony/process": {
         "version": "v4.4.3"
