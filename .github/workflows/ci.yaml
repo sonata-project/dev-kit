@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: Lint
+name: CI
 
 jobs:
     php-cs-fixer:
@@ -30,3 +30,17 @@ jobs:
               uses: docker://localheinz/composer-normalize-action:0.5.2
               with:
                   args: --dry-run
+
+    phpstan:
+        name: PHPStan
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v2
+
+            - name: "Run PHPStan"
+              uses: "docker://oskarstark/phpstan-ga"
+              with:
+                  args: analyse
