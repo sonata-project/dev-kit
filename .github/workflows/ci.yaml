@@ -51,8 +51,8 @@ jobs:
         runs-on: "ubuntu-latest"
 
         needs:
-            - "php-cs-fixer"
             - "composer-normalize"
+            - "php-cs-fixer"
             - "phpstan"
 
         if: >
