@@ -3699,7 +3699,7 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v5.1.0",
+            "version": "v5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
