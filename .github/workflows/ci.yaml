@@ -69,7 +69,7 @@ jobs:
             - name: "Merge pull request"
               uses: "actions/github-script@v2"
               with:
-                  github-token: "${{ secrets.SONATA_CI_GITHUB_TOKEN }}"
+                  github-token: "${{ secrets.GITHUB_TOKEN }}"
                   script: |
                       const pullRequest = context.payload.pull_request
                       const repository = context.repo
