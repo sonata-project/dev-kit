@@ -76,7 +76,7 @@ EOT;
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
         $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$project);
-        $this->io->title($package->getName());
+        $this->io->getErrorStyle()->title($package->getName());
         $this->prepareRelease($package, $branch, $output);
 
         return 0;
