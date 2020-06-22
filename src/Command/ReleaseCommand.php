@@ -76,7 +76,7 @@ EOT;
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
         $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$project);
-        $this->io->title($package->getName());
+        $this->io->getErrorStyle()->title($package->getName());
         $this->prepareRelease($package, $branch, $output);
 
         return 0;
@@ -132,34 +132,35 @@ EOT;
             []
         );
 
-        $this->io->section('Project');
+        $errorOutput = $this->io->getErrorStyle();
+        $errorOutput->section('Project');
 
         foreach ($statuses['statuses'] as $status) {
             $print = $status['description']."\n".$status['target_url'];
 
             if ('success' === $status['state']) {
-                $this->io->success($print);
+                $errorOutput->success($print);
             } elseif ('pending' === $status['state']) {
-                $this->io->warning($print);
+                $errorOutput->warning($print);
             } else {
-                $this->io->error($print);
+                $errorOutput->error($print);
             }
         }
 
-        $this->io->section('Pull requests');
+        $errorOutput->section('Pull requests');
 
         foreach ($pulls as $pull) {
-            $this->printPullRequest($pull, $output);
+            $this->printPullRequest($pull, $errorOutput);
         }
 
-        $this->io->section('Release');
+        $errorOutput->section('Release');
 
         if ($nextVersion === $currentRelease['tag_name']) {
-            $this->io->warning('Release is not needed');
+            $errorOutput->warning('Release is not needed');
         } else {
-            $this->io->success('Next release will be: '.$nextVersion);
+            $errorOutput->success('Next release will be: '.$nextVersion);
 
-            $this->io->section('Changelog');
+            $errorOutput->section('Changelog');
 
             $this->printRelease($currentRelease['tag_name'], $nextVersion, $package, $output);
             $this->printChangelog($changelog, $output);
@@ -197,9 +198,9 @@ EOT;
         } else {
             $output->write(' <fg=black;bg=green>[Changelog found]</>');
         }
-        $this->io->newLine();
+        $output->newLine();
         $output->writeln($pull['html_url']);
-        $this->io->newLine();
+        $output->newLine();
     }
 
     private function printRelease($currentVersion, $nextVersion, Package $package, OutputInterface $output): void
