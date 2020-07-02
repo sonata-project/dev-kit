@@ -408,12 +408,10 @@ sandbox:
 seo-bundle:
   branches:
     master:
-      php: ['7.2', '7.3', '7.4']
+      php: ['7.3', '7.4']
       target_php: '7.3'
       versions:
-        symfony: ['4.4']
-        sonata_block: ['3']
-        sonata_admin: ['3']
+        symfony: ['4.4', '5.0']
     2.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
