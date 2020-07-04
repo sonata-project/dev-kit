@@ -298,8 +298,6 @@ formatter-bundle:
 
 form-extensions:
   docs_target: false
-  excluded_files:
-    - docs/requirements.txt
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
