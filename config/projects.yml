@@ -108,12 +108,12 @@ block-bundle:
       php: ['7.3', '7.4']
       target_php: '7.3'
       versions:
-        symfony: ['4.3', '5.0']
+        symfony: ['4.4', '5.0']
     4.x:
       php: ['7.3', '7.4']
       target_php: '7.3'
       versions:
-        symfony: ['4.3', '5.0']
+        symfony: ['4.4', '5.0']
 
 classification-bundle:
   branches:
