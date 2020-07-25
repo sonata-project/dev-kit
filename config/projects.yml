@@ -214,11 +214,10 @@ doctrine-mongodb-admin-bundle:
 doctrine-orm-admin-bundle:
   branches:
     master:
-      php: ['7.2', '7.3', '7.4']
+      php: ['7.3', '7.4']
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_admin: ['3']
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
