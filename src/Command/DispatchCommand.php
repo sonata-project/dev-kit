@@ -633,6 +633,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     'package_title' => ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
                     'package_description' => $package->getDescription(),
                     'packagist_name' => $package->getName(),
+                    'is_abandoned' => $package->isAbandoned(),
                     'repository_name' => $repositoryName,
                     'current_branch' => $branchName,
                     'unstable_branch' => $unstableBranch,
