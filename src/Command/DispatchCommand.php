@@ -620,42 +620,28 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
+
+            reset($projectConfig['branches']);
+            $unstableBranch = key($projectConfig['branches']);
+            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
+
             $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $this->configs,
                 $projectConfig,
                 $branchConfig,
                 [
+                    'package_title' => ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
+                    'package_description' => $package->getDescription(),
+                    'packagist_name' => $package->getName(),
                     'repository_name' => $repositoryName,
                     'current_branch' => $branchName,
+                    'unstable_branch' => $unstableBranch,
+                    'stable_branch' => $stableBranch,
+                    'website_path' => str_replace([static::PACKAGIST_GROUP.'/', '-bundle'], '', $package->getName()),
                 ]
             )));
         } else {
-            reset($projectConfig['branches']);
-            $unstableBranch = key($projectConfig['branches']);
-            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-            $res = file_put_contents($distPath, str_replace([
-                '{{ package_title }}',
-                '{{ package_description }}',
-                '{{ packagist_name }}',
-                '{{ repository_name }}',
-                '{{ current_branch }}',
-                '{{ unstable_branch }}',
-                '{{ stable_branch }}',
-                '{{ docs_path }}',
-                '{{ tests_path }}',
-                '{{ website_path }}',
-            ], [
-                ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
-                $package->getDescription(),
-                $package->getName(),
-                $repositoryName,
-                $branchName,
-                $unstableBranch,
-                $stableBranch,
-                $branchConfig['docs_path'],
-                $branchConfig['tests_path'],
-                str_replace([static::PACKAGIST_GROUP.'/', '-bundle'], '', $package->getName()),
-            ], $localContent));
+            $res = file_put_contents($distPath, $localContent);
         }
 
         if (false === $res) {
