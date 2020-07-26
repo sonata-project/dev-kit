@@ -69,7 +69,6 @@ admin-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_block: ['3']
 
 admin-search-bundle:
@@ -120,7 +119,6 @@ block-bundle:
       versions:
         symfony: ['4.4']
         sonata_admin: ['3']
-        sonata_core: ['3']
 
 classification-bundle:
   branches:
@@ -159,7 +157,6 @@ comment-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
 
 dashboard-bundle:
   custom_gitignore_part: |
@@ -230,7 +227,6 @@ doctrine-orm-admin-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_admin: ['3']
 
 doctrine-phpcr-admin-bundle:
@@ -299,7 +295,6 @@ formatter-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_block: ['3']
 
 form-extensions:
@@ -355,7 +350,6 @@ media-bundle:
       versions:
         symfony: ['4.4']
         doctrine_odm: ['1']
-        sonata_core: ['3']
         sonata_admin: ['3']
         imagine: ['0.7', '1']
 
@@ -372,7 +366,6 @@ news-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_admin: ['3']
 
 notification-bundle:
@@ -387,7 +380,6 @@ notification-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
 
 page-bundle:
   branches:
@@ -403,7 +395,6 @@ page-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
 
@@ -440,7 +431,6 @@ timeline-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_admin: ['3']
         sonata_block: ['3']
 
@@ -457,7 +447,6 @@ translation-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_core: ['3']
         sonata_admin: ['3']
 
 twig-extensions:
@@ -485,5 +474,4 @@ user-bundle:
       versions:
         symfony: ['4.4']
         fos_user: ['2']
-        sonata_core: ['3']
         sonata_admin: ['3']
