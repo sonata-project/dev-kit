@@ -64,6 +64,7 @@ admin-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
+        sonata_block: ['4']
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -118,7 +119,6 @@ block-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
-        sonata_admin: ['3']
 
 classification-bundle:
   branches:
@@ -222,6 +222,7 @@ doctrine-orm-admin-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
+        sonata_admin: ['dev-master']
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
