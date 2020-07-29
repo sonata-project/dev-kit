@@ -331,6 +331,7 @@ intl-bundle:
       target_php: '7.3'
       versions:
         symfony: ['4.4']
+        sonata_user: ['4']
 
 media-bundle:
   branches:
