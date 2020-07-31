@@ -43,9 +43,9 @@ matrix:
 {% for package_name,package_versions in versions %}
 {% for version in package_versions %}
     - php: '{{ target_php|default(php|last) }}'
-      env: {{ package_name|upper }}={{ version }}.*
+      env: {{ package_name|upper }}={{ version }}{% if not is_dev_branch(version) %}.*{% endif %}
 {% endfor %}
-{% if package_versions|length > 0 %}
+{% if package_versions|length > 0 and not is_dev_master(package_versions|last) %}
     - php: '{{ target_php|default(php|last) }}'
       env: {{ package_name|upper }}='dev-master as {{ package_versions|last }}.x-dev'
 {% endif %}
@@ -56,7 +56,7 @@ matrix:
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
 {% for package_name,package_versions in versions %}
-{% if package_versions|length > 0 %}
+{% if package_versions|length > 0 and not is_dev_master(package_versions|last) %}
     - env: {{ package_name|upper }}='dev-master as {{ package_versions|last }}.x-dev'
 {% endif %}
 {% endfor %}

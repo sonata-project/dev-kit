@@ -49,6 +49,7 @@
         "symfony/symfony": "*"
     },
     "require-dev": {
+        "symfony/phpunit-bridge": "^5.1",
         "symfony/var-dumper": "4.4.*"
     },
     "config": {
