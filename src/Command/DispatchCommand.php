@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use function Symfony\Component\String\u;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -53,6 +52,15 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
+    public function __construct(GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
+    {
+        parent::__construct();
+
+        $this->gitWrapper = $gitWrapper;
+        $this->fileSystem = $fileSystem;
+        $this->twig = $twig;
+    }
+
     protected function configure(): void
     {
         parent::configure();
@@ -68,10 +76,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
-
-        $this->gitWrapper = new GitWrapper();
-        $this->fileSystem = new Filesystem();
-        $this->twig = new Environment(new FilesystemLoader(__DIR__.'/../..'));
 
         $this->projects = \count($input->getArgument('projects'))
             ? $input->getArgument('projects')
