@@ -11,6 +11,7 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
+            string $appDir: '%kernel.project_dir%'
             string $devKitToken: '%env(DEK_KIT_TOKEN)%'
 
     # makes classes in src/ available to be used as services

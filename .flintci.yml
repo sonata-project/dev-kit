@@ -1,1 +1,5 @@
-project/.flintci.yml
+services:
+  composernormalize: true
+  phpcsfixer: true
+  yamllint: true
+  xmllint: true
