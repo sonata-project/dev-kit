@@ -42,16 +42,12 @@ $rules = [
     '@PHP56Migration:risky' => true,
     '@PHPUnit57Migration:risky' => true,
     'single_line_throw' => false,
-{% if php|first in ['7.0', '7.1', '7.2', '7.3'] %}
     '@PHP70Migration' => true,
     '@PHP70Migration:risky' => true,
     '@PHPUnit60Migration:risky' => true,
-{% endif %}
-{% if php|first in ['7.1', '7.2', '7.3'] %}
     '@PHP71Migration' => true,
     '@PHP71Migration:risky' => true,
     'compact_nullable_typehint' => true,
-{% endif %}
     'void_return' => null,
     'static_lambda' => true,
     'strict_comparison' => true,
