@@ -33,6 +33,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
 
     /**
+     * @var string
+     */
+    private $appDir;
+
+    /**
      * @var GitWrapper
      */
     private $gitWrapper;
@@ -52,10 +57,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
+    public function __construct(string $appDir, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
     {
         parent::__construct();
 
+        $this->appDir = $appDir;
         $this->gitWrapper = $gitWrapper;
         $this->fileSystem = $fileSystem;
         $this->twig = $twig;
@@ -451,7 +457,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName): void
     {
-        $localFullPath = __DIR__.'/../../'.$localPath;
+        $localFullPath = $this->appDir.'/templates/'.$localPath;
         $localFileType = filetype($localFullPath);
         $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
 
