@@ -304,9 +304,13 @@ form-extensions:
     master:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
+      versions:
+        symfony: ['4.4', '5.1']
     1.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
+      versions:
+        symfony: ['4.4', '5.1']
 
 google-authenticator:
   excluded_files:
@@ -326,7 +330,7 @@ intl-bundle:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
       versions:
-        symfony: ['4.4']
+        symfony: ['4.4', '5.1']
     2.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
@@ -457,9 +461,13 @@ twig-extensions:
     master:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
+      versions:
+        symfony: ['4.4', '5.1']
     1.x:
       php: ['7.2', '7.3', '7.4']
       target_php: '7.3'
+      versions:
+        symfony: ['4.4', '5.1']
 
 user-bundle:
   branches:
