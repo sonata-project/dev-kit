@@ -233,7 +233,7 @@ EOT;
         $body = preg_replace('/<!--(.*)-->/Uis', '', $pull['body']);
         preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
 
-        if (2 == \count($matches)) {
+        if (2 === \count($matches)) {
             $lines = explode(PHP_EOL, $matches[1]);
 
             $section = '';
@@ -262,9 +262,9 @@ EOT;
         $stabilities = array_column($pulls, 'stability');
         $parts = explode('.', $currentVersion);
 
-        if (\in_array('minor', $stabilities)) {
+        if (\in_array('minor', $stabilities, true)) {
             return implode('.', [$parts[0], $parts[1] + 1, 0]);
-        } elseif (\in_array('patch', $stabilities)) {
+        } elseif (\in_array('patch', $stabilities, true)) {
             return implode('.', [$parts[0], $parts[1], $parts[2] + 1]);
         }
 
@@ -275,9 +275,9 @@ EOT;
     {
         $labels = array_column($pull['labels'], 'name');
 
-        if (\in_array('minor', $labels)) {
+        if (\in_array('minor', $labels, true)) {
             return 'minor';
-        } elseif (\in_array('patch', $labels)) {
+        } elseif (\in_array('patch', $labels, true)) {
             return 'patch';
         } elseif (array_intersect(['docs', 'pedantic'], $labels)) {
             return 'pedantic';
