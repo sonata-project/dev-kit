@@ -1,1 +1,7 @@
-templates/project/.php_cs.dist
+<?php
+
+$config = include 'templates/project/.php_cs.dist';
+
+$finder->in(__DIR__);
+
+return $config->setFinder($finder);
