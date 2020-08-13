@@ -31,6 +31,7 @@ use Twig\Environment;
 final class DispatchCommand extends AbstractNeedApplyCommand
 {
     private const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
+    private const FILES_DIR = 'project';
 
     /**
      * @var string
@@ -411,7 +412,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $git->checkout('-b', $currentDevKit);
             }
 
-            $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $currentBranch);
+            $this->renderFile($package, $repositoryName, $currentBranch, $projectConfig, $clonePath);
 
             $git->add('.', ['all' => true]);
             $diff = $git->diff('--color', '--cached');
@@ -451,22 +452,30 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     /**
      * @param string $repositoryName
-     * @param string $localPath
-     * @param string $distPath
      * @param string $branchName
+     * @param string $distPath
+     * @param string $localPath
      */
-    private function renderFile(Package $package, $repositoryName, $localPath, $distPath, array $projectConfig, $branchName): void
+    private function renderFile(Package $package, $repositoryName, $branchName, array $projectConfig, $distPath, $localPath = self::FILES_DIR): void
     {
+        if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
+            throw new \LogicException(
+                sprintf('This method only supports files inside the "%s" directory', static::FILES_DIR)
+            );
+        }
+
+        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $projectConfig['excluded_files'], true)) {
+            return;
+        }
+
         $localFullPath = $this->appDir.'/templates/'.$localPath;
         $localFileType = filetype($localFullPath);
         $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
 
         if ($localFileType !== $distFileType && false !== $distFileType) {
-            throw new \LogicException('File type mismatch between "'.$localPath.'" and "'.$distPath.'"');
-        }
-
-        if (\in_array(substr($localPath, 8), $projectConfig['excluded_files'], true)) {
-            return;
+            throw new \LogicException(
+                sprintf('File type mismatch between "%s" and "%s"', $localPath, $distPath)
+            );
         }
 
         if ('dir' === $localFileType) {
@@ -476,10 +485,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $this->renderFile(
                         $package,
                         $repositoryName,
-                        $localPath.'/'.$entry,
-                        $distPath.'/'.$entry,
+                        $branchName,
                         $projectConfig,
-                        $branchName
+                        $distPath.'/'.$entry,
+                        $localPath.'/'.$entry,
                     );
                 }
             }
