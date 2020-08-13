@@ -494,7 +494,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $branchConfig = $projectConfig['branches'][$branchName];
-        $localPathInfo = pathinfo($localPath);
+        $localPathInfo = pathinfo($localFullPath);
 
         if (u($localPathInfo['basename'])->startsWith('DELETE_')) {
             $fileToDelete = u($distPath)->replace('DELETE_', '')->toString();
@@ -544,6 +544,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         // Restore file permissions after content copy
-        $this->fileSystem->chmod($distPath, fileperms($localPath));
+        $this->fileSystem->chmod($distPath, fileperms($localFullPath));
     }
 }
