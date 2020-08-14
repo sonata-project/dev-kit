@@ -469,9 +469,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $localFullPath = $this->appDir.'/templates/'.$localPath;
-        $localFileType = filetype($localFullPath);
-        $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
 
+        $localFileType = filetype($localFullPath);
+        if (false === $localFileType) {
+            throw new \RuntimeException(sprintf('Cannot get "%s" file type', $localFullPath));
+        }
+
+        $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
         if ($localFileType !== $distFileType && false !== $distFileType) {
             throw new \LogicException(
                 sprintf('File type mismatch between "%s" and "%s"', $localPath, $distPath)
@@ -497,6 +501,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $localContent = file_get_contents($localFullPath);
+        if (false === $localContent) {
+            throw new \RuntimeException(sprintf('Cannot read "%s" file content', $localFullPath));
+        }
 
         if (!$this->fileSystem->exists(\dirname($distPath))) {
             $this->fileSystem->mkdir(\dirname($distPath));
@@ -517,7 +524,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
-            file_put_contents($distPath, $this->twig->render($localPath, array_merge(
+            $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $this->configs,
                 $projectConfig,
                 $branchConfig,
@@ -527,7 +534,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             reset($projectConfig['branches']);
             $unstableBranch = key($projectConfig['branches']);
             $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-            file_put_contents($distPath, str_replace([
+            $res = file_put_contents($distPath, str_replace([
                 '{{ package_title }}',
                 '{{ package_description }}',
                 '{{ packagist_name }}',
@@ -552,7 +559,16 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ], $localContent));
         }
 
+        if (false === $res) {
+            throw new \RuntimeException(sprintf('Cannot write "%s" file', $distPath));
+        }
+
+        $localPerms = fileperms($localFullPath);
+        if (false === $localPerms) {
+            throw new \RuntimeException(sprintf('Cannot read "%s" file perms', $localFullPath));
+        }
+
         // Restore file permissions after content copy
-        $this->fileSystem->chmod($distPath, fileperms($localFullPath));
+        $this->fileSystem->chmod($distPath, $localPerms);
     }
 }
