@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Doctrine\Common\Inflector\Inflector;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
@@ -546,7 +545,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ tests_path }}',
                 '{{ website_path }}',
             ], [
-                Inflector::ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
+                ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
                 $package->getDescription(),
                 $package->getName(),
                 $repositoryName,
