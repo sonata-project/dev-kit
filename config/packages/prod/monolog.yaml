@@ -30,6 +30,5 @@ monolog:
             token: '%env(SLACK_TOKEN)%'
             channel: 'dev-kit-logs'
             bot_name: '@@dev-kit-logger'
-            icon_emoji: ':ghost:' # 👻
             level: debug
             include_extra: true
