@@ -16,6 +16,7 @@ namespace App\Command;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Packagist\Api\Result\Package;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,6 +30,17 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
      * @var string[]
      */
     private $projects;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        parent::__construct();
+        $this->logger = $logger;
+    }
 
     protected function configure(): void
     {
@@ -115,10 +127,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                     $message = sprintf('Merging of %s into %s contains conflicts. Skipped.', $head, $base);
 
                     $this->io->warning($message);
-                    $this->slackClient->attach([
-                        'text' => $message,
-                        'color' => 'danger',
-                    ])->send('Merging: '.$repositoryName);
+                    $this->logger->warning($message, ['repository' => $repositoryName]);
 
                     continue;
                 }
