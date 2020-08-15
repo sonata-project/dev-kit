@@ -30,6 +30,13 @@ monolog:
             token: '%env(SLACK_TOKEN)%'
             channel: 'dev-kit-logs'
             bot_name: '@@dev-kit-logger'
-            icon_emoji: ':ghost:' # 👻
             level: debug
             include_extra: true
+        slack:
+            type: slack
+            token: '%env(SLACK_TOKEN)%'
+            channel: 'ci'
+            bot_name: '@@dev-kit-logger'
+            level: debug
+            include_extra: true
+            channels: ['automerge']

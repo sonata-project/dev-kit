@@ -16,7 +16,6 @@ namespace App\Command;
 use App\Config\DevKitConfiguration;
 use App\Config\ProjectsConfiguration;
 use Github\Client;
-use Maknz\Slack\Client as SlackClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
@@ -68,11 +67,6 @@ abstract class AbstractCommand extends Command
     protected $githubPaginator;
 
     /**
-     * @var SlackClient
-     */
-    protected $slackClient;
-
-    /**
      * {@inheritdoc}
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -89,7 +83,6 @@ abstract class AbstractCommand extends Command
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
         $this->packagistClient = new \Packagist\Api\Client();
-        $this->slackClient = new SlackClient(getenv('SLACK_HOOK_URL'));
 
         $client = new Client();
         if (getenv('GITHUB_OAUTH_TOKEN')) {
