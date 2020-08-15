@@ -44,6 +44,7 @@ matrix:
 {% for version in package_versions %}
     - php: '{{ target_php|default(php|last) }}'
       env: {{ package_name|upper }}={{ version }}{% if not is_dev_branch(version) %}.*{% endif %}
+
 {% endfor %}
 {% if package_versions|length > 0 and not is_dev_master(package_versions|last) %}
     - php: '{{ target_php|default(php|last) }}'
