@@ -124,10 +124,10 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 }
             } catch (RuntimeException $e) {
                 if (409 === $e->getCode()) {
-                    $message = sprintf('Merging of %s into %s contains conflicts. Skipped.', $head, $base);
+                    $message = sprintf('%s: Merging of %s into %s contains conflicts. Skipped.', $repositoryName, $head, $base);
 
                     $this->io->warning($message);
-                    $this->logger->warning($message, ['repository' => $repositoryName]);
+                    $this->logger->warning($message);
 
                     continue;
                 }
