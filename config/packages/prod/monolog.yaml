@@ -39,4 +39,5 @@ monolog:
             bot_name: '@@dev-kit-logger'
             level: debug
             include_extra: true
+            use_short_attachment: true
             channels: ['automerge']
