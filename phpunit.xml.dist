@@ -25,7 +25,7 @@
     <php>
         <ini name="precision" value="8" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
-        <env name="SYMFONY_PHPUNIT_VERSION" value="8.5.0" />
+        <env name="SYMFONY_PHPUNIT_VERSION" value="8.5" />
     </php>
 
 </phpunit>
