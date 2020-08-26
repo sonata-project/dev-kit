@@ -16,7 +16,7 @@ on:
 
 jobs:
   test:
-    {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }} + Allow deprecations: ${{ matrix.allow_deprecations }}{% endverbatim %}
+    {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
 
     runs-on: ubuntu-latest
 
@@ -30,39 +30,23 @@ jobs:
 {% endfor %}
         dependencies: [highest]
         allowed_to_fail: [false]
-        allow_deprecations: [true]
         variant: [normal]
         include:
           - php-version: '{{ php|first }}'
             dependencies: lowest
             allowed_to_fail: false
-            allow_deprecations: true
-            variant: normal
-          - php-version: '{{ target_php|default(php|last) }}'
-            dependencies: highest
-            allowed_to_fail: true
-            allow_deprecations: false
             variant: normal
           - php-version: '8.0'
             dependencies: highest
             allowed_to_fail: true
-            allow_deprecations: true
             variant: normal
 {% for package_name, package_versions in versions %}
 {% for version in package_versions %}
           - php-version: '{{ target_php|default(php|last) }}'
             dependencies: highest
             allowed_to_fail: false
-            allow_deprecations: true
             variant: '{{ packages[package_name] }}:"{{ version }}{% if not is_dev_branch(version) %}.*{% endif %}"'
 {% endfor %}
-{% if package_versions|length > 0 and not is_dev_master(package_versions|last) %}
-          - php-version: '{{ target_php|default(php|last) }}'
-            dependencies: highest
-            allowed_to_fail: true
-            allow_deprecations: true
-            variant: '{{ packages[package_name] }}:"dev-master as {{ package_versions|last }}.x-dev"'
-{% endif %}
 {% endfor %}
 {% verbatim %}
     steps:
@@ -89,10 +73,6 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
           restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
-
-      - name: Set Environment variable
-        if: ${{ !matrix.allow_deprecations }}
-        run: echo "::set-env name=SYMFONY_DEPRECATIONS_HELPER::0"
 
       - name: Install variant
         if: matrix.variant != 'normal'
