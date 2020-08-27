@@ -533,7 +533,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $this->configs,
                 $projectConfig,
                 $branchConfig,
-                ['repository_name' => $repositoryName]
+                [
+                    'repository_name' => $repositoryName,
+                    'current_branch' => $branchName,
+                ]
             )));
         } else {
             reset($projectConfig['branches']);
