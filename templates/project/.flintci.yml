@@ -4,7 +4,6 @@
 
 services:
   composernormalize: true
-  phpcsfixer:
-    version: 2.16.3
+  phpcsfixer: true
   yamllint: true
   xmllint: true
