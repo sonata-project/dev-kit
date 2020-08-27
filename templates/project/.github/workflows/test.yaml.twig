@@ -96,7 +96,7 @@ jobs:
         {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
-{% if repository_name == 'SonataBlockBundle' and '3.x' == current_branch %}
+{% if repository_name == 'SonataBlockBundle' and current_branch == '3.x' %}
       - name: Allow cyclic dependency between block-bundle and admin-bundle
         run: sed --in-place "s/\"dev-master\":/\"dev-${GITHUB_SHA}\":/" composer.json
 
