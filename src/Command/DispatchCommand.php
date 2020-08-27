@@ -245,7 +245,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         // Construct the hook url.
         $hookToken = getenv('DEK_KIT_TOKEN') ? getenv('DEK_KIT_TOKEN') : 'INVALID_TOKEN';
         $hookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
-        $hookCompleteUrl = $hookBaseUrl.'?'.http_build_query(['token' => $hookToken]);
+        $hookCompleteUrl = sprintf(
+            '%s?%s',
+            $hookBaseUrl,
+            http_build_query([
+                'token' => $hookToken,
+            ])
+        );
 
         // Set hook configs
         $config = [
