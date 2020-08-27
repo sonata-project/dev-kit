@@ -97,6 +97,12 @@ jobs:
         if: matrix.variant != 'normal'
         {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
 
+{# Remove when removing 3.x for the managed branches of block-bundle #}
+{% if repository_name == 'SonataBlockBundle' and current_branch == '3.x' %}
+      - name: Allow cyclic dependency between block-bundle and admin-bundle
+        run: sed --in-place "s/\"dev-master\":/\"dev-${GITHUB_SHA}\":/" composer.json
+
+{% endif %}
       - name: Install Composer dependencies (lowest)
         if: matrix.dependencies == 'lowest'
         run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
