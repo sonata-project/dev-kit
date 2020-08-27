@@ -319,30 +319,51 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        $protectionConfig = [
-            'required_status_checks' => [
-                'strict' => false,
-                'contexts' => [
-                    'continuous-integration/travis-ci',
-                ],
-            ],
-            'required_pull_request_reviews' => [
-                'dismissal_restrictions' => [
-                    'users' => [],
-                    'teams' => [],
-                ],
-                'dismiss_stale_reviews' => true,
-                'require_code_owner_reviews' => true,
-            ],
-            'restrictions' => null,
-            'enforce_admins' => false,
-        ];
         foreach ($branches as $branch) {
             $this->githubClient->repo()->protection()
-                ->update(static::GITHUB_GROUP, $repositoryName, $branch, $protectionConfig)
-            ;
+                ->update(static::GITHUB_GROUP, $repositoryName, $branch, [
+                    'required_status_checks' => [
+                        'strict' => false,
+                        'contexts' => $this->buildRequiredStatusChecks($projectConfig['branches'][$branch]),
+                    ],
+                    'required_pull_request_reviews' => [
+                        'dismissal_restrictions' => [
+                            'users' => [],
+                            'teams' => [],
+                        ],
+                        'dismiss_stale_reviews' => true,
+                        'require_code_owner_reviews' => true,
+                    ],
+                    'restrictions' => null,
+                    'enforce_admins' => false,
+                ]);
         }
         $this->io->comment('Branches protection applied.');
+    }
+
+    private function buildRequiredStatusChecks(array $branchConfig): array
+    {
+        $targetPhp = $branchConfig['target_php'] ?? end($branchConfig['php']);
+        $requiredStatusChecks = [];
+
+        foreach ($branchConfig['php'] as $phpVersion) {
+            $requiredStatusChecks[] = sprintf('Test / PHP %s + highest + normal', $phpVersion);
+        }
+
+        foreach ($branchConfig['versions'] as $variant => $versions) {
+            foreach ($versions as $version) {
+                $requiredStatusChecks[] = sprintf(
+                    'Test / PHP %s + highest + %s:"%s"',
+                    $targetPhp,
+                    $this->configs['packages'][$variant],
+                    'dev-master' === $version ? $version : ($version.'.*'),
+                );
+            }
+        }
+
+        $requiredStatusChecks[] = sprintf('Test / PHP %s + lowest + normal', $targetPhp);
+
+        return $requiredStatusChecks;
     }
 
     private function dispatchFiles(Package $package): void
