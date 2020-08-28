@@ -32,6 +32,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
     private const FILES_DIR = 'project';
 
+    /** @var string[] */
+    private const HOOK_URLS_TO_BE_DELETED = [
+        'https://api.codacy.com',
+        'https://www.flowdock.com',
+        'http://scrutinizer-ci.com',
+    ];
+
     /**
      * @var string
      */
@@ -96,7 +103,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
         if (\count($notConfiguredProjects)) {
-            $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
+            $this->io->error(sprintf(
+                'Some specified projects are not configured: %s ',
+                implode(', ', $notConfiguredProjects)
+            ));
 
             return 1;
         }
@@ -150,7 +160,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         if (\count($infoToUpdate)) {
-            $this->io->comment('Following info have to be changed: '.implode(', ', array_keys($infoToUpdate)).'.');
+            $this->io->comment(sprintf(
+                'Following info have to be changed: %s.',
+                implode(', ', array_keys($infoToUpdate))
+            ));
+
             if ($this->apply) {
                 $this->githubClient->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, [
                     'name' => $repositoryName,
@@ -169,7 +183,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $configuredLabels = $this->configs['labels'];
         $missingLabels = $configuredLabels;
 
-        $headers = ['Name', 'Actual color', 'Needed Color', 'State'];
+        $headers = [
+            'Name',
+            'Actual color',
+            'Needed Color',
+            'State',
+        ];
+
         $rows = [];
 
         foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
@@ -265,9 +285,36 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'pull_request_review_comment',
         ];
 
+        $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
+
+        // Check if hook should be deleted.
+        foreach ($configuredHooks as $key => $hook) {
+            foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
+                $currentHookUrl = $hook['config']['url'];
+
+                if (u($currentHookUrl)->startsWith($url)) {
+                    $this->io->comment(sprintf(
+                        'Hook "%s" will be deleted',
+                        $currentHookUrl
+                    ));
+
+                    if ($this->apply) {
+                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repositoryName, $hook['id']);
+
+                        $this->io->success(sprintf(
+                            'Hook "%s" deleted.',
+                            $currentHookUrl
+                        ));
+                    }
+
+                    unset($configuredHooks[$key]);
+                }
+            }
+        }
+
         // First, check if the hook exists.
         $devKitHook = null;
-        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName) as $hook) {
+        foreach ($configuredHooks as $hook) {
             if (\array_key_exists('url', $hook['config'])
                 && 0 === strncmp($hook['config']['url'], $hookBaseUrl, \strlen($hookBaseUrl))) {
                 $devKitHook = $hook;
@@ -381,6 +428,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if ($this->fileSystem->exists($clonePath)) {
             $this->fileSystem->remove($clonePath);
         }
+
         $git = $this->gitWrapper->cloneRepository(
             'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
@@ -485,9 +533,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private function renderFile(Package $package, $repositoryName, $branchName, array $projectConfig, $distPath, $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
-            throw new \LogicException(
-                sprintf('This method only supports files inside the "%s" directory', static::FILES_DIR)
-            );
+            throw new \LogicException(sprintf(
+                'This method only supports files inside the "%s" directory',
+                static::FILES_DIR
+            ));
         }
 
         if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $projectConfig['excluded_files'], true)) {
@@ -498,14 +547,19 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $localFileType = filetype($localFullPath);
         if (false === $localFileType) {
-            throw new \RuntimeException(sprintf('Cannot get "%s" file type', $localFullPath));
+            throw new \RuntimeException(sprintf(
+                'Cannot get "%s" file type',
+                $localFullPath
+            ));
         }
 
         $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
         if ($localFileType !== $distFileType && false !== $distFileType) {
-            throw new \LogicException(
-                sprintf('File type mismatch between "%s" and "%s"', $localPath, $distPath)
-            );
+            throw new \LogicException(sprintf(
+                'File type mismatch between "%s" and "%s"',
+                $localPath,
+                $distPath
+            ));
         }
 
         if ('dir' === $localFileType) {
@@ -528,7 +582,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $localContent = file_get_contents($localFullPath);
         if (false === $localContent) {
-            throw new \RuntimeException(sprintf('Cannot read "%s" file content', $localFullPath));
+            throw new \RuntimeException(sprintf(
+                'Cannot read "%s" file content',
+                $localFullPath
+            ));
         }
 
         if (!$this->fileSystem->exists(\dirname($distPath))) {
@@ -589,12 +646,18 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         if (false === $res) {
-            throw new \RuntimeException(sprintf('Cannot write "%s" file', $distPath));
+            throw new \RuntimeException(sprintf(
+                'Cannot write "%s" file',
+                $distPath
+            ));
         }
 
         $localPerms = fileperms($localFullPath);
         if (false === $localPerms) {
-            throw new \RuntimeException(sprintf('Cannot read "%s" file perms', $localFullPath));
+            throw new \RuntimeException(sprintf(
+                'Cannot read "%s" file perms',
+                $localFullPath
+            ));
         }
 
         // Restore file permissions after content copy
