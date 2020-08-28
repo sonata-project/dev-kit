@@ -37,6 +37,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         'https://api.codacy.com',
         'https://www.flowdock.com',
         'http://scrutinizer-ci.com',
+        'http://localhost:8000',
     ];
 
     /**
