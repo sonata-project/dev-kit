@@ -38,6 +38,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         'https://www.flowdock.com',
         'http://scrutinizer-ci.com',
         'http://localhost:8000',
+        'https://notify.travis-ci.org',
     ];
 
     /**
