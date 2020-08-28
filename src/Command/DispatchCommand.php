@@ -117,6 +117,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
                 $this->updateRepositories($package, $projectConfig);
+                $this->deleteHooks($package);
                 $this->updateDevKitHook($package);
                 $this->updateLabels($package);
                 $this->updateBranchesProtection($package, $projectConfig);
@@ -287,31 +288,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
 
-        // Check if hook should be deleted.
-        foreach ($configuredHooks as $key => $hook) {
-            foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
-                $currentHookUrl = $hook['config']['url'];
-
-                if (u($currentHookUrl)->startsWith($url)) {
-                    $this->io->comment(sprintf(
-                        'Hook "%s" will be deleted',
-                        $currentHookUrl
-                    ));
-
-                    if ($this->apply) {
-                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repositoryName, $hook['id']);
-
-                        $this->io->success(sprintf(
-                            'Hook "%s" deleted.',
-                            $currentHookUrl
-                        ));
-                    }
-
-                    unset($configuredHooks[$key]);
-                }
-            }
-        }
-
         // First, check if the hook exists.
         $devKitHook = null;
         foreach ($configuredHooks as $hook) {
@@ -353,6 +329,37 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             }
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
+        }
+    }
+
+    private function deleteHooks(Package $package): void
+    {
+        $repositoryName = $this->getRepositoryName($package);
+        $this->io->section('Check Hooks to be deleted');
+
+        $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
+
+        // Check if hook should be deleted.
+        foreach ($configuredHooks as $key => $hook) {
+            foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
+                $currentHookUrl = $hook['config']['url'];
+
+                if (u($currentHookUrl)->startsWith($url)) {
+                    $this->io->comment(sprintf(
+                        'Hook "%s" will be deleted',
+                        $currentHookUrl
+                    ));
+
+                    if ($this->apply) {
+                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repositoryName, $hook['id']);
+
+                        $this->io->success(sprintf(
+                            'Hook "%s" deleted.',
+                            $currentHookUrl
+                        ));
+                    }
+                }
+            }
         }
     }
 
