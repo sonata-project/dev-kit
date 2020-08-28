@@ -399,17 +399,21 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     {
         $targetPhp = $branchConfig['target_php'] ?? end($branchConfig['php']);
         $requiredStatusChecks = [
-            sprintf('Test / PHP %s + lowest + normal (pull_request)', $targetPhp),
+            'composer-normalize',
+            'YAML files',
+            'XML files',
+            'PHP-CS-Fixer',
+            sprintf('PHP %s + lowest + normal', reset($branchConfig['php'])),
         ];
 
         foreach ($branchConfig['php'] as $phpVersion) {
-            $requiredStatusChecks[] = sprintf('Test / PHP %s + highest + normal (pull_request)', $phpVersion);
+            $requiredStatusChecks[] = sprintf('PHP %s + highest + normal', $phpVersion);
         }
 
         foreach ($branchConfig['versions'] as $variant => $versions) {
             foreach ($versions as $version) {
                 $requiredStatusChecks[] = sprintf(
-                    'Test / PHP %s + highest + %s:"%s" (pull_request)',
+                    'PHP %s + highest + %s:"%s"',
                     $targetPhp,
                     $this->configs['packages'][$variant],
                     'dev-master' === $version ? $version : ($version.'.*'),
