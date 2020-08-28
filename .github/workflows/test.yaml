@@ -1,0 +1,105 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php-version }}
+
+    runs-on: ubuntu-latest
+
+    continue-on-error: ${{ matrix.allowed_to_fail }}
+
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+        phpunit-version: ['8.5']
+        allowed_to_fail: [false]
+        include:
+          - php-version: '8.0'
+            phpunit-version: '9.3'
+            allowed_to_fail: true
+
+    env:
+      SYMFONY_PHPUNIT_VERSION: ${{ matrix.phpunit-version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Add PHPUnit matcher
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Set Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
+
+      - name: Install Composer dependencies
+        if: matrix.php-version != '8.0'
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Install Composer dependencies on PHP 8.0
+        if: matrix.php-version == '8.0'
+        run: composer install --prefer-dist --no-progress --no-interaction --ignore-platform-req=php
+
+      - name: Run Tests
+        run: make test
+
+      - name: Send coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: build/logs/clover.xml
+
+  auto-merge:
+    name: Auto-Merge
+
+    runs-on: ubuntu-latest
+
+    needs:
+      - test
+
+    if: >
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.draft == false && (
+        github.event.action == 'opened' ||
+        github.event.action == 'reopened' ||
+        github.event.action == 'synchronize'
+      ) && (
+        github.actor == 'dependabot[bot]'
+      )
+
+    steps:
+      - name: Merge pull request
+        uses: actions/github-script@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pullRequest = context.payload.pull_request
+            const repository = context.repo
+
+            await github.pulls.merge({
+              merge_method: "merge",
+              owner: repository.owner,
+              pull_number: pullRequest.number,
+              repo: repository.repo,
+            })
