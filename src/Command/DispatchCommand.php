@@ -344,24 +344,24 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private function buildRequiredStatusChecks(array $branchConfig): array
     {
         $targetPhp = $branchConfig['target_php'] ?? end($branchConfig['php']);
-        $requiredStatusChecks = [];
+        $requiredStatusChecks = [
+            sprintf('Test / PHP %s + lowest + normal (pull_request)', $targetPhp),
+        ];
 
         foreach ($branchConfig['php'] as $phpVersion) {
-            $requiredStatusChecks[] = sprintf('Test / PHP %s + highest + normal', $phpVersion);
+            $requiredStatusChecks[] = sprintf('Test / PHP %s + highest + normal (pull_request)', $phpVersion);
         }
 
         foreach ($branchConfig['versions'] as $variant => $versions) {
             foreach ($versions as $version) {
                 $requiredStatusChecks[] = sprintf(
-                    'Test / PHP %s + highest + %s:"%s"',
+                    'Test / PHP %s + highest + %s:"%s" (pull_request)',
                     $targetPhp,
                     $this->configs['packages'][$variant],
                     'dev-master' === $version ? $version : ($version.'.*'),
                 );
             }
         }
-
-        $requiredStatusChecks[] = sprintf('Test / PHP %s + lowest + normal', $targetPhp);
 
         return $requiredStatusChecks;
     }
