@@ -187,7 +187,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'Name',
             'Actual color',
             'Needed Color',
-            'State'
+            'State',
         ];
 
         $rows = [];
