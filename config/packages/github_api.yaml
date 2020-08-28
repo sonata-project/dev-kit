@@ -3,7 +3,9 @@ services:
         arguments:
             - '@Github\HttpClient\Builder'
         calls:
-            - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, !php/const \Github\Client::AUTH_HTTP_TOKEN]]
+            # use: !php/const \Github\Client::AUTH_HTTP_TOKEN instead of: 'http_token'
+            # when the yaml linter can deal with custom tags
+            - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, 'http_token']]
 
     Github\HttpClient\Builder:
         arguments:
