@@ -88,7 +88,7 @@ jobs:
 {% endverbatim %}
 {% if 'mongodb' in services %}
       - name: Install mongo compatibility layer
-        run: composer require alcaeus/mongo-php-adapter --no-update
+        run: composer require alcaeus/mongo-php-adapter --no-update --ignore-platform-req=php
 
 {% endif %}
       - name: Install variant
