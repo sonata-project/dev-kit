@@ -12,7 +12,16 @@ on:
 {% endfor %}
 
   pull_request:
-    paths: ['**.php', '**.yml', '**.yaml', '**.xml', '**.xml.dist', '**.twig', '**.js', '**.css', '**.json']
+    paths:
+      - '**.css'
+      - '**.js'
+      - '**.json'
+      - '**.php'
+      - '**.twig'
+      - '**.xml'
+      - '**.xml.dist'
+      - '**.yaml'
+      - '**.yml'
 
 jobs:
   test:
