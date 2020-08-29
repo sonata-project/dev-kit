@@ -75,7 +75,7 @@ class ProjectsConfiguration implements ConfigurationInterface
         $builder = new TreeBuilder('versions');
         $node = $builder->getRootNode();
 
-        $childrenNode = $node->children();
+        $childrenNode = $node->addDefaultsIfNotSet()->children();
 
         foreach ($this->devKitConfigs['packages'] as $key => $name) {
             $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue([])->end()->end();
