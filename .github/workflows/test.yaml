@@ -19,15 +19,10 @@ jobs:
       matrix:
         php-version:
           - '7.4'
-        phpunit-version: ['8.5']
         allowed_to_fail: [false]
         include:
           - php-version: '8.0'
-            phpunit-version: '9.3'
             allowed_to_fail: true
-
-    env:
-      SYMFONY_PHPUNIT_VERSION: ${{ matrix.phpunit-version }}
 
     steps:
       - name: Checkout
@@ -54,16 +49,20 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
           restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
 
+      - name: Configuration required for PHP 8.0
+        if: matrix.php-version == '8.0'
+        run: composer config platform.php 7.4.99 && composer require phpunit/phpunit:"9.3.*" --no-update
+
       - name: Install Composer dependencies
-        if: matrix.php-version != '8.0'
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Install Composer dependencies on PHP 8.0
-        if: matrix.php-version == '8.0'
-        run: composer install --prefer-dist --no-progress --no-interaction --ignore-platform-req=php
-
       - name: Run Tests
+        if: matrix.php-version != '8.0'
         run: make test
+
+      - name: Run Tests (PHP 8.0)
+        if: matrix.php-version == '8.0'
+        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
       - name: Send coverage to Codecov
         uses: codecov/codecov-action@v1
