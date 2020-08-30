@@ -156,20 +156,18 @@ Some rules have to be respected about the test:
 
 ##### Using test doubles
 
-Since version 4.5, PHPUnit requires and [integrates](https://phpunit.de/manual/current/en/test-doubles.html#test-doubles.prophecy)
-the [phpspec/prophecy](https://github.com/phpspec/prophecy).
 Historically, Sonata has been using [the built-in test doubles implementation](https://phpunit.de/manual/current/en/test-doubles.html),
-but [has decided to move to Prophecy](https://github.com/sonata-project/dev-kit/issues/89),
-which is more concise than its built-in counterpart is most cases.
+but [started to use Prophecy](https://github.com/sonata-project/dev-kit/issues/89).
 This means the current Sonata codebase currently uses both implementations.
+
 If you want to contribute a test that uses test doubles, please follow these rules :
 
-1. All new test classes MUST use Prophecy.
+1. All new test classes MUST use built-in test double implementation.
 2. If you are changing an existing test method, you MUST use the same implementation it already uses,
 and focus on the goal of your PR and only on that.
 3. If you are changing an existing test class, you MUST use the same implementation it already uses,
 to be more consistent.
-4. You MAY submit a PR that migrates a test class from the built-in test double implementation to Prophecy,
+4. You MAY submit a PR that migrates a test class from Prophecy to the built-in test double implementation,
 but it MUST migrate it entirely. The PR SHOULD only be about the migration.
 
 ### Writing a Pull Request
