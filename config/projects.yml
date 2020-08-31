@@ -169,7 +169,7 @@ datagrid-bundle:
 
 doctrine-extensions:
   excluded_files:
-    - README.md
+    - README.md.twig
   docs_target: false
   branches:
     master:
@@ -211,7 +211,7 @@ doctrine-phpcr-admin-bundle:
   custom_gitignore_part: |
     tests/Fixtures/App/app.sqlite
   excluded_files:
-    - phpunit.xml.dist
+    - phpunit.xml.dist.twig
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
@@ -239,7 +239,7 @@ ecommerce:
 
 exporter:
   excluded_files:
-    - README.md
+    - README.md.twig
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
@@ -281,7 +281,7 @@ form-extensions:
 
 google-authenticator:
   excluded_files:
-    - README.md
+    - README.md.twig
   docs_target: false
   branches:
     master:
@@ -361,7 +361,7 @@ page-bundle:
 
 sandbox:
   excluded_files:
-    - phpunit.xml.dist
+    - phpunit.xml.dist.twig
 
 seo-bundle:
   branches:
