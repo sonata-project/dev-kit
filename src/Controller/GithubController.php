@@ -32,7 +32,7 @@ final class GithubController
         if ('' === $devKitToken || $request->query->get('token') !== $devKitToken) {
             return new JsonResponse(
                 [
-                    'message' => 'Invalid credentials'
+                    'message' => 'Invalid credentials',
                 ],
                 403
             );
