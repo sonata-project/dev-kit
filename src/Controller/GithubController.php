@@ -30,7 +30,12 @@ final class GithubController
         $payload = json_decode($request->getContent(), true);
 
         if ('' === $devKitToken || $request->query->get('token') !== $devKitToken) {
-            return new JsonResponse(['message' => 'Invalid credentials'], 403);
+            return new JsonResponse(
+                [
+                    'message' => 'Invalid credentials'
+                ],
+                403
+            );
         }
 
         switch ($eventName) {
@@ -50,7 +55,12 @@ final class GithubController
 
                 return new Response();
             default:
-                return new JsonResponse(['message' => 'Nothing to do for: '.$eventName], 200);
+                return new JsonResponse(
+                    [
+                        'message' => sprintf('Nothing to do for: %s', $eventName),
+                    ],
+                    200
+                );
         }
     }
 }
