@@ -371,33 +371,42 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $branches = array_keys($projectConfig['branches']);
         $this->io->section('Branches protection');
 
-        if (!$this->apply) {
-            return;
+        foreach ($branches as $branch) {
+            $requiredStatusChecks = $this->buildRequiredStatusChecks(
+                $branch,
+                $projectConfig['branches'][$branch],
+                $projectConfig['docs_target']
+            );
+
+            if ($this->apply) {
+                $this->githubClient->repo()->protection()
+                    ->update(static::GITHUB_GROUP, $repositoryName, $branch, [
+                        'required_status_checks' => [
+                            'strict' => false,
+                            'contexts' => $requiredStatusChecks,
+                        ],
+                        'required_pull_request_reviews' => [
+                            'dismissal_restrictions' => [
+                                'users' => [],
+                                'teams' => [],
+                            ],
+                            'dismiss_stale_reviews' => true,
+                            'require_code_owner_reviews' => true,
+                        ],
+                        'restrictions' => null,
+                        'enforce_admins' => false,
+                    ]);
+            }
         }
 
-        foreach ($branches as $branch) {
-            $this->githubClient->repo()->protection()
-                ->update(static::GITHUB_GROUP, $repositoryName, $branch, [
-                    'required_status_checks' => [
-                        'strict' => false,
-                        'contexts' => $this->buildRequiredStatusChecks($projectConfig['branches'][$branch]),
-                    ],
-                    'required_pull_request_reviews' => [
-                        'dismissal_restrictions' => [
-                            'users' => [],
-                            'teams' => [],
-                        ],
-                        'dismiss_stale_reviews' => true,
-                        'require_code_owner_reviews' => true,
-                    ],
-                    'restrictions' => null,
-                    'enforce_admins' => false,
-                ]);
+        if ($this->apply) {
+            $this->io->comment('Branches protection applied.');
+        } else {
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
-        $this->io->comment('Branches protection applied.');
     }
 
-    private function buildRequiredStatusChecks(array $branchConfig): array
+    private function buildRequiredStatusChecks(string $branchName, array $branchConfig, bool $docsTarget): array
     {
         $targetPhp = $branchConfig['target_php'] ?? end($branchConfig['php']);
         $requiredStatusChecks = [
@@ -405,10 +414,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'YAML files',
             'XML files',
             'PHP-CS-Fixer',
-            'Sphinx build',
-            'DOCtor-RST',
             sprintf('PHP %s + lowest + normal', reset($branchConfig['php'])),
         ];
+
+        if ($docsTarget) {
+            $requiredStatusChecks[] = 'Sphinx build';
+            $requiredStatusChecks[] = 'DOCtor-RST';
+        }
 
         foreach ($branchConfig['php'] as $phpVersion) {
             $requiredStatusChecks[] = sprintf('PHP %s + highest + normal', $phpVersion);
@@ -424,6 +436,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 );
             }
         }
+
+        $this->io->writeln(sprintf(
+            'Required Status-Checks for <info>%s</info>:',
+            $branchName
+        ));
+        $this->io->listing($requiredStatusChecks);
 
         return $requiredStatusChecks;
     }
@@ -517,6 +535,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                         'state' => 'open',
                         'head' => 'sonata-project:'.$currentDevKit,
                     ]);
+
                     if (0 === \count($pulls)) {
                         $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
@@ -559,6 +578,20 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $localFullPath = $this->appDir.'/templates/'.$localPath;
+
+        $docsPath = $projectConfig['branches'][$branchName]['docs_path'];
+        if (!$projectConfig['docs_target']
+            && (
+                u($distPath)->endsWith($docsPath)
+                || u($distPath)->endsWith('.github/workflows/documentation.yaml.twig')
+            )
+        ) {
+            $this->fileSystem->remove(
+                u($distPath)->replace('.twig', '')->toString()
+            );
+
+            return;
+        }
 
         $localFileType = filetype($localFullPath);
         if (false === $localFileType) {
