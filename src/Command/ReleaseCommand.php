@@ -23,6 +23,9 @@ use Symfony\Component\Console\Question\Question;
  */
 final class ReleaseCommand extends AbstractCommand
 {
+    /**
+     * @var array<string, string>
+     */
     private static $labels = [
         'patch' => 'blue',
         'bug' => 'red',
@@ -31,6 +34,9 @@ final class ReleaseCommand extends AbstractCommand
         'pedantic' => 'cyan',
     ];
 
+    /**
+     * @var array<string, string>
+     */
     private static $stabilities = [
         'patch' => 'blue',
         'minor' => 'green',
