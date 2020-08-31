@@ -46,6 +46,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                         ->children()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->scalarNode('custom_gitignore_part')->defaultNull()->end()
+                            ->scalarNode('custom_doctor_rst_whitelist_part')->defaultNull()->end()
                             ->booleanNode('docs_target')->defaultTrue()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
