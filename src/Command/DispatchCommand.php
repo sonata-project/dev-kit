@@ -405,6 +405,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'YAML files',
             'XML files',
             'PHP-CS-Fixer',
+            'Build documentation',
+            'DOCtor-RST',
             sprintf('PHP %s + lowest + normal', reset($branchConfig['php'])),
         ];
 
