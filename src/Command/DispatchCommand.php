@@ -189,7 +189,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $headers = [
             'Name',
             'Actual color',
-            'Needed Color',
+            'Needed color',
             'State',
         ];
 
