@@ -323,6 +323,8 @@ media-bundle:
         imagine: ['0.7', '1']
 
 news-bundle:
+  custom_doctor_rst_whitelist_part:
+    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
@@ -336,6 +338,8 @@ news-bundle:
         sonata_admin: ['3']
 
 notification-bundle:
+  custom_doctor_rst_whitelist_part:
+    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
