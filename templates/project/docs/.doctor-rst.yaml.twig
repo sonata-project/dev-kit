@@ -33,6 +33,8 @@ rules:
     kernel_instead_of_app_kernel: ~
     no_app_console: ~
 
+{% if stable_branch ends with '.x' %}
 whitelist:
     lines:
         - '.. versionadded:: {{ stable_branch }}'
+{% endif %}
