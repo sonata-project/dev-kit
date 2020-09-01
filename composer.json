@@ -32,7 +32,8 @@
         "symfony/monolog-bundle": "^3.5",
         "symfony/string": "^5.0",
         "symfony/twig-pack": "^1.0",
-        "symfony/yaml": "4.4.*"
+        "symfony/yaml": "4.4.*",
+        "webmozart/assert": "^1.9"
     },
     "replace": {
         "paragonie/random_compat": "2.*",
