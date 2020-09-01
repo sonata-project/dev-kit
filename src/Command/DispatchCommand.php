@@ -520,6 +520,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             }
 
             $this->renderFile($package, $repositoryName, $currentBranch, $projectConfig, $clonePath);
+            $this->deleteNotNeededFilesAndDirs($currentBranch, $projectConfig, $clonePath);
 
             $git->add('.', ['all' => true]);
             $diff = $git->diff('--color', '--cached');
@@ -558,13 +559,46 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    /**
-     * @param string $repositoryName
-     * @param string $branchName
-     * @param string $distPath
-     * @param string $localPath
-     */
-    private function renderFile(Package $package, $repositoryName, $branchName, array $projectConfig, $distPath, $localPath = self::FILES_DIR): void
+    private function deleteNotNeededFilesAndDirs(string $branchName, array $projectConfig, string $distPath, string $localPath = self::FILES_DIR): void
+    {
+        if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
+            throw new \LogicException(sprintf(
+                'This method only supports files inside the "%s" directory',
+                static::FILES_DIR
+            ));
+        }
+
+        if ($projectConfig['docs_target']) {
+            return;
+        }
+
+        $docsPath = $projectConfig['branches'][$branchName]['docs_path'];
+
+        $docsDirectory = u($distPath)
+            ->append('/')
+            ->append($docsPath)
+            ->toString();
+
+        $this->io->writeln(sprintf(
+            'Delete <info>/%s</info> directory!',
+            $docsPath
+        ));
+        $this->fileSystem->remove($docsDirectory);
+
+        $filepath = '.github/workflows/documentation.yaml';
+        $documentationWorkflowFile = u($distPath)
+            ->append('/')
+            ->append($filepath)
+            ->toString();
+
+        $this->io->writeln(sprintf(
+            'Delete <info>/%s</info> file!',
+            $filepath
+        ));
+        $this->fileSystem->remove($documentationWorkflowFile);
+    }
+
+    private function renderFile(Package $package, string $repositoryName, string $branchName, array $projectConfig, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
@@ -578,20 +612,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $localFullPath = $this->appDir.'/templates/'.$localPath;
-
-        $docsPath = $projectConfig['branches'][$branchName]['docs_path'];
-        if (!$projectConfig['docs_target']
-            && (
-                u($distPath)->endsWith($docsPath)
-                || u($distPath)->endsWith('.github/workflows/documentation.yaml.twig')
-            )
-        ) {
-            $this->fileSystem->remove(
-                u($distPath)->replace('.twig', '')->toString()
-            );
-
-            return;
-        }
 
         $localFileType = filetype($localFullPath);
         if (false === $localFileType) {
