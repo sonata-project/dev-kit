@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Domain\Value\Project;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
@@ -96,6 +97,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ? $input->getArgument('projects')
             : array_keys($this->configs['projects'])
         ;
+
     }
 
     /**
@@ -113,9 +115,18 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             return 1;
         }
 
+        $projects = [];
+        foreach ($this->configs['projects'] as $name => $config) {
+            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+
+            $projects[$name] = Project::fromValues($name, $config, $package);
+        }
+
+        dd($projects);
+
         foreach ($this->projects as $name) {
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+
                 $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
                 $this->updateRepositories($package, $projectConfig);
