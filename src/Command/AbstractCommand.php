@@ -16,13 +16,11 @@ namespace App\Command;
 use App\Config\DevKitConfiguration;
 use App\Config\ProjectsConfiguration;
 use Github\Client;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function Symfony\Component\String\u;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -66,9 +64,6 @@ abstract class AbstractCommand extends Command
      */
     protected $githubPaginator;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
@@ -95,15 +90,5 @@ abstract class AbstractCommand extends Command
 
         $this->githubClient = $client;
         $this->githubPaginator = new \Github\ResultPager($client);
-    }
-
-    /**
-     * Returns repository name without vendor prefix.
-     */
-    final protected function getRepositoryName(Package $package): string
-    {
-        $repositoryArray = u($package->getRepository())->split('/');
-
-        return str_replace('.git', '', end($repositoryArray));
     }
 }

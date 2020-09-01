@@ -13,17 +13,41 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\ProjectsConfigurations;
+use App\Domain\Value\Project;
+use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\Status;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
+use GitWrapper\GitWrapper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Twig\Environment;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
+final class PullRequestAutoMergeCommand extends AbstractCommand
 {
     private const TIME_BEFORE_MERGE = 60;
+
+    private ProjectsConfigurations $projectsConfigurations;
+
+    /**
+     * @var array<string, Project>
+     */
+    private array $projects = [];
+
+    private bool $apply;
+
+    public function __construct(ProjectsConfigurations $projectsConfigurations)
+    {
+        parent::__construct();
+
+        $this->projectConfigurations = $projectsConfigurations;
+    }
 
     protected function configure(): void
     {
@@ -32,81 +56,108 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $this
             ->setName('pull-request-auto-merge')
             ->setDescription('Merge RTM pull requests. Only active for pull requests by SonataCI.')
+            ->addOption('apply', null, InputOption::VALUE_NONE, 'Applies wanted requests')
         ;
+    }
+
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->apply = $input->getOption('apply');
+        if (!$this->apply) {
+            $this->io->warning('This is a dry run execution. No change will be applied here.');
+        }
+
+        $this->projects = $this->projectsConfigurations->all();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->configs['projects'] as $name => $projectConfig) {
+        foreach ($this->projects as $name => $project) {
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-                $this->io->title($package->getName());
-                $this->mergePullRequest($package, $projectConfig);
+
+                $this->io->title($project->name());
+
+                $this->mergePullRequest($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
         return 0;
     }
 
-    private function mergePullRequest(Package $package, array $projectConfig): void
+    private function mergePullRequest(Project $project): void
     {
-        if (!\array_key_exists('branches', $projectConfig)) {
+        if (!$project->hasBranches()) {
             return;
         }
 
-        $repositoryName = $this->getRepositoryName($package);
-        $branches = array_keys($projectConfig['branches']);
+        $repository = $project->repository();
 
-        $pulls = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'all', [
+        $brancheNames = $project->branchNames();
+
+        $pullRequests = [];
+        foreach ($this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'all', [
             static::GITHUB_GROUP,
-            $repositoryName,
-        ]);
-        foreach ($pulls as $pull) {
+            $repository->name(),
+        ]) as $pull) {
+            $pullRequests[] = PullRequest::fromResponse($pull);
+        }
+
+        /** @var PullRequest $pullRequest */
+        foreach ($pullRequests as $pullRequest) {
             // Do not manage not configured branches.
-            if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
+            if (!\in_array(u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(), $brancheNames, true)) {
                 continue;
             }
 
             // Proceed only bot PR for now.
-            if (self::BOT_NAME !== $pull['user']['login']) {
+            if (self::BOT_NAME !== $pullRequest->user()->login()) {
                 continue;
             }
 
             $this->io->section(sprintf(
                 '#%d > %s - %s',
-                $pull['number'],
-                $pull['base']['ref'],
-                $pull['title']
+                $pullRequest->number(),
+                $pullRequest->base()->ref(),
+                $pullRequest->title()
             ));
 
             $state = $this->githubClient->repos()->statuses()->combined(
                 static::GITHUB_GROUP,
-                $repositoryName,
-                $pull['head']['sha']
+                $repository->name(),
+                $pullRequest->head()->sha()
             );
 
-            $this->io->comment(sprintf('Author: %s', $pull['user']['login']));
-            $this->io->comment(sprintf('Branch: %s', $pull['base']['ref']));
-            $this->io->comment(sprintf('Status: %s', $state['state']));
+            $status = Status::fromResponse($state);
+
+            $this->io->comment(sprintf('Author: %s', $pullRequest->user()->login()));
+            $this->io->comment(sprintf('Branch: %s', $pullRequest->base()->ref()));
+            $this->io->comment(sprintf('Status: %s', $status->state()));
 
             // Ignore the PR if status is not good.
-            if ('success' !== $state['state']) {
+            if (!$status->isSuccessful()) {
                 continue;
             }
 
-            $updatedAt = new \DateTime($pull['updated_at'], new \DateTimeZone('UTC'));
             // Wait a bit to be sure the PR state is updated.
             if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
-                - $updatedAt->getTimestamp() < self::TIME_BEFORE_MERGE) {
+                - $pullRequest->updatedAt()->getTimestamp() < self::TIME_BEFORE_MERGE
+            ) {
                 continue;
             }
 
             $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'commits', [
                 static::GITHUB_GROUP,
-                $repositoryName,
-                $pull['number'],
+                $repository->name(),
+                $pullRequest->number(),
             ]);
 
             $commitMessages = array_map(static function ($commit): string {
@@ -121,33 +172,43 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
                 continue;
             }
+
             $squash = 1 === $uniqueCommitsCount;
 
-            $this->io->comment(sprintf('Squash: %s', $squash ? 'yes' : 'no'));
+            $this->io->comment(sprintf(
+                'Squash: %s',
+                $squash ? 'yes' : 'no'
+            ));
 
             if ($this->apply) {
                 try {
                     $this->githubClient->pullRequests()->merge(
                         static::GITHUB_GROUP,
-                        $repositoryName,
-                        $pull['number'],
-                        $squash ? '' : $pull['title'],
-                        $pull['head']['sha'],
+                        $repository->name(),
+                        $pullRequest->number(),
+                        $squash ? '' : $pullRequest->title(),
+                        $pullRequest->head()->sha(),
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pull['number']) : null
+                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pullRequest->number()) : null
                     );
 
-                    if ('sonata-project' === $pull['head']['repo']['owner']['login']) {
+                    if ('sonata-project' === $pullRequest->head()->repo()->owner()->login()) {
                         $this->githubClient->gitData()->references()->remove(
                             static::GITHUB_GROUP,
-                            $repositoryName,
-                            'heads/'.$pull['head']['ref']
+                            $repository->name(),
+                            'heads/'.$pullRequest->head()->ref()
                         );
                     }
 
-                    $this->io->success(sprintf('Merged PR #%d', $pull['number']));
+                    $this->io->success(sprintf(
+                        'Merged PR #%d',
+                        $pullRequest->number()
+                    ));
                 } catch (ExceptionInterface $e) {
-                    $this->io->error('Failed with message: '.$e->getMessage());
+                    $this->io->error(sprintf(
+                        'Failed with message: %s',
+                        $e->getMessage()
+                    ));
                 }
             }
         }
