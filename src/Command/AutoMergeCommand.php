@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Domain\Value\Project;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
-use Packagist\Api\Result\Package;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,9 +27,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class AutoMergeCommand extends AbstractNeedApplyCommand
 {
     /**
-     * @var string[]
+     * @var array<string, Project>
      */
-    private $projects;
+    private $projects = [];
 
     /**
      * @var LoggerInterface
@@ -57,10 +57,19 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     {
         parent::initialize($input, $output);
 
-        $this->projects = \count($input->getArgument('projects'))
-            ? $input->getArgument('projects')
-            : array_keys($this->configs['projects'])
-        ;
+        $selectedProjects = $input->getArgument('projects');
+
+        foreach ($this->configs['projects'] as $name => $config) {
+            if ($selectedProjects > 0
+                && !\in_array($name, $selectedProjects, true)
+            ) {
+                continue;
+            }
+
+            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+
+            $this->projects[$name] = Project::fromValues($name, $config, $package);
+        }
     }
 
     /**
@@ -68,36 +77,32 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
-        if (\count($notConfiguredProjects)) {
-            $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
-
-            return 1;
-        }
-
-        foreach ($this->projects as $name) {
-            $projectConfig = $this->configs['projects'][$name];
-
+        /** @var Project $project */
+        foreach ($this->projects as $project) {
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-                $this->io->title($package->getName());
-                $this->mergeBranches($package, $projectConfig);
+                $this->io->title($project->name());
+
+                $this->mergeBranches($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
         return 0;
     }
 
-    private function mergeBranches(Package $package, array $projectConfig): void
+    private function mergeBranches(Project $project): void
     {
-        if (!$this->apply || !\array_key_exists('branches', $projectConfig)) {
+        if (!$this->apply || !$project->hasBranches()) {
             return;
         }
 
-        $repositoryName = $this->getRepositoryName($package);
-        $branches = array_reverse(array_keys($projectConfig['branches']));
+        $repository = $project->repository();
+
+        $branches = array_reverse($project->branchNames());
 
         // Merge the oldest branch into the next newest, and so on.
         while (($head = current($branches))) {
@@ -111,20 +116,32 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 // https://github.com/KnpLabs/php-github-api/pull/379
                 $response = $this->githubClient->repo()->merge(
                     static::GITHUB_GROUP,
-                    $repositoryName,
+                    $repository->nameWithoutVendorPrefix(),
                     $base,
                     $head,
                     sprintf('Merge %s into %s', $head, $base)
                 );
 
                 if (\is_array($response) && \array_key_exists('sha', $response)) {
-                    $this->io->success(sprintf('Merged %s into %s', $head, $base));
+                    $this->io->success(sprintf(
+                        'Merged %s into %s',
+                        $head,
+                        $base
+                    ));
                 } else {
-                    $this->io->comment('Nothing to merge on '.$base);
+                    $this->io->comment(sprintf(
+                        'Nothing to merge on %s',
+                        $base
+                    ));
                 }
             } catch (RuntimeException $e) {
                 if (409 === $e->getCode()) {
-                    $message = sprintf('%s: Merging of %s into %s contains conflicts. Skipped.', $repositoryName, $head, $base);
+                    $message = sprintf(
+                        '%s: Merging of %s into %s contains conflicts. Skipped.',
+                        $repository->nameWithoutVendorPrefix(),
+                        $head,
+                        $base
+                    );
 
                     $this->io->warning($message);
                     $this->logger->warning($message);
