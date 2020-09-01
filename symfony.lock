@@ -361,5 +361,8 @@
     },
     "twig/twig": {
         "version": "v3.0.1"
+    },
+    "webmozart/assert": {
+        "version": "1.9.1"
     }
 }
