@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Domain\Value\Project;
+use App\Github\Domain\Value\PullRequest;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -35,11 +36,14 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->configs['projects'] as $name => $projectConfig) {
+        foreach ($this->configs['projects'] as $name => $config) {
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+
                 $this->io->title($package->getName());
-                $this->checkPullRequests($package);
+                $project = Project::fromValues($name, $config, $package);
+
+                $this->checkPullRequests($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -51,14 +55,17 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function checkPullRequests(Package $package): void
+    private function checkPullRequests(Project $project): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repository = $project->repository();
 
-        foreach ($this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
-            $number = $pullRequest['number'];
-            $pullRequest = $this->githubClient->pullRequests()->show(static::GITHUB_GROUP, $repositoryName, $number);
+        foreach ($this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $pull) {
+            dump($pull);
+            #$pullRequest = PullRequest::fromConfigArray($pull);
 
+            $pullRequest = $this->githubClient->pullRequests()->show(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $pullRequest->number());
+
+            dd($pullRequest);
             // The value of the mergeable attribute can be true, false, or null.
             // If the value is null this means that the mergeability hasn't been computed yet.
             // @see: https://developer.github.com/v3/pulls/#get-a-single-pull-request
@@ -66,8 +73,8 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $comments = array_filter(
                     $this->githubPaginator->fetchAll($this->githubClient->issues()->comments(), 'all', [
                         static::GITHUB_GROUP,
-                        $repositoryName,
-                        $number,
+                        $repository->nameWithoutVendorPrefix(),
+                        $pullRequest->number(),
                     ]),
                     static function ($comment) {
                         return $comment['user']['login'] === static::GITHUB_USER;
@@ -78,7 +85,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
                 $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequest(), 'commits', [
                     static::GITHUB_GROUP,
-                    $repositoryName,
+                    $repository->nameWithoutVendorPrefix(),
                     $number,
                 ]);
                 $lastCommit = end($commits);
@@ -86,10 +93,10 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, [
+                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $number, [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
                         ]);
-                        $this->githubClient->addIssueLabel(static::GITHUB_GROUP, $repositoryName, $number, 'pending author');
+                        $this->githubClient->addIssueLabel(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $number, 'pending author');
                     }
 
                     $this->io->text(sprintf('#%d - %s', $pullRequest['number'], $pullRequest['title']));
