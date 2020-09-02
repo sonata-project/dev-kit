@@ -34,17 +34,24 @@ final class ProjectTest extends TestCase
 
         $config = <<<CONFIG
 admin-bundle:
+  docs_target: true
   branches:
     master:
       php: ['7.3', '7.4']
       variants:
         symfony: ['4.4']
         sonata_block: ['4']
+      services: []
+      docs_path: docs
+      tests_path: tests
     3.x:
       php: ['7.2', '7.3', '7.4']
       variants:
         symfony: ['4.4']
         sonata_block: ['3']
+      services: []
+      docs_path: docs
+      tests_path: tests
 CONFIG;
 
         $config = Yaml::parse($config);
