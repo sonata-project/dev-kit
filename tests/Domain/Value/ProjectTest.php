@@ -34,6 +34,9 @@ final class ProjectTest extends TestCase
 
         $config = <<<CONFIG
 admin-bundle:
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_doctor_rst_whitelist_part: ~
   docs_target: true
   branches:
     master:
