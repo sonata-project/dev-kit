@@ -32,7 +32,7 @@ final class ProjectTest extends TestCase
             'name' => $packageName = 'sonata-project/admin-bundle',
         ]);
 
-$config = <<<CONFIG
+        $config = <<<CONFIG
 admin-bundle:
   branches:
     master:

@@ -16,7 +16,6 @@ namespace App\Command;
 use App\Domain\Value\Project;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
-use Packagist\Api\Result\Package;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
