@@ -14,19 +14,22 @@ declare(strict_types=1);
 namespace App\Github\Domain\Value;
 
 use Webmozart\Assert\Assert;
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
 final class Hook
 {
-    private string $id;
+    private int $id;
     private string $url;
 
-    private function __construct(string $url)
+    private function __construct(int $id, string $url)
     {
         Assert::stringNotEmpty($url);
+        Assert::greaterThan($id, 0);
 
+        $this->id = $id;
         $this->url = $url;
     }
 
@@ -43,7 +46,8 @@ final class Hook
             $config['url']
         );
     }
-    public function id(): string
+
+    public function id(): int
     {
         return $this->id;
     }
@@ -52,5 +56,4 @@ final class Hook
     {
         return $this->url;
     }
-
 }
