@@ -79,7 +79,7 @@ final class Branch
         }
 
         $variants = [];
-        foreach ($config['variants'] as $variant => $verrsion) {
+        foreach ($config['variants'] as $variant => $version) {
             $variants[] = Variant::fromValues($variant, $version);
         }
 
