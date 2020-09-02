@@ -426,7 +426,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = sprintf('PHP %s + highest + normal', $phpVersion);
         }
 
-        foreach ($branchConfig['versions'] as $variant => $versions) {
+        foreach ($branchConfig['variants'] as $variant => $versions) {
             foreach ($versions as $version) {
                 $requiredStatusChecks[] = sprintf(
                     'PHP %s + highest + %s:"%s"',
