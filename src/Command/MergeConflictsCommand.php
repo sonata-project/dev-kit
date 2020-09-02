@@ -61,7 +61,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
         foreach ($this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $pull) {
             dump($pull);
-            #$pullRequest = PullRequest::fromConfigArray($pull);
+            $pullRequest = PullRequest::fromConfigArray($pull);
 
             $pullRequest = $this->githubClient->pullRequests()->show(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $pullRequest->number());
 
