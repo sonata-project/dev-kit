@@ -35,7 +35,7 @@ final class Head
         $this->repo = $repo;
     }
 
-    public static function fromConfigArray(array $config): self
+    public static function fromResponse(array $config): self
     {
         Assert::notEmpty($config);
 
@@ -51,7 +51,7 @@ final class Head
         return new self(
             $config['ref'],
             $config['sha'],
-            Repo::fromConfigArray($config['repo'])
+            Repo::fromResponse($config['repo'])
         );
     }
 

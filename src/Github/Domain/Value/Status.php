@@ -30,14 +30,14 @@ final class Status
         $this->state = $state;
     }
 
-    public static function fromConfigArray(array $config): self
+    public static function fromResponse(array $response): self
     {
-        Assert::notEmpty($config);
+        Assert::notEmpty($response);
 
-        Assert::keyExists($config, 'state');
-        Assert::stringNotEmpty($config['state']);
+        Assert::keyExists($response, 'state');
+        Assert::stringNotEmpty($response['state']);
 
-        return new self($config['state']);
+        return new self($response['state']);
     }
 
     public function isSuccessful(): bool

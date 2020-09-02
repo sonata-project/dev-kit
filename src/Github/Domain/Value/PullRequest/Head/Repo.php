@@ -28,15 +28,15 @@ final class Repo
         $this->owner = $owner;
     }
 
-    public static function fromConfigArray(array $config): self
+    public static function fromResponse(array $response): self
     {
-        Assert::notEmpty($config);
+        Assert::notEmpty($response);
 
-        Assert::keyExists($config, 'owner');
-        Assert::notEmpty($config['owner']);
+        Assert::keyExists($response, 'owner');
+        Assert::notEmpty($response['owner']);
 
         return new self(
-            Owner::fromConfigArray($config['owner'])
+            Owner::fromResponse($response['owner'])
         );
     }
 

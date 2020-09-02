@@ -30,14 +30,14 @@ final class User
         $this->login = $login;
     }
 
-    public static function fromConfigArray(array $config): self
+    public static function fromResponse(array $response): self
     {
-        Assert::notEmpty($config);
+        Assert::notEmpty($response);
 
-        Assert::keyExists($config, 'login');
-        Assert::stringNotEmpty($config['login']);
+        Assert::keyExists($response, 'login');
+        Assert::stringNotEmpty($response['login']);
 
-        return new self($config['login']);
+        return new self($response['login']);
     }
 
     public function login(): string

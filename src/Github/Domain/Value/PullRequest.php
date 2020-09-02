@@ -47,34 +47,34 @@ final class PullRequest
         $this->user = $user;
     }
 
-    public static function fromConfigArray(array $config): self
+    public static function fromResponse(array $response): self
     {
-        Assert::notEmpty($config);
+        Assert::notEmpty($response);
 
-        Assert::keyExists($config, 'number');
+        Assert::keyExists($response, 'number');
 
-        Assert::keyExists($config, 'title');
-        Assert::stringNotEmpty($config['title']);
+        Assert::keyExists($response, 'title');
+        Assert::stringNotEmpty($response['title']);
 
-        Assert::keyExists($config, 'updated_at');
-        Assert::stringNotEmpty($config['updated_at']);
+        Assert::keyExists($response, 'updated_at');
+        Assert::stringNotEmpty($response['updated_at']);
 
-        Assert::keyExists($config, 'base');
-        Assert::notEmpty($config['base']);
+        Assert::keyExists($response, 'base');
+        Assert::notEmpty($response['base']);
 
-        Assert::keyExists($config, 'head');
-        Assert::notEmpty($config['head']);
+        Assert::keyExists($response, 'head');
+        Assert::notEmpty($response['head']);
 
-        Assert::keyExists($config, 'user');
-        Assert::notEmpty($config['user']);
+        Assert::keyExists($response, 'user');
+        Assert::notEmpty($response['user']);
 
         return new self(
-            $config['number'],
-            $config['title'],
-            $config['updated_at'],
-            Base::fromConfigArray($config['base']),
-            Head::fromConfigArray($config['head']),
-            User::fromConfigArray($config['user'])
+            $response['number'],
+            $response['title'],
+            $response['updated_at'],
+            Base::fromResponse($response['base']),
+            Head::fromResponse($response['head']),
+            User::fromResponse($response['user'])
         );
     }
 

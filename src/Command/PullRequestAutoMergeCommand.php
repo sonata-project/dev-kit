@@ -74,7 +74,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             static::GITHUB_GROUP,
             $repository->nameWithoutVendorPrefix(),
         ]) as $pull) {
-            $pullRequests[] = PullRequest::fromConfigArray($pull);
+            $pullRequests[] = PullRequest::fromResponse($pull);
         }
 
         /** @var PullRequest $pullRequest */
@@ -102,7 +102,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pullRequest->head()->sha()
             );
 
-            $status = Status::fromConfigArray($state);
+            $status = Status::fromResponse($state);
 
             $this->io->comment(sprintf('Author: %s', $pullRequest->user()->login()));
             $this->io->comment(sprintf('Branch: %s', $pullRequest->base()->ref()));

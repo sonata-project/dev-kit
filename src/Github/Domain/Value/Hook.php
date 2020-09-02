@@ -33,17 +33,19 @@ final class Hook
         $this->url = $url;
     }
 
-    public static function fromConfigArray(array $config): self
+    public static function fromResponse(array $response): self
     {
-        Assert::notEmpty($config);
-        Assert::keyExists($config, 'id');
-        Assert::stringNotEmpty($config['id']);
-        Assert::keyExists($config, 'url');
-        Assert::stringNotEmpty($config['url']);
+        Assert::notEmpty($response);
+
+        Assert::keyExists($response, 'id');
+        Assert::stringNotEmpty($response['id']);
+
+        Assert::keyExists($response, 'url');
+        Assert::stringNotEmpty($response['url']);
 
         return new self(
-            $config['id'],
-            $config['url']
+            $response['id'],
+            $response['url']
         );
     }
 

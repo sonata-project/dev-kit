@@ -297,7 +297,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $configuredHooks = [];
         foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $hook) {
-            $configuredHooks[] = Hook::fromConfigArray($hook);
+            $configuredHooks[] = Hook::fromResponse($hook);
         }
 
         // First, check if the hook exists.
@@ -349,7 +349,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $configuredHooks = [];
         foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $hook) {
-            $configuredHooks[] = Hook::fromConfigArray($hook);
+            $configuredHooks[] = Hook::fromResponse($hook);
         }
 
         // Check if hook should be deleted.

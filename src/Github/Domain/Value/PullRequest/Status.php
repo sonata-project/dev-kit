@@ -13,35 +13,34 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\PullRequest;
 
+use App\Github\Domain\Value\PullRequest\Base;
+use App\Github\Domain\Value\PullRequest\Head;
+use App\Github\Domain\Value\PullRequest\User;
 use Webmozart\Assert\Assert;
-use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class Base
+final class Status
 {
-    private string $ref;
+    private bool $mergeable;
 
-    private function __construct(string $ref)
+    private function __construct(bool $mergeable)
     {
-        Assert::stringNotEmpty($ref);
-
-        $this->ref = $ref;
+        $this->mergeable = $mergeable;
     }
 
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);
 
-        Assert::keyExists($response, 'ref');
-        Assert::stringNotEmpty($response['ref']);
+        Assert::keyExists($response, 'mergeable');
 
-        return new self($response['ref']);
+        return new self($response['mergeable']);
     }
 
-    public function ref(): string
+    public function isMergable(): bool
     {
-        return $this->ref;
+        return $this->mergeable;
     }
 }
