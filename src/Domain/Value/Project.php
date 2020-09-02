@@ -116,6 +116,16 @@ final class Project
     }
 
     /**
+     * @return string[]
+     */
+    public function branchNames(): array
+    {
+        return array_map(static function (Branch $branch): string {
+            return $branch->name();
+        }, $this->branches);
+    }
+
+    /**
      * @return ExcludedFile[]
      */
     public function excludedFiles(): array

@@ -41,7 +41,10 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $this->io->title($package->getName());
                 $this->checkPullRequests($package);
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
