@@ -38,6 +38,7 @@ admin-bundle:
   branches:
     master:
       php: ['7.3', '7.4']
+      target_php: ~
       variants:
         symfony: ['4.4']
         sonata_block: ['4']
@@ -46,6 +47,7 @@ admin-bundle:
       tests_path: tests
     3.x:
       php: ['7.2', '7.3', '7.4']
+      target_php: ~
       variants:
         symfony: ['4.4']
         sonata_block: ['3']
