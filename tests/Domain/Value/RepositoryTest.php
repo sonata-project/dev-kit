@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Value;
 
-use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Yaml\Yaml;
 
 final class RepositoryTest extends TestCase
 {
