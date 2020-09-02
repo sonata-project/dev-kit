@@ -15,10 +15,8 @@ namespace App\Command;
 
 use App\Domain\Value\Project;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
