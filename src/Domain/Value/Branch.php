@@ -122,6 +122,14 @@ final class Branch
         return $this->services;
     }
 
+    /**
+     * @return Variant[]
+     */
+    public function variants(): array
+    {
+        return $this->variants;
+    }
+
     public function docsPath(): Path
     {
         return $this->docsPath;

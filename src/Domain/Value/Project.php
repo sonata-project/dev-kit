@@ -15,6 +15,7 @@ namespace App\Domain\Value;
 
 use Packagist\Api\Result\Package;
 use Webmozart\Assert\Assert;
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -91,6 +92,16 @@ final class Project
         return $this->name;
     }
 
+    public function title(): string
+    {
+        return u($this->package->getName())
+            ->replace('-project', '')
+            ->replace('/', ' ')
+            ->replace('-', ' ')
+            ->title()
+            ->toString();
+    }
+
     public function package(): Package
     {
         return $this->package;
@@ -135,5 +146,13 @@ final class Project
     public function hasBranches(): bool
     {
         return [] !== $this->branches;
+    }
+
+    public function websitePath(): string
+    {
+        return u($this->package->getName())
+            ->replace('sonata-project/', '')
+            ->replace('-bundle', '')
+            ->toString();
     }
 }
