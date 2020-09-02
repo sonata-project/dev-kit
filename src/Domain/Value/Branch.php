@@ -23,7 +23,7 @@ final class Branch
     private string $name;
 
     /**
-     * @var PhpVersion[]
+     * @var array<string, PhpVersion>
      */
     private array $phpVersions;
 
@@ -42,7 +42,7 @@ final class Branch
     private ?PhpVersion $targetPhpVersion;
 
     /**
-     * @param PhpVersion[] $phpVersions
+     * @param array<string, PhpVersion> $phpVersions
      * @param Service[] $services
      * @param Variant[] $variants
      */
@@ -107,7 +107,7 @@ final class Branch
     }
 
     /**
-     * @return PhpVersion[]
+     * @return array<string, PhpVersion>
      */
     public function phpVersions(): array
     {
@@ -132,8 +132,8 @@ final class Branch
         return $this->testsPath;
     }
 
-    public function targetPhpVersion(): ?PhpVersion
+    public function targetPhpVersion(): PhpVersion
     {
-        return $this->targetPhpVersion;
+        return $this->targetPhpVersion ?? end($this->phpVersions);
     }
 }

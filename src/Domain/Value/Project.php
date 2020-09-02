@@ -131,4 +131,9 @@ final class Project
     {
         return $this->repository;
     }
+
+    public function hasBranches(): bool
+    {
+        return [] !== $this->branches;
+    }
 }
