@@ -297,6 +297,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix());
 
+        dd($configuredHooks);
+
         // First, check if the hook exists.
         $devKitHook = null;
         foreach ($configuredHooks as $hook) {
