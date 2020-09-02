@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use Packagist\Api\Result\Package;
 use Webmozart\Assert\Assert;
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class Service
+final class Repository
 {
     private string $name;
 
@@ -28,13 +30,22 @@ final class Service
         $this->name = $name;
     }
 
-    public static function fromString(string $name): self
+    public static function fromPackage(Package $package): self
     {
-        return new self($name);
+        return new self(
+            $package->getRepository()
+        );
     }
 
-    public function toString(): string
+    public function name(): string
     {
         return $this->name;
+    }
+
+    public function nameWithoutVendorPrefix(): string
+    {
+        $repositoryArray = u($this->name)->split('/');
+
+        return str_replace('.git', '', end($repositoryArray));
     }
 }
