@@ -94,7 +94,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pullRequest->number(),
                 $pullRequest->base()->ref(),
                 $pullRequest->title()
-            );
+            ));
 
             $state = $this->githubClient->repos()->statuses()->combined(
                 static::GITHUB_GROUP,
