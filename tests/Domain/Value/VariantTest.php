@@ -18,6 +18,20 @@ use PHPUnit\Framework\TestCase;
 
 final class VariantTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function throwsExceptionIfPackageDoesNotContainSlash(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Package must contain a "/"!');
+
+        Variant::fromValues('sonata-projectdev-kit', '1.0');
+    }
+
+    /**
+     * @test
+     */
     public function throwsExceptionIfPackageIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -26,11 +40,52 @@ final class VariantTest extends TestCase
         Variant::fromValues('', '1.0');
     }
 
+    /**
+     * @test
+     */
     public function throwsExceptionIfVersionIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Version must not be empty!');
 
         Variant::fromValues('sonata-project/dev-kit', '');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider validProvider
+     */
+    public function valid(string $expected, string $package, string $version): void
+    {
+        $variant = Variant::fromValues($package, $version);
+
+        self::assertSame($package, $variant->package());
+        self::assertSame($version, $variant->version());
+        self::assertSame($expected, $variant->toString());
+    }
+
+    /**
+     * @return \Generator<array{0: string, 1: string, 2: string}>
+     */
+    public function validProvider(): \Generator
+    {
+        yield [
+            'sonata-project/dev-kit:"1.*"',
+            'sonata-project/dev-kit',
+            '1'
+        ];
+
+        yield [
+            'sonata-project/dev-kit:"1.1.*"',
+            'sonata-project/dev-kit',
+            '1.1'
+        ];
+
+        yield [
+            'sonata-project/dev-kit:"dev-master"',
+            'sonata-project/dev-kit',
+            'dev-master'
+        ];
     }
 }
