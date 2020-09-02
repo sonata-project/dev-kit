@@ -102,7 +102,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
         $repository = $project->repository();
 
-        $branches = array_reverse(array_keys($projectConfig['branches']));
+        $branches = array_reverse($project->branchNames());
 
         // Merge the oldest branch into the next newest, and so on.
         while (($head = current($branches))) {
@@ -116,7 +116,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 // https://github.com/KnpLabs/php-github-api/pull/379
                 $response = $this->githubClient->repo()->merge(
                     static::GITHUB_GROUP,
-                    $repository->name(),
+                    $repository->nameWithoutVendorPrefix(),
                     $base,
                     $head,
                     sprintf('Merge %s into %s', $head, $base)
@@ -138,7 +138,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 if (409 === $e->getCode()) {
                     $message = sprintf(
                         '%s: Merging of %s into %s contains conflicts. Skipped.',
-                        $repository->name(),
+                        $repository->nameWithoutVendorPrefix(),
                         $head,
                         $base
                     );
