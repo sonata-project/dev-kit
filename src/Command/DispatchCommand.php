@@ -63,9 +63,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private $twig;
 
     /**
-     * @var string[]
+     * @var array<string, Project>
      */
-    private $projects;
+    private $projects = [];
 
     public function __construct(string $appDir, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
     {
@@ -93,11 +93,21 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     {
         parent::initialize($input, $output);
 
-        $this->projects = \count($input->getArgument('projects'))
-            ? $input->getArgument('projects')
-            : array_keys($this->configs['projects'])
-        ;
+        $selectedProjects = $input->getArgument('projects');
 
+        foreach ($this->configs['projects'] as $name => $config) {
+            if ($selectedProjects > 0
+                && !\in_array($name, $selectedProjects, true)
+            ) {
+                continue;
+            }
+
+            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+
+            $this->projects[$name] = Project::fromValues($name, $config, $package);
+        }
+
+        dd($this->projects);
     }
 
     /**
