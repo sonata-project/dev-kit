@@ -20,6 +20,16 @@ use Webmozart\Assert\Assert;
  */
 final class PhpVersion
 {
+    /**
+     * @var string[]
+     */
+    private const STABLE_VERSIONS = [
+        '7.1',
+        '7.2',
+        '7.3',
+        '7.4',
+    ];
+
     private string $version;
 
     private function __construct(string $version)
@@ -33,7 +43,12 @@ final class PhpVersion
         return new self($version);
     }
 
-    public function version(): string
+    public function isStable(): bool
+    {
+        return \in_array($this->version, self::STABLE_VERSIONS, true);
+    }
+
+    public function toString(): string
     {
         return $this->version;
     }

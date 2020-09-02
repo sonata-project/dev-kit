@@ -18,23 +18,24 @@ use Webmozart\Assert\Assert;
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class Service
+final class Path
 {
-    private string $name;
+    private string $path;
 
-    private function __construct(string $name)
+    private function __construct(string $path)
     {
-        Assert::stringNotEmpty($name);
-        $this->name = $name;
+        Assert::notStartsWith($path, '/');
+        Assert::notEndsWith($path, '/');
+        $this->path = $path;
     }
 
-    public static function fromString(string $name): self
+    public static function fromString(string $path): self
     {
-        return new self($name);
+        return new self($path);
     }
 
     public function toString(): string
     {
-        return $this->name;
+        return $this->path;
     }
 }
