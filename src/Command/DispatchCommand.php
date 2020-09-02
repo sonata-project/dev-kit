@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
+use App\Domain\Value\Repository;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Result\Package;
@@ -106,8 +108,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             $this->projects[$name] = Project::fromValues($name, $config, $package);
         }
-
-        dd($this->projects);
     }
 
     /**
@@ -115,41 +115,27 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
-        if (\count($notConfiguredProjects)) {
-            $this->io->error(sprintf(
-                'Some specified projects are not configured: %s ',
-                implode(', ', $notConfiguredProjects)
-            ));
-
-            return 1;
-        }
-
-        $projects = [];
-        foreach ($this->configs['projects'] as $name => $config) {
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-
-            $projects[$name] = Project::fromValues($name, $config, $package);
-        }
-
-        dd($projects);
-
-        foreach ($this->projects as $name) {
+        /** @var Project $project */
+        foreach ($this->projects as $project) {
             try {
+                $this->io->title($project->name());
 
-                $projectConfig = $this->configs['projects'][$name];
-                $this->io->title($package->getName());
+                $repository = $project->repository();
+
                 $this->updateRepositories($package, $projectConfig);
-                $this->deleteHooks($package);
-                $this->updateDevKitHook($package);
-                $this->updateLabels($package);
+                $this->deleteHooks($repository);
+                $this->updateDevKitHook($repository);
+                $this->updateLabels($repository);
                 $this->updateBranchesProtection($package, $projectConfig);
 
                 if ($input->getOption('with-files')) {
-                    $this->dispatchFiles($package);
+                    $this->dispatchFiles($project);
                 }
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
@@ -199,9 +185,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function updateLabels(Package $package): void
+    private function updateLabels(Repository $repository): void
     {
-        $repositoryName = $this->getRepositoryName($package);
         $this->io->section('Labels');
 
         $configuredLabels = $this->configs['labels'];
@@ -216,7 +201,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $rows = [];
 
-        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -232,12 +217,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repositoryName, $name);
+                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, [
+                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $name, [
                         'name' => $name,
                         'color' => $configuredColor,
                     ]);
@@ -258,7 +243,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, [
+                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
                     'name' => $name,
                     'color' => $color,
                 ]);
@@ -281,9 +266,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function updateDevKitHook(Package $package): void
+    private function updateDevKitHook(Repository $repository): void
     {
-        $repositoryName = $this->getRepositoryName($package);
         $this->io->section('DevKit hook');
 
         // Construct the hook url.
@@ -309,7 +293,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'pull_request_review_comment',
         ];
 
-        $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
+        $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix());
 
         // First, check if the hook exists.
         $devKitHook = null;
@@ -326,7 +310,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be created.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, [
+                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
@@ -341,13 +325,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], [
+                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $devKitHook['id'], [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
                 ]);
-                $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repositoryName, $devKitHook['id']);
+                $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $devKitHook['id']);
                 $this->io->success('Hook updated.');
             }
         } else {
@@ -355,12 +339,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function deleteHooks(Package $package): void
+    private function deleteHooks(Repository $repository): void
     {
-        $repositoryName = $this->getRepositoryName($package);
         $this->io->section('Check Hooks to be deleted');
 
-        $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
+        $configuredHooks = $this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix());
 
         // Check if hook should be deleted.
         foreach ($configuredHooks as $key => $hook) {
@@ -374,7 +357,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     ));
 
                     if ($this->apply) {
-                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repositoryName, $hook['id']);
+                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $hook['id']);
 
                         $this->io->success(sprintf(
                             'Hook "%s" deleted.',
@@ -386,22 +369,22 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function updateBranchesProtection(Package $package, array $projectConfig): void
+    private function updateBranchesProtection(Project $project): void
     {
-        $repositoryName = $this->getRepositoryName($package);
-        $branches = array_keys($projectConfig['branches']);
+        $repository = $project->repository();
+
         $this->io->section('Branches protection');
 
-        foreach ($branches as $branch) {
+        /** @var Branch $branch */
+        foreach ($project->branches() as $branch) {
             $requiredStatusChecks = $this->buildRequiredStatusChecks(
                 $branch,
-                $projectConfig['branches'][$branch],
-                $projectConfig['docs_target']
+                $project->docsTarget()
             );
 
             if ($this->apply) {
                 $this->githubClient->repo()->protection()
-                    ->update(static::GITHUB_GROUP, $repositoryName, $branch, [
+                    ->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $branch, [
                         'required_status_checks' => [
                             'strict' => false,
                             'contexts' => $requiredStatusChecks,
@@ -427,15 +410,15 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function buildRequiredStatusChecks(string $branchName, array $branchConfig, bool $docsTarget): array
+    private function buildRequiredStatusChecks(Branch $branch, bool $docsTarget): array
     {
-        $targetPhp = $branchConfig['target_php'] ?? end($branchConfig['php']);
+        $phpVersions = $branch->phpVersions();
         $requiredStatusChecks = [
             'composer-normalize',
             'YAML files',
             'XML files',
             'PHP-CS-Fixer',
-            sprintf('PHP %s + lowest + normal', reset($branchConfig['php'])),
+            sprintf('PHP %s + lowest + normal', reset($phpVersions)),
         ];
 
         if ($docsTarget) {
@@ -451,7 +434,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             foreach ($versions as $version) {
                 $requiredStatusChecks[] = sprintf(
                     'PHP %s + highest + %s:"%s"',
-                    $targetPhp,
+                    $branch->targetPhpVersion(),
                     $this->configs['packages'][$variant],
                     'dev-master' === $version ? $version : ($version.'.*'),
                 );
@@ -460,31 +443,33 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $this->io->writeln(sprintf(
             'Required Status-Checks for <info>%s</info>:',
-            $branchName
+            $branch->name()
         ));
         $this->io->listing($requiredStatusChecks);
 
         return $requiredStatusChecks;
     }
 
-    private function dispatchFiles(Package $package): void
+    private function dispatchFiles(Project $project): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $package = $project->package();
+        $repository = $project->repository();
+
         $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
 
         // No branch to manage, continue to next project.
-        if (0 === \count($projectConfig['branches'])) {
+        if (!$project->hasBranches()) {
             return;
         }
 
         // Clone the repository.
-        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
+        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repository->nameWithoutVendorPrefix();
         if ($this->fileSystem->exists($clonePath)) {
             $this->fileSystem->remove($clonePath);
         }
 
         $git = $this->gitWrapper->cloneRepository(
-            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
+            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repository->nameWithoutVendorPrefix(),
             $clonePath
         );
 
@@ -499,7 +484,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranches = array_map(static function ($branch) {
                 return $branch['name'];
-            }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repositoryName));
+            }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()));
 
             $currentBranch = key($branches);
             $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
@@ -516,7 +501,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->githubClient->repos()->commits()->compare(
                 static::GITHUB_GROUP,
-                $repositoryName,
+                $repository->nameWithoutVendorPrefix(),
                 $currentBranch,
                 $previousBranch
             )['ahead_by']) {
@@ -540,7 +525,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $git->checkout('-b', $currentDevKit);
             }
 
-            $this->renderFile($package, $repositoryName, $currentBranch, $projectConfig, $clonePath);
+            $this->renderFile($package, $repository->nameWithoutVendorPrefix(), $currentBranch, $projectConfig, $clonePath);
             $this->deleteNotNeededFilesAndDirs($currentBranch, $projectConfig, $clonePath);
 
             $git->add('.', ['all' => true]);
@@ -553,13 +538,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $git->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, [
+                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
                         'state' => 'open',
                         'head' => 'sonata-project:'.$currentDevKit,
                     ]);
 
                     if (0 === \count($pulls)) {
-                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
+                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
                             'head' => 'sonata-project:'.$currentDevKit,
                             'base' => $currentBranch,
