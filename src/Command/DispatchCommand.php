@@ -153,7 +153,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $this->io->section('Repository');
 
-        $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix());
+        $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repository->packageName());
         $infoToUpdate = [
             'homepage' => 'https://sonata-project.org/',
             'has_issues' => true,
@@ -178,8 +178,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ));
 
             if ($this->apply) {
-                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), array_merge($infoToUpdate, [
-                    'name' => $repository->nameWithoutVendorPrefix(),
+                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repository->packageName(), array_merge($infoToUpdate, [
+                    'name' => $repository->packageName(),
                 ]));
             }
         } elseif (!\count($infoToUpdate)) {
@@ -203,7 +203,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $rows = [];
 
-        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repository->packageName()) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -219,12 +219,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $name);
+                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repository->packageName(), $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $name, [
+                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repository->packageName(), $name, [
                         'name' => $name,
                         'color' => $configuredColor,
                     ]);
@@ -245,7 +245,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
+                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repository->packageName(), [
                     'name' => $name,
                     'color' => $color,
                 ]);
@@ -296,7 +296,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         ];
 
         $configuredHooks = [];
-        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $hook) {
+        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->packageName()) as $hook) {
             $configuredHooks[] = Hook::fromResponse($hook);
         }
 
@@ -314,7 +314,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be created.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
+                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repository->packageName(), [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
@@ -329,13 +329,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $devKitHook->id(), [
+                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repository->packageName(), $devKitHook->id(), [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
                 ]);
-                $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $devKitHook->id());
+                $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repository->packageName(), $devKitHook->id());
                 $this->io->success('Hook updated.');
             }
         } else {
@@ -348,7 +348,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this->io->section('Check Hooks to be deleted');
 
         $configuredHooks = [];
-        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $hook) {
+        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repository->packageName()) as $hook) {
             $configuredHooks[] = Hook::fromResponse($hook);
         }
 
@@ -362,7 +362,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     ));
 
                     if ($this->apply) {
-                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $hook->id());
+                        $this->githubClient->repo()->hooks()->remove(static::GITHUB_GROUP, $repository->packageName(), $hook->id());
 
                         $this->io->success(sprintf(
                             'Hook "%s" deleted.',
@@ -389,7 +389,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             if ($this->apply) {
                 $this->githubClient->repo()->protection()
-                    ->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $branch, [
+                    ->update(static::GITHUB_GROUP, $repository->packageName(), $branch, [
                         'required_status_checks' => [
                             'strict' => false,
                             'contexts' => $requiredStatusChecks,
@@ -463,13 +463,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         // Clone the repository.
-        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repository->nameWithoutVendorPrefix();
+        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repository->packageName();
         if ($this->fileSystem->exists($clonePath)) {
             $this->fileSystem->remove($clonePath);
         }
 
         $git = $this->gitWrapper->cloneRepository(
-            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repository->nameWithoutVendorPrefix(),
+            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repository->packageName(),
             $clonePath
         );
 
@@ -484,7 +484,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranches = array_map(static function (Branch $branch) {
                 return $branch->name();
-            }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()));
+            }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repository->packageName()));
 
             $currentBranch = key($branches);
             $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
@@ -504,7 +504,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->githubClient->repos()->commits()->compare(
                 static::GITHUB_GROUP,
-                $repository->nameWithoutVendorPrefix(),
+                $repository->packageName(),
                 $currentBranch,
                 $previousBranch
             )['ahead_by']) {
@@ -541,13 +541,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $git->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
+                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->packageName(), [
                         'state' => 'open',
                         'head' => 'sonata-project:'.$currentDevKit,
                     ]);
 
                     if (0 === \count($pulls)) {
-                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), [
+                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repository->packageName(), [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
                             'head' => 'sonata-project:'.$currentDevKit,
                             'base' => $currentBranch,
@@ -700,7 +700,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     'package_description' => $package->getDescription(),
                     'packagist_name' => $package->getName(),
                     'is_abandoned' => $package->isAbandoned(),
-                    'repository_name' => $repository->nameWithoutVendorPrefix(),
+                    'repository_name' => $repository->packageName(),
                     'current_branch' => $branch->name(),
                     'unstable_branch' => $unstableBranch,
                     'stable_branch' => $stableBranch,

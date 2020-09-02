@@ -72,7 +72,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $pullRequests = [];
         foreach ($this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'all', [
             static::GITHUB_GROUP,
-            $repository->nameWithoutVendorPrefix(),
+            $repository->packageName(),
         ]) as $pull) {
             $pullRequests[] = PullRequest::fromResponse($pull);
         }
@@ -98,7 +98,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             $state = $this->githubClient->repos()->statuses()->combined(
                 static::GITHUB_GROUP,
-                $repository->nameWithoutVendorPrefix(),
+                $repository->packageName(),
                 $pullRequest->head()->sha()
             );
 
@@ -122,7 +122,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'commits', [
                 static::GITHUB_GROUP,
-                $repository->nameWithoutVendorPrefix(),
+                $repository->packageName(),
                 $pullRequest->number(),
             ]);
 
@@ -150,7 +150,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 try {
                     $this->githubClient->pullRequests()->merge(
                         static::GITHUB_GROUP,
-                        $repository->nameWithoutVendorPrefix(),
+                        $repository->packageName(),
                         $pullRequest->number(),
                         $squash ? '' : $pullRequest->title(),
                         $pullRequest->head()->sha(),
@@ -161,7 +161,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                     if ('sonata-project' === $pullRequest->head()->repo()->owner()->login()) {
                         $this->githubClient->gitData()->references()->remove(
                             static::GITHUB_GROUP,
-                            $repository->nameWithoutVendorPrefix(),
+                            $repository->packageName(),
                             'heads/'.$pullRequest->head()->ref()
                         );
                     }

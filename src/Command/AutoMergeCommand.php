@@ -116,7 +116,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 // https://github.com/KnpLabs/php-github-api/pull/379
                 $response = $this->githubClient->repo()->merge(
                     static::GITHUB_GROUP,
-                    $repository->nameWithoutVendorPrefix(),
+                    $repository->packageName(),
                     $base,
                     $head,
                     sprintf('Merge %s into %s', $head, $base)
@@ -138,7 +138,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 if (409 === $e->getCode()) {
                     $message = sprintf(
                         '%s: Merging of %s into %s contains conflicts. Skipped.',
-                        $repository->nameWithoutVendorPrefix(),
+                        $repository->packageName(),
                         $head,
                         $base
                     );

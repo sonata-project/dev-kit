@@ -23,11 +23,19 @@ use function Symfony\Component\String\u;
 final class Repository
 {
     private string $name;
+    private string $vendor;
+    private string $packageName;
 
     private function __construct(string $name)
     {
         Assert::stringNotEmpty($name);
+        Assert::contains($name, '/');
         $this->name = $name;
+
+        list($vendor, $package) = u($this->name)->replace('.git', '')->split('/');
+
+        $this->vendor = $vendor->toString();
+        $this->packageName = $package->toString();
     }
 
     public static function fromPackage(Package $package): self
@@ -42,10 +50,13 @@ final class Repository
         return $this->name;
     }
 
-    public function nameWithoutVendorPrefix(): string
+    public function vendor(): string
     {
-        $repositoryArray = u($this->name)->split('/');
+        return $this->vendor;
+    }
 
-        return str_replace('.git', '', end($repositoryArray));
+    public function packageName(): string
+    {
+        return $this->packageName;
     }
 }

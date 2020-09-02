@@ -59,10 +59,10 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
     {
         $repository = $project->repository();
 
-        foreach ($this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix()) as $pull) {
+        foreach ($this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repository->packageName()) as $pull) {
             $pullRequest = PullRequest::fromResponse($pull);
 
-            $response = $this->githubClient->pullRequests()->show(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $pullRequest->number());
+            $response = $this->githubClient->pullRequests()->show(static::GITHUB_GROUP, $repository->packageName(), $pullRequest->number());
             $status = PullRequest\Status::fromResponse($response);
 
             // The value of the mergeable attribute can be true, false, or null.
@@ -72,7 +72,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $comments = array_filter(
                     $this->githubPaginator->fetchAll($this->githubClient->issues()->comments(), 'all', [
                         static::GITHUB_GROUP,
-                        $repository->nameWithoutVendorPrefix(),
+                        $repository->packageName(),
                         $pullRequest->number(),
                     ]),
                     static function ($comment) {
@@ -84,7 +84,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
                 $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequest(), 'commits', [
                     static::GITHUB_GROUP,
-                    $repository->nameWithoutVendorPrefix(),
+                    $repository->packageName(),
                     $pullRequest->number(),
                 ]);
                 $lastCommit = end($commits);
@@ -92,12 +92,12 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), $pullRequest->number(), [
+                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repository->packageName(), $pullRequest->number(), [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
                         ]);
                         $this->githubClient->addIssueLabel(
                             static::GITHUB_GROUP,
-                            $repository->nameWithoutVendorPrefix(),
+                            $repository->packageName(),
                             $pullRequest->number(),
                             'pending author'
                         );

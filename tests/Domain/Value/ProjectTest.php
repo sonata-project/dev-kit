@@ -30,7 +30,7 @@ final class ProjectTest extends TestCase
         $package = new Package();
         $package->fromArray([
             'name' => $packageName = 'sonata-project/admin-bundle',
-            'repository' => $repositoryName = 'sonata-project/admin-bundle',
+            'repository' => $repositoryName = 'sonata-project/admin-bundle.git',
         ]);
 
         $config = <<<CONFIG
