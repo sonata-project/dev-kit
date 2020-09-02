@@ -122,11 +122,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
                 $repository = $project->repository();
 
-                $this->updateRepositories($package, $projectConfig);
+                $this->updateRepositories($project);
                 $this->deleteHooks($repository);
                 $this->updateDevKitHook($repository);
                 $this->updateLabels($repository);
-                $this->updateBranchesProtection($package, $projectConfig);
+                $this->updateBranchesProtection($project);
 
                 if ($input->getOption('with-files')) {
                     $this->dispatchFiles($project);
@@ -145,19 +145,21 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     /**
      * Sets repository information and general settings.
      */
-    private function updateRepositories(Package $package, array $projectConfig): void
+    private function updateRepositories(Project $project): void
     {
-        $repositoryName = $this->getRepositoryName($package);
-        $branches = array_keys($projectConfig['branches']);
+        $repository = $project->repository();
+        $branches = $project->branches();
+        $defaultBranch = end($branches);
+
         $this->io->section('Repository');
 
-        $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repositoryName);
+        $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix());
         $infoToUpdate = [
             'homepage' => 'https://sonata-project.org/',
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
-            'default_branch' => end($branches),
+            'default_branch' => $defaultBranch,
             'allow_squash_merge' => true,
             'allow_merge_commit' => false,
             'allow_rebase_merge' => true,
@@ -176,8 +178,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ));
 
             if ($this->apply) {
-                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, [
-                    'name' => $repositoryName,
+                $this->githubClient->repo()->update(static::GITHUB_GROUP, $repository->nameWithoutVendorPrefix(), array_merge($infoToUpdate, [
+                    'name' => $repository->nameWithoutVendorPrefix(),
                 ]));
             }
         } elseif (!\count($infoToUpdate)) {
