@@ -38,6 +38,7 @@ final class Project
     private ?string $customGitignorePart;
     private ?string $customDoctorRstWhitelistPart;
 
+    private Repository $repository;
 
     private function __construct(
         string $name,
@@ -57,6 +58,8 @@ final class Project
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
+
+        $this->repository = Repository::fromPackage($package);
     }
 
     public static function fromValues(string $name, array $config, Package $package): self
@@ -122,5 +125,10 @@ final class Project
     public function customDoctorRstWhitelistPart(): ?string
     {
         return $this->customDoctorRstWhitelistPart;
+    }
+
+    public function repository(): Repository
+    {
+        return $this->repository;
     }
 }

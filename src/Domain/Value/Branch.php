@@ -32,19 +32,29 @@ final class Branch
      */
     private array $services;
 
+    private Path $docsPath;
+    private Path $testsPath;
     private ?PhpVersion $targetPhpVersion;
 
     /**
      * @param PhpVersion[] $phpVersions
      * @param Service[] $services
      */
-    private function __construct(string $name, array $phpVersions, array $services, ?PhpVersion $targetPhpVersion)
-    {
+    private function __construct(
+        string $name,
+        array $phpVersions,
+        array $services,
+        Path $docsPath,
+        Path $testsPath,
+        ?PhpVersion $targetPhpVersion
+    ) {
         Assert::stringNotEmpty($name);
         $this->name = $name;
 
         $this->phpVersions = $phpVersions;
         $this->services = $services;
+        $this->docsPath = $docsPath;
+        $this->testsPath = $testsPath;
         $this->targetPhpVersion = $targetPhpVersion;
     }
 
@@ -69,6 +79,8 @@ final class Branch
             $name,
             $phpVersions,
             $services,
+            Path::fromString($config['docs_path']),
+            Path::fromString($config['tests_path']),
             $targetPhpVersion
         );
     }
@@ -92,5 +104,20 @@ final class Branch
     public function services(): array
     {
         return $this->services;
+    }
+
+    public function docsPath(): Path
+    {
+        return $this->docsPath;
+    }
+
+    public function testsPath(): Path
+    {
+        return $this->testsPath;
+    }
+
+    public function targetPhpVersion(): ?PhpVersion
+    {
+        return $this->targetPhpVersion;
     }
 }
