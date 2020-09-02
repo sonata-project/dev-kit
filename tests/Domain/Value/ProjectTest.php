@@ -56,8 +56,6 @@ CONFIG;
 
         $config = Yaml::parse($config);
 
-
-
         $project = Project::fromValues(
             $name,
             $config['admin-bundle'],
