@@ -17,6 +17,7 @@ use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use function Symfony\Component\String\u;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
@@ -310,5 +311,15 @@ EOT;
         }
 
         return $filteredPulls;
+    }
+
+    /**
+     * Returns repository name without vendor prefix.
+     */
+    private function getRepositoryName(Package $package): string
+    {
+        $repositoryArray = u($package->getRepository())->split('/');
+
+        return str_replace('.git', '', end($repositoryArray));
     }
 }

@@ -96,14 +96,4 @@ abstract class AbstractCommand extends Command
         $this->githubClient = $client;
         $this->githubPaginator = new \Github\ResultPager($client);
     }
-
-    /**
-     * Returns repository name without vendor prefix.
-     */
-    final protected function getRepositoryName(Package $package): string
-    {
-        $repositoryArray = u($package->getRepository())->split('/');
-
-        return str_replace('.git', '', end($repositoryArray));
-    }
 }
