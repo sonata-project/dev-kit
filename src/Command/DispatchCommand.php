@@ -700,7 +700,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     'package_description' => $package->getDescription(),
                     'packagist_name' => $package->getName(),
                     'is_abandoned' => $package->isAbandoned(),
-                    'repository_name' => $repository->name(),
+                    'repository_name' => $repository->nameWithoutVendorPrefix(),
                     'current_branch' => $branch->name(),
                     'unstable_branch' => $unstableBranch,
                     'stable_branch' => $stableBranch,
