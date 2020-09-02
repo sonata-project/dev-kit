@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Github\Domain\Value\PullRequest;
 
 use Webmozart\Assert\Assert;
-use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
