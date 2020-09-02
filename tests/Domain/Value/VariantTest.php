@@ -73,19 +73,19 @@ final class VariantTest extends TestCase
         yield [
             'sonata-project/dev-kit:"1.*"',
             'sonata-project/dev-kit',
-            '1'
+            '1',
         ];
 
         yield [
             'sonata-project/dev-kit:"1.1.*"',
             'sonata-project/dev-kit',
-            '1.1'
+            '1.1',
         ];
 
         yield [
             'sonata-project/dev-kit:"dev-master"',
             'sonata-project/dev-kit',
-            'dev-master'
+            'dev-master',
         ];
     }
 }
