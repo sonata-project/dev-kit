@@ -56,7 +56,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
-                                        ->append($this->addVersionsNode())
+                                        ->append($this->addVariantsNode())
                                         ->scalarNode('docs_path')->defaultValue('docs')->end()
                                         ->scalarNode('tests_path')->defaultValue('tests')->end()
                                     ->end()
@@ -71,9 +71,9 @@ class ProjectsConfiguration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addVersionsNode()
+    private function addVariantsNode()
     {
-        $builder = new TreeBuilder('versions');
+        $builder = new TreeBuilder('variants');
         $node = $builder->getRootNode();
 
         $childrenNode = $node->addDefaultsIfNotSet()->children();

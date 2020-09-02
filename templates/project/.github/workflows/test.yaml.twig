@@ -46,7 +46,7 @@ jobs:
             dependencies: highest
             allowed_to_fail: true
             variant: normal
-{% for package_name, package_versions in versions %}
+{% for package_name, package_versions in variants %}
 {% for version in package_versions %}
           - php-version: '{{ target_php|default(php|last) }}'
             dependencies: highest
