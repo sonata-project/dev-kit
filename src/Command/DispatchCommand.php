@@ -19,7 +19,6 @@ use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Hook;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

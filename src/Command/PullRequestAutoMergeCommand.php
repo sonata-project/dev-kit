@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Domain\Value\Project;
 use Github\Exception\ExceptionInterface;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -37,32 +39,40 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->configs['projects'] as $name => $projectConfig) {
+        foreach ($this->configs['projects'] as $name => $config) {
             try {
                 $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+
                 $this->io->title($package->getName());
-                $this->mergePullRequest($package, $projectConfig);
+                $project = Project::fromValues($name, $config, $package);
+
+                $this->mergePullRequest($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
         return 0;
     }
 
-    private function mergePullRequest(Package $package, array $projectConfig): void
+    private function mergePullRequest(Project $project): void
     {
-        if (!\array_key_exists('branches', $projectConfig)) {
+        if (!$project->hasBranches()) {
             return;
         }
 
-        $repositoryName = $this->getRepositoryName($package);
+        $repository = $project->repository();
+
         $branches = array_keys($projectConfig['branches']);
 
         $pulls = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'all', [
             static::GITHUB_GROUP,
-            $repositoryName,
+            $repository->name(),
         ]);
+
         foreach ($pulls as $pull) {
             // Do not manage not configured branches.
             if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
@@ -83,7 +93,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             $state = $this->githubClient->repos()->statuses()->combined(
                 static::GITHUB_GROUP,
-                $repositoryName,
+                $repositorynasme,
                 $pull['head']['sha']
             );
 
