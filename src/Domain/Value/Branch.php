@@ -32,6 +32,11 @@ final class Branch
      */
     private array $services;
 
+    /**
+     * @var Variant[]
+     */
+    private array $variants;
+
     private Path $docsPath;
     private Path $testsPath;
     private ?PhpVersion $targetPhpVersion;
@@ -39,11 +44,13 @@ final class Branch
     /**
      * @param PhpVersion[] $phpVersions
      * @param Service[] $services
+     * @param Variant[] $variants
      */
     private function __construct(
         string $name,
         array $phpVersions,
         array $services,
+        array $variants,
         Path $docsPath,
         Path $testsPath,
         ?PhpVersion $targetPhpVersion
@@ -53,6 +60,7 @@ final class Branch
 
         $this->phpVersions = $phpVersions;
         $this->services = $services;
+        $this->variants = $variants;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
         $this->targetPhpVersion = $targetPhpVersion;
@@ -70,6 +78,11 @@ final class Branch
             $services[] = Service::fromString($serviceName);
         }
 
+        $variants = [];
+        foreach ($config['variants'] as $variant => $verrsion) {
+            $variants[] = Variant::fromValues($variant, $version);
+        }
+
         $targetPhpVersion = $config['target_php'];
         if (null !== $targetPhpVersion) {
             $targetPhpVersion = PhpVersion::fromString($targetPhpVersion);
@@ -79,6 +92,7 @@ final class Branch
             $name,
             $phpVersions,
             $services,
+            $variants,
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
             $targetPhpVersion
