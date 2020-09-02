@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Domain\Value;
+namespace App\Github\Domain\Value\PullRequest;
 
 use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
@@ -19,29 +19,29 @@ use function Symfony\Component\String\u;
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class User
+final class Base
 {
-    private string $login;
+    private string $ref;
 
-    private function __construct(string $login)
+    private function __construct(string $ref)
     {
-        Assert::stringNotEmpty($login);
+        Assert::stringNotEmpty($ref);
 
-        $this->login = $login;
+        $this->ref = $ref;
     }
 
     public static function fromConfigArray(array $config): self
     {
         Assert::notEmpty($config);
 
-        Assert::keyExists($config, 'login');
-        Assert::stringNotEmpty($config['login']);
+        Assert::keyExists($config, 'ref');
+        Assert::stringNotEmpty($config['ref']);
 
-        return new self($config['login']);
+        return new self($config['ref']);
     }
 
-    public function login(): string
+    public function ref(): string
     {
-        return $this->login;
+        return $this->ref;
     }
 }

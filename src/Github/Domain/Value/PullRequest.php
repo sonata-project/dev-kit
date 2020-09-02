@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Github\Domain\Value\PullRequest\Base;
+use App\Github\Domain\Value\PullRequest\Head;
+use App\Github\Domain\Value\PullRequest\User;
 use Webmozart\Assert\Assert;
-use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -24,9 +26,11 @@ final class PullRequest
     private int $number;
     private string $title;
     private \DateTime $updatedAt;
+    private Base $base;
+    private Head $head;
     private User $user;
 
-    private function __construct(int $number, string $title, string $updatedAt, User $user)
+    private function __construct(int $number, string $title, string $updatedAt, Base $base, Head $head, User $user)
     {
         Assert::stringNotEmpty($title);
         Assert::greaterThan($number, 0);
@@ -37,6 +41,8 @@ final class PullRequest
             $updatedAt,
             new \DateTimeZone('UTC')
         );
+        $this->base = $base;
+        $this->head = $head;
         $this->user = $user;
     }
 
@@ -53,6 +59,12 @@ final class PullRequest
         Assert::keyExists($config, 'updated_at');
         Assert::stringNotEmpty($config['updated_at']);
 
+        Assert::keyExists($config, 'base');
+        Assert::stringNotEmpty($config['base']);
+
+        Assert::keyExists($config, 'head');
+        Assert::stringNotEmpty($config['head']);
+
         Assert::keyExists($config, 'user');
         Assert::stringNotEmpty($config['user']);
 
@@ -60,6 +72,8 @@ final class PullRequest
             $config['number'],
             $config['title'],
             $config['updated_at'],
+            Base::fromConfigArray($config['base']),
+            Head::fromConfigArray($config['head']),
             User::fromConfigArray($config['user'])
         );
     }
@@ -79,18 +93,18 @@ final class PullRequest
         return $this->updatedAt;
     }
 
+    public function base(): Base
+    {
+        return $this->base;
+    }
+
+    public function head(): Head
+    {
+        return $this->head;
+    }
+
     public function user(): User
     {
         return $this->user;
-    }
-
-    public function toString(): string
-    {
-        return sprintf(
-            '#%d > %s - %s',
-            $this->number,
-            $pullRequest['base']['ref'],
-            $this->title
-        );
     }
 }

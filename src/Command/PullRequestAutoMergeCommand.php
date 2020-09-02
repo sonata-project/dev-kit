@@ -15,6 +15,7 @@ namespace App\Command;
 
 use App\Domain\Value\Project;
 use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\Status;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -79,7 +80,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         /** @var PullRequest $pullRequest */
         foreach ($pullRequests as $pullRequest) {
             // Do not manage not configured branches.
-            if (!\in_array(u($pullRequest['base']['ref'])->replace('-dev-kit', '')->toString(), $brancheNames, true)) {
+            if (!\in_array(u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(), $brancheNames, true)) {
                 continue;
             }
 
@@ -88,20 +89,27 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 continue;
             }
 
-            $this->io->section($pullRequest->toString());
+            $this->io->section(sprintf(
+                '#%d > %s - %s',
+                $pullRequest->number(),
+                $pullRequest->base()->ref(),
+                $pullRequest->title()
+            );
 
             $state = $this->githubClient->repos()->statuses()->combined(
                 static::GITHUB_GROUP,
                 $repository->nameWithoutVendorPrefix(),
-                $pullRequest['head']['sha']
+                $pullRequest->head()->sha()
             );
 
+            $status = Status::fromConfigArray($state);
+
             $this->io->comment(sprintf('Author: %s', $pullRequest->user()->login()));
-            $this->io->comment(sprintf('Branch: %s', $pullRequest['base']['ref']));
-            $this->io->comment(sprintf('Status: %s', $state['state']));
+            $this->io->comment(sprintf('Branch: %s', $pullRequest->base()->ref()));
+            $this->io->comment(sprintf('Status: %s', $status->state()));
 
             // Ignore the PR if status is not good.
-            if ('success' !== $state['state']) {
+            if (!$status->isSuccessful()) {
                 continue;
             }
 
@@ -115,7 +123,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'commits', [
                 static::GITHUB_GROUP,
                 $repository->nameWithoutVendorPrefix(),
-                $pullRequest->number(),
+                $pullRequest->number()
             ]);
 
             $commitMessages = array_map(static function ($commit): string {
@@ -145,22 +153,28 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $repository->nameWithoutVendorPrefix(),
                         $pullRequest->number(),
                         $squash ? '' : $pullRequest->title(),
-                        $pullRequest['head']['sha'],
+                        $pullRequest->head()->sha(),
                         $squash,
                         $squash ? sprintf('%s (#%d)', $commitMessages[0], $pullRequest->number()) : null
                     );
 
-                    if ('sonata-project' === $pullRequest['head']['repo']['owner']['login']) {
+                    if ('sonata-project' === $pullRequest->head()->repo()->owner()->login()) {
                         $this->githubClient->gitData()->references()->remove(
                             static::GITHUB_GROUP,
                             $repository->nameWithoutVendorPrefix(),
-                            'heads/'.$pullRequest['head']['ref']
+                            'heads/'.$pullRequest->head()->ref()
                         );
                     }
 
-                    $this->io->success(sprintf('Merged PR #%d', $pullRequest['number']));
+                    $this->io->success(sprintf(
+                        'Merged PR #%d',
+                        $pullRequest->number()
+                    ));
                 } catch (ExceptionInterface $e) {
-                    $this->io->error('Failed with message: '.$e->getMessage());
+                    $this->io->error(sprintf(
+                        'Failed with message: %s',
+                        $e->getMessage()
+                    ));
                 }
             }
         }
