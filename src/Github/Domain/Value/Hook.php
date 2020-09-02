@@ -26,8 +26,8 @@ final class Hook
 
     private function __construct(int $id, string $url)
     {
-        Assert::stringNotEmpty($url);
         Assert::greaterThan($id, 0);
+        Assert::stringNotEmpty($url);
 
         $this->id = $id;
         $this->url = $url;
@@ -38,7 +38,6 @@ final class Hook
         Assert::notEmpty($response);
 
         Assert::keyExists($response, 'id');
-        Assert::stringNotEmpty($response['id']);
 
         Assert::keyExists($response, 'url');
         Assert::stringNotEmpty($response['url']);
