@@ -53,7 +53,7 @@ final class Variant
         return sprintf(
             '%s:"%s"',
             $this->package,
-            'dev-master' === $this->version ? $this->version : ($$this->version.'.*')
+            'dev-master' === $this->version ? $this->version : ($this->version.'.*')
         );
     }
 }
