@@ -123,7 +123,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequests(), 'commits', [
                 static::GITHUB_GROUP,
                 $repository->nameWithoutVendorPrefix(),
-                $pullRequest->number()
+                $pullRequest->number(),
             ]);
 
             $commitMessages = array_map(static function ($commit): string {
