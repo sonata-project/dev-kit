@@ -39,7 +39,7 @@ final class Branch
 
     private Path $docsPath;
     private Path $testsPath;
-    private ?PhpVersion $targetPhpVersion;
+    private PhpVersion $targetPhpVersion;
 
     /**
      * @param array<string, PhpVersion> $phpVersions
@@ -63,7 +63,7 @@ final class Branch
         $this->variants = $variants;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
-        $this->targetPhpVersion = $targetPhpVersion;
+        $this->targetPhpVersion = $targetPhpVersion ?? end($this->phpVersions);
     }
 
     public static function fromValues(string $name, array $config): self
@@ -142,6 +142,6 @@ final class Branch
 
     public function targetPhpVersion(): PhpVersion
     {
-        return $this->targetPhpVersion ?? end($this->phpVersions);
+        return $this->targetPhpVersion;
     }
 }
