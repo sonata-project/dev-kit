@@ -32,7 +32,7 @@ final class ProjectTest extends TestCase
             'name' => $packageName = 'sonata-project/admin-bundle',
         ]);
 
-$config = <<<CONFIG
+        $config = <<<CONFIG
 admin-bundle:
   branches:
     master:
@@ -49,9 +49,11 @@ CONFIG;
 
         $config = Yaml::parse($config);
 
+
+
         $project = Project::fromValues(
             $name,
-            $config,
+            $config['admin-bundle'],
             $package
         );
 
