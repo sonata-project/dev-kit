@@ -26,7 +26,7 @@ final class Variant
     private function __construct(string $package, string $version)
     {
         Assert::stringNotEmpty($package, 'Package must not be empty!');
-        Assert::contains($package, 'Package must contain a "/"!');
+        #Assert::contains($package, 'Package must contain a "/"!');
         $this->package = $package;
 
         Assert::stringNotEmpty($version, 'Version must not be empty!');

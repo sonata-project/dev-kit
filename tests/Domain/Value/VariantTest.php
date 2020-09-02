@@ -18,16 +18,16 @@ use PHPUnit\Framework\TestCase;
 
 final class VariantTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfPackageDoesNotContainSlash(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Package must contain a "/"!');
-
-        Variant::fromValues('sonata-projectdev-kit', '1.0');
-    }
+//    /**
+//     * @test
+//     */
+//    public function throwsExceptionIfPackageDoesNotContainSlash(): void
+//    {
+//        $this->expectException(\InvalidArgumentException::class);
+//        $this->expectExceptionMessage('Package must contain a "/"!');
+//
+//        Variant::fromValues('sonata-projectdev-kit', '1.0');
+//    }
 
     /**
      * @test
