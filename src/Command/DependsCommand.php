@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Domain\Value\Project;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,7 +39,10 @@ final class DependsCommand extends AbstractCommand
 
         foreach ($this->configs['projects'] as $name => $config) {
             $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-            $this->io->title($package->getName());
+
+            $project = Project::fromValues($name, $config, $package);
+
+            $this->io->title($project->name());
 
             $bd = 0;
             foreach ($package->getVersions() as $version) {
