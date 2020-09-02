@@ -20,27 +20,26 @@ use Webmozart\Assert\Assert;
  */
 final class Variant
 {
-    private string $name;
+    private string $package;
     private string $version;
 
-
-    private function __construct(string $name, string $version)
+    private function __construct(string $package, string $version)
     {
-        Assert::stringNotEmpty($name);
-        $this->name = $version;
+        Assert::stringNotEmpty($package, 'Package must not be empty!');
+        $this->package = $package;
 
-        Assert::stringNotEmpty($version);
+        Assert::stringNotEmpty($version, 'Version must not be empty!');
         $this->version = $version;
     }
 
-    public static function fromValues(string $name, string $version): self
+    public static function fromValues(string $package, string $version): self
     {
-        return new self($name, $version);
+        return new self($package, $version);
     }
 
-    public function name(): string
+    public function package(): string
     {
-        return $this->name;
+        return $this->package;
     }
 
     public function version(): string
@@ -50,6 +49,10 @@ final class Variant
 
     public function toString(): string
     {
-        return $this->version;
+        return sprintf(
+            '%s:"%s"',
+            $this->package,
+            'dev-master' === $this->version ? $this->version : ($$this->version.'.*')
+        );
     }
 }
