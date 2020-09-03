@@ -38,6 +38,7 @@ final class Projects
     public function __construct(Client $packagist, LoggerInterface $logger)
     {
         $this->packagist = $packagist;
+        $this->logger = $logger;
 
         $processor = new Processor();
         $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
