@@ -90,29 +90,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $selectedProjectNames = $input->getArgument('projects');
-
-        if ([] === $selectedProjectNames) {
-            $this->projects = $proj
-        }
-
-        foreach ($this->configs['projects'] as $name => $config) {
-            if ($selectedProjectNames > 0
-                && !\in_array($name, $selectedProjectNames, true)
-            ) {
-                continue;
-            }
-
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-
-            $this->projects[$name] = Project::fromValues($name, $config, $package);
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
