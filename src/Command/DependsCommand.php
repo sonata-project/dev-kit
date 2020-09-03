@@ -74,11 +74,13 @@ final class DependsCommand extends Command
                 if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
                     continue;
                 }
+
                 $this->io->section($version->getVersion());
 
                 if (!\is_array($version->getRequire())) {
                     continue;
                 }
+
                 foreach ($version->getRequire() as $packageName => $constraint) {
                     if (!u($packageName)->startsWith('sonata-project/')) {
                         continue;
