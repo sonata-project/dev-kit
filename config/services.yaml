@@ -32,3 +32,5 @@ services:
         $logger: '@monolog.logger.automerge'
 
     GitWrapper\GitWrapper: ~
+
+    Packagist\Api\Client: ~
