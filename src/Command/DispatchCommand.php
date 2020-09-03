@@ -45,27 +45,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         'https://notify.travis-ci.org',
     ];
 
-    /**
-     * @var string
-     */
-    private $appDir;
-
-    /**
-     * @var GitWrapper
-     */
-    private $gitWrapper;
-
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
+    private string $appDir;
+    private GitWrapper $gitWrapper;
+    private Filesystem $fileSystem;
+    private Environment $twig;
     private Projects $projects;
+    private bool $apply;
 
     public function __construct(string $appDir, Projects $projects, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
     {
@@ -87,12 +72,20 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
             ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
             ->addOption('with-files', null, InputOption::VALUE_NONE, 'Applies Pull Request actions for projects files')
+            ->addOption('apply', null, InputOption::VALUE_NONE, 'Applies wanted requests')
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->apply = $input->getOption('apply');
+        if (!$this->apply) {
+            $this->io->warning('This is a dry run execution. No change will be applied here.');
+        }
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $projects = $this->projects->all();

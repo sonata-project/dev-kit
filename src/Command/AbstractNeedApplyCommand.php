@@ -22,25 +22,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class AbstractNeedApplyCommand extends AbstractCommand
 {
-    /**
-     * @var bool
-     */
-    protected $apply;
+
 
     protected function configure(): void
     {
         parent::configure();
 
-        $this->addOption('apply', null, InputOption::VALUE_NONE, 'Applies wanted requests');
+
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
 
-        $this->apply = $input->getOption('apply');
-        if (!$this->apply) {
-            $this->io->warning('This is a dry run execution. No change will be applied here.');
-        }
-    }
 }
