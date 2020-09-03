@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
@@ -64,16 +65,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $twig;
 
-    /**
-     * @var array<string, Project>
-     */
-    private $projects = [];
+    private Projects $projects;
 
-    public function __construct(string $appDir, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
+    public function __construct(string $appDir, Projects $projects, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
+        $this->projects = $projects;
         $this->gitWrapper = $gitWrapper;
         $this->fileSystem = $fileSystem;
         $this->twig = $twig;
@@ -95,11 +94,15 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     {
         parent::initialize($input, $output);
 
-        $selectedProjects = $input->getArgument('projects');
+        $selectedProjectNames = $input->getArgument('projects');
+
+        if ([] === $selectedProjectNames) {
+            $this->projects = $proj
+        }
 
         foreach ($this->configs['projects'] as $name => $config) {
-            if ($selectedProjects > 0
-                && !\in_array($name, $selectedProjects, true)
+            if ($selectedProjectNames > 0
+                && !\in_array($name, $selectedProjectNames, true)
             ) {
                 continue;
             }
@@ -115,8 +118,16 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $projects = $this->projects->all();
+
+        if ([] !== $input->getArgument('projects')) {
+            $projects = $this->projects->byNames($input->getArgument('projects'));
+        }
+
+        dd(count($projects));
+
         /** @var Project $project */
-        foreach ($this->projects as $project) {
+        foreach ($projects as $project) {
             try {
                 $this->io->title($project->name());
 
