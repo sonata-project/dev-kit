@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
 use App\Domain\Value\Project;
+use Packagist\Api\Client;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,8 +25,19 @@ use function Symfony\Component\String\u;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class DependsCommand extends AbstractCommand
+final class DependsCommand extends Command
 {
+    private Projects $projects;
+    private Client $packagist;
+
+    public function __construct(Projects $projects, Client $packagist)
+    {
+        parent::__construct();
+
+        $this->projects = $projects;
+        $this->packagist = $packagist;
+    }
+
     protected function configure(): void
     {
         $this
@@ -37,12 +51,14 @@ final class DependsCommand extends AbstractCommand
     {
         $branchDepth = (int) $input->getOption('branch-depth');
 
-        foreach ($this->configs['projects'] as $name => $config) {
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-
-            $project = Project::fromValues($name, $config, $package);
-
+        /**
+         * @var string $name
+         * @var Project $project
+         */
+        foreach ($this->projects->all() as $name => $project) {
             $this->io->title($project->name());
+
+            $package = $project->package();
 
             $bd = 0;
             foreach ($package->getVersions() as $version) {
@@ -58,6 +74,7 @@ final class DependsCommand extends AbstractCommand
                     if (!u($packageName)->startsWith('sonata-project/')) {
                         continue;
                     }
+
                     $this->io->writeln($packageName.':'.$constraint);
                 }
 
