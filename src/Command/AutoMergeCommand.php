@@ -13,32 +13,33 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
 use App\Domain\Value\Project;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class AutoMergeCommand extends AbstractNeedApplyCommand
+final class AutoMergeCommand extends Command
 {
-    /**
-     * @var array<string, Project>
-     */
-    private $projects = [];
+    private SymfonyStyle $io;
+    private bool $apply;
+    private Projects $projects;
+    private LoggerInterface $logger;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(Projects $projects, LoggerInterface $logger)
     {
         parent::__construct();
+
+        $this->projects = $projects;
         $this->logger = $logger;
     }
 
@@ -50,6 +51,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             ->setName('auto-merge')
             ->setDescription('Merges branches of repositories if there is no conflict.')
             ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
+            ->addOption('apply', null, InputOption::VALUE_NONE, 'Applies wanted requests')
         ;
     }
 
@@ -57,28 +59,24 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     {
         parent::initialize($input, $output);
 
-        $selectedProjects = $input->getArgument('projects');
+        $this->io = new SymfonyStyle($input, $output);
 
-        foreach ($this->configs['projects'] as $name => $config) {
-            if ($selectedProjects > 0
-                && !\in_array($name, $selectedProjects, true)
-            ) {
-                continue;
-            }
-
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-
-            $this->projects[$name] = Project::fromValues($name, $config, $package);
+        $this->apply = $input->getOption('apply');
+        if (!$this->apply) {
+            $this->io->warning('This is a dry run execution. No change will be applied here.');
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $projects = $this->projects->all();
+
+        if ([] !== $input->getArgument('projects')) {
+            $projects = $this->projects->byNames($input->getArgument('projects'));
+        }
+
         /** @var Project $project */
-        foreach ($this->projects as $project) {
+        foreach ($projects as $project) {
             try {
                 $this->io->title($project->name());
 
