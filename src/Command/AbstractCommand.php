@@ -75,10 +75,10 @@ abstract class AbstractCommand extends Command
 
         $processor = new Processor();
         $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
-            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../config/dev-kit.yml')),
+            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../config/dev-kit.yaml')),
         ]);
         $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), [
-            'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yml'))],
+            'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yaml'))],
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 

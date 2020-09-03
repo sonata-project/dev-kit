@@ -56,7 +56,7 @@ Usage:
 <info>php dev-kit release</info>
 
 First, a question about what bundle to release will be shown, this will be autocompleted will
-the projects configured on <info>projects.yml</info>
+the projects configured on <info>projects.yaml</info>
 
 The command will show what is the status of the project, then a list of pull requests
 made against selected branch (default: stable branch) with the following information:
@@ -99,7 +99,7 @@ EOT;
         });
         $question->setValidator(function ($answer) {
             if (!\array_key_exists($answer, $this->configs['projects'])) {
-                throw new \RuntimeException('The name of the project should be on `projects.yml`');
+                throw new \RuntimeException('The name of the project should be on `projects.yaml`');
             }
 
             return $answer;
