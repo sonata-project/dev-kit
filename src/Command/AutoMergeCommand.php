@@ -15,6 +15,7 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use Github\Client;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Psr\Log\LoggerInterface;
@@ -35,7 +36,7 @@ final class AutoMergeCommand extends Command
     private Projects $projects;
     private LoggerInterface $logger;
 
-    public function __construct(Projects $projects, LoggerInterface $logger)
+    public function __construct(Projects $projects, Client $github, LoggerInterface $logger)
     {
         parent::__construct();
 

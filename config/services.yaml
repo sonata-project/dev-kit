@@ -33,4 +33,9 @@ services:
 
     GitWrapper\GitWrapper: ~
 
+    Github\Client:
+        lazy: true
+        calls:
+            - [authenticate, ['%env(GITHUB_OAUTH_TOKEN)%', null, !php/const Github\Client::AUTH_HTTP_TOKEN]]
+
     Packagist\Api\Client: ~
