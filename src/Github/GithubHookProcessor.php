@@ -20,10 +20,7 @@ use App\Github\Domain\Value\Event;
  */
 final class GithubHookProcessor
 {
-    /**
-     * @var GithubClient
-     */
-    private $client;
+    private GithubClient $client;
 
     public function __construct(GithubClient $client)
     {
