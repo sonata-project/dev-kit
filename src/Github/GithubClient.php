@@ -20,7 +20,7 @@ use Github\Client;
  */
 final class GithubClient
 {
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {
