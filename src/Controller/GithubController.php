@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Github\Domain\Value\Event;
 use App\Github\GithubHookProcessor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,10 @@ final class GithubController
      */
     public function index(Request $request, GithubHookProcessor $githubHookProcessor, string $devKitToken): Response
     {
-        $eventName = $request->headers->get('X-GitHub-Event');
+        $event = Event::fromString(
+            $request->headers->get('X-GitHub-Event')
+        );
+
         $payload = json_decode($request->getContent(), true);
 
         if ('' === $devKitToken || $request->query->get('token') !== $devKitToken) {
@@ -38,26 +42,29 @@ final class GithubController
             );
         }
 
-        switch ($eventName) {
+        switch ($event->toString()) {
             case 'ping':
                 return new Response();
             case 'issue_comment':
-                $githubHookProcessor->processPendingAuthor($eventName, $payload);
+                $githubHookProcessor->processPendingAuthor($event, $payload);
 
                 return new Response();
             case 'pull_request':
-                $githubHookProcessor->processReviewLabels($eventName, $payload);
-                $githubHookProcessor->processPendingAuthor($eventName, $payload);
+                $githubHookProcessor->processReviewLabels($event, $payload);
+                $githubHookProcessor->processPendingAuthor($event, $payload);
 
                 return new Response();
             case 'pull_request_review_comment':
-                $githubHookProcessor->processPendingAuthor($eventName, $payload);
+                $githubHookProcessor->processPendingAuthor($event, $payload);
 
                 return new Response();
             default:
                 return new JsonResponse(
                     [
-                        'message' => sprintf('Nothing to do for: %s', $eventName),
+                        'message' => sprintf(
+                            'Nothing to do for: %s',
+                            $event->toString()
+                        ),
                     ],
                     200
                 );
