@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
-use App\Github\Domain\Value\Event;
+use App\Github\Domain\Value\Webhook\Event;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
