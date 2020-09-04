@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value;
 
-use App\Github\Domain\Value\Event;
 use App\Github\Domain\Value\Repository;
 use PHPUnit\Framework\TestCase;
 

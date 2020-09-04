@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Github\Domain\Value\Webhook\Event;
 use App\Github\Domain\Value\Payload;
+use App\Github\Domain\Value\Webhook\Event;
 use App\Github\GithubHookProcessor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
