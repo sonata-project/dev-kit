@@ -32,7 +32,7 @@ final class PayloadTest extends TestCase
                 'number' => $issueId = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
-                ]
+                ],
             ],
             'repository' => [
                 'full_name' => $repository = 'sonata-project/SonataAdminBundle',
