@@ -112,6 +112,8 @@ block-bundle:
         symfony: ['4.4']
 
 classification-bundle:
+  custom_doctor_rst_whitelist_part:
+    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
   branches:
     master:
       php: ['7.2', '7.3', '7.4']
