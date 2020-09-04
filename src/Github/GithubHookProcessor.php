@@ -50,7 +50,12 @@ final class GithubHookProcessor
         $commentAuthorId = 'synchronize' === $payload['action'] ? $issueAuthorId : $payload['comment']['user']['id'];
 
         if ($commentAuthorId === $issueAuthorId) {
-            $this->client->removeIssueLabel($repoUser, $repoName, (int) $issueId, 'pending author');
+            $this->client->removeIssueLabel(
+                $repoUser,
+                $repoName,
+                (int) $issueId,
+                'pending author'
+            );
         }
     }
 
@@ -68,7 +73,12 @@ final class GithubHookProcessor
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
 
         if ('synchronize' === $payload['action']) {
-            $this->client->removeIssueLabel($repoUser, $repoName, (int) $payload['number'], 'RTM');
+            $this->client->removeIssueLabel(
+                $repoUser,
+                $repoName,
+                (int) $payload['number'],
+                'RTM'
+            );
         }
     }
 }
