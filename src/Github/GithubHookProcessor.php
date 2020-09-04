@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace App\Github;
 
-use App\Github\Domain\Value\Payload;
+
+use App\Github\Domain\Value\Webhook\Payload;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
