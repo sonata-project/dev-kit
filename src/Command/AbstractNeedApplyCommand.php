@@ -13,23 +13,13 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 abstract class AbstractNeedApplyCommand extends AbstractCommand
 {
-
-
     protected function configure(): void
     {
         parent::configure();
-
-
     }
-
-
 }
