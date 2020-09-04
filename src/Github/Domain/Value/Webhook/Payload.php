@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Domain\Value;
+namespace App\Github\Domain\Value\Webhook;
 
+use App\Github\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
 
 /**
