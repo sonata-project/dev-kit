@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
+use App\Domain\Value\Branch;
+use App\Domain\Value\Project;
+use App\Domain\Value\Repository;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use function Symfony\Component\String\u;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
@@ -43,6 +46,16 @@ final class ReleaseCommand extends AbstractCommand
         'minor' => 'green',
         'pedantic' => 'yellow',
     ];
+
+    private Projects $projects;
+
+    public function __construct(Projects $projects)
+    {
+        parent::__construct();
+
+        $this->projects = $projects;
+
+    }
 
     protected function configure(): void
     {
@@ -76,27 +89,37 @@ EOT;
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $project = $this->getProject($input, $output);
-        $branches = array_keys($this->configs['projects'][$project]['branches']);
+
+        if (!$project->hasBranches()) {
+            throw new \RuntimeException(sprintf(
+                'Project "%s" has no branches!',
+                $project->name()
+            ));
+        }
+
+        $branches = $project->branches();
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
-        $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$project);
-        $this->io->getErrorStyle()->title($package->getName());
-        $this->prepareRelease($package, $branch, $output);
+        $this->io->getErrorStyle()->title($project->name());
+
+        $this->prepareRelease($project, $branch, $output);
 
         return 0;
     }
 
-    private function getProject(InputInterface $input, OutputInterface $output)
+    private function getProject(InputInterface $input, OutputInterface $output): Project
     {
         $helper = $this->getHelper('question');
 
+        $projects = $this->projects->all();
+
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
-        $question->setAutocompleterValues(array_keys($this->configs['projects']));
+        $question->setAutocompleterValues(array_keys($projects));
         $question->setNormalizer(static function ($answer) {
             return $answer ? trim($answer) : '';
         });
-        $question->setValidator(function ($answer) {
-            if (!\array_key_exists($answer, $this->configs['projects'])) {
+        $question->setValidator(function ($answer, $projects) {
+            if (!\array_key_exists($answer, $projects)) {
                 throw new \RuntimeException('The name of the project should be on `projects.yaml`');
             }
 
@@ -104,31 +127,34 @@ EOT;
         });
         $question->setMaxAttempts(3);
 
-        return $helper->ask($input, $output, $question);
+        $projectName = $helper->ask($input, $output, $question);
+
+        return $this->projects->byName($projectName);
     }
 
-    private function prepareRelease(Package $package, $branch, OutputInterface $output): void
+    private function prepareRelease(Project $project, Branch $branch, OutputInterface $output): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $package = $project->package();
+        $repository = $project->repository();
 
         $currentRelease = $this->githubClient->repo()->releases()->latest(
             static::GITHUB_GROUP,
-            $repositoryName
+            $repository->name()
         );
 
         $branchToRelease = $this->githubClient->repo()->branches(
             static::GITHUB_GROUP,
-            $repositoryName,
-            $branch
+            $repository->name(),
+            $branch->name()
         );
 
         $statuses = $this->githubClient->repo()->statuses()->combined(
             static::GITHUB_GROUP,
-            $repositoryName,
+            $repository->name(),
             $branchToRelease['commit']['sha']
         );
 
-        $pulls = $this->findPullRequestsSince($currentRelease['published_at'], $repositoryName, $branch);
+        $pulls = $this->findPullRequestsSince($currentRelease['published_at'], $repository, $branch);
         $nextVersion = $this->determineNextVersion($currentRelease['tag_name'], $pulls);
         $changelog = array_reduce(
             array_filter(array_column($pulls, 'changelog')),
@@ -288,11 +314,11 @@ EOT;
         }
     }
 
-    private function findPullRequestsSince($date, $repositoryName, $branch)
+    private function findPullRequestsSince($date, Repository $repository, Branch $branch)
     {
         $pulls = $this->githubPaginator->fetchAll($this->githubClient->search(), 'issues', [
-            'repo:'.static::GITHUB_GROUP.'/'.$repositoryName.
-            ' type:pr is:merged base:'.$branch.' merged:>'.$date,
+            'repo:'.static::GITHUB_GROUP.'/'.$repository->name().
+            ' type:pr is:merged base:'.$branch->name().' merged:>'.$date,
         ]);
 
         $filteredPulls = [];
@@ -308,15 +334,5 @@ EOT;
         }
 
         return $filteredPulls;
-    }
-
-    /**
-     * Returns repository name without vendor prefix.
-     */
-    private function getRepositoryName(Package $package): string
-    {
-        $repositoryArray = u($package->getRepository())->split('/');
-
-        return str_replace('.git', '', end($repositoryArray));
     }
 }
