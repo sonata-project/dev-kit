@@ -66,19 +66,17 @@ final class GithubHookProcessor
      */
     public function processReviewLabels(Event $event, array $payload): void
     {
-        if (!\in_array($payload['action'], ['opened', 'synchronize'], true)) {
+        if ($payload['action'] !== 'synchronize') {
             return;
         }
 
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
 
-        if ('synchronize' === $payload['action']) {
-            $this->client->removeIssueLabel(
-                $repoUser,
-                $repoName,
-                (int) $payload['number'],
-                'RTM'
-            );
-        }
+        $this->client->removeIssueLabel(
+            $repoUser,
+            $repoName,
+            (int) $payload['number'],
+            'RTM'
+        );
     }
 }
