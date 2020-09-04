@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Github\Domain\Value\Webhook\Event;
+use App\Github\Domain\Value\Webhook\Payload;
 use App\Github\GithubHookProcessor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,8 +32,6 @@ final class GithubController
             $request->headers->get('X-GitHub-Event')
         );
 
-        $payload = json_decode($request->getContent(), true);
-
         if ('' === $devKitToken || $request->query->get('token') !== $devKitToken) {
             return new JsonResponse(
                 [
@@ -42,20 +41,22 @@ final class GithubController
             );
         }
 
+        $payload = Payload::fromJsonString($request->getContent(), $event);
+
         switch ($event->toString()) {
             case 'ping':
                 return new Response();
             case 'issue_comment':
-                $githubHookProcessor->processPendingAuthorLabel($event, $payload);
+                $githubHookProcessor->processPendingAuthorLabel($payload);
 
                 return new Response();
             case 'pull_request':
-                $githubHookProcessor->processReviewLabel($event, $payload);
-                $githubHookProcessor->processPendingAuthorLabel($event, $payload);
+                $githubHookProcessor->processReviewLabel($payload);
+                $githubHookProcessor->processPendingAuthorLabel($payload);
 
                 return new Response();
             case 'pull_request_review_comment':
-                $githubHookProcessor->processPendingAuthorLabel($event, $payload);
+                $githubHookProcessor->processPendingAuthorLabel($payload);
 
                 return new Response();
             default:
