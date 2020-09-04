@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
-use App\Github\Domain\Value\Webhook\Event;
+use App\Github\Domain\Value\Payload;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -32,28 +32,24 @@ final class GithubHookProcessor
      *
      * Github events: issue_comment, pull_request_review_comment
      */
-    public function processPendingAuthorLabel(Event $event, array $payload): void
+    public function processPendingAuthorLabel(Payload $payload): void
     {
-        if (!\in_array($payload['action'], ['created', 'synchronize'], true)) {
+        if (!\in_array($payload->action(), ['created', 'synchronize'], true)) {
             return;
         }
 
-        $issueKey = 'issue_comment' === $event->toString() ? 'issue' : 'pull_request';
-
-        list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
-        $issueId = $payload[$issueKey]['number'];
-        $issueAuthorId = $payload[$issueKey]['user']['id'];
-        // If it's a PR synchronization, it's obviously done from the author.
-        $commentAuthorId = 'synchronize' === $payload['action'] ? $issueAuthorId : $payload['comment']['user']['id'];
-
-        if ($commentAuthorId === $issueAuthorId) {
-            $this->client->removeIssueLabel(
-                $repoUser,
-                $repoName,
-                (int) $issueId,
-                'pending author'
-            );
+        if ($payload->commentAuthorId() !== $payload->issueAuthorId()) {
+            return;
         }
+
+        $repository = $payload->repository();
+
+        $this->client->removeIssueLabel(
+            $repository->vendor(),
+            $repository->package(),
+            $payload->issueId(),
+            'pending author'
+        );
     }
 
     /**
@@ -61,18 +57,18 @@ final class GithubHookProcessor
      *
      * - If a PR is updated and 'RTM' is set, it is removed.
      */
-    public function processReviewLabel(Event $event, array $payload): void
+    public function processReviewLabel(Payload $payload): void
     {
-        if ($payload['action'] !== 'synchronize') {
+        if ($payload->action() !== 'synchronize') {
             return;
         }
 
-        list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
+        $repository = $payload->repository();
 
         $this->client->removeIssueLabel(
-            $repoUser,
-            $repoName,
-            (int) $payload['number'],
+            $repository->vendor(),
+            $repository->package(),
+            $payload->issueId(),
             'RTM'
         );
     }
