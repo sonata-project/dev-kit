@@ -35,7 +35,7 @@ final class GithubHookProcessor
      *
      * Github events: issue_comment, pull_request_review_comment
      */
-    public function processPendingAuthor(Event $event, array $payload): void
+    public function processPendingAuthorLabel(Event $event, array $payload): void
     {
         if (!\in_array($payload['action'], ['created', 'synchronize'], true)) {
             return;
@@ -64,7 +64,7 @@ final class GithubHookProcessor
      *
      * - If a PR is updated and 'RTM' is set, it is removed.
      */
-    public function processReviewLabels(Event $event, array $payload): void
+    public function processReviewLabel(Event $event, array $payload): void
     {
         if ($payload['action'] !== 'synchronize') {
             return;

@@ -46,16 +46,16 @@ final class GithubController
             case 'ping':
                 return new Response();
             case 'issue_comment':
-                $githubHookProcessor->processPendingAuthor($event, $payload);
+                $githubHookProcessor->processPendingAuthorLabel($event, $payload);
 
                 return new Response();
             case 'pull_request':
-                $githubHookProcessor->processReviewLabels($event, $payload);
-                $githubHookProcessor->processPendingAuthor($event, $payload);
+                $githubHookProcessor->processReviewLabel($event, $payload);
+                $githubHookProcessor->processPendingAuthorLabel($event, $payload);
 
                 return new Response();
             case 'pull_request_review_comment':
-                $githubHookProcessor->processPendingAuthor($event, $payload);
+                $githubHookProcessor->processPendingAuthorLabel($event, $payload);
 
                 return new Response();
             default:
