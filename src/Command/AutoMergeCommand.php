@@ -107,14 +107,11 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             try {
-                // Merge message should be removed when following PR will be merged and tagged.
-                // https://github.com/KnpLabs/php-github-api/pull/379
                 $response = $this->githubClient->repo()->merge(
                     static::GITHUB_GROUP,
                     $repositoryName,
                     $base,
-                    $head,
-                    sprintf('Merge %s into %s', $head, $base)
+                    $head
                 );
 
                 if (\is_array($response) && \array_key_exists('sha', $response)) {
