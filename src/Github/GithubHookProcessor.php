@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Github;
 
+use App\Github\Domain\Value\Event;
+
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
@@ -33,13 +35,13 @@ final class GithubHookProcessor
      *
      * Github events: issue_comment, pull_request_review_comment
      */
-    public function processPendingAuthor(string $eventName, array $payload): void
+    public function processPendingAuthor(Event $event, array $payload): void
     {
         if (!\in_array($payload['action'], ['created', 'synchronize'], true)) {
             return;
         }
 
-        $issueKey = 'issue_comment' === $eventName ? 'issue' : 'pull_request';
+        $issueKey = 'issue_comment' === $event->toString() ? 'issue' : 'pull_request';
 
         list($repoUser, $repoName) = explode('/', $payload['repository']['full_name']);
         $issueId = $payload[$issueKey]['number'];
@@ -57,7 +59,7 @@ final class GithubHookProcessor
      *
      * - If a PR is updated and 'RTM' is set, it is removed.
      */
-    public function processReviewLabels(string $eventName, array $payload): void
+    public function processReviewLabels(Event $event, array $payload): void
     {
         if (!\in_array($payload['action'], ['opened', 'synchronize'], true)) {
             return;
