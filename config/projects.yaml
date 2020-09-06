@@ -1,446 +1,446 @@
 admin-bundle:
-  custom_gitignore_part: |
-    # clean up some non bower ready package
-    src/Resources/public/vendor/admin-lte/bootstrap
-    src/Resources/public/vendor/admin-lte/build
-    src/Resources/public/vendor/admin-lte/dist/img
-    !src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTe.css
-    src/Resources/public/vendor/admin-lte/dist/js/app.js
-    src/Resources/public/vendor/admin-lte/dist/js/demo.js
-    src/Resources/public/vendor/admin-lte/dist/js/pages
-    src/Resources/public/vendor/admin-lte/documentation
-    src/Resources/public/vendor/admin-lte/pages
-    src/Resources/public/vendor/admin-lte/plugins
-    src/Resources/public/vendor/admin-lte/*.html
-    src/Resources/public/vendor/admin-lte/Gruntfile.js
+    custom_gitignore_part: |
+        # clean up some non bower ready package
+        src/Resources/public/vendor/admin-lte/bootstrap
+        src/Resources/public/vendor/admin-lte/build
+        src/Resources/public/vendor/admin-lte/dist/img
+        !src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTe.css
+        src/Resources/public/vendor/admin-lte/dist/js/app.js
+        src/Resources/public/vendor/admin-lte/dist/js/demo.js
+        src/Resources/public/vendor/admin-lte/dist/js/pages
+        src/Resources/public/vendor/admin-lte/documentation
+        src/Resources/public/vendor/admin-lte/pages
+        src/Resources/public/vendor/admin-lte/plugins
+        src/Resources/public/vendor/admin-lte/*.html
+        src/Resources/public/vendor/admin-lte/Gruntfile.js
 
-    src/Resources/public/vendor/iCheck/skins/all.css
-    src/Resources/public/vendor/iCheck/skins/*/*
-    !src/Resources/public/vendor/iCheck/skins/square/blue.css
-    !src/Resources/public/vendor/iCheck/skins/square/blue.png
-    !src/Resources/public/vendor/iCheck/skins/square/blue@2x.png
-    src/Resources/public/vendor/iCheck/icheck.js
+        src/Resources/public/vendor/iCheck/skins/all.css
+        src/Resources/public/vendor/iCheck/skins/*/*
+        !src/Resources/public/vendor/iCheck/skins/square/blue.css
+        !src/Resources/public/vendor/iCheck/skins/square/blue.png
+        !src/Resources/public/vendor/iCheck/skins/square/blue@2x.png
+        src/Resources/public/vendor/iCheck/icheck.js
 
-    src/Resources/public/vendor/slimScroll/examples
-    src/Resources/public/vendor/slimScroll/jquery.slimscroll.js
+        src/Resources/public/vendor/slimScroll/examples
+        src/Resources/public/vendor/slimScroll/jquery.slimscroll.js
 
-    src/Resources/public/vendor/bootstrap/grunt
-    src/Resources/public/vendor/bootstrap/less
-    src/Resources/public/vendor/bootstrap/test-infra
-    src/Resources/public/vendor/bootstrap/Gruntfile.js
+        src/Resources/public/vendor/bootstrap/grunt
+        src/Resources/public/vendor/bootstrap/less
+        src/Resources/public/vendor/bootstrap/test-infra
+        src/Resources/public/vendor/bootstrap/Gruntfile.js
 
-    src/Resources/public/vendor/jqueryui/themes/black-tie
-    src/Resources/public/vendor/jqueryui/themes/blitzer
-    src/Resources/public/vendor/jqueryui/themes/cupertino
-    src/Resources/public/vendor/jqueryui/themes/dark-hive
-    src/Resources/public/vendor/jqueryui/themes/dot-luv
-    src/Resources/public/vendor/jqueryui/themes/eggplant
-    src/Resources/public/vendor/jqueryui/themes/excite-bike
-    src/Resources/public/vendor/jqueryui/themes/hot-sneaks
-    src/Resources/public/vendor/jqueryui/themes/humanity
-    src/Resources/public/vendor/jqueryui/themes/le-frog
-    src/Resources/public/vendor/jqueryui/themes/mint-choc
-    src/Resources/public/vendor/jqueryui/themes/overcast
-    src/Resources/public/vendor/jqueryui/themes/pepper-grinder
-    src/Resources/public/vendor/jqueryui/themes/redmond
-    src/Resources/public/vendor/jqueryui/themes/smoothness
-    src/Resources/public/vendor/jqueryui/themes/south-street
-    src/Resources/public/vendor/jqueryui/themes/start
-    src/Resources/public/vendor/jqueryui/themes/sunny
-    src/Resources/public/vendor/jqueryui/themes/swanky-purse
-    src/Resources/public/vendor/jqueryui/themes/trontastic
-    src/Resources/public/vendor/jqueryui/themes/ui-darkness
-    src/Resources/public/vendor/jqueryui/themes/ui-lightness
-    src/Resources/public/vendor/jqueryui/themes/vader
+        src/Resources/public/vendor/jqueryui/themes/black-tie
+        src/Resources/public/vendor/jqueryui/themes/blitzer
+        src/Resources/public/vendor/jqueryui/themes/cupertino
+        src/Resources/public/vendor/jqueryui/themes/dark-hive
+        src/Resources/public/vendor/jqueryui/themes/dot-luv
+        src/Resources/public/vendor/jqueryui/themes/eggplant
+        src/Resources/public/vendor/jqueryui/themes/excite-bike
+        src/Resources/public/vendor/jqueryui/themes/hot-sneaks
+        src/Resources/public/vendor/jqueryui/themes/humanity
+        src/Resources/public/vendor/jqueryui/themes/le-frog
+        src/Resources/public/vendor/jqueryui/themes/mint-choc
+        src/Resources/public/vendor/jqueryui/themes/overcast
+        src/Resources/public/vendor/jqueryui/themes/pepper-grinder
+        src/Resources/public/vendor/jqueryui/themes/redmond
+        src/Resources/public/vendor/jqueryui/themes/smoothness
+        src/Resources/public/vendor/jqueryui/themes/south-street
+        src/Resources/public/vendor/jqueryui/themes/start
+        src/Resources/public/vendor/jqueryui/themes/sunny
+        src/Resources/public/vendor/jqueryui/themes/swanky-purse
+        src/Resources/public/vendor/jqueryui/themes/trontastic
+        src/Resources/public/vendor/jqueryui/themes/ui-darkness
+        src/Resources/public/vendor/jqueryui/themes/ui-lightness
+        src/Resources/public/vendor/jqueryui/themes/vader
 
-    src/Resources/public/vendor/jquery/src
+        src/Resources/public/vendor/jquery/src
 
-    src/Resources/public/vendor/jquery.scrollTo/demo
-    src/Resources/public/vendor/jquery.scrollTo/tests
+        src/Resources/public/vendor/jquery.scrollTo/demo
+        src/Resources/public/vendor/jquery.scrollTo/tests
 
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_block: ['4']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_block: ['3']
+    branches:
+        master:
+            php: ['7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_block: ['4']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_block: ['3']
 
 admin-search-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        ruflin_elastica: ['5', '6']
-    1.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        ruflin_elastica: ['5', '6']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                ruflin_elastica: ['5', '6']
+        1.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                ruflin_elastica: ['5', '6']
 
 article-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-    1.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+        1.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 block-bundle:
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-    4.x:
-      php: ['7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    branches:
+        master:
+            php: ['7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+        4.x:
+            php: ['7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 classification-bundle:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-      services: [mongodb]
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-      services: [mongodb]
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+            services: [mongodb]
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+            services: [mongodb]
 
 classification-media-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 comment-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 dashboard-bundle:
-  custom_gitignore_part: |
-    /.sass-cache
-    /node_modules
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
+    custom_gitignore_part: |
+        /.sass-cache
+        /node_modules
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
 
 datagrid-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 doctrine-extensions:
-  excluded_files:
-    - README.md.twig
-  docs_target: false
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      services: [mongodb]
-    1.x:
-      php: ['7.2', '7.3', '7.4']
-      services: [mongodb]
+    excluded_files:
+        - README.md.twig
+    docs_target: false
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            services: [mongodb]
+        1.x:
+            php: ['7.2', '7.3', '7.4']
+            services: [mongodb]
 
 doctrine-mongodb-admin-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      services: [mongodb]
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      services: [mongodb]
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            services: [mongodb]
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            services: [mongodb]
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
 
 doctrine-orm-admin-bundle:
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['dev-master']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
+    branches:
+        master:
+            php: ['7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['dev-master']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
 
 doctrine-phpcr-admin-bundle:
-  custom_gitignore_part: |
-    tests/Fixtures/App/app.sqlite
-  custom_doctor_rst_whitelist_part:
-    "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
-  excluded_files:
-    - phpunit.xml.dist.twig
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
+    custom_gitignore_part: |
+        tests/Fixtures/App/app.sqlite
+    custom_doctor_rst_whitelist_part:
+        "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
+    excluded_files:
+        - phpunit.xml.dist.twig
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
+        2.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
 
 ecommerce:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 exporter:
-  excluded_files:
-    - README.md.twig
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        doctrine_odm: ['1']
-      services: [mongodb]
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        doctrine_odm: ['1']
-      services: [mongodb]
+    excluded_files:
+        - README.md.twig
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                doctrine_odm: ['1']
+            services: [mongodb]
+        2.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                doctrine_odm: ['1']
+            services: [mongodb]
 
 formatter-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_block: ['3']
-    4.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_block: ['3']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_block: ['3']
+        4.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_block: ['3']
 
 form-extensions:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-    1.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+        1.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
 
 google-authenticator:
-  excluded_files:
-    - README.md.twig
-  docs_target: false
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
+    excluded_files:
+        - README.md.twig
+    docs_target: false
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+        2.x:
+            php: ['7.2', '7.3', '7.4']
 
 intl-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-        sonata_user: ['4']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+        2.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+                sonata_user: ['4']
 
 media-bundle:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      services: [mongodb]
-      variants:
-        symfony: ['4.4']
-        doctrine_odm: ['1']
-        sonata_admin: ['3']
-        imagine: ['0.7', '1']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      services: [mongodb]
-      variants:
-        symfony: ['4.4']
-        doctrine_odm: ['1']
-        sonata_admin: ['3']
-        imagine: ['0.7', '1']
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            services: [mongodb]
+            variants:
+                symfony: ['4.4']
+                doctrine_odm: ['1']
+                sonata_admin: ['3']
+                imagine: ['0.7', '1']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            services: [mongodb]
+            variants:
+                symfony: ['4.4']
+                doctrine_odm: ['1']
+                sonata_admin: ['3']
+                imagine: ['0.7', '1']
 
 news-bundle:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
 
 notification-bundle:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
 
 page-bundle:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
 
 sandbox:
-  excluded_files:
-    - phpunit.xml.dist.twig
+    excluded_files:
+        - phpunit.xml.dist.twig
 
 seo-bundle:
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_block: ['3']
-        sonata_admin: ['3']
+    branches:
+        master:
+            php: ['7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+        2.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_block: ['3']
+                sonata_admin: ['3']
 
 timeline-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-        sonata_block: ['3']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
+        3.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+                sonata_block: ['3']
 
 translation-bundle:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
-    2.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        sonata_admin: ['3']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
+        2.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                sonata_admin: ['3']
 
 twig-extensions:
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
-    1.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4', '5.1']
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
+        1.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4', '5.1']
 
 user-bundle:
-  custom_doctor_rst_whitelist_part:
-    "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-  branches:
-    master:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        fos_user: ['2']
-        sonata_admin: ['3']
-    4.x:
-      php: ['7.2', '7.3', '7.4']
-      variants:
-        symfony: ['4.4']
-        fos_user: ['2']
-        sonata_admin: ['3']
+    custom_doctor_rst_whitelist_part:
+        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    branches:
+        master:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                fos_user: ['2']
+                sonata_admin: ['3']
+        4.x:
+            php: ['7.2', '7.3', '7.4']
+            variants:
+                symfony: ['4.4']
+                fos_user: ['2']
+                sonata_admin: ['3']
