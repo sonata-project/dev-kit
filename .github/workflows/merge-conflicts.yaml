@@ -1,0 +1,45 @@
+name: Merge conflicts
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  merge-conflicts:
+    name: Apply
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+          tools: composer:v2
+
+      - name: Add PHPUnit matcher
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Set Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Dispatch files
+        run: bin/console merge-conflicts --apply
+        env:
+          GITHUB_OAUTH_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
+          DEK_KIT_TOKEN: ${{ secrets.DEV_KIT_TOKEN }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
