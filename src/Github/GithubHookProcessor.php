@@ -63,7 +63,7 @@ final class GithubHookProcessor
      */
     public function processReviewLabel(Event $event, array $payload): void
     {
-        if ($payload['action'] !== 'synchronize') {
+        if ('synchronize' !== $payload['action']) {
             return;
         }
 
