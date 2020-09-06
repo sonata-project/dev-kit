@@ -1,58 +1,58 @@
 labels:
-  - name: patch
-    color: '207de5'
-  - name: minor
-    color: '009800'
-  - name: major
-    color: 'e11d21'
-  - name: pedantic
-    color: 'd1e4fa'
-  - name: enhancement
-    color: '02d7e1'
-  - name: feature
-    color: '02e10c'
-  - name: bug
-    color: 'fc2929'
-  - name: unconfirmed
-    color: '444444'
-  - name: critical
-    color: 'fc2929'
-  - name: vendor
-    color: 'ededed'
-  - name: pending author
-    color: 'ededed'
-  - name: stale
-    color: 'ededed'
-  - name: in progress
-    color: 'ededed'
-  - name: RTM
-    color: 'ffffff'
-  - name: docs
-    color: 'fbca04'
-  - name: help wanted
-    color: '0e8a16'
-  - name: Easy Pick
-    color: 'd7e102'
-  - name: 'Needs: Documentation'
-    color: '006b75'
-  - name: 'Needs: Tests'
-    color: '006b75'
-  - name: 'Needs: Changelog note'
-    color: '006b75'
-  - name: 'Needs: Upgrade note'
-    color: '006b75'
-  - name: 'hacktoberfest'
-    color: 'b0581d'
-  - name: 'keep'
-    color: '59b3c1'
+    - name: patch
+      color: '207de5'
+    - name: minor
+      color: '009800'
+    - name: major
+      color: 'e11d21'
+    - name: pedantic
+      color: 'd1e4fa'
+    - name: enhancement
+      color: '02d7e1'
+    - name: feature
+      color: '02e10c'
+    - name: bug
+      color: 'fc2929'
+    - name: unconfirmed
+      color: '444444'
+    - name: critical
+      color: 'fc2929'
+    - name: vendor
+      color: 'ededed'
+    - name: pending author
+      color: 'ededed'
+    - name: stale
+      color: 'ededed'
+    - name: in progress
+      color: 'ededed'
+    - name: RTM
+      color: 'ffffff'
+    - name: docs
+      color: 'fbca04'
+    - name: help wanted
+      color: '0e8a16'
+    - name: Easy Pick
+      color: 'd7e102'
+    - name: 'Needs: Documentation'
+      color: '006b75'
+    - name: 'Needs: Tests'
+      color: '006b75'
+    - name: 'Needs: Changelog note'
+      color: '006b75'
+    - name: 'Needs: Upgrade note'
+      color: '006b75'
+    - name: 'hacktoberfest'
+      color: 'b0581d'
+    - name: 'keep'
+      color: '59b3c1'
 
 packages:
-  symfony: symfony/symfony
-  fos_user: friendsofsymfony/user-bundle
-  sonata_core: sonata-project/core-bundle
-  sonata_admin: sonata-project/admin-bundle
-  sonata_block: sonata-project/block-bundle
-  sonata_user: sonata-project/user-bundle
-  ruflin_elastica: ruflin/elastica
-  doctrine_odm: doctrine/mongodb-odm
-  imagine: imagine/imagine
+    symfony: symfony/symfony
+    fos_user: friendsofsymfony/user-bundle
+    sonata_core: sonata-project/core-bundle
+    sonata_admin: sonata-project/admin-bundle
+    sonata_block: sonata-project/block-bundle
+    sonata_user: sonata-project/user-bundle
+    ruflin_elastica: ruflin/elastica
+    doctrine_odm: doctrine/mongodb-odm
+    imagine: imagine/imagine
