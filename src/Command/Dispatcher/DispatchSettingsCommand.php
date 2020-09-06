@@ -18,6 +18,7 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
+use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -73,6 +74,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     {
         $repository = $project->repository();
         $branchNames = $project->branchNames();
+        $latestVersion = $this->getLatestPackageVersion($project->package());
 
         $repositoryInfo = $this->github->repo()->show(
             $repository->vendor(),
@@ -80,7 +82,11 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         );
 
         $infoToUpdate = [
-            'homepage' => 'https://sonata-project.org',
+            'homepage' => $latestVersion->getHomepage() ?: 'https://sonata-project.org',
+            'description' => $latestVersion->isAbandoned()
+                ? '[Abandonned] '.$latestVersion->getDescription()
+                : $latestVersion->getDescription(),
+            'topics' => $latestVersion->getKeywords(),
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
@@ -110,5 +116,21 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
+    }
+
+    /**
+     * Return the latest packagist version.
+     */
+    private function getLatestPackageVersion(Package $package): Package\Version
+    {
+        $versions = $package->getVersions();
+        $lastVersion = reset($versions);
+
+        if (false === $lastVersion) {
+            // This package was never released, we create a fake empty version
+            return new Package\Version();
+        }
+
+        return $lastVersion;
     }
 }
