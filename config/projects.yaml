@@ -182,6 +182,11 @@ doctrine-extensions:
             services: [mongodb]
 
 doctrine-mongodb-admin-bundle:
+    custom_gitignore_part: |
+        /tests/App/public/bundles
+    excluded_files:
+        - phpunit.xml.dist.twig
+        - tests/bootstrap.php.twig
     branches:
         master:
             php: ['7.2', '7.3', '7.4']
