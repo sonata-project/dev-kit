@@ -22,10 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class AbstractNeedApplyCommand extends AbstractCommand
 {
-    /**
-     * @var bool
-     */
-    protected $apply;
+    protected bool $apply = false;
 
     protected function configure(): void
     {
