@@ -54,7 +54,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     /**
      * @var Filesystem
      */
-    private $fileSystem;
+    private $filesystem;
 
     /**
      * @var Environment
@@ -66,13 +66,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(string $appDir, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
+    public function __construct(string $appDir, GitWrapper $gitWrapper, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
         $this->gitWrapper = $gitWrapper;
-        $this->fileSystem = $fileSystem;
+        $this->filesystem = $filesystem;
         $this->twig = $twig;
     }
 
@@ -458,8 +458,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         // Clone the repository.
         $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
-        if ($this->fileSystem->exists($clonePath)) {
-            $this->fileSystem->remove($clonePath);
+        if ($this->filesystem->exists($clonePath)) {
+            $this->filesystem->remove($clonePath);
         }
 
         $git = $this->gitWrapper->cloneRepository(
@@ -583,7 +583,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'Delete <info>/%s</info> directory!',
             $docsPath
         ));
-        $this->fileSystem->remove($docsDirectory);
+        $this->filesystem->remove($docsDirectory);
 
         $filepath = '.github/workflows/documentation.yaml';
         $documentationWorkflowFile = u($distPath)
@@ -595,7 +595,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'Delete <info>/%s</info> file!',
             $filepath
         ));
-        $this->fileSystem->remove($documentationWorkflowFile);
+        $this->filesystem->remove($documentationWorkflowFile);
     }
 
     private function renderFile(Package $package, string $repositoryName, string $branchName, array $projectConfig, string $distPath, string $localPath = self::FILES_DIR): void
@@ -621,7 +621,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        $distFileType = $this->fileSystem->exists($distPath) ? filetype($distPath) : false;
+        $distFileType = $this->filesystem->exists($distPath) ? filetype($distPath) : false;
         if ($localFileType !== $distFileType && false !== $distFileType) {
             throw new \LogicException(sprintf(
                 'File type mismatch between "%s" and "%s"',
@@ -656,8 +656,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        if (!$this->fileSystem->exists(\dirname($distPath))) {
-            $this->fileSystem->mkdir(\dirname($distPath));
+        if (!$this->filesystem->exists(\dirname($distPath))) {
+            $this->filesystem->mkdir(\dirname($distPath));
         }
 
         $branchConfig = $projectConfig['branches'][$branchName];
@@ -666,8 +666,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if (u($localPathInfo['basename'])->startsWith('DELETE_')) {
             $fileToDelete = u($distPath)->replace('DELETE_', '')->toString();
 
-            if ($this->fileSystem->exists($fileToDelete)) {
-                $this->fileSystem->remove($fileToDelete);
+            if ($this->filesystem->exists($fileToDelete)) {
+                $this->filesystem->remove($fileToDelete);
             }
 
             return;
@@ -716,6 +716,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         // Restore file permissions after content copy
-        $this->fileSystem->chmod($distPath, $localPerms);
+        $this->filesystem->chmod($distPath, $localPerms);
     }
 }
