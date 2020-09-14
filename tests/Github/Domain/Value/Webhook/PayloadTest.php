@@ -26,19 +26,17 @@ final class PayloadTest extends TestCase
     {
         $event = Event::fromString('issue_comment');
 
-        $userId = 456;
-
         $array = [
             'action' => $action = 'synchronize',
             'issue' => [
                 'number' => $issueId = 123,
                 'user' => [
-                    'id' => $issueAuthorId = $userId,
+                    'id' => $issueAuthorId = 456,
                 ],
             ],
             'comment' => [
                 'user' => [
-                    'id' => $commentAuthorId = $userId,
+                    'id' => $commentAuthorId = 567,
                 ],
             ],
             'repository' => [
@@ -54,7 +52,80 @@ final class PayloadTest extends TestCase
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertSame($commentAuthorId, $payload->commentAuthorId());
-        self::assertSame($payload->issueAuthorId(), $payload->commentAuthorId());
+        self::assertTrue($payload->isTheCommentFromTheAuthor());
+        self::assertSame($repository, $payload->repository()->toString());
+    }
+
+    /**
+     * @test
+     */
+    public function thatTheCommentIsFromTheAuthorBecauseOfSameUserIdsAndAnActionDifferentToSynchronize(): void
+    {
+        $event = Event::fromString('issue_comment');
+
+        $array = [
+            'action' => $action = 'foo',
+            'issue' => [
+                'number' => $issueId = 123,
+                'user' => [
+                    'id' => $issueAuthorId = 456,
+                ],
+            ],
+            'comment' => [
+                'user' => [
+                    'id' => $commentAuthorId = 456,
+                ],
+            ],
+            'repository' => [
+                'full_name' => $repository = 'sonata-project/SonataAdminBundle',
+            ],
+        ];
+
+        $json = json_encode($array);
+
+        $payload = Payload::fromJsonString($json, $event);
+
+        self::assertSame($action, $payload->action());
+        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueAuthorId, $payload->issueAuthorId());
+        self::assertSame($commentAuthorId, $payload->commentAuthorId());
+        self::assertTrue($payload->isTheCommentFromTheAuthor());
+        self::assertSame($repository, $payload->repository()->toString());
+    }
+
+    /**
+     * @test
+     */
+    public function thatTheCommentIsNotFromTheAuthorBecauseOfDifferentUserIdsAndAnActionDifferentToSynchronize(): void
+    {
+        $event = Event::fromString('issue_comment');
+
+        $array = [
+            'action' => $action = 'foo',
+            'issue' => [
+                'number' => $issueId = 123,
+                'user' => [
+                    'id' => $issueAuthorId = 456,
+                ],
+            ],
+            'comment' => [
+                'user' => [
+                    'id' => $commentAuthorId = 789,
+                ],
+            ],
+            'repository' => [
+                'full_name' => $repository = 'sonata-project/SonataAdminBundle',
+            ],
+        ];
+
+        $json = json_encode($array);
+
+        $payload = Payload::fromJsonString($json, $event);
+
+        self::assertSame($action, $payload->action());
+        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueAuthorId, $payload->issueAuthorId());
+        self::assertSame($commentAuthorId, $payload->commentAuthorId());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }

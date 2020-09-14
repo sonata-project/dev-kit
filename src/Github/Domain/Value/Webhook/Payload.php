@@ -58,15 +58,10 @@ final class Payload
         Assert::keyExists($payload[$issueKey]['user'], 'id');
         $issueAuthorId = $payload[$issueKey]['user']['id'];
 
-        // If it's a PR synchronization, it's obviously done from the author.
-        $commentAuthorId = $issueAuthorId;
-        if ('synchronize' !== $action) {
-            Assert::keyExists($payload, 'comment');
-            Assert::keyExists($payload['comment'], 'user');
-            Assert::keyExists($payload['comment']['user'], 'id');
-
-            $commentAuthorId = $payload['comment']['user']['id'];
-        }
+        Assert::keyExists($payload, 'comment');
+        Assert::keyExists($payload['comment'], 'user');
+        Assert::keyExists($payload['comment']['user'], 'id');
+        $commentAuthorId = $payload['comment']['user']['id'];
 
         Assert::keyExists($payload, 'repository');
         Assert::keyExists($payload['repository'], 'full_name');
@@ -110,6 +105,11 @@ final class Payload
 
     public function isTheCommentFromTheAuthor(): bool
     {
+        // If it's a PR synchronization, it's obviously done from the author.
+        if ('synchronize' === $this->action) {
+            return true;
+        }
+
         return $this->issueAuthorId === $this->commentAuthorId;
     }
 
