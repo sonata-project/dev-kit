@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\Webhook;
 
 use App\Github\Domain\Value\Webhook\Action;
-use App\Github\Domain\Value\Webhook\Event;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase
@@ -82,13 +81,13 @@ final class ActionTest extends TestCase
         yield [
             true,
             Action::fromString('synchronize'),
-            Action::SYNCHRONIZE()
+            Action::SYNCHRONIZE(),
         ];
 
         yield [
             false,
             Action::CREATED(),
-            Action::SYNCHRONIZE()
+            Action::SYNCHRONIZE(),
         ];
     }
 
@@ -112,7 +111,7 @@ final class ActionTest extends TestCase
             Action::fromString('synchronize'),
             [
                 Action::SYNCHRONIZE(),
-            ]
+            ],
         ];
 
         yield [
@@ -121,7 +120,7 @@ final class ActionTest extends TestCase
             [
                 Action::SYNCHRONIZE(),
                 Action::CREATED(),
-            ]
+            ],
         ];
 
         yield [
@@ -129,7 +128,7 @@ final class ActionTest extends TestCase
             Action::CREATED(),
             [
                 Action::SYNCHRONIZE(),
-            ]
+            ],
         ];
 
         yield [
@@ -138,7 +137,7 @@ final class ActionTest extends TestCase
             [
                 Action::SYNCHRONIZE(),
                 Action::fromString('synchronize'),
-            ]
+            ],
         ];
     }
 }
