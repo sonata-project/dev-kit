@@ -49,7 +49,7 @@ final class PayloadTest extends TestCase
         $payload = Payload::fromJsonString($json, $event);
 
         self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueId, $payload->issueId()->toInt());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
@@ -85,7 +85,7 @@ final class PayloadTest extends TestCase
         $payload = Payload::fromJsonString($json, $event);
 
         self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueId, $payload->issueId()->toInt());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
@@ -121,7 +121,7 @@ final class PayloadTest extends TestCase
         $payload = Payload::fromJsonString($json, $event);
 
         self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueId, $payload->issueId()->toInt());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
@@ -152,7 +152,7 @@ final class PayloadTest extends TestCase
         $payload = Payload::fromJsonString($json, $event);
 
         self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueId, $payload->issueId()->toInt());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());

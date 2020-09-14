@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\Webhook;
 
+use App\Github\Domain\Value\Issue\IssueId;
 use App\Github\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
 
@@ -22,14 +23,13 @@ use Webmozart\Assert\Assert;
 final class Payload
 {
     private Action $action;
-    private int $issueId;
+    private IssueId $issueId;
     private int $issueAuthorId;
     private ?int $commentAuthorId;
     private Repository $repository;
 
-    private function __construct(Action $action, int $issueId, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
+    private function __construct(Action $action, IssueId $issueId, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
     {
-        Assert::greaterThan($issueId, 0);
         Assert::greaterThan($issueAuthorId, 0);
         if (null !== $commentAuthorId) {
             Assert::greaterThan($commentAuthorId, 0);
@@ -53,7 +53,7 @@ final class Payload
 
         Assert::keyExists($payload, $issueKey);
         Assert::keyExists($payload[$issueKey], 'number');
-        $issueId = $payload[$issueKey]['number'];
+        $issueId = IssueId::fromInt($payload[$issueKey]['number']);
 
         Assert::keyExists($payload[$issueKey], 'user');
         Assert::keyExists($payload[$issueKey]['user'], 'id');
@@ -91,7 +91,7 @@ final class Payload
         return $this->action;
     }
 
-    public function issueId(): int
+    public function issueId(): IssueId
     {
         return $this->issueId;
     }
