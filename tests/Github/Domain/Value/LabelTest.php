@@ -46,10 +46,13 @@ final class LabelTest extends TestCase
      */
     public function RTM(): void
     {
+        $label = Label::RTM();
+
         self::assertSame(
             'RTM',
-            Label::RTM()->toString()
+            $label->toString()
         );
+        self::assertNull($label->color());
     }
 
     /**
@@ -57,10 +60,13 @@ final class LabelTest extends TestCase
      */
     public function PendingAuthor(): void
     {
+        $label = Label::PendingAuthor();
+
         self::assertSame(
             'pending author',
-            Label::PendingAuthor()->toString()
+            $label->toString()
         );
+        self::assertNull($label->color());
     }
 
     /**
@@ -82,6 +88,18 @@ final class LabelTest extends TestCase
             true,
             Label::fromString('RTM'),
             Label::RTM(),
+        ];
+
+        yield 'equals, because color is not taken into account' => [
+            true,
+            Label::fromResponse([
+                'name' => 'foo',
+                'color' => '1',
+            ]),
+            Label::fromResponse([
+                'name' => 'foo',
+                'color' => '2',
+            ]),
         ];
 
         yield [
