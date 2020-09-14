@@ -48,7 +48,7 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action());
+        self::assertSame($action, $payload->action()->toString());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
@@ -84,7 +84,7 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action());
+        self::assertSame($action, $payload->action()->toString());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
@@ -120,7 +120,7 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action());
+        self::assertSame($action, $payload->action()->toString());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
@@ -151,7 +151,7 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action());
+        self::assertSame($action, $payload->action()->toString());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertFalse($payload->isTheCommentFromTheAuthor());

@@ -21,15 +21,14 @@ use Webmozart\Assert\Assert;
  */
 final class Payload
 {
-    private string $action;
+    private Action $action;
     private int $issueId;
     private int $issueAuthorId;
     private ?int $commentAuthorId;
     private Repository $repository;
 
-    private function __construct(string $action, int $issueId, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
+    private function __construct(Action $action, int $issueId, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
     {
-        Assert::stringNotEmpty($action);
         Assert::greaterThan($issueId, 0);
         Assert::greaterThan($issueAuthorId, 0);
         if (null !== $commentAuthorId) {
@@ -48,7 +47,7 @@ final class Payload
         Assert::notEmpty($payload);
 
         Assert::keyExists($payload, 'action');
-        $action = $payload['action'];
+        $action = Action::fromString($payload['action']);
 
         $issueKey = 'issue_comment' === $event->toString() ? 'issue' : 'pull_request';
 
@@ -87,7 +86,7 @@ final class Payload
         );
     }
 
-    public function action(): string
+    public function action(): Action
     {
         return $this->action;
     }
@@ -105,7 +104,7 @@ final class Payload
     public function isTheCommentFromTheAuthor(): bool
     {
         // If it's a PR synchronization, it's obviously done from the author.
-        if ('synchronize' === $this->action) {
+        if ($this->action->equals(Action::SYNCHRONIZE())) {
             return true;
         }
 
