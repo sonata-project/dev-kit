@@ -33,15 +33,15 @@ final class GithubClient
      */
     public function addIssueLabel(Repository $repository, int $issueId, string $label): void
     {
-        foreach ($this->client->issues()->labels()->all($repository->vendor(), $repository->package(), $issueId) as $labelInfo) {
+        foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
                 return;
             }
         }
 
         $this->client->issues()->labels()->add(
-            $repository->vendor(),
-            $repository->package(),
+            $repository->username(),
+            $repository->name(),
             $issueId,
             $label
         );
@@ -52,11 +52,11 @@ final class GithubClient
      */
     public function removeIssueLabel(Repository $repository, int $issueId, string $label): void
     {
-        foreach ($this->client->issues()->labels()->all($repository->vendor(), $repository->package(), $issueId) as $labelInfo) {
+        foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
                 $this->client->issues()->labels()->remove(
-                    $repository->vendor(),
-                    $repository->package(),
+                    $repository->username(),
+                    $repository->name(),
                     $issueId,
                     $label
                 );

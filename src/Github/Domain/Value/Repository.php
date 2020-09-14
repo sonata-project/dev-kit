@@ -21,16 +21,16 @@ use Webmozart\Assert\Assert;
  */
 final class Repository
 {
-    private string $vendor;
-    private string $package;
+    private string $username;
+    private string $name;
 
-    private function __construct(string $vendor, string $package)
+    private function __construct(string $username, string $name)
     {
-        Assert::stringNotEmpty($vendor);
-        Assert::stringNotEmpty($package);
+        Assert::stringNotEmpty($username);
+        Assert::stringNotEmpty($name);
 
-        $this->vendor = $vendor;
-        $this->package = $package;
+        $this->username = $username;
+        $this->name = $name;
     }
 
     public static function fromString(string $repository): self
@@ -38,30 +38,30 @@ final class Repository
         Assert::stringNotEmpty($repository);
         Assert::contains($repository, '/');
 
-        [$vendor, $package] = u($repository)->split('/');
+        [$username, $name] = u($repository)->split('/');
 
         return new self(
-            $vendor->toString(),
-            $package->toString()
+            $username->toString(),
+            $name->toString()
         );
     }
 
-    public function vendor(): string
+    public function username(): string
     {
-        return $this->vendor;
+        return $this->username;
     }
 
-    public function package(): string
+    public function name(): string
     {
-        return $this->package;
+        return $this->name;
     }
 
     public function toString(): string
     {
         return sprintf(
             '%s/%s',
-            $this->vendor,
-            $this->package
+            $this->username,
+            $this->name
         );
     }
 }
