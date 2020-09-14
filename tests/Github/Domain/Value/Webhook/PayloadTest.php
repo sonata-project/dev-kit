@@ -36,7 +36,7 @@ final class PayloadTest extends TestCase
             ],
             'comment' => [
                 'user' => [
-                    'id' => $commentAuthorId = 567,
+                    'id' => 567,
                 ],
             ],
             'repository' => [
@@ -51,7 +51,6 @@ final class PayloadTest extends TestCase
         self::assertSame($action, $payload->action());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
-        self::assertSame($commentAuthorId, $payload->commentAuthorId());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }
@@ -73,7 +72,7 @@ final class PayloadTest extends TestCase
             ],
             'comment' => [
                 'user' => [
-                    'id' => $commentAuthorId = 456,
+                    'id' => 456,
                 ],
             ],
             'repository' => [
@@ -88,7 +87,6 @@ final class PayloadTest extends TestCase
         self::assertSame($action, $payload->action());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
-        self::assertSame($commentAuthorId, $payload->commentAuthorId());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }
@@ -110,7 +108,7 @@ final class PayloadTest extends TestCase
             ],
             'comment' => [
                 'user' => [
-                    'id' => $commentAuthorId = 789,
+                    'id' => 789,
                 ],
             ],
             'repository' => [
@@ -125,7 +123,37 @@ final class PayloadTest extends TestCase
         self::assertSame($action, $payload->action());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
-        self::assertSame($commentAuthorId, $payload->commentAuthorId());
+        self::assertFalse($payload->isTheCommentFromTheAuthor());
+        self::assertSame($repository, $payload->repository()->toString());
+    }
+
+    /**
+     * @test
+     */
+    public function thatCommentDoesNotNeedToBeSetInPayload(): void
+    {
+        $event = Event::fromString('issue_comment');
+
+        $array = [
+            'action' => $action = 'foo',
+            'issue' => [
+                'number' => $issueId = 123,
+                'user' => [
+                    'id' => $issueAuthorId = 456,
+                ],
+            ],
+            'repository' => [
+                'full_name' => $repository = 'sonata-project/SonataAdminBundle',
+            ],
+        ];
+
+        $json = json_encode($array);
+
+        $payload = Payload::fromJsonString($json, $event);
+
+        self::assertSame($action, $payload->action());
+        self::assertSame($issueId, $payload->issueId());
+        self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }

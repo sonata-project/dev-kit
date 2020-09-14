@@ -24,15 +24,17 @@ final class Payload
     private string $action;
     private int $issueId;
     private int $issueAuthorId;
-    private int $commentAuthorId;
+    private ?int $commentAuthorId;
     private Repository $repository;
 
-    private function __construct(string $action, int $issueId, int $issueAuthorId, int $commentAuthorId, Repository $repository)
+    private function __construct(string $action, int $issueId, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
     {
         Assert::stringNotEmpty($action);
         Assert::greaterThan($issueId, 0);
         Assert::greaterThan($issueAuthorId, 0);
-        Assert::greaterThan($commentAuthorId, 0);
+        if (null !== $commentAuthorId) {
+            Assert::greaterThan($commentAuthorId, 0);
+        }
 
         $this->action = $action;
         $this->issueId = $issueId;
@@ -58,10 +60,12 @@ final class Payload
         Assert::keyExists($payload[$issueKey]['user'], 'id');
         $issueAuthorId = $payload[$issueKey]['user']['id'];
 
-        Assert::keyExists($payload, 'comment');
-        Assert::keyExists($payload['comment'], 'user');
-        Assert::keyExists($payload['comment']['user'], 'id');
-        $commentAuthorId = $payload['comment']['user']['id'];
+        $commentAuthorId = null;
+        if (\array_key_exists('comment', $payload)) {
+            Assert::keyExists($payload['comment'], 'user');
+            Assert::keyExists($payload['comment']['user'], 'id');
+            $commentAuthorId = $payload['comment']['user']['id'];
+        }
 
         Assert::keyExists($payload, 'repository');
         Assert::keyExists($payload['repository'], 'full_name');
@@ -96,11 +100,6 @@ final class Payload
     public function issueAuthorId(): int
     {
         return $this->issueAuthorId;
-    }
-
-    public function commentAuthorId(): int
-    {
-        return $this->commentAuthorId;
     }
 
     public function isTheCommentFromTheAuthor(): bool
