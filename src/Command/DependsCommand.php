@@ -28,14 +28,8 @@ use function Symfony\Component\String\u;
  */
 final class DependsCommand extends Command
 {
-    private SymfonyStyle $io;
     private ProjectsConfigurations $projectsConfigurations;
     private Client $packagist;
-
-    /**
-     * @var array<string, Project>
-     */
-    private array $projects;
 
     public function __construct(ProjectsConfigurations $projectsConfigurations, Client $packagist)
     {
@@ -54,24 +48,18 @@ final class DependsCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $this->io = new SymfonyStyle($input, $output);
-        $this->projects = $this->projectsConfigurations->all();
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $branchDepth = (int) $input->getOption('branch-depth');
 
         /**
          * @var string $name
          * @var Project $project
          */
-        foreach ($this->projects as $name => $project) {
-            $this->io->title($project->name());
+        foreach ($this->projectsConfigurations->all() as $name => $project) {
+            $io->title($project->name());
 
             $package = $project->package();
 
@@ -81,7 +69,7 @@ final class DependsCommand extends Command
                     continue;
                 }
 
-                $this->io->section($version->getVersion());
+                $io->section($version->getVersion());
 
                 if (!\is_array($version->getRequire())) {
                     continue;
@@ -92,7 +80,7 @@ final class DependsCommand extends Command
                         continue;
                     }
 
-                    $this->io->writeln($packageName.':'.$constraint);
+                    $io->writeln($packageName.':'.$constraint);
                 }
 
                 if (++$bd >= $branchDepth) {
