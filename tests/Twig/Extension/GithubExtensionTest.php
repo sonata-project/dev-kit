@@ -18,10 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GithubExtensionTest extends TestCase
 {
-    /**
-     * @var GithubExtension
-     */
-    private $githubExtension;
+    private GithubExtension $githubExtension;
 
     protected function setup(): void
     {
