@@ -41,10 +41,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         'https://notify.travis-ci.org',
     ];
 
-    /**
-     * @var string
-     */
-    private $appDir;
+    private string $appDir;
 
     /**
      * @var GitWrapper
