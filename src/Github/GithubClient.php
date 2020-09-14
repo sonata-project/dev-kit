@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Github;
 
 use App\Github\Domain\Value\Issue\IssueId;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Repository;
 use Github\Client;
 
@@ -32,10 +33,10 @@ final class GithubClient
     /**
      * Adds a label from an issue if this one is not set.
      */
-    public function addIssueLabel(Repository $repository, IssueId $issueId, string $label): void
+    public function addIssueLabel(Repository $repository, IssueId $issueId, Label $label): void
     {
         foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $labelInfo) {
-            if ($label === $labelInfo['name']) {
+            if ($label->equals(Label::fromString($labelInfo['name']))) {
                 return;
             }
         }
@@ -44,22 +45,22 @@ final class GithubClient
             $repository->username(),
             $repository->name(),
             $issueId->toInt(),
-            $label
+            $label->toString()
         );
     }
 
     /**
      * Removes a label from an issue if this one is set.
      */
-    public function removeIssueLabel(Repository $repository, IssueId $issueId, string $label): void
+    public function removeIssueLabel(Repository $repository, IssueId $issueId, Label $label): void
     {
         foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $labelInfo) {
-            if ($label === $labelInfo['name']) {
+            if ($label->equals(Label::fromString($labelInfo['name']))) {
                 $this->client->issues()->labels()->remove(
                     $repository->username(),
                     $repository->name(),
                     $issueId->toInt(),
-                    $label
+                    $label->toString()
                 );
 
                 break;

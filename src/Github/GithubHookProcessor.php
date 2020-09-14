@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Webhook\Action;
 use App\Github\Domain\Value\Webhook\Payload;
 
@@ -49,7 +50,7 @@ final class GithubHookProcessor
         $this->client->removeIssueLabel(
             $payload->repository(),
             $payload->issueId(),
-            'pending author'
+            Label::PendingAuthor()
         );
     }
 
@@ -67,7 +68,7 @@ final class GithubHookProcessor
         $this->client->removeIssueLabel(
             $payload->repository(),
             $payload->issueId(),
-            'RTM'
+            Label::RTM()
         );
     }
 }
