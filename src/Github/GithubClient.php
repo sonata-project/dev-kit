@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
+use App\Github\Domain\Value\Repository;
 use Github\Client;
 
 /**
@@ -30,25 +31,35 @@ final class GithubClient
     /**
      * Adds a label from an issue if this one is not set.
      */
-    public function addIssueLabel(string $repoUser, string $repoName, int $issueId, string $label): void
+    public function addIssueLabel(Repository $repository, int $issueId, string $label): void
     {
-        foreach ($this->client->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
+        foreach ($this->client->issues()->labels()->all($repository->vendor(), $repository->package(), $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
                 return;
             }
         }
 
-        $this->client->issues()->labels()->add($repoUser, $repoName, $issueId, $label);
+        $this->client->issues()->labels()->add(
+            $repository->vendor(),
+            $repository->package(),
+            $issueId,
+            $label
+        );
     }
 
     /**
      * Removes a label from an issue if this one is set.
      */
-    public function removeIssueLabel(string $repoUser, string $repoName, int $issueId, string $label): void
+    public function removeIssueLabel(Repository $repository, int $issueId, string $label): void
     {
-        foreach ($this->client->issues()->labels()->all($repoUser, $repoName, $issueId) as $labelInfo) {
+        foreach ($this->client->issues()->labels()->all($repository->vendor(), $repository->package(), $issueId) as $labelInfo) {
             if ($label === $labelInfo['name']) {
-                $this->client->issues()->labels()->remove($repoUser, $repoName, $issueId, $label);
+                $this->client->issues()->labels()->remove(
+                    $repository->vendor(),
+                    $repository->package(),
+                    $issueId,
+                    $label
+                );
 
                 break;
             }

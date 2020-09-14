@@ -42,11 +42,8 @@ final class GithubHookProcessor
             return;
         }
 
-        $repository = $payload->repository();
-
         $this->client->removeIssueLabel(
-            $repository->vendor(),
-            $repository->package(),
+            $payload->repository(),
             $payload->issueId(),
             'pending author'
         );
@@ -63,11 +60,8 @@ final class GithubHookProcessor
             return;
         }
 
-        $repository = $payload->repository();
-
         $this->client->removeIssueLabel(
-            $repository->vendor(),
-            $repository->package(),
+            $payload->repository(),
             $payload->issueId(),
             'RTM'
         );
