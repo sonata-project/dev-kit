@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
+use App\Github\Domain\Value\Webhook\Action;
 use App\Github\Domain\Value\Webhook\Payload;
 
 /**
@@ -34,7 +35,10 @@ final class GithubHookProcessor
      */
     public function processPendingAuthorLabel(Payload $payload): void
     {
-        if (!\in_array($payload->action(), ['created', 'synchronize'], true)) {
+        if (!$payload->action()->equalsOneOf([
+            Action::CREATED(),
+            Action::SYNCHRONIZE()
+        ])) {
             return;
         }
 
@@ -56,7 +60,7 @@ final class GithubHookProcessor
      */
     public function processReviewLabel(Payload $payload): void
     {
-        if ('synchronize' !== $payload->action()) {
+        if (!$payload->action()->equals(Action::SYNCHRONIZE())) {
             return;
         }
 
