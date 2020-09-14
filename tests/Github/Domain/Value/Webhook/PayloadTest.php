@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value\Webhook;
 
-use App\Github\Domain\Value\Webhook\Action;
 use App\Github\Domain\Value\Webhook\Event;
 use App\Github\Domain\Value\Webhook\Payload;
 use PHPUnit\Framework\TestCase;
