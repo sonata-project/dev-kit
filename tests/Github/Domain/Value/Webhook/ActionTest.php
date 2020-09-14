@@ -55,7 +55,7 @@ final class ActionTest extends TestCase
     /**
      * @test
      */
-    public function CEATED(): void
+    public function CREATED(): void
     {
         self::assertSame(
             'created',
