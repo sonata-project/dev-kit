@@ -48,7 +48,6 @@ final class GithubClientTest extends TestCase
         $issues->method('labels')
             ->willReturn($labels);
 
-
         $client = $this->createMock(Client::class);
         $client
             ->method('issues')
