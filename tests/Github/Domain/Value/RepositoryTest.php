@@ -65,8 +65,8 @@ final class RepositoryTest extends TestCase
     {
         $repository = Repository::fromString('sonata-project/SonataAdminBundle');
 
-        self::assertSame('sonata-project', $repository->vendor());
-        self::assertSame('SonataAdminBundle', $repository->package());
+        self::assertSame('sonata-project', $repository->username());
+        self::assertSame('SonataAdminBundle', $repository->name());
         self::assertSame('sonata-project/SonataAdminBundle', $repository->toString());
     }
 }
