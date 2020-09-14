@@ -21,18 +21,39 @@ use Webmozart\Assert\Assert;
 final class Label
 {
     private string $value;
+    private ?string $color;
 
-    private function __construct(string $value)
+    private function __construct(string $value, ?string $color = null)
     {
         $value = trim($value);
         Assert::stringNotEmpty($value);
 
         $this->value = $value;
+        $this->color = $color;
     }
 
     public static function fromString(string $value): self
     {
         return new self($value);
+    }
+
+    public static function fromValues(string $name, string $color): self
+    {
+        return new self(
+            $name,
+            $color
+        );
+    }
+
+    public static function fromResponse(array $response): self
+    {
+        Assert::keyExists($response, 'name');
+        Assert::keyExists($response, 'color');
+
+        return new self(
+            $response['name'],
+            $response['color']
+        );
     }
 
     public static function RTM(): self
@@ -53,5 +74,10 @@ final class Label
     public function toString(): string
     {
         return $this->value;
+    }
+
+    public function color(): ?string
+    {
+        return $this->color;
     }
 }

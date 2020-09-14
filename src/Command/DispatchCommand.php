@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\LabelsConfigurations;
 use App\Config\ProjectsConfigurations;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
@@ -50,6 +51,7 @@ final class DispatchCommand extends AbstractCommand
     private Filesystem $fileSystem;
     private Environment $twig;
     private ProjectsConfigurations $projectConfigurations;
+    private LabelsConfigurations $labelsConfigurations;
 
     /**
      * @var array<string, Project>
@@ -58,12 +60,13 @@ final class DispatchCommand extends AbstractCommand
 
     private bool $apply;
 
-    public function __construct(string $appDir, ProjectsConfigurations $projectsConfigurations, GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
+    public function __construct(string $appDir, ProjectsConfigurations $projectsConfigurations, LabelsConfigurations $labelsConfigurations,  GitWrapper $gitWrapper, Filesystem $fileSystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
         $this->projectConfigurations = $projectsConfigurations;
+        $this->labelsConfigurations = $labelsConfigurations;
         $this->gitWrapper = $gitWrapper;
         $this->fileSystem = $fileSystem;
         $this->twig = $twig;
@@ -190,7 +193,7 @@ final class DispatchCommand extends AbstractCommand
 
         $rows = [];
 
-        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repository->name()) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all($repository->vendor(), $repository->name()) as $response) {
             $name = $label['name'];
             $color = $label['color'];
 
