@@ -25,7 +25,7 @@ final class GithubClientTest extends TestCase
 {
     public function addIssueLabelAddsLabelIfItDoesNotExist(): void
     {
-        $repository =  Repository::fromString('sonata-project/SonataAdminBundle');
+        $repository = Repository::fromString('sonata-project/SonataAdminBundle');
         $issueId = IssueId::fromInt(42);
         $label = Label::fromString('foo');
 
@@ -44,7 +44,6 @@ final class GithubClientTest extends TestCase
         $issues = $this->createMock(Issue::class);
         $issues->method('labels')
             ->willReturn($labels);
-
 
         $client = $this->createMock(Client::class);
         $client
