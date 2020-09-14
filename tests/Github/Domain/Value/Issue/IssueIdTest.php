@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\Issue;
 
 use App\Github\Domain\Value\Issue\IssueId;
-use App\Github\Domain\Value\Webhook\Action;
 use PHPUnit\Framework\TestCase;
 
 final class IssueIdTest extends TestCase
