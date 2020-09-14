@@ -81,13 +81,13 @@ final class ActionTest extends TestCase
         yield [
             true,
             Action::fromString('synchronize'),
-            Action::SYNCHRONIZE()
+            Action::SYNCHRONIZE(),
         ];
 
         yield [
             false,
             Action::CREATED(),
-            Action::SYNCHRONIZE()
+            Action::SYNCHRONIZE(),
         ];
     }
 
@@ -111,7 +111,7 @@ final class ActionTest extends TestCase
             Action::fromString('synchronize'),
             [
                 Action::SYNCHRONIZE(),
-            ]
+            ],
         ];
 
         yield [
