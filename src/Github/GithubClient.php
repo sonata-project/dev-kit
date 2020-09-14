@@ -35,8 +35,8 @@ final class GithubClient
      */
     public function addIssueLabel(Repository $repository, IssueId $issueId, Label $label): void
     {
-        foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $labelInfo) {
-            if ($label->equals(Label::fromString($labelInfo['name']))) {
+        foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $response) {
+            if ($label->equals(Label::fromResponse($response))) {
                 return;
             }
         }
@@ -54,8 +54,8 @@ final class GithubClient
      */
     public function removeIssueLabel(Repository $repository, IssueId $issueId, Label $label): void
     {
-        foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $labelInfo) {
-            if ($label->equals(Label::fromString($labelInfo['name']))) {
+        foreach ($this->client->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $response) {
+            if ($label->equals(Label::fromResponse($response))) {
                 $this->client->issues()->labels()->remove(
                     $repository->username(),
                     $repository->name(),
