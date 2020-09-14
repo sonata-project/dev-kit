@@ -42,21 +42,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     ];
 
     private string $appDir;
-
-    /**
-     * @var GitWrapper
-     */
-    private $gitWrapper;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private GitWrapper $gitWrapper;
+    private Filesystem $filesystem;
+    private Environment $twig;
 
     /**
      * @var string[]
