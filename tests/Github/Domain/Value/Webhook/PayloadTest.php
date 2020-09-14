@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value\Webhook;
 
+use App\Github\Domain\Value\Webhook\Action;
 use App\Github\Domain\Value\Webhook\Event;
 use App\Github\Domain\Value\Webhook\Payload;
 use PHPUnit\Framework\TestCase;
@@ -122,7 +123,7 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action());
+        self::assertSame(Action::fromString($action), $payload->action());
         self::assertSame($issueId, $payload->issueId());
         self::assertSame($issueAuthorId, $payload->issueAuthorId());
         self::assertSame($commentAuthorId, $payload->commentAuthorId());
