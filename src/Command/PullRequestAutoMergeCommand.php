@@ -35,11 +35,6 @@ final class PullRequestAutoMergeCommand extends AbstractCommand
 
     private ProjectsConfigurations $projectsConfigurations;
 
-    /**
-     * @var array<string, Project>
-     */
-    private array $projects = [];
-
     private bool $apply;
 
     public function __construct(ProjectsConfigurations $projectsConfigurations)
@@ -69,16 +64,12 @@ final class PullRequestAutoMergeCommand extends AbstractCommand
         if (!$this->apply) {
             $this->io->warning('This is a dry run execution. No change will be applied here.');
         }
-
-        $this->projects = $this->projectsConfigurations->all();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->projects as $name => $project) {
+        foreach ($this->projectsConfigurations->all() as $name => $project) {
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
-
                 $this->io->title($project->name());
 
                 $this->mergePullRequest($project);
