@@ -35,7 +35,7 @@ final class GithubClientTest extends TestCase
         $labels = $this->createMock(Issue\Labels::class);
         $labels->method('all')
             ->willReturn([
-                ['name' => 'bar'],
+                ['name' => 'foo'],
             ]);
         $labels->expects($this->once())->method('add')->with(
             $repository->username(),
