@@ -44,6 +44,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     ];
 
     private string $appDir;
+    private string $githubToken;
     private PackagistClient $packagist;
     private GithubClient $github;
     private GitWrapper $git;
@@ -55,11 +56,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(string $appDir, PackagistClient $packagist, GithubClient $github, GitWrapper $git, Filesystem $filesystem, Environment $twig)
+    public function __construct(string $appDir, string $githubToken, PackagistClient $packagist, GithubClient $github, GitWrapper $git, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
+        $this->githubToken = $githubToken;
         $this->packagist = $packagist;
         $this->github = $github;
         $this->git = $git;
@@ -451,7 +453,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $git = $this->git->cloneRepository(
-            'https://'.static::GITHUB_USER.':'.$this->githubOauthToken.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
+            'https://'.static::GITHUB_USER.':'.$this->githubToken.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
         );
 

@@ -42,11 +42,6 @@ abstract class AbstractCommand extends Command
      */
     protected $configs;
 
-    /**
-     * @var string|null
-     */
-    protected $githubOauthToken = null;
-
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
@@ -59,10 +54,6 @@ abstract class AbstractCommand extends Command
             'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yaml'))],
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
-
-        if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubOauthToken = getenv('GITHUB_OAUTH_TOKEN');
-        }
     }
 
     /**
