@@ -19,7 +19,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "cpliakas/git-wrapper": "^3.0",
-        "doctrine/annotations": "^1.8",
+        "doctrine/annotations": "^1.10",
         "knplabs/github-api": "^2.15",
         "knplabs/packagist-api": "^1.6",
         "nyholm/psr7": "^1.2",
