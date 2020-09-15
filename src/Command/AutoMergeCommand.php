@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
@@ -103,7 +104,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $branches = array_reverse(array_keys($projectConfig['branches']));
 
         // Merge the oldest branch into the next newest, and so on.
