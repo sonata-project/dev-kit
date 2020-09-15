@@ -21,13 +21,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class ProjectsConfiguration implements ConfigurationInterface
 {
-    private array $devKitConfigs;
-
-    public function __construct(array $devKitConfigs)
-    {
-        $this->devKitConfigs = $devKitConfigs;
-    }
-
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sonata');
