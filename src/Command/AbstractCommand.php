@@ -52,11 +52,6 @@ abstract class AbstractCommand extends Command
     protected $githubAuthKey = null;
 
     /**
-     * @var \Packagist\Api\Client
-     */
-    protected $packagistClient;
-
-    /**
      * @var Client
      */
     protected $githubClient = false;
@@ -81,8 +76,6 @@ abstract class AbstractCommand extends Command
             'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yaml'))],
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
-
-        $this->packagistClient = new \Packagist\Api\Client();
 
         $client = new Client();
         if (getenv('GITHUB_OAUTH_TOKEN')) {

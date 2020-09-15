@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Packagist\Api\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,6 +24,15 @@ use function Symfony\Component\String\u;
  */
 final class DependsCommand extends AbstractCommand
 {
+    private Client $packagistClient;
+
+    public function __construct(Client $packagistClient)
+    {
+        parent::__construct();
+
+        $this->packagistClient = $packagistClient;
+    }
+
     protected function configure(): void
     {
         $this
