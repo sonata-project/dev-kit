@@ -32,14 +32,14 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    private Client $packagistClient;
+    private Client $packagist;
     private LoggerInterface $logger;
 
-    public function __construct(Client $packagistClient, LoggerInterface $logger)
+    public function __construct(Client $packagist, LoggerInterface $logger)
     {
         parent::__construct();
 
-        $this->packagistClient = $packagistClient;
+        $this->packagist = $packagist;
         $this->logger = $logger;
     }
 
@@ -80,7 +80,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             $projectConfig = $this->configs['projects'][$name];
 
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
                 $this->mergeBranches($package, $projectConfig);
             } catch (ExceptionInterface $e) {
