@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Github\Exception\ExceptionInterface;
+use Packagist\Api\Client;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,6 +25,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 {
     private const TIME_BEFORE_MERGE = 60;
+
+    private Client $packagistClient;
+
+    public function __construct(Client $packagistClient)
+    {
+        parent::__construct();
+
+        $this->packagistClient = $packagistClient;
+    }
 
     protected function configure(): void
     {

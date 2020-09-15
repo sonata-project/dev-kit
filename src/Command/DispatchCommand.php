@@ -15,6 +15,7 @@ namespace App\Command;
 
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
+use Packagist\Api\Client;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,6 +43,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     ];
 
     private string $appDir;
+    private Client $packagistClient;
     private GitWrapper $gitWrapper;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -51,11 +53,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(string $appDir, GitWrapper $gitWrapper, Filesystem $filesystem, Environment $twig)
+    public function __construct(string $appDir, Client $packagistClient, GitWrapper $gitWrapper, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
+        $this->packagistClient = $packagistClient;
         $this->gitWrapper = $gitWrapper;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
