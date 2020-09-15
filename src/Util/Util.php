@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace App\Util;
 
-use App\Github\Domain\Value\Issue\IssueId;
-use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Repository;
-use Github\Client as GithubClient;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
 
@@ -35,7 +32,10 @@ final class Util
         $lastName = end($repositoryArray);
 
         if (!$lastName) {
-            throw new \LogicException('Repository name do not exist in this package.');
+            throw new \LogicException(sprintf(
+                'Could not get repository name without vendor prefix for: %s',
+                $package->getRepository()
+            ));
         }
 
         return str_replace('.git', '', (string) $lastName);
