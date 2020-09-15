@@ -48,15 +48,15 @@ final class ReleaseCommand extends AbstractCommand
 
     private PackagistClient $packagist;
     private GithubClient $github;
-    private ResultPagerInterface $githubPaginator;
+    private ResultPagerInterface $githubPager;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
         $this->github = $github;
-        $this->githubPaginator = $githubPaginator;
+        $this->githubPager = $githubPager;
     }
 
     protected function configure(): void
@@ -305,7 +305,7 @@ EOT;
 
     private function findPullRequestsSince($date, $repositoryName, $branch)
     {
-        $pulls = $this->githubPaginator->fetchAll($this->github->search(), 'issues', [
+        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [
             'repo:'.static::GITHUB_GROUP.'/'.$repositoryName.
             ' type:pr is:merged base:'.$branch.' merged:>'.$date,
         ]);
