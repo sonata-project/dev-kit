@@ -43,7 +43,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     ];
 
     private string $appDir;
-    private Client $packagistClient;
+    private Client $packagist;
     private GitWrapper $gitWrapper;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -53,12 +53,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(string $appDir, Client $packagistClient, GitWrapper $gitWrapper, Filesystem $filesystem, Environment $twig)
+    public function __construct(string $appDir, Client $packagist, GitWrapper $gitWrapper, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
-        $this->packagistClient = $packagistClient;
+        $this->packagist = $packagist;
         $this->gitWrapper = $gitWrapper;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
@@ -103,7 +103,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         foreach ($this->projects as $name) {
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
                 $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
                 $this->updateRepositories($package, $projectConfig);

@@ -44,13 +44,13 @@ final class ReleaseCommand extends AbstractCommand
         'pedantic' => 'yellow',
     ];
 
-    private Client $packagistClient;
+    private Client $packagist;
 
     public function __construct(Client $packagist)
     {
         parent::__construct();
 
-        $this->packagistClient = $packagist;
+        $this->packagist = $packagist;
     }
 
     protected function configure(): void
@@ -91,7 +91,7 @@ EOT;
         $branches = array_keys($this->configs['projects'][$project]['branches']);
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
-        $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$project);
+        $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$project);
         $this->io->getErrorStyle()->title($package->getName());
         $this->prepareRelease($package, $branch, $output);
 

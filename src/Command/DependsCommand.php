@@ -24,13 +24,13 @@ use function Symfony\Component\String\u;
  */
 final class DependsCommand extends AbstractCommand
 {
-    private Client $packagistClient;
+    private Client $packagist;
 
     public function __construct(Client $packagist)
     {
         parent::__construct();
 
-        $this->packagistClient = $packagist;
+        $this->packagist = $packagist;
     }
 
     protected function configure(): void
@@ -47,7 +47,7 @@ final class DependsCommand extends AbstractCommand
         $branchDepth = (int) $input->getOption('branch-depth');
 
         foreach ($this->configs['projects'] as $name => $config) {
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+            $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
             $this->io->title($package->getName());
 
             $bd = 0;

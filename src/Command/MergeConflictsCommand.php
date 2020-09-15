@@ -24,13 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class MergeConflictsCommand extends AbstractNeedApplyCommand
 {
-    private Client $packagistClient;
+    private Client $packagist;
 
     public function __construct(Client $packagist)
     {
         parent::__construct();
 
-        $this->packagistClient = $packagist;
+        $this->packagist = $packagist;
     }
 
     protected function configure(): void
@@ -47,7 +47,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
     {
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
                 $this->io->title($package->getName());
                 $this->checkPullRequests($package);
             } catch (ExceptionInterface $e) {
