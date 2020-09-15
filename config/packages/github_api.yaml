@@ -16,3 +16,5 @@ services:
     Github\ResultPager:
         arguments:
             - '@Github\Client'
+
+    Github\ResultPagerInterface: '@Github\ResultPager'
