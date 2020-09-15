@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Util;
 
-use App\Twig\Extension\GithubExtension;
 use App\Util\Util;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
@@ -44,5 +43,4 @@ final class UtilTest extends TestCase
         yield ['SonataAdminBundle', 'sonata-project/SonataAdminBundle'];
         yield ['SonataAdminBundle', 'sonata-project/SonataAdminBundle.git'];
     }
-
 }
