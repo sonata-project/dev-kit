@@ -22,20 +22,22 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class AutoMergeCommand extends AbstractNeedApplyCommand
 {
+    private PackagistClient $packagist;
+    private GithubClient $github;
+    private LoggerInterface $logger;
+    private SymfonyStyle $io;
+
     /**
      * @var string[]
      */
     private $projects;
-
-    private PackagistClient $packagist;
-    private GithubClient $github;
-    private LoggerInterface $logger;
 
     public function __construct(PackagistClient $packagist, GithubClient $github, LoggerInterface $logger)
     {
@@ -60,6 +62,8 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
+
+        $this->io = new SymfonyStyle($input, $output);
 
         $this->projects = \count($input->getArgument('projects'))
             ? $input->getArgument('projects')

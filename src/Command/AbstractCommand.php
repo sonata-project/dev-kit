@@ -36,11 +36,6 @@ abstract class AbstractCommand extends Command
     public const BOT_NAME = 'SonataCI';
 
     /**
-     * @var SymfonyStyle
-     */
-    protected $io;
-
-    /**
      * @var array
      */
     protected $configs;
@@ -52,8 +47,6 @@ abstract class AbstractCommand extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->io = new SymfonyStyle($input, $output);
-
         $processor = new Processor();
         $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
             'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../config/dev-kit.yaml')),

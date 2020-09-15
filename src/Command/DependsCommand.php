@@ -17,6 +17,7 @@ use Packagist\Api\Client as PackagistClient;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use function Symfony\Component\String\u;
 
 /**
@@ -25,6 +26,7 @@ use function Symfony\Component\String\u;
 final class DependsCommand extends AbstractCommand
 {
     private PackagistClient $packagist;
+    private SymfonyStyle $io;
 
     public function __construct(PackagistClient $packagist)
     {
@@ -40,6 +42,14 @@ final class DependsCommand extends AbstractCommand
             ->setDescription('Show internal sonata dependencies of each project.')
             ->addOption('branch-depth', null, InputOption::VALUE_OPTIONAL, 'Number of branches to show.', 2)
         ;
+    }
+
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->io = new SymfonyStyle($input, $output);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

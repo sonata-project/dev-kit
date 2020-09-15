@@ -20,6 +20,7 @@ use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -29,6 +30,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
     private PackagistClient $packagist;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
+    private SymfonyStyle $io;
 
     public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
     {
@@ -47,6 +49,13 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
             ->setName('merge-conflicts')
             ->setDescription('Comments non-mergeable pull requests, asking the author to solve conflicts.')
         ;
+    }
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->io = new SymfonyStyle($input, $output);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
