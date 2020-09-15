@@ -15,7 +15,7 @@ namespace App\Command;
 
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
-use Packagist\Api\Client;
+use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,11 +25,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class MergeConflictsCommand extends AbstractNeedApplyCommand
 {
-    private Client $packagist;
+    private PackagistClient $packagist;
     private \Github\Client $githubClient;
     private ResultPagerInterface $githubPaginator;
 
-    public function __construct(Client $packagist, \Github\Client $githubClient, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, \Github\Client $githubClient, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 

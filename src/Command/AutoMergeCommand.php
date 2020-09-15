@@ -15,7 +15,7 @@ namespace App\Command;
 
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
-use Packagist\Api\Client;
+use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,11 +32,11 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    private Client $packagist;
+    private PackagistClient $packagist;
     private \Github\Client $githubClient;
     private LoggerInterface $logger;
 
-    public function __construct(Client $packagist, \Github\Client $githubClient, LoggerInterface $logger)
+    public function __construct(PackagistClient $packagist, \Github\Client $githubClient, LoggerInterface $logger)
     {
         parent::__construct();
 
