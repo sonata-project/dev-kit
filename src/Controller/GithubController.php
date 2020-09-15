@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Github\Domain\Value\Webhook\Event;
-use App\Github\Domain\Value\Webhook\Payload;
-use App\Github\HookProcessor;
+use App\Github;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,9 +24,9 @@ final class GithubController
     /**
      * @Route("/github", name="github", methods={"POST"})
      */
-    public function index(Request $request, HookProcessor $hookProcessor, string $devKitToken): Response
+    public function index(Request $request, Github\HookProcessor $hookProcessor, string $devKitToken): Response
     {
-        $event = Event::fromString(
+        $event = Github\Domain\Value\Webhook\Event::fromString(
             $request->headers->get('X-GitHub-Event')
         );
 
@@ -41,7 +39,7 @@ final class GithubController
             );
         }
 
-        $payload = Payload::fromJsonString(
+        $payload = Github\Domain\Value\Webhook\Payload::fromJsonString(
             $request->getContent(),
             $event
         );
