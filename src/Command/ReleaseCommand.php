@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
 use Packagist\Api\Client as PackagistClient;
@@ -125,7 +126,7 @@ EOT;
 
     private function prepareRelease(Package $package, string $branch, OutputInterface $output): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
 
         $currentRelease = $this->github->repo()->releases()->latest(
             static::GITHUB_GROUP,

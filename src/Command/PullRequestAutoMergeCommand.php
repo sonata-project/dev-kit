@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -75,7 +76,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
 
         $pulls = $this->githubPager->fetchAll($this->github->pullRequests(), 'all', [

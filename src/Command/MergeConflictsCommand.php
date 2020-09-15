@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Github\Domain\Value\Label;
+use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -70,7 +71,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
     private function checkPullRequests(Package $package): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
 
         foreach ($this->github->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
             $number = $pullRequest['number'];

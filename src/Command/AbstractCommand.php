@@ -52,20 +52,4 @@ abstract class AbstractCommand extends Command
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
     }
-
-    /**
-     * Returns repository name without vendor prefix.
-     */
-    final protected function getRepositoryName(Package $package): string
-    {
-        $repositoryArray = u($package->getRepository())->split('/');
-
-        $lastName = end($repositoryArray);
-
-        if (!$lastName) {
-            throw new \LogicException('Repository name do not exist in this package.');
-        }
-
-        return str_replace('.git', '', (string) $lastName);
-    }
 }
