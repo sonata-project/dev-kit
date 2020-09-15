@@ -123,7 +123,7 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Package $package, $branch, OutputInterface $output): void
+    private function prepareRelease(Package $package, string $branch, OutputInterface $output): void
     {
         $repositoryName = $this->getRepositoryName($package);
 
@@ -187,7 +187,7 @@ EOT;
         }
     }
 
-    private function printPullRequest($pull, OutputInterface $output): void
+    private function printPullRequest(array $pull, OutputInterface $output): void
     {
         if (\array_key_exists($pull['stability'], static::$stabilities)) {
             $output->write('<fg=black;bg='.static::$stabilities[$pull['stability']].'>['
@@ -223,14 +223,14 @@ EOT;
         $output->writeln('');
     }
 
-    private function printRelease($currentVersion, $nextVersion, Package $package, OutputInterface $output): void
+    private function printRelease(string $currentVersion, string $nextVersion, Package $package, OutputInterface $output): void
     {
         $output->writeln('## ['.$nextVersion.']('
             .$package->getRepository().'/compare/'.$currentVersion.'...'.$nextVersion
             .') - '.date('Y-m-d'));
     }
 
-    private function printChangelog($changelog, OutputInterface $output): void
+    private function printChangelog(array $changelog, OutputInterface $output): void
     {
         ksort($changelog);
         foreach ($changelog as $type => $changes) {
@@ -247,7 +247,7 @@ EOT;
         }
     }
 
-    private function parseChangelog($pull): array
+    private function parseChangelog(array $pull): array
     {
         $changelog = [];
         $body = preg_replace('/<!--(.*)-->/Uis', '', $pull['body']);
@@ -277,7 +277,7 @@ EOT;
         return $changelog;
     }
 
-    private function determineNextVersion($currentVersion, $pulls): string
+    private function determineNextVersion(string $currentVersion, array $pulls): string
     {
         $stabilities = array_column($pulls, 'stability');
         $parts = explode('.', $currentVersion);
@@ -291,7 +291,7 @@ EOT;
         return $currentVersion;
     }
 
-    private function determinePullRequestStability($pull): string
+    private function determinePullRequestStability(array $pull): string
     {
         $labels = array_column($pull['labels'], 'name');
 
@@ -306,7 +306,7 @@ EOT;
         return 'unknown';
     }
 
-    private function findPullRequestsSince($date, $repositoryName, $branch): array
+    private function findPullRequestsSince(string $date, string $repositoryName, string $branch): array
     {
         $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [
             'repo:'.static::GITHUB_GROUP.'/'.$repositoryName.
