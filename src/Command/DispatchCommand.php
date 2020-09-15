@@ -421,7 +421,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $requiredStatusChecks[] = sprintf(
                     'PHP %s + highest + %s:"%s"',
                     $targetPhp,
-                    $this->configs['packages'][$variant],
+                    $variant,
                     'dev-master' === $version ? $version : ($version.'.*'),
                 );
             }

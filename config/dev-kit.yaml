@@ -45,14 +45,3 @@ labels:
       color: 'b0581d'
     - name: 'keep'
       color: '59b3c1'
-
-packages:
-    symfony: symfony/symfony
-    fos_user: friendsofsymfony/user-bundle
-    sonata_core: sonata-project/core-bundle
-    sonata_admin: sonata-project/admin-bundle
-    sonata_block: sonata-project/block-bundle
-    sonata_user: sonata-project/user-bundle
-    ruflin_elastica: ruflin/elastica
-    doctrine_odm: doctrine/mongodb-odm
-    imagine: imagine/imagine
