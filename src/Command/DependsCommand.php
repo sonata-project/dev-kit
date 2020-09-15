@@ -29,14 +29,12 @@ use function Symfony\Component\String\u;
 final class DependsCommand extends Command
 {
     private ProjectsConfigurations $projectsConfigurations;
-    private Client $packagist;
 
-    public function __construct(ProjectsConfigurations $projectsConfigurations, Client $packagist)
+    public function __construct(ProjectsConfigurations $projectsConfigurations)
     {
         parent::__construct();
 
         $this->projectsConfigurations = $projectsConfigurations;
-        $this->packagist = $packagist;
     }
 
     protected function configure(): void
