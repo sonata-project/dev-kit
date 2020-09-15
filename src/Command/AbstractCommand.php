@@ -52,16 +52,6 @@ abstract class AbstractCommand extends Command
     protected $githubOauthToken = null;
 
     /**
-     * @var Client
-     */
-    protected $githubClient = false;
-
-    /**
-     * @var \Github\ResultPager
-     */
-    protected $githubPaginator;
-
-    /**
      * {@inheritdoc}
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -77,17 +67,9 @@ abstract class AbstractCommand extends Command
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
-        $client = new Client();
         if (getenv('GITHUB_OAUTH_TOKEN')) {
             $this->githubOauthToken = getenv('GITHUB_OAUTH_TOKEN');
         }
-
-        if ($this->githubOauthToken) {
-            $client->authenticate($this->githubOauthToken, null, Client::AUTH_HTTP_TOKEN);
-        }
-
-        $this->githubClient = $client;
-        $this->githubPaginator = new \Github\ResultPager($client);
     }
 
     /**
