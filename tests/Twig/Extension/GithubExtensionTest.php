@@ -33,6 +33,9 @@ final class GithubExtensionTest extends TestCase
         self::assertSame($expected, $this->githubExtension->isDevBranch($branch));
     }
 
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
     public function isDevBranchDataProvider(): iterable
     {
         yield [true, 'dev-master'];
@@ -49,6 +52,9 @@ final class GithubExtensionTest extends TestCase
         self::assertSame($expected, $this->githubExtension->isDevMaster($branch));
     }
 
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
     public function isDevMasterDataProvider(): iterable
     {
         yield [true, 'dev-master'];
