@@ -21,7 +21,7 @@ use App\Github\Domain\Value\Webhook\Payload;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class GithubHookProcessor
+final class HookProcessor
 {
     private RemoveIssueLabel $removeIssueLabel;
 
