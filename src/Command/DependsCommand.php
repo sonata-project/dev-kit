@@ -55,17 +55,28 @@ final class DependsCommand extends AbstractCommand
                 if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
                     continue;
                 }
-                $this->io->section($version->getVersion());
+
+                $this->io->writeln(sprintf(
+                    '    <info>%s</info>',
+                    $version->getVersion()
+                ));
+                $this->io->newLine();
 
                 if (!\is_array($version->getRequire())) {
                     continue;
                 }
+
                 foreach ($version->getRequire() as $packageName => $constraint) {
                     if (!u($packageName)->startsWith('sonata-project/')) {
                         continue;
                     }
-                    $this->io->writeln($packageName.':'.$constraint);
+
+                    $this->io->writeln(sprintf(
+                        '        %s',
+                        $packageName.':'.$constraint
+                    ));
                 }
+                $this->io->newLine();
 
                 if (++$bd >= $branchDepth) {
                     break;
