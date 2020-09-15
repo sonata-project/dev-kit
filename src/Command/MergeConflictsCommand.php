@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Github\Domain\Value\Label;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -107,7 +108,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                             static::GITHUB_GROUP,
                             $repositoryName,
                             $number,
-                            'pending author'
+                            Label::PendingAuthor()->toString()
                         );
                     }
 
