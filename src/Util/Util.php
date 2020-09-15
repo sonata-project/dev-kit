@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace App\Util;
 
-use App\Github\Domain\Value\Issue\IssueId;
-use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Repository;
-use Github\Client as GithubClient;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
 
