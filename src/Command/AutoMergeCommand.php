@@ -31,14 +31,12 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger)
     {
         parent::__construct();
+
         $this->logger = $logger;
     }
 
