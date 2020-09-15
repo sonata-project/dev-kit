@@ -12,3 +12,9 @@ services:
             - '@?Http\Client\HttpClient'
             - '@?Http\Message\RequestFactory'
             - '@?Http\Message\StreamFactory'
+
+    Github\ResultPager:
+        arguments:
+            - '@Github\Client'
+
+    Github\ResultPagerInterface: '@Github\ResultPager'

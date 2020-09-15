@@ -33,13 +33,15 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     private $projects;
 
     private Client $packagist;
+    private \Github\Client $githubClient;
     private LoggerInterface $logger;
 
-    public function __construct(Client $packagist, LoggerInterface $logger)
+    public function __construct(Client $packagist, \Github\Client $githubClient, LoggerInterface $logger)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
+        $this->githubClient = $githubClient;
         $this->logger = $logger;
     }
 

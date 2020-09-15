@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Github\ResultPagerInterface;
 use Packagist\Api\Client;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,12 +46,16 @@ final class ReleaseCommand extends AbstractCommand
     ];
 
     private Client $packagist;
+    private \Github\Client $githubClient;
+    private ResultPagerInterface $githubPaginator;
 
-    public function __construct(Client $packagist)
+    public function __construct(Client $packagist, \Github\Client $githubClient, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
+        $this->githubClient = $githubClient;
+        $this->githubPaginator = $githubPaginator;
     }
 
     protected function configure(): void
