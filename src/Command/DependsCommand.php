@@ -42,7 +42,7 @@ final class DependsCommand extends AbstractCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $branchDepth = (int) $input->getOption('branch-depth');
 

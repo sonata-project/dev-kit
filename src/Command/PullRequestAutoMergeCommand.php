@@ -51,7 +51,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
