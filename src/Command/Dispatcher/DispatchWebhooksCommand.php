@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,20 +40,15 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         'https://notify.travis-ci.org',
     ];
 
-    private PackagistClient $packagist;
+    private Projects $projects;
     private GithubClient $github;
     private string $devKitToken;
 
-    /**
-     * @var string[]
-     */
-    private array $projects;
-
-    public function __construct(PackagistClient $packagist, GithubClient $github, string $devKitToken)
+    public function __construct(Projects $projects, GithubClient $github, string $devKitToken)
     {
         parent::__construct();
 
-        $this->packagist = $packagist;
+        $this->projects = $projects;
         $this->github = $github;
 
         Assert::stringNotEmpty($devKitToken, '$devKitToken must not be an empty string!');
@@ -69,25 +65,17 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $this->projects = array_keys($this->configs['projects']);
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('Dispatch webhooks for all sonata projects');
 
-        foreach ($this->projects as $name) {
+        /** @var Project $project */
+        foreach ($this->projects->all() as $project) {
             try {
-                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
+                $this->io->section($project->name());
 
-                $this->io->section($package->getName());
-
-                $this->deleteHooks($package);
-                $this->updateDevKitHook($package);
+                $this->updateDevKitHook($project->package());
+                $this->deleteHooks($project->package());
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',

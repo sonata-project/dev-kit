@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
-use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,20 +30,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class AutoMergeCommand extends AbstractNeedApplyCommand
 {
-    /**
-     * @var string[]
-     */
-    private array $projects;
-
-    private PackagistClient $packagist;
+    private Projects $projects;
     private GithubClient $github;
     private LoggerInterface $logger;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github, LoggerInterface $logger)
+    public function __construct(Projects $projects, GithubClient $github, LoggerInterface $logger)
     {
         parent::__construct();
 
-        $this->packagist = $packagist;
+        $this->projects = $projects;
         $this->github = $github;
         $this->logger = $logger;
     }
@@ -58,35 +54,31 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $this->projects = \count($input->getArgument('projects'))
-            ? $input->getArgument('projects')
-            : array_keys($this->configs['projects'])
-        ;
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
-        if (\count($notConfiguredProjects)) {
-            $this->io->error(sprintf(
-                'Some specified projects are not configured: %s',
-                implode(', ', $notConfiguredProjects)
-            ));
+        $projects = $this->projects->all();
 
-            return 1;
+        $title = 'Merge branches of repositories if there is no conflict';
+        if ([] !== $input->getArgument('projects')) {
+            $projects = $this->projects->byNames($input->getArgument('projects'));
+            $title = sprintf(
+                '%s for: %s',
+                $title,
+                implode(', ', $input->getArgument('projects'))
+            );
         }
 
-        foreach ($this->projects as $name) {
-            $projectConfig = $this->configs['projects'][$name];
+        $this->io->title($title);
 
+        /** @var Project $project */
+        foreach ($projects as $project) {
             try {
-                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
-                $this->io->title($package->getName());
-                $this->mergeBranches($package, $projectConfig);
+                $this->io->section($project->name());
+
+                $this->mergeBranches(
+                    $project->package(),
+                    $project->rawConfig()
+                );
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Config\DevKitConfiguration;
-use App\Config\ProjectsConfiguration;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,12 +43,8 @@ abstract class AbstractCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
 
         $processor = new Processor();
-        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
+        $this->configs = $processor->processConfiguration(new DevKitConfiguration(), [
             'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../config/dev-kit.yaml')),
         ]);
-        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration(), [
-            'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yaml'))],
-        ]);
-        $this->configs = array_merge($devKitConfigs, $projectsConfigs);
     }
 }

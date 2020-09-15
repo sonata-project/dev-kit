@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Packagist\Api\Client as PackagistClient;
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,13 +26,13 @@ use Webmozart\Assert\Assert;
  */
 final class DependsCommand extends AbstractCommand
 {
-    private PackagistClient $packagist;
+    private Projects $projects;
 
-    public function __construct(PackagistClient $packagist)
+    public function __construct(Projects $projects)
     {
         parent::__construct();
 
-        $this->packagist = $packagist;
+        $this->projects = $projects;
     }
 
     protected function configure(): void
@@ -48,12 +49,12 @@ final class DependsCommand extends AbstractCommand
         $branchDepth = (int) $input->getOption('branch-depth');
         Assert::greaterThan($branchDepth, 0, 'branch-depth needs to be greater than 0');
 
-        foreach ($this->configs['projects'] as $name => $config) {
-            $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
-            $this->io->title($package->getName());
+        /** @var Project $project */
+        foreach ($this->projects->all() as $project) {
+            $this->io->title($project->name());
 
             $bd = 0;
-            foreach ($package->getVersions() as $version) {
+            foreach ($project->package()->getVersions() as $version) {
                 if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
                     continue;
                 }

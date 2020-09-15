@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
-use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,15 +30,15 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 {
     private const TIME_BEFORE_MERGE = 60;
 
-    private PackagistClient $packagist;
+    private Projects $projects;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(Projects $projects, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
-        $this->packagist = $packagist;
+        $this->projects = $projects;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -62,11 +63,15 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             self::BOT_NAME
         ));
 
-        foreach ($this->configs['projects'] as $name => $projectConfig) {
+        /** @var Project $project */
+        foreach ($this->projects->all() as $project) {
             try {
-                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
-                $this->io->section($package->getName());
-                $this->mergePullRequest($package, $projectConfig);
+                $this->io->section($project->name());
+
+                $this->mergePullRequest(
+                    $project->package(),
+                    $project->rawConfig()
+                );
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',

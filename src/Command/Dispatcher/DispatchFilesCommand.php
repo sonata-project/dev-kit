@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
-use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,24 +37,19 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private string $appDir;
     private string $githubToken;
-    private PackagistClient $packagist;
+    private Projects $projects;
     private GithubClient $github;
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
 
-    /**
-     * @var string[]
-     */
-    private array $projects;
-
-    public function __construct(string $appDir, string $githubToken, PackagistClient $packagist, GithubClient $github, GitWrapper $git, Filesystem $filesystem, Environment $twig)
+    public function __construct(string $appDir, string $githubToken, Projects $projects, GithubClient $github, GitWrapper $git, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
         $this->githubToken = $githubToken;
-        $this->packagist = $packagist;
+        $this->projects = $projects;
         $this->github = $github;
         $this->git = $git;
         $this->filesystem = $filesystem;
@@ -71,37 +67,30 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $this->projects = \count($input->getArgument('projects'))
-            ? $input->getArgument('projects')
-            : array_keys($this->configs['projects'])
-        ;
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
-        if (\count($notConfiguredProjects)) {
-            $this->io->error(sprintf(
-                'Some specified projects are not configured: %s ',
-                implode(', ', $notConfiguredProjects)
-            ));
+        $projects = $this->projects->all();
 
-            return 1;
+        $title = 'Dispatch files for all sonata projects';
+        if ([] !== $input->getArgument('projects')) {
+            $projects = $this->projects->byNames($input->getArgument('projects'));
+            $title = sprintf(
+                'Dispatch files for: %s',
+                implode(', ', $input->getArgument('projects'))
+            );
         }
 
-        $this->io->title('Dispatch files for all sonata projects');
+        $this->io->title($title);
 
-        foreach ($this->projects as $name) {
+        /** @var Project $project */
+        foreach ($projects as $project) {
             try {
-                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
+                $this->io->section($project->name());
 
-                $this->io->section($package->getName());
-
-                $this->dispatchFiles($package);
+                $this->dispatchFiles(
+                    $project->package(),
+                    $project->rawConfig()
+                );
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -113,10 +102,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function dispatchFiles(Package $package): void
+    private function dispatchFiles(Package $package, array $projectConfig): void
     {
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
 
         // No branch to manage, continue to next project.
         if (0 === \count($projectConfig['branches'])) {
@@ -348,7 +336,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
 
             $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
-                $this->configs,
                 $projectConfig,
                 $branchConfig,
                 [
