@@ -60,6 +60,12 @@ abstract class AbstractCommand extends Command
     {
         $repositoryArray = u($package->getRepository())->split('/');
 
-        return str_replace('.git', '', end($repositoryArray));
+        $lastName = end($repositoryArray);
+
+        if (!$lastName) {
+            throw new \LogicException('Repository name do not exist in this package.');
+        }
+
+        return str_replace('.git', '', (string) $lastName);
     }
 }

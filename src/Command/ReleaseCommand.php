@@ -217,9 +217,9 @@ EOT;
         } else {
             $output->write(' <fg=black;bg=green>[Changelog found]</>');
         }
-        $output->newLine();
+        $output->writeln('');
         $output->writeln($pull['html_url']);
-        $output->newLine();
+        $output->writeln('');
     }
 
     private function printRelease($currentVersion, $nextVersion, Package $package, OutputInterface $output): void
@@ -282,9 +282,9 @@ EOT;
         $parts = explode('.', $currentVersion);
 
         if (\in_array('minor', $stabilities, true)) {
-            return implode('.', [$parts[0], $parts[1] + 1, 0]);
+            return implode('.', [$parts[0], (int) $parts[1] + 1, 0]);
         } elseif (\in_array('patch', $stabilities, true)) {
-            return implode('.', [$parts[0], $parts[1], $parts[2] + 1]);
+            return implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]);
         }
 
         return $currentVersion;
