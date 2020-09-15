@@ -71,7 +71,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
     private function checkPullRequests(Package $package): void
     {
-        $repositoryName = Util::getRepositoryName($package);
+        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
         foreach ($this->github->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
             $number = $pullRequest['number'];

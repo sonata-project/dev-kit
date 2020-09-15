@@ -126,7 +126,7 @@ EOT;
 
     private function prepareRelease(Package $package, string $branch, OutputInterface $output): void
     {
-        $repositoryName = Util::getRepositoryName($package);
+        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
         $currentRelease = $this->github->repo()->releases()->latest(
             static::GITHUB_GROUP,

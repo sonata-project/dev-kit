@@ -76,7 +76,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        $repositoryName = Util::getRepositoryName($package);
+        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $branches = array_keys($projectConfig['branches']);
 
         $pulls = $this->githubPager->fetchAll($this->github->pullRequests(), 'all', [

@@ -23,9 +23,9 @@ use PHPUnit\Framework\TestCase;
 final class UtilTest extends TestCase
 {
     /**
-     * @dataProvider getRepositoryNameProvider
+     * @dataProvider getRepositoryNameWithoutVendorPrefixProvider
      */
-    public function getRepositoryName(string $expected, string $repository): void
+    public function getRepositoryNameWithoutVendorPrefix(string $expected, string $repository): void
     {
         $package = new Package();
         $package->fromArray([
@@ -34,11 +34,11 @@ final class UtilTest extends TestCase
 
         self::assertSame(
             $expected,
-            Util::getRepositoryName($package)
+            Util::getRepositoryNameWithoutVendorPrefix($package)
         );
     }
 
-    public function getRepositoryNameThrowsExceptionIfNameDoesNotContainSlash(string $expected, string $repository): void
+    public function getRepositoryNameWithoutVendorPrefixThrowsExceptionIfNameDoesNotContainSlash(string $expected, string $repository): void
     {
         $package = new Package();
         $package->fromArray([
@@ -51,10 +51,10 @@ final class UtilTest extends TestCase
             $repository
         ));
 
-        Util::getRepositoryName($package);
+        Util::getRepositoryNameWithoutVendorPrefix($package);
     }
 
-    public function getRepositoryNameThrowsExceptionIfNameEndsWithSlash(string $expected, string $repository): void
+    public function getRepositoryNameWithoutVendorPrefixThrowsExceptionIfNameEndsWithSlash(string $expected, string $repository): void
     {
         $package = new Package();
         $package->fromArray([
@@ -67,13 +67,13 @@ final class UtilTest extends TestCase
             $repository
         ));
 
-        Util::getRepositoryName($package);
+        Util::getRepositoryNameWithoutVendorPrefix($package);
     }
 
     /**
      * @return iterable<array{0: string, 1: string}>
      */
-    public function getRepositoryNameProvider(): iterable
+    public function getRepositoryNameWithoutVendorPrefixProvider(): iterable
     {
         yield ['SonataAdminBundle', 'sonata-project/SonataAdminBundle'];
         yield ['SonataAdminBundle', 'sonata-project/SonataAdminBundle.git'];

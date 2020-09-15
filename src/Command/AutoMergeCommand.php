@@ -104,7 +104,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        $repositoryName = Util::getRepositoryName($package);
+        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $branches = array_reverse(array_keys($projectConfig['branches']));
 
         // Merge the oldest branch into the next newest, and so on.

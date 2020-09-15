@@ -22,10 +22,7 @@ use function Symfony\Component\String\u;
  */
 final class Util
 {
-    /**
-     * Returns repository name without vendor prefix.
-     */
-    public static function getRepositoryName(Package $package): string
+    public static function getRepositoryNameWithoutVendorPrefix(Package $package): string
     {
         $repositoryArray = u($package->getRepository())->split('/');
 
