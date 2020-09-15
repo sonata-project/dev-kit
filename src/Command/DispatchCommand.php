@@ -163,7 +163,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     'name' => $repositoryName,
                 ]));
             }
-        } elseif (!\count($infoToUpdate)) {
+        } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
     }
