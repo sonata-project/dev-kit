@@ -35,10 +35,7 @@ abstract class AbstractCommand extends Command
     public const PACKAGIST_GROUP = 'sonata-project';
     public const BOT_NAME = 'SonataCI';
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $io;
+    protected SymfonyStyle $io;
 
     /**
      * @var array
