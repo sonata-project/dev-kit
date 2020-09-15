@@ -53,7 +53,13 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
-                                        ->append($this->addVariantsNode())
+                                        ->arrayNode('variants')
+                                            ->normalizeKeys(false)
+                                            ->useAttributeAsKey('name')
+                                            ->prototype('array')
+                                                ->prototype('scalar')->end()
+                                            ->end()
+                                        ->end()
                                         ->scalarNode('docs_path')->defaultValue('docs')->end()
                                         ->scalarNode('tests_path')->defaultValue('tests')->end()
                                     ->end()
@@ -66,21 +72,5 @@ class ProjectsConfiguration implements ConfigurationInterface
         ;
 
         return $treeBuilder;
-    }
-
-    private function addVariantsNode()
-    {
-        $builder = new TreeBuilder('variants');
-        $node = $builder->getRootNode();
-
-        $childrenNode = $node->addDefaultsIfNotSet()->children();
-
-        foreach ($this->devKitConfigs['packages'] as $key => $name) {
-            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue([])->end()->end();
-        }
-
-        $childrenNode->end();
-
-        return $node;
     }
 }

@@ -38,9 +38,6 @@ class DevKitConfiguration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('packages')
-                    ->prototype('scalar')->end()
-                ->end()
             ->end()
         ;
 

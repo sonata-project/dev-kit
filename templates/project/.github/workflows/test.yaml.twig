@@ -51,7 +51,7 @@ jobs:
           - php-version: '{{ target_php|default(php|last) }}'
             dependencies: highest
             allowed_to_fail: false
-            variant: '{{ packages[package_name] }}:"{{ version }}{% if not is_dev_branch(version) %}.*{% endif %}"'
+            variant: '{{ package_name }}:"{{ version }}{% if not is_dev_branch(version) %}.*{% endif %}"'
 {% endfor %}
 {% endfor %}
 
