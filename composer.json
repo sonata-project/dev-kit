@@ -30,7 +30,7 @@
         "symfony/framework-bundle": "4.4.*",
         "symfony/http-client": "^5.1",
         "symfony/monolog-bundle": "^3.5",
-        "symfony/string": "^5.0",
+        "symfony/string": "^5.1",
         "symfony/twig-pack": "^1.0",
         "symfony/yaml": "4.4.*",
         "webmozart/assert": "^1.9"
