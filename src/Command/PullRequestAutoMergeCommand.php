@@ -143,7 +143,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
             $squash = 1 === $uniqueCommitsCount;
 
-            $this->io->comment(sprintf('Squash: %s', $squash ? 'yes' : 'no'));
+            $this->io->comment(sprintf(
+                'Squash: %s',
+                $squash ? 'yes' : 'no'
+            ));
 
             if ($this->apply) {
                 try {
