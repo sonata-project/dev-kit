@@ -312,7 +312,7 @@ EOT;
 
         $filteredPulls = [];
         foreach ($pulls as $pull) {
-            if ('SonataCI' === $pull['user']['login']) {
+            if (self::BOT_NAME === $pull['user']['login']) {
                 continue;
             }
 
