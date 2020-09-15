@@ -28,7 +28,7 @@ class ProjectsConfiguration implements ConfigurationInterface
         $this->devKitConfigs = $devKitConfigs;
     }
 
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sonata');
         $rootNode = $treeBuilder->getRootNode();

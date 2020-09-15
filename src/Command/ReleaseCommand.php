@@ -44,6 +44,7 @@ final class ReleaseCommand extends AbstractCommand
         'patch' => 'blue',
         'minor' => 'green',
         'pedantic' => 'yellow',
+        'unknown' => 'red',
     ];
 
     private PackagistClient $packagist;
@@ -88,7 +89,7 @@ EOT;
             ->setHelp($help);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $project = $this->getProject($input, $output);
         $branches = array_keys($this->configs['projects'][$project]['branches']);
@@ -101,7 +102,7 @@ EOT;
         return 0;
     }
 
-    private function getProject(InputInterface $input, OutputInterface $output)
+    private function getProject(InputInterface $input, OutputInterface $output): string
     {
         $helper = $this->getHelper('question');
 
@@ -246,7 +247,7 @@ EOT;
         }
     }
 
-    private function parseChangelog($pull)
+    private function parseChangelog($pull): array
     {
         $changelog = [];
         $body = preg_replace('/<!--(.*)-->/Uis', '', $pull['body']);
@@ -276,7 +277,7 @@ EOT;
         return $changelog;
     }
 
-    private function determineNextVersion($currentVersion, $pulls)
+    private function determineNextVersion($currentVersion, $pulls): string
     {
         $stabilities = array_column($pulls, 'stability');
         $parts = explode('.', $currentVersion);
@@ -290,7 +291,7 @@ EOT;
         return $currentVersion;
     }
 
-    private function determinePullRequestStability($pull)
+    private function determinePullRequestStability($pull): string
     {
         $labels = array_column($pull['labels'], 'name');
 
@@ -301,9 +302,11 @@ EOT;
         } elseif (array_intersect(['docs', 'pedantic'], $labels)) {
             return 'pedantic';
         }
+
+        return 'unknown';
     }
 
-    private function findPullRequestsSince($date, $repositoryName, $branch)
+    private function findPullRequestsSince($date, $repositoryName, $branch): array
     {
         $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [
             'repo:'.static::GITHUB_GROUP.'/'.$repositoryName.

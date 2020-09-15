@@ -67,7 +67,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
         if (\count($notConfiguredProjects)) {
