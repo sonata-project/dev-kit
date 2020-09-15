@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
 use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
@@ -46,10 +47,10 @@ final class ReleaseCommand extends AbstractCommand
     ];
 
     private PackagistClient $packagist;
-    private \Github\Client $githubClient;
+    private GithubClient $githubClient;
     private ResultPagerInterface $githubPaginator;
 
-    public function __construct(PackagistClient $packagist, \Github\Client $githubClient, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $githubClient, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Packagist\Api\Client as PackagistClient;
@@ -44,7 +45,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private string $appDir;
     private PackagistClient $packagist;
-    private \Github\Client $githubClient;
+    private GithubClient $githubClient;
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -54,7 +55,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(string $appDir, PackagistClient $packagist, \Github\Client $githubClient, GitWrapper $git, Filesystem $filesystem, Environment $twig)
+    public function __construct(string $appDir, PackagistClient $packagist, GithubClient $githubClient, GitWrapper $git, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 

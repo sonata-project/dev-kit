@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Packagist\Api\Client as PackagistClient;
@@ -33,10 +34,10 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     private $projects;
 
     private PackagistClient $packagist;
-    private \Github\Client $githubClient;
+    private GithubClient $githubClient;
     private LoggerInterface $logger;
 
-    public function __construct(PackagistClient $packagist, \Github\Client $githubClient, LoggerInterface $logger)
+    public function __construct(PackagistClient $packagist, GithubClient $githubClient, LoggerInterface $logger)
     {
         parent::__construct();
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
 use Packagist\Api\Client as PackagistClient;
@@ -28,10 +29,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private const TIME_BEFORE_MERGE = 60;
 
     private PackagistClient $packagist;
-    private \Github\Client $githubClient;
+    private GithubClient $githubClient;
     private ResultPagerInterface $githubPaginator;
 
-    public function __construct(PackagistClient $packagist, \Github\Client $githubClient, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $githubClient, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 
