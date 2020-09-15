@@ -50,9 +50,6 @@ abstract class AbstractCommand extends Command
      */
     protected $githubOauthToken = null;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);

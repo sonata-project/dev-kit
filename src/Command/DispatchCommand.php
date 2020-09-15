@@ -88,9 +88,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));

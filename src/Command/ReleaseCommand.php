@@ -87,9 +87,6 @@ EOT;
             ->setHelp($help);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $project = $this->getProject($input, $output);
