@@ -49,7 +49,7 @@ abstract class AbstractCommand extends Command
     /**
      * @var string|null
      */
-    protected $githubAuthKey = null;
+    protected $githubOauthToken = null;
 
     /**
      * @var Client
@@ -79,11 +79,11 @@ abstract class AbstractCommand extends Command
 
         $client = new Client();
         if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
+            $this->githubOauthToken = getenv('GITHUB_OAUTH_TOKEN');
         }
 
-        if ($this->githubAuthKey) {
-            $client->authenticate($this->githubAuthKey, null, Client::AUTH_HTTP_TOKEN);
+        if ($this->githubOauthToken) {
+            $client->authenticate($this->githubOauthToken, null, Client::AUTH_HTTP_TOKEN);
         }
 
         $this->githubClient = $client;
