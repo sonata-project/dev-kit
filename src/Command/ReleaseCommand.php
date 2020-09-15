@@ -47,15 +47,15 @@ final class ReleaseCommand extends AbstractCommand
     ];
 
     private PackagistClient $packagist;
-    private GithubClient $githubClient;
+    private GithubClient $github;
     private ResultPagerInterface $githubPaginator;
 
-    public function __construct(PackagistClient $packagist, GithubClient $githubClient, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
-        $this->githubClient = $githubClient;
+        $this->github = $github;
         $this->githubPaginator = $githubPaginator;
     }
 
@@ -126,18 +126,18 @@ EOT;
     {
         $repositoryName = $this->getRepositoryName($package);
 
-        $currentRelease = $this->githubClient->repo()->releases()->latest(
+        $currentRelease = $this->github->repo()->releases()->latest(
             static::GITHUB_GROUP,
             $repositoryName
         );
 
-        $branchToRelease = $this->githubClient->repo()->branches(
+        $branchToRelease = $this->github->repo()->branches(
             static::GITHUB_GROUP,
             $repositoryName,
             $branch
         );
 
-        $statuses = $this->githubClient->repo()->statuses()->combined(
+        $statuses = $this->github->repo()->statuses()->combined(
             static::GITHUB_GROUP,
             $repositoryName,
             $branchToRelease['commit']['sha']
@@ -305,7 +305,7 @@ EOT;
 
     private function findPullRequestsSince($date, $repositoryName, $branch)
     {
-        $pulls = $this->githubPaginator->fetchAll($this->githubClient->search(), 'issues', [
+        $pulls = $this->githubPaginator->fetchAll($this->github->search(), 'issues', [
             'repo:'.static::GITHUB_GROUP.'/'.$repositoryName.
             ' type:pr is:merged base:'.$branch.' merged:>'.$date,
         ]);
