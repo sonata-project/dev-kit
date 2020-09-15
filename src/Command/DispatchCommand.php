@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
@@ -133,7 +134,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private function updateRepositories(Package $package, array $projectConfig): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
         $this->io->section('Repository');
 
@@ -173,7 +174,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private function updateLabels(Package $package): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $this->io->section('Labels');
 
         $configuredLabels = $this->configs['labels'];
@@ -255,7 +256,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private function updateDevKitHook(Package $package): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $this->io->section('DevKit hook');
 
         // Construct the hook url.
@@ -329,7 +330,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private function deleteHooks(Package $package): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $this->io->section('Check Hooks to be deleted');
 
         $configuredHooks = $this->github->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
@@ -360,7 +361,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private function updateBranchesProtection(Package $package, array $projectConfig): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
         $this->io->section('Branches protection');
 
@@ -441,7 +442,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private function dispatchFiles(Package $package): void
     {
-        $repositoryName = $this->getRepositoryName($package);
+        $repositoryName = Util::getRepositoryName($package);
         $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP.'/', '', $package->getName())];
 
         // No branch to manage, continue to next project.

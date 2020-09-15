@@ -15,13 +15,11 @@ namespace App\Command;
 
 use App\Config\DevKitConfiguration;
 use App\Config\ProjectsConfiguration;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function Symfony\Component\String\u;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -51,21 +49,5 @@ abstract class AbstractCommand extends Command
             'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yaml'))],
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
-    }
-
-    /**
-     * Returns repository name without vendor prefix.
-     */
-    final protected function getRepositoryName(Package $package): string
-    {
-        $repositoryArray = u($package->getRepository())->split('/');
-
-        $lastName = end($repositoryArray);
-
-        if (!$lastName) {
-            throw new \LogicException('Repository name do not exist in this package.');
-        }
-
-        return str_replace('.git', '', (string) $lastName);
     }
 }
