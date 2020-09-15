@@ -75,7 +75,14 @@ final class UtilTest extends TestCase
      */
     public function getRepositoryNameWithoutVendorPrefixProvider(): iterable
     {
-        yield ['SonataAdminBundle', 'sonata-project/SonataAdminBundle'];
-        yield ['SonataAdminBundle', 'sonata-project/SonataAdminBundle.git'];
+        yield [
+            'SonataAdminBundle',
+            'sonata-project/SonataAdminBundle',
+        ];
+
+        yield [
+            'SonataAdminBundle',
+            'sonata-project/SonataAdminBundle.git',
+        ];
     }
 }
