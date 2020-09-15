@@ -102,7 +102,13 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                         $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
                         ]);
-                        $this->githubClient->addIssueLabel(static::GITHUB_GROUP, $repositoryName, $number, 'pending author');
+
+                        $this->githubClient->issues()->labels()->add(
+                            static::GITHUB_GROUP,
+                            $repositoryName,
+                            $number,
+                            'pending author'
+                        );
                     }
 
                     $this->io->text(sprintf('#%d - %s', $pullRequest['number'], $pullRequest['title']));
