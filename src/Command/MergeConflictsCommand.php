@@ -27,15 +27,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MergeConflictsCommand extends AbstractNeedApplyCommand
 {
     private PackagistClient $packagist;
-    private GithubClient $githubClient;
+    private GithubClient $github;
     private ResultPagerInterface $githubPaginator;
 
-    public function __construct(PackagistClient $packagist, GithubClient $githubClient, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
-        $this->githubClient = $githubClient;
+        $this->github = $github;
         $this->githubPaginator = $githubPaginator;
     }
 
@@ -68,16 +68,16 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
     {
         $repositoryName = $this->getRepositoryName($package);
 
-        foreach ($this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
+        foreach ($this->github->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
             $number = $pullRequest['number'];
-            $pullRequest = $this->githubClient->pullRequests()->show(static::GITHUB_GROUP, $repositoryName, $number);
+            $pullRequest = $this->github->pullRequests()->show(static::GITHUB_GROUP, $repositoryName, $number);
 
             // The value of the mergeable attribute can be true, false, or null.
             // If the value is null this means that the mergeability hasn't been computed yet.
             // @see: https://developer.github.com/v3/pulls/#get-a-single-pull-request
             if (false === $pullRequest['mergeable']) {
                 $comments = array_filter(
-                    $this->githubPaginator->fetchAll($this->githubClient->issues()->comments(), 'all', [
+                    $this->githubPaginator->fetchAll($this->github->issues()->comments(), 'all', [
                         static::GITHUB_GROUP,
                         $repositoryName,
                         $number,
@@ -89,7 +89,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $lastComment = end($comments);
                 $lastCommentDate = $lastComment ? new \DateTime($lastComment['created_at']) : null;
 
-                $commits = $this->githubPaginator->fetchAll($this->githubClient->pullRequest(), 'commits', [
+                $commits = $this->githubPaginator->fetchAll($this->github->pullRequest(), 'commits', [
                     static::GITHUB_GROUP,
                     $repositoryName,
                     $number,
@@ -99,11 +99,11 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->githubClient->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, [
+                        $this->github->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
                         ]);
 
-                        $this->githubClient->issues()->labels()->add(
+                        $this->github->issues()->labels()->add(
                             static::GITHUB_GROUP,
                             $repositoryName,
                             $number,
