@@ -451,7 +451,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         $git = $this->git->cloneRepository(
-            'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
+            'https://'.static::GITHUB_USER.':'.$this->githubOauthToken.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
         );
 
