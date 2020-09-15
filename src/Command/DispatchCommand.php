@@ -44,7 +44,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
     private string $appDir;
     private Client $packagist;
-    private GitWrapper $gitWrapper;
+    private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
 
@@ -53,13 +53,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private $projects;
 
-    public function __construct(string $appDir, Client $packagist, GitWrapper $gitWrapper, Filesystem $filesystem, Environment $twig)
+    public function __construct(string $appDir, Client $packagist, GitWrapper $git, Filesystem $filesystem, Environment $twig)
     {
         parent::__construct();
 
         $this->appDir = $appDir;
         $this->packagist = $packagist;
-        $this->gitWrapper = $gitWrapper;
+        $this->git = $git;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
     }
@@ -450,7 +450,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->filesystem->remove($clonePath);
         }
 
-        $git = $this->gitWrapper->cloneRepository(
+        $git = $this->git->cloneRepository(
             'https://'.static::GITHUB_USER.':'.$this->githubAuthKey.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
             $clonePath
         );
