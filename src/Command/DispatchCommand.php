@@ -22,6 +22,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use function Symfony\Component\String\u;
 use Twig\Environment;
@@ -49,6 +50,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
+    private SymfonyStyle $io;
 
     /**
      * @var string[]
@@ -82,6 +84,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
+
+        $this->io = new SymfonyStyle($input, $output);
 
         $this->projects = \count($input->getArgument('projects'))
             ? $input->getArgument('projects')

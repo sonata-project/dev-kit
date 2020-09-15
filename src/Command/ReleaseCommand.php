@@ -20,6 +20,7 @@ use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
@@ -49,6 +50,7 @@ final class ReleaseCommand extends AbstractCommand
     private PackagistClient $packagist;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
+    private SymfonyStyle $io;
 
     public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
     {
@@ -86,6 +88,13 @@ EOT;
             ->setName('release')
             ->setDescription('Helps with a project release.')
             ->setHelp($help);
+    }
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->io = new SymfonyStyle($input, $output);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
