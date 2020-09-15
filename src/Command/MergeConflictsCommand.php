@@ -28,15 +28,15 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 {
     private PackagistClient $packagist;
     private GithubClient $github;
-    private ResultPagerInterface $githubPaginator;
+    private ResultPagerInterface $githubPager;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
         $this->github = $github;
-        $this->githubPaginator = $githubPaginator;
+        $this->githubPager = $githubPager;
     }
 
     protected function configure(): void
@@ -77,7 +77,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
             // @see: https://developer.github.com/v3/pulls/#get-a-single-pull-request
             if (false === $pullRequest['mergeable']) {
                 $comments = array_filter(
-                    $this->githubPaginator->fetchAll($this->github->issues()->comments(), 'all', [
+                    $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
                         static::GITHUB_GROUP,
                         $repositoryName,
                         $number,
@@ -89,7 +89,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $lastComment = end($comments);
                 $lastCommentDate = $lastComment ? new \DateTime($lastComment['created_at']) : null;
 
-                $commits = $this->githubPaginator->fetchAll($this->github->pullRequest(), 'commits', [
+                $commits = $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
                     static::GITHUB_GROUP,
                     $repositoryName,
                     $number,

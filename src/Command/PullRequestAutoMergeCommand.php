@@ -30,15 +30,15 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
     private PackagistClient $packagist;
     private GithubClient $github;
-    private ResultPagerInterface $githubPaginator;
+    private ResultPagerInterface $githubPager;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPaginator)
+    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
         $this->github = $github;
-        $this->githubPaginator = $githubPaginator;
+        $this->githubPager = $githubPager;
     }
 
     protected function configure(): void
@@ -75,7 +75,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $repositoryName = $this->getRepositoryName($package);
         $branches = array_keys($projectConfig['branches']);
 
-        $pulls = $this->githubPaginator->fetchAll($this->github->pullRequests(), 'all', [
+        $pulls = $this->githubPager->fetchAll($this->github->pullRequests(), 'all', [
             static::GITHUB_GROUP,
             $repositoryName,
         ]);
@@ -119,7 +119,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 continue;
             }
 
-            $commits = $this->githubPaginator->fetchAll($this->github->pullRequests(), 'commits', [
+            $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
                 static::GITHUB_GROUP,
                 $repositoryName,
                 $pull['number'],
