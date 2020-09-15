@@ -37,10 +37,7 @@ abstract class AbstractCommand extends Command
 
     protected SymfonyStyle $io;
 
-    /**
-     * @var array
-     */
-    protected $configs;
+    protected array $configs;
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
