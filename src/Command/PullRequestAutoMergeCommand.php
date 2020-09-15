@@ -31,7 +31,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private \Github\Client $githubClient;
     private ResultPagerInterface $githubPaginator;
 
-    public function __construct(Client $packagist, \Github\Client  $githubClient, ResultPagerInterface $githubPaginator)
+    public function __construct(Client $packagist, \Github\Client $githubClient, ResultPagerInterface $githubPaginator)
     {
         parent::__construct();
 
