@@ -82,6 +82,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             static::GITHUB_GROUP,
             $repositoryName,
         ]);
+
         foreach ($pulls as $pull) {
             // Do not manage not configured branches.
             if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
