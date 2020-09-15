@@ -20,7 +20,7 @@
         "ext-json": "*",
         "cpliakas/git-wrapper": "^3.0",
         "doctrine/annotations": "^1.8",
-        "knplabs/github-api": "2.5",
+        "knplabs/github-api": "^2.15",
         "knplabs/packagist-api": "^1.3",
         "nyholm/psr7": "^1.2",
         "sebastian/diff": "^1.4",
