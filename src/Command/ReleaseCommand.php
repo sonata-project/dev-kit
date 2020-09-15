@@ -46,11 +46,11 @@ final class ReleaseCommand extends AbstractCommand
 
     private Client $packagistClient;
 
-    public function __construct(Client $packagistClient)
+    public function __construct(Client $packagist)
     {
         parent::__construct();
 
-        $this->packagistClient = $packagistClient;
+        $this->packagistClient = $packagist;
     }
 
     protected function configure(): void
