@@ -17,6 +17,9 @@ use App\Util\Util;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Oskar Stark <oskarstark@googlemail.com>
+ */
 final class UtilTest extends TestCase
 {
     /**
