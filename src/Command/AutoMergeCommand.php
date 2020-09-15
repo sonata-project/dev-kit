@@ -71,7 +71,10 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
         if (\count($notConfiguredProjects)) {
-            $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
+            $this->io->error(sprintf(
+                'Some specified projects are not configured: %s',
+                implode(', ', $notConfiguredProjects)
+            ));
 
             return 1;
         }
@@ -84,7 +87,10 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 $this->io->title($package->getName());
                 $this->mergeBranches($package, $projectConfig);
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
@@ -116,13 +122,25 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 );
 
                 if (\is_array($response) && \array_key_exists('sha', $response)) {
-                    $this->io->success(sprintf('Merged %s into %s', $head, $base));
+                    $this->io->success(sprintf(
+                        'Merged %s into %s',
+                        $head,
+                        $base
+                    ));
                 } else {
-                    $this->io->comment('Nothing to merge on '.$base);
+                    $this->io->comment(sprintf(
+                        'Nothing to merge on %s',
+                        $base
+                    ));
                 }
             } catch (RuntimeException $e) {
                 if (409 === $e->getCode()) {
-                    $message = sprintf('%s: Merging of %s into %s contains conflicts. Skipped.', $repositoryName, $head, $base);
+                    $message = sprintf(
+                        '%s: Merging of %s into %s contains conflicts. Skipped.',
+                        $repositoryName,
+                        $head,
+                        $base
+                    );
 
                     $this->io->warning($message);
                     $this->logger->warning($message);

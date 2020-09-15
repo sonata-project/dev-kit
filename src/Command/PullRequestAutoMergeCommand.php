@@ -59,7 +59,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $this->io->title($package->getName());
                 $this->mergePullRequest($package, $projectConfig);
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
@@ -161,9 +164,15 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         );
                     }
 
-                    $this->io->success(sprintf('Merged PR #%d', $pull['number']));
+                    $this->io->success(sprintf(
+                        'Merged PR #%d',
+                        $pull['number']
+                    ));
                 } catch (ExceptionInterface $e) {
-                    $this->io->error('Failed with message: '.$e->getMessage());
+                    $this->io->error(sprintf(
+                        'Failed with message: %s',
+                        $e->getMessage()
+                    ));
                 }
             }
         }

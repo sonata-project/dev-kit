@@ -118,7 +118,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $this->dispatchFiles($package);
                 }
             } catch (ExceptionInterface $e) {
-                $this->io->error('Failed with message: '.$e->getMessage());
+                $this->io->error(sprintf(
+                    'Failed with message: %s',
+                    $e->getMessage()
+                ));
             }
         }
 
