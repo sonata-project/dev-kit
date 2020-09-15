@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Util;
 
-use App\Github\Domain\Value\Repository;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
 
