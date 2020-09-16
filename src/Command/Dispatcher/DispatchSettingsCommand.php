@@ -16,7 +16,6 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,19 +71,20 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 
     private function updateRepositories(Project $project): void
     {
-        $package = $project->package();
-        $projectConfig = $project->rawConfig();
+        $repository = $project->repository();
+        $branchNames = $project->branchNames();
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $branches = array_keys($projectConfig['branches']);
+        $repositoryInfo = $this->github->repo()->show(
+            $repository->vendor(),
+            $repository->name()
+        );
 
-        $repositoryInfo = $this->github->repo()->show(static::GITHUB_GROUP, $repositoryName);
         $infoToUpdate = [
             'homepage' => 'https://sonata-project.org/',
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
-            'default_branch' => end($branches),
+            'default_branch' => end($branchNames),
             'allow_squash_merge' => true,
             'allow_merge_commit' => false,
             'allow_rebase_merge' => true,
@@ -103,8 +103,8 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             ));
 
             if ($this->apply) {
-                $this->github->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, [
-                    'name' => $repositoryName,
+                $this->github->repo()->update($repository->vendor(), $repository->name(), array_merge($infoToUpdate, [
+                    'name' => $repository->name(),
                 ]));
             }
         } else {
