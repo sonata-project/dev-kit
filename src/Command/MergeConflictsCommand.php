@@ -53,6 +53,8 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->io->title('Comment non-mergable pull requests');
+
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
                 $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
