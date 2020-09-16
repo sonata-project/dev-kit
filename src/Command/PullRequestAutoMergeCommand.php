@@ -81,6 +81,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private function mergePullRequest(Package $package, array $projectConfig): void
     {
         if (!\array_key_exists('branches', $projectConfig)) {
+            $this->io->comment('No branches defined.');
+
             return;
         }
 
