@@ -53,41 +53,46 @@ final class DependsCommand extends AbstractCommand
         foreach ($this->projects->all() as $project) {
             $this->io->title($project->name());
 
-            $bd = 0;
-            foreach ($project->package()->getVersions() as $version) {
-                if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
+            $this->depends($project, $branchDepth);
+        }
+
+        return 0;
+    }
+
+    public function depends(Project $project, int $depth): void
+    {
+        $bd = 0;
+        foreach ($project->package()->getVersions() as $version) {
+            if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
+                continue;
+            }
+
+            $this->io->writeln(sprintf(
+                '    <info>%s</info>',
+                $version->getVersion()
+            ));
+            $this->io->newLine();
+
+            if (!\is_array($version->getRequire())) {
+                continue;
+            }
+
+            foreach ($version->getRequire() as $packageName => $constraint) {
+                if (!u($packageName)->startsWith('sonata-project/')) {
                     continue;
                 }
 
                 $this->io->writeln(sprintf(
-                    '    <info>%s</info>',
-                    $version->getVersion()
+                    '        %s:%s',
+                    $packageName,
+                    $constraint
                 ));
-                $this->io->newLine();
+            }
+            $this->io->newLine();
 
-                if (!\is_array($version->getRequire())) {
-                    continue;
-                }
-
-                foreach ($version->getRequire() as $packageName => $constraint) {
-                    if (!u($packageName)->startsWith('sonata-project/')) {
-                        continue;
-                    }
-
-                    $this->io->writeln(sprintf(
-                        '        %s:%s',
-                        $packageName,
-                        $constraint
-                    ));
-                }
-                $this->io->newLine();
-
-                if (++$bd >= $branchDepth) {
-                    break;
-                }
+            if (++$bd >= $depth) {
+                break;
             }
         }
-
-        return 0;
     }
 }
