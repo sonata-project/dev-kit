@@ -59,7 +59,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
         $processor = new Processor();
         $config = $processor->processConfiguration(new LabelsConfiguration(), [
-            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/labels.yaml')),
+            'sonata' => Yaml::parseFile(__DIR__.'/../../../config/labels.yaml'),
         ]);
 
         /** @var Project $project */
