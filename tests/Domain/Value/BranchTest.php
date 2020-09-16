@@ -48,6 +48,7 @@ CONFIG;
         self::assertSame($name, $branch->name());
         self::assertCount(2, $branch->phpVersions());
         self::assertSame('7.4', $branch->targetPhpVersion()->toString());
+        self::assertSame('7.3', $branch->lowestPhpVersion()->toString());
         self::assertCount(2, $branch->variants());
         self::assertEmpty($branch->services());
         self::assertSame('docs', $branch->docsPath()->toString());
