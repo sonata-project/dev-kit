@@ -21,7 +21,6 @@ use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use function Symfony\Component\String\u;
@@ -68,7 +67,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             ->setName('dispatch')
             ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
             ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
-            ->addOption('with-files', null, InputOption::VALUE_NONE, 'Applies Pull Request actions for projects files')
         ;
     }
 
@@ -100,9 +98,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
 
-                if ($input->getOption('with-files')) {
-                    $this->dispatchFiles($package);
-                }
+                $this->dispatchFiles($package);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',

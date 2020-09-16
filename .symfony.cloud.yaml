@@ -80,11 +80,11 @@ crons:
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console dispatch:settings --apply
             fi
-    dispatch-with-files:
+    dispatch:
         spec: '5 2 * * *'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch --with-files --apply
+                croncape bin/console dispatch --apply
             fi
     dispatch-branches-protection:
         spec: '10 2 * * *'
