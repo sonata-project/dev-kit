@@ -56,12 +56,6 @@ crons:
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console auto-merge --apply
             fi
-    dispatch:
-        spec: '*/30 * * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch --apply
-            fi
     dispatch-labels:
         spec: '0 */4 * * *'
         cmd: |
@@ -80,11 +74,11 @@ crons:
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console dispatch:settings --apply
             fi
-    dispatch:
+    dispatch-files:
         spec: '5 2 * * *'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch --apply
+                croncape bin/console dispatch:files --apply
             fi
     dispatch-branches-protection:
         spec: '10 2 * * *'
