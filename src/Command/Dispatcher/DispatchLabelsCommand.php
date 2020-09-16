@@ -17,7 +17,6 @@ use App\Command\AbstractNeedApplyCommand;
 use App\Config\LabelsConfiguration;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Config\Definition\Processor;
@@ -89,9 +88,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     {
         Assert::notEmpty($labels);
 
-        $package = $project->package();
-
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
+        $repository = $project->repository();
 
         $configuredLabels = $labels;
         $missingLabels = $labels;
@@ -105,7 +102,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
         $rows = [];
 
-        foreach ($this->github->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
+        foreach ($this->github->repo()->labels()->all($repository->vendor(), $repository->name()) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -121,12 +118,12 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->github->repo()->labels()->remove(static::GITHUB_GROUP, $repositoryName, $name);
+                    $this->github->repo()->labels()->remove($repository->vendor(), $repository->name(), $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->github->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, [
+                    $this->github->repo()->labels()->update($repository->vendor(), $repository->name(), $name, [
                         'name' => $name,
                         'color' => $configuredColor,
                     ]);
@@ -147,7 +144,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->github->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, [
+                $this->github->repo()->labels()->create($repository->vendor(), $repository->name(), [
                     'name' => $name,
                     'color' => $color,
                 ]);

@@ -83,8 +83,9 @@ final class DependsCommand extends AbstractCommand
                 }
 
                 $this->io->writeln(sprintf(
-                    '        %s',
-                    $packageName.':'.$constraint
+                    '        %s:%s',
+                    $packageName,
+                    $constraint
                 ));
             }
             $this->io->newLine();

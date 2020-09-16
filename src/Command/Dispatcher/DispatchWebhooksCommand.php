@@ -16,7 +16,6 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -88,9 +87,8 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
 
     private function updateDevKitHook(Project $project): void
     {
-        $package = $project->package();
+        $repository = $project->repository();
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $this->io->section('DevKit hook');
 
         $hookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
@@ -114,7 +112,10 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
             'pull_request_review_comment',
         ];
 
-        $configuredHooks = $this->github->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
+        $configuredHooks = $this->github->repo()->hooks()->all(
+            $repository->vendor(),
+            $repository->name()
+        );
 
         // First, check if the hook exists.
         $devKitHook = null;
@@ -131,7 +132,7 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be created.');
 
             if ($this->apply) {
-                $this->github->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, [
+                $this->github->repo()->hooks()->create($repository->vendor(), $repository->name(), [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
@@ -146,13 +147,13 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
-                $this->github->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], [
+                $this->github->repo()->hooks()->update($repository->vendor(), $repository->name(), $devKitHook['id'], [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
                 ]);
-                $this->github->repo()->hooks()->ping(static::GITHUB_GROUP, $repositoryName, $devKitHook['id']);
+                $this->github->repo()->hooks()->ping($repository->vendor(), $repository->name(), $devKitHook['id']);
                 $this->io->success('Hook updated.');
             }
         } else {
@@ -162,12 +163,11 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
 
     private function deleteHooks(Project $project): void
     {
-        $package = $project->package();
+        $repository = $project->repository();
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $this->io->section('Check Hooks to be deleted');
 
-        $configuredHooks = $this->github->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName);
+        $configuredHooks = $this->github->repo()->hooks()->all($repository->vendor(), $repository->name());
 
         // Check if hook should be deleted.
         foreach ($configuredHooks as $key => $hook) {
@@ -181,7 +181,7 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
                     ));
 
                     if ($this->apply) {
-                        $this->github->repo()->hooks()->remove(static::GITHUB_GROUP, $repositoryName, $hook['id']);
+                        $this->github->repo()->hooks()->remove($repository->vendor(), $repository->name(), $hook['id']);
 
                         $this->io->success(sprintf(
                             'Hook "%s" deleted.',

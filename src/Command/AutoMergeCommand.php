@@ -15,7 +15,6 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
@@ -88,27 +87,24 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
     private function mergeBranches(Project $project): void
     {
-        $package = $project->package();
-        $projectConfig = $project->rawConfig();
-
-        if (!$this->apply || !\array_key_exists('branches', $projectConfig)) {
+        if (!$this->apply || !$project->hasBranches()) {
             return;
         }
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $branches = array_reverse(array_keys($projectConfig['branches']));
+        $repository = $project->repository();
+        $branchNames = $project->branchNamesReverse();
 
         // Merge the oldest branch into the next newest, and so on.
-        while (($head = current($branches))) {
-            $base = next($branches);
+        while (($head = current($branchNames))) {
+            $base = next($branchNames);
             if (false === $base) {
                 break;
             }
 
             try {
                 $response = $this->github->repo()->merge(
-                    static::GITHUB_GROUP,
-                    $repositoryName,
+                    $repository->vendor(),
+                    $repository->name(),
                     $base,
                     $head
                 );
@@ -129,7 +125,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 if (409 === $e->getCode()) {
                     $message = sprintf(
                         '%s: Merging of %s into %s contains conflicts. Skipped.',
-                        $repositoryName,
+                        $repository->name(),
                         $head,
                         $base
                     );
