@@ -17,6 +17,7 @@ use Packagist\Api\Client as PackagistClient;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
 
 /**
@@ -45,6 +46,7 @@ final class DependsCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $branchDepth = (int) $input->getOption('branch-depth');
+        Assert::greaterThan($branchDepth, 0, 'branch-depth needs to be greater than 0');
 
         foreach ($this->configs['projects'] as $name => $config) {
             $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
