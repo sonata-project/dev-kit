@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class DispatchLabelsConfigurationCommand extends AbstractNeedApplyCommand
+final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 {
     private PackagistClient $packagist;
     private GithubClient $github;
@@ -48,8 +48,8 @@ final class DispatchLabelsConfigurationCommand extends AbstractNeedApplyCommand
         parent::configure();
 
         $this
-            ->setName('dispatch:labels-configuration')
-            ->setDescription('Dispatches labels configuration for all sonata projects.')
+            ->setName('dispatch:labels')
+            ->setDescription('Dispatches labels for all sonata projects.')
         ;
     }
 
@@ -63,7 +63,7 @@ final class DispatchLabelsConfigurationCommand extends AbstractNeedApplyCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title(
-            'Dispatch labels configuration for all sonata projects'
+            'Dispatch labels for all sonata projects'
         );
 
         foreach ($this->projects as $name) {
