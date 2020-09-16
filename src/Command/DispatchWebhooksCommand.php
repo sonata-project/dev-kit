@@ -68,6 +68,13 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->projects = array_keys($this->configs['projects']);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('Dispatch webhooks for all sonata projects');
