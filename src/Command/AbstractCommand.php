@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Config\DevKitConfiguration;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -36,15 +33,8 @@ abstract class AbstractCommand extends Command
 
     protected SymfonyStyle $io;
 
-    protected array $configs;
-
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
-
-        $processor = new Processor();
-        $this->configs = $processor->processConfiguration(new DevKitConfiguration(), [
-            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../config/dev-kit.yaml')),
-        ]);
     }
 }

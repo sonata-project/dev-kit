@@ -14,14 +14,18 @@ declare(strict_types=1);
 namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
+use App\Config\LabelsConfiguration;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Packagist\Api\Result\Package;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -54,12 +58,20 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch labels for all sonata projects');
 
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new LabelsConfiguration(), [
+            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/labels.yaml')),
+        ]);
+
         /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->section($project->name());
 
-                $this->updateLabels($project->package());
+                $this->updateLabels(
+                    $project->package(),
+                    $config['labels']
+                );
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -71,12 +83,17 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function updateLabels(Package $package): void
+    /**
+     * @param array<string, array<string, string>> $labels
+     */
+    private function updateLabels(Package $package, array $labels): void
     {
+        Assert::notEmpty($labels);
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
-        $configuredLabels = $this->configs['labels'];
-        $missingLabels = $configuredLabels;
+        $configuredLabels = $labels;
+        $missingLabels = $labels;
 
         $headers = [
             'Name',

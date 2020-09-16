@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class DevKitConfiguration implements ConfigurationInterface
+class LabelsConfiguration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
