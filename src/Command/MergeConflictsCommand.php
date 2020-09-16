@@ -58,7 +58,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
                 $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
-                $this->io->title($package->getName());
+                $this->io->section($package->getName());
                 $this->checkPullRequests($package);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
