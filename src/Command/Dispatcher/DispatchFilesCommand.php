@@ -87,10 +87,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->dispatchFiles(
-                    $project->package(),
-                    $project->rawConfig()
-                );
+                $this->dispatchFiles($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -102,8 +99,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function dispatchFiles(Package $package, array $projectConfig): void
+    private function dispatchFiles(Project $project): void
     {
+        $package = $project->package();
+        $projectConfig = $project->rawConfig();
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
         // No branch to manage, continue to next project.

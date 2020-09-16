@@ -19,7 +19,6 @@ use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -68,10 +67,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->mergePullRequest(
-                    $project->package(),
-                    $project->rawConfig()
-                );
+                $this->mergePullRequest($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -83,8 +79,11 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function mergePullRequest(Package $package, array $projectConfig): void
+    private function mergePullRequest(Project $project): void
     {
+        $package = $project->package();
+        $projectConfig = $project->rawConfig();
+
         if (!\array_key_exists('branches', $projectConfig)) {
             $this->io->comment('No branches defined.');
 

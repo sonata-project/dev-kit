@@ -19,7 +19,6 @@ use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
-use Packagist\Api\Result\Package;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -75,10 +74,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->mergeBranches(
-                    $project->package(),
-                    $project->rawConfig()
-                );
+                $this->mergeBranches($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -90,8 +86,11 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function mergeBranches(Package $package, array $projectConfig): void
+    private function mergeBranches(Project $project): void
     {
+        $package = $project->package();
+        $projectConfig = $project->rawConfig();
+
         if (!$this->apply || !\array_key_exists('branches', $projectConfig)) {
             return;
         }

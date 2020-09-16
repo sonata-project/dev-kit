@@ -101,7 +101,7 @@ EOT;
         $branches = $project->branchNames();
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
-        $this->prepareRelease($project->package(), $branch, $output);
+        $this->prepareRelease($project, $branch, $output);
 
         return 0;
     }
@@ -123,9 +123,11 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Package $package, string $branch, OutputInterface $output): void
+    private function prepareRelease(Project $project, string $branch, OutputInterface $output): void
     {
         Assert::stringNotEmpty($branch);
+
+        $package = $project->package();
 
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 

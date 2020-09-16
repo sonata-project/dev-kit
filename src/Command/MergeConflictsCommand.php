@@ -20,7 +20,6 @@ use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -61,7 +60,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->checkPullRequests($project->package());
+                $this->checkPullRequests($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -73,8 +72,10 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function checkPullRequests(Package $package): void
+    private function checkPullRequests(Project $project): void
     {
+        $package = $project->package();
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
         foreach ($this->github->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
