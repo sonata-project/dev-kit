@@ -59,7 +59,7 @@ final class DependsCommand extends AbstractCommand
         return 0;
     }
 
-    public function depends(Project $project, int $depth): void
+    private function depends(Project $project, int $depth): void
     {
         $bd = 0;
         foreach ($project->package()->getVersions() as $version) {
