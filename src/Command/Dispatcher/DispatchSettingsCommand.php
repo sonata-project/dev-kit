@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command\Dispatcher;
 
+use App\Command\AbstractNeedApplyCommand;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
