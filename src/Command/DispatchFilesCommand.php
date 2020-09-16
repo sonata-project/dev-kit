@@ -29,7 +29,7 @@ use Twig\Environment;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class DispatchCommand extends AbstractNeedApplyCommand
+final class DispatchFilesCommand extends AbstractNeedApplyCommand
 {
     private const FILES_DIR = 'project';
 
@@ -64,8 +64,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         parent::configure();
 
         $this
-            ->setName('dispatch')
-            ->setDescription('Dispatches configuration and documentation files for all sonata projects.')
+            ->setName('dispatch:files')
+            ->setDescription('Dispatches files for all sonata projects.')
             ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
         ;
     }
@@ -91,6 +91,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             return 1;
         }
+
+        $this->io->title('Dispatch files for all sonata projects');
 
         foreach ($this->projects as $name) {
             try {
