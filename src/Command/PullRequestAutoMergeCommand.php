@@ -57,10 +57,15 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->io->title(sprintf(
+            'Merge RTM pull requests (by %s)',
+            self::BOT_NAME
+        ));
+
         foreach ($this->configs['projects'] as $name => $projectConfig) {
             try {
                 $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
-                $this->io->title($package->getName());
+                $this->io->section($package->getName());
                 $this->mergePullRequest($package, $projectConfig);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
