@@ -101,7 +101,8 @@ final class Project
             ->replace('-project', '')
             ->replace('/', ' ')
             ->replace('-', ' ')
-            ->title()
+            ->title(true)
+            ->replace(' ', '')
             ->toString();
     }
 
