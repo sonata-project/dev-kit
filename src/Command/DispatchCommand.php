@@ -99,7 +99,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
                 $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
-                $this->updateRepositories($package, $projectConfig);
                 $this->updateBranchesProtection($package, $projectConfig);
 
                 if ($input->getOption('with-files')) {
@@ -114,49 +113,6 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         return 0;
-    }
-
-    /**
-     * Sets repository information and general settings.
-     */
-    private function updateRepositories(Package $package, array $projectConfig): void
-    {
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $branches = array_keys($projectConfig['branches']);
-        $this->io->section('Repository');
-
-        $repositoryInfo = $this->github->repo()->show(static::GITHUB_GROUP, $repositoryName);
-        $infoToUpdate = [
-            'homepage' => 'https://sonata-project.org/',
-            'has_issues' => true,
-            'has_projects' => true,
-            'has_wiki' => false,
-            'default_branch' => end($branches),
-            'allow_squash_merge' => true,
-            'allow_merge_commit' => false,
-            'allow_rebase_merge' => true,
-        ];
-
-        foreach ($infoToUpdate as $info => $value) {
-            if ($value === $repositoryInfo[$info]) {
-                unset($infoToUpdate[$info]);
-            }
-        }
-
-        if (\count($infoToUpdate)) {
-            $this->io->comment(sprintf(
-                'Following info have to be changed: %s.',
-                implode(', ', array_keys($infoToUpdate))
-            ));
-
-            if ($this->apply) {
-                $this->github->repo()->update(static::GITHUB_GROUP, $repositoryName, array_merge($infoToUpdate, [
-                    'name' => $repositoryName,
-                ]));
-            }
-        } else {
-            $this->io->comment(static::LABEL_NOTHING_CHANGED);
-        }
     }
 
     private function updateBranchesProtection(Package $package, array $projectConfig): void
