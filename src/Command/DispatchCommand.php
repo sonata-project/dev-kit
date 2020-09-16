@@ -54,7 +54,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     /**
      * @var string[]
      */
-    private $projects;
+    private array $projects;
 
     public function __construct(string $appDir, string $githubToken, PackagistClient $packagist, GithubClient $github, GitWrapper $git, Filesystem $filesystem, Environment $twig)
     {

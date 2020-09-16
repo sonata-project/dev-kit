@@ -33,7 +33,7 @@ final class DispatchLabelsConfigurationCommand extends AbstractNeedApplyCommand
     /**
      * @var string[]
      */
-    private $projects;
+    private array $projects;
 
     public function __construct(PackagistClient $packagist, GithubClient $github)
     {
