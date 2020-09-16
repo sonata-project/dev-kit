@@ -22,6 +22,7 @@ use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
@@ -124,6 +125,8 @@ EOT;
 
     private function prepareRelease(Package $package, string $branch, OutputInterface $output): void
     {
+        Assert::stringNotEmpty($branch);
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
         $currentRelease = $this->github->repo()->releases()->latest(
