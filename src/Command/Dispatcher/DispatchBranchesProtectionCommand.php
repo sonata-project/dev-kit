@@ -15,8 +15,9 @@ namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
+use App\Domain\Value\Branch;
+use App\Domain\Value\PhpVersion;
 use App\Domain\Value\Project;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,27 +73,17 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
     private function updateBranchesProtection(Project $project): void
     {
-        $package = $project->package();
-        $projectConfig = $project->rawConfig();
+        $repository = $project->repository();
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $branches = array_keys($projectConfig['branches']);
-
-        foreach ($branches as $branch) {
-            $this->io->writeln(sprintf(
-                '<info>%s</info>',
-                $branch
-            ));
-
+        foreach ($project->branches() as $branch) {
             $requiredStatusChecks = $this->buildRequiredStatusChecks(
-                $branch,
-                $projectConfig['branches'][$branch],
-                $projectConfig['docs_target']
+                $project,
+                $branch
             );
 
             if ($this->apply) {
                 $this->github->repo()->protection()
-                    ->update(static::GITHUB_GROUP, $repositoryName, $branch, [
+                    ->update($repository->vendor(), $repository->name(), $branch->name(), [
                         'required_status_checks' => [
                             'strict' => false,
                             'contexts' => $requiredStatusChecks,
@@ -118,40 +109,45 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function buildRequiredStatusChecks(string $branchName, array $branchConfig, bool $docsTarget): array
+    private function buildRequiredStatusChecks(Project $project, Branch $branch): array
     {
-        $targetPhp = $branchConfig['target_php'] ?? end($branchConfig['php']);
+        $lowestPhpVersion = $branch->lowestPhpVersion();
         $requiredStatusChecks = [
             'composer-normalize',
             'YAML files',
             'XML files',
             'PHP-CS-Fixer',
-            sprintf('PHP %s + lowest + normal', reset($branchConfig['php'])),
+            sprintf(
+                'PHP %s + lowest + normal',
+                $lowestPhpVersion->toString()
+            ),
         ];
 
-        if ($docsTarget) {
+        if ($project->docsTarget()) {
             $requiredStatusChecks[] = 'Sphinx build';
             $requiredStatusChecks[] = 'DOCtor-RST';
         }
 
-        foreach ($branchConfig['php'] as $phpVersion) {
-            $requiredStatusChecks[] = sprintf('PHP %s + highest + normal', $phpVersion);
+        /** @var PhpVersion $phpVersion */
+        foreach ($branch->phpVersions() as $phpVersion) {
+            $requiredStatusChecks[] = sprintf(
+                'PHP %s + highest + normal',
+                $phpVersion->toString()
+            );
         }
 
-        foreach ($branchConfig['variants'] as $variant => $versions) {
-            foreach ($versions as $version) {
-                $requiredStatusChecks[] = sprintf(
-                    'PHP %s + highest + %s:"%s"',
-                    $targetPhp,
-                    $variant,
-                    'dev-master' === $version ? $version : ($version.'.*'),
-                );
-            }
+        $targetPhp = $branch->targetPhpVersion();
+        foreach ($branch->variants() as $variant) {
+            $requiredStatusChecks[] = sprintf(
+                'PHP %s + highest + %s',
+                $targetPhp->toString(),
+                $variant->toString()
+            );
         }
 
         $this->io->writeln(sprintf(
             'Required Status-Checks for <info>%s</info>:',
-            $branchName
+            $branch->name()
         ));
         $this->io->listing($requiredStatusChecks);
 

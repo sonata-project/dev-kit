@@ -140,6 +140,11 @@ final class Branch
         return $this->testsPath;
     }
 
+    public function lowestPhpVersion(): PhpVersion
+    {
+        return reset($this->phpVersions);
+    }
+
     public function targetPhpVersion(): PhpVersion
     {
         return $this->targetPhpVersion;
