@@ -92,11 +92,11 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         }
 
         $repository = $project->repository();
-        $branches = $project->branchNamesReverse();
+        $branchNames = $project->branchNamesReverse();
 
         // Merge the oldest branch into the next newest, and so on.
-        while (($head = current($branches))) {
-            $base = next($branches);
+        while (($head = current($branchNames))) {
+            $base = next($branchNames);
             if (false === $base) {
                 break;
             }
