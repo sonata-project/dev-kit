@@ -62,9 +62,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->io->title(
-            'Dispatch labels for all sonata projects'
-        );
+        $this->io->title('Dispatch labels for all sonata projects');
 
         foreach ($this->projects as $name) {
             try {
