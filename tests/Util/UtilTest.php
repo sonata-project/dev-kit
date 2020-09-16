@@ -23,13 +23,15 @@ use PHPUnit\Framework\TestCase;
 final class UtilTest extends TestCase
 {
     /**
+     * @test
+     *
      * @dataProvider getRepositoryNameWithoutVendorPrefixProvider
      */
     public function getRepositoryNameWithoutVendorPrefix(string $expected, string $repository): void
     {
         $package = new Package();
         $package->fromArray([
-            'repostory' => $repository,
+            'repository' => $repository,
         ]);
 
         self::assertSame(
@@ -38,32 +40,38 @@ final class UtilTest extends TestCase
         );
     }
 
-    public function getRepositoryNameWithoutVendorPrefixThrowsExceptionIfNameDoesNotContainSlash(string $expected, string $repository): void
+    /**
+     * @test
+     */
+    public function getRepositoryNameWithoutVendorPrefixThrowsExceptionIfNameDoesNotContainSlash(): void
     {
         $package = new Package();
         $package->fromArray([
-            'repostory' => $repository = 'sonata-projectSonataAdminBundle',
+            'repository' => $repository = 'sonata-projectSonataAdminBundle',
         ]);
 
-        $this->expectException(\LogicException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'Could not get repository name without vendor prefix for: %s',
+            'Repository name must contain a slash: %s',
             $repository
         ));
 
         Util::getRepositoryNameWithoutVendorPrefix($package);
     }
 
-    public function getRepositoryNameWithoutVendorPrefixThrowsExceptionIfNameEndsWithSlash(string $expected, string $repository): void
+    /**
+     * @test
+     */
+    public function getRepositoryNameWithoutVendorPrefixThrowsExceptionIfNameEndsWithSlash(): void
     {
         $package = new Package();
         $package->fromArray([
-            'repostory' => $repository = 'sonata-projectSonataAdminBundle/',
+            'repository' => $repository = 'https://github.com/sonata-project/SonataAdminBundle/',
         ]);
 
-        $this->expectException(\LogicException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'Could not get repository name without vendor prefix for: %s',
+            'Repository name must not end with a slash: %s',
             $repository
         ));
 
@@ -77,12 +85,12 @@ final class UtilTest extends TestCase
     {
         yield [
             'SonataAdminBundle',
-            'sonata-project/SonataAdminBundle',
+            'https://github.com/sonata-project/SonataAdminBundle',
         ];
 
         yield [
             'SonataAdminBundle',
-            'sonata-project/SonataAdminBundle.git',
+            'https://github.com/sonata-project/SonataAdminBundle.git',
         ];
     }
 }
