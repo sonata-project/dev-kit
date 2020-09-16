@@ -19,7 +19,6 @@ use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use function Symfony\Component\String\u;
@@ -74,8 +73,8 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->updateDevKitHook($project->package());
-                $this->deleteHooks($project->package());
+                $this->updateDevKitHook($project);
+                $this->deleteHooks($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -87,8 +86,10 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function updateDevKitHook(Package $package): void
+    private function updateDevKitHook(Project $project): void
     {
+        $package = $project->package();
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $this->io->section('DevKit hook');
 
@@ -159,8 +160,10 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function deleteHooks(Package $package): void
+    private function deleteHooks(Project $project): void
     {
+        $package = $project->package();
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $this->io->section('Check Hooks to be deleted');
 

@@ -19,7 +19,6 @@ use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -59,10 +58,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->updateBranchesProtection(
-                    $project->package(),
-                    $project->rawConfig()
-                );
+                $this->updateBranchesProtection($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -74,8 +70,11 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function updateBranchesProtection(Package $package, array $projectConfig): void
+    private function updateBranchesProtection(Project $project): void
     {
+        $package = $project->package();
+        $projectConfig = $project->rawConfig();
+
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $branches = array_keys($projectConfig['branches']);
 

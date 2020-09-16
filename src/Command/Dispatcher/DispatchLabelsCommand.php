@@ -20,7 +20,6 @@ use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -69,7 +68,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
                 $this->io->section($project->name());
 
                 $this->updateLabels(
-                    $project->package(),
+                    $project,
                     $config['labels']
                 );
             } catch (ExceptionInterface $e) {
@@ -86,9 +85,11 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     /**
      * @param array<string, array<string, string>> $labels
      */
-    private function updateLabels(Package $package, array $labels): void
+    private function updateLabels(Project $project, array $labels): void
     {
         Assert::notEmpty($labels);
+
+        $package = $project->package();
 
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
 
