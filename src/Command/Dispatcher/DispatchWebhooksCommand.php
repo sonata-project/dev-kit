@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Command;
+namespace App\Command\Dispatcher;
 
 use App\Util\Util;
 use Github\Client as GithubClient;
