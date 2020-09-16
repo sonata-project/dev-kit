@@ -92,7 +92,7 @@ EOT;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $project = $this->getProject($input, $output);
+        $project = $this->selectProject($input, $output);
         $branches = array_keys($this->configs['projects'][$project]['branches']);
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
@@ -103,7 +103,7 @@ EOT;
         return 0;
     }
 
-    private function getProject(InputInterface $input, OutputInterface $output): string
+    private function selectProject(InputInterface $input, OutputInterface $output): string
     {
         $helper = $this->getHelper('question');
 
