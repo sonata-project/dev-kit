@@ -39,7 +39,7 @@ final class Projects
 
         $processor = new Processor();
         $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration(), [
-            'sonata' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../config/projects.yaml'))],
+            'sonata' => ['projects' => Yaml::parseFile(__DIR__.'/../../config/projects.yaml')],
         ]);
 
         foreach ($projectsConfigs['projects'] as $name => $config) {
