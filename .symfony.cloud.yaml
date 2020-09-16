@@ -75,13 +75,13 @@ crons:
                 croncape bin/console dispatch:settings --apply
             fi
     dispatch-files:
-        spec: '5 2 * * *'
+        spec: '5 */4 * * *'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console dispatch:files --apply
             fi
     dispatch-branches-protection:
-        spec: '10 2 * * *'
+        spec: '10 */4 * * *'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console dispatch:branches-protection --apply
