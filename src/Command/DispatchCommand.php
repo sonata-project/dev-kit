@@ -32,7 +32,6 @@ use Twig\Environment;
  */
 final class DispatchCommand extends AbstractNeedApplyCommand
 {
-    private const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
     private const FILES_DIR = 'project';
 
     /** @var string[] */

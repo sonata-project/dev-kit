@@ -27,8 +27,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DispatchLabelsConfigurationCommand extends AbstractNeedApplyCommand
 {
-    private const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
-
     private PackagistClient $packagist;
     private GithubClient $github;
 
