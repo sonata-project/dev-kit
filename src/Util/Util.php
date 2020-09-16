@@ -15,6 +15,7 @@ namespace App\Util;
 
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -23,17 +24,36 @@ final class Util
 {
     public static function getRepositoryNameWithoutVendorPrefix(Package $package): string
     {
-        $repositoryArray = u($package->getRepository())->split('/');
+        $repository = $package->getRepository();
 
-        $lastName = end($repositoryArray);
+        Assert::contains(
+            $repository,
+            '/',
+            sprintf(
+                'Repository name must contain a slash: %s',
+                $repository
+            )
+        );
+        Assert::notEndsWith(
+            $repository,
+            '/',
+            sprintf(
+                'Repository name must not end with a slash: %s',
+                $repository
+            )
+        );
 
-        if (!$lastName) {
+        $array = u($repository)->split('/');
+
+        $name = end($array);
+
+        if (!$name) {
             throw new \LogicException(sprintf(
                 'Could not get repository name without vendor prefix for: %s',
                 $package->getRepository()
             ));
         }
 
-        return str_replace('.git', '', (string) $lastName);
+        return u((string) $name)->replace('.git', '')->toString();
     }
 }

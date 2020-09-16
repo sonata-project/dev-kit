@@ -50,9 +50,9 @@ final class UtilTest extends TestCase
             'repository' => $repository = 'sonata-projectSonataAdminBundle',
         ]);
 
-        $this->expectException(\LogicException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'Could not get repository name without vendor prefix for: %s',
+            'Repository name must contain a slash: %s',
             $repository
         ));
 
@@ -69,9 +69,9 @@ final class UtilTest extends TestCase
             'repository' => $repository = 'https://github.com/sonata-project/SonataAdminBundle/',
         ]);
 
-        $this->expectException(\LogicException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'Could not get repository name without vendor prefix for: %s',
+            'Repository name must not end with a slash: %s',
             $repository
         ));
 
