@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
-use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,15 +49,15 @@ final class ReleaseCommand extends AbstractCommand
         'unknown' => 'red',
     ];
 
-    private PackagistClient $packagist;
+    private Projects $projects;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(Projects $projects, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
-        $this->packagist = $packagist;
+        $this->projects = $projects;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -93,31 +94,28 @@ EOT;
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $project = $this->selectProject($input, $output);
-        $branches = array_keys($this->configs['projects'][$project]['branches']);
+
+        $this->io->getErrorStyle()->title($project->name());
+
+        $branches = $project->branchNames();
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
-        $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$project);
-        $this->io->getErrorStyle()->title($package->getName());
-        $this->prepareRelease($package, $branch, $output);
+        $this->prepareRelease($project->package(), $branch, $output);
 
         return 0;
     }
 
-    private function selectProject(InputInterface $input, OutputInterface $output): string
+    private function selectProject(InputInterface $input, OutputInterface $output): Project
     {
         $helper = $this->getHelper('question');
 
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
-        $question->setAutocompleterValues(array_keys($this->configs['projects']));
+        $question->setAutocompleterValues(array_keys($this->projects->all()));
         $question->setNormalizer(static function ($answer) {
             return $answer ? trim($answer) : '';
         });
-        $question->setValidator(function ($answer) {
-            if (!\array_key_exists($answer, $this->configs['projects'])) {
-                throw new \RuntimeException('The name of the project should be on `projects.yaml`');
-            }
-
-            return $answer;
+        $question->setValidator(function ($answer): Project {
+            return $this->projects->byName($answer);
         });
         $question->setMaxAttempts(3);
 

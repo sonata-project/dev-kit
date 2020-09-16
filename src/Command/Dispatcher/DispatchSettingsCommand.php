@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
+use App\Config\Projects;
+use App\Domain\Value\Project;
 use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Client as PackagistClient;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,19 +29,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 {
-    private PackagistClient $packagist;
+    private Projects $projects;
     private GithubClient $github;
 
-    /**
-     * @var string[]
-     */
-    private array $projects;
-
-    public function __construct(PackagistClient $packagist, GithubClient $github)
+    public function __construct(Projects $projects, GithubClient $github)
     {
         parent::__construct();
 
-        $this->packagist = $packagist;
+        $this->projects = $projects;
         $this->github = $github;
     }
 
@@ -54,26 +50,19 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $this->projects = array_keys($this->configs['projects']);
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('Dispatch repository information and general settings for all sonata projects');
 
-        foreach ($this->projects as $name) {
+        /** @var Project $project */
+        foreach ($this->projects->all() as $project) {
             try {
-                $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
+                $this->io->title($project->name());
 
-                $this->io->title($package->getName());
-
-                $projectConfig = $this->configs['projects'][$name];
-
-                $this->updateRepositories($package, $projectConfig);
+                $this->updateRepositories(
+                    $project->package(),
+                    $project->rawConfig()
+                );
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -85,9 +74,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    /**
-     * Sets repository information and general settings.
-     */
     private function updateRepositories(Package $package, array $projectConfig): void
     {
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
