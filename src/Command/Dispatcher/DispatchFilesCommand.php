@@ -99,7 +99,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             try {
                 $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
                 $projectConfig = $this->configs['projects'][$name];
-                $this->io->title($package->getName());
+                $this->io->section($package->getName());
 
                 $this->dispatchFiles($package);
             } catch (ExceptionInterface $e) {
