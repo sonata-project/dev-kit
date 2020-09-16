@@ -15,7 +15,6 @@ namespace App\Config;
 
 use App\Domain\Value\Project;
 use Packagist\Api\Client as PackagistClient;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
@@ -28,14 +27,13 @@ final class Projects
     public const PACKAGIST_GROUP = 'sonata-project';
 
     private PackagistClient $packagist;
-    private LoggerInterface $logger;
 
     /**
      * @var array<string, Project>
      */
     private array $projects = [];
 
-    public function __construct(PackagistClient $packagist, LoggerInterface $logger)
+    public function __construct(PackagistClient $packagist)
     {
         $this->packagist = $packagist;
         $this->logger = $logger;
@@ -48,12 +46,6 @@ final class Projects
         foreach ($projectsConfigs['projects'] as $name => $config) {
             $packageName = static::PACKAGIST_GROUP.'/'.$name;
 
-            $this->logger->debug(
-                'Call packagist.org to get package information',
-                [
-                    'package_name' => $packageName,
-                ]
-            );
             $package = $this->packagist->get($packageName);
 
             $this->projects[$name] = Project::fromValues($name, $config, $package);
