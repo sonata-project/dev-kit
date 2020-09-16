@@ -16,11 +16,10 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
+use App\Domain\Value\Repository;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -101,24 +100,34 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private function dispatchFiles(Project $project): void
     {
-        $package = $project->package();
         $projectConfig = $project->rawConfig();
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
+        $repository = $project->repository();
 
         // No branch to manage, continue to next project.
-        if (0 === \count($projectConfig['branches'])) {
+        if (!$project->hasBranches()) {
             return;
         }
 
         // Clone the repository.
-        $clonePath = sys_get_temp_dir().'/sonata-project/'.$repositoryName;
+        $clonePath = sprintf(
+            '%s/%s',
+            sys_get_temp_dir(),
+            $repository->toString()
+        );
+
         if ($this->filesystem->exists($clonePath)) {
             $this->filesystem->remove($clonePath);
         }
 
         $git = $this->git->cloneRepository(
-            'https://'.static::GITHUB_USER.':'.$this->githubToken.'@github.com/'.static::GITHUB_GROUP.'/'.$repositoryName,
+            sprintf(
+                'https://%s:%s@github.com/%s/%s',
+                $repository->vendor(),
+                $this->githubToken,
+                $repository->vendor(),
+                $repository->name()
+            ),
             $clonePath
         );
 
@@ -133,7 +142,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranches = array_map(static function ($branch) {
                 return $branch['name'];
-            }, $this->github->repos()->branches(static::GITHUB_GROUP, $repositoryName));
+            }, $this->github->repos()->branches($repository->vendor(), $repository->name()));
 
             $currentBranch = key($branches);
             $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
@@ -149,8 +158,8 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->github->repos()->commits()->compare(
-                static::GITHUB_GROUP,
-                $repositoryName,
+                $repository->vendor(),
+                $repository->name(),
                 $currentBranch,
                 $previousBranch
             )['ahead_by']) {
@@ -174,8 +183,18 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $git->checkout('-b', $currentDevKit);
             }
 
-            $this->renderFile($package, $repositoryName, $currentBranch, $projectConfig, $clonePath);
-            $this->deleteNotNeededFilesAndDirs($currentBranch, $projectConfig, $clonePath);
+            $this->renderFile(
+                $project,
+                $repository,
+                $currentBranch,
+                $clonePath
+            );
+
+            $this->deleteNotNeededFilesAndDirs(
+                $project,
+                $currentBranch,
+                $clonePath
+            );
 
             $git->add('.', ['all' => true]);
             $diff = $git->diff('--color', '--cached');
@@ -187,13 +206,13 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $git->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->github->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, [
+                    $pulls = $this->github->pullRequests()->all($repository->vendor(), $repository->name(), [
                         'state' => 'open',
                         'head' => 'sonata-project:'.$currentDevKit,
                     ]);
 
                     if (0 === \count($pulls)) {
-                        $this->github->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
+                        $this->github->pullRequests()->create($repository->vendor(), $repository->name(), [
                             'title' => 'DevKit updates for '.$currentBranch.' branch',
                             'head' => 'sonata-project:'.$currentDevKit,
                             'base' => $currentBranch,
@@ -214,7 +233,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function deleteNotNeededFilesAndDirs(string $branchName, array $projectConfig, string $distPath, string $localPath = self::FILES_DIR): void
+    private function deleteNotNeededFilesAndDirs(Project $project, string $branchName, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
@@ -223,9 +242,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        if ($projectConfig['docs_target']) {
+        if ($project->docsTarget()) {
             return;
         }
+
+        $projectConfig = $project->rawConfig();
 
         $docsPath = $projectConfig['branches'][$branchName]['docs_path'];
 
@@ -253,8 +274,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->filesystem->remove($documentationWorkflowFile);
     }
 
-    private function renderFile(Package $package, string $repositoryName, string $branchName, array $projectConfig, string $distPath, string $localPath = self::FILES_DIR): void
+    private function renderFile(Project $project, Repository $repository, string $branchName, string $distPath, string $localPath = self::FILES_DIR): void
     {
+        $package = $project->package();
+
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
                 'This method only supports files inside the "%s" directory',
@@ -262,11 +285,17 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
+        $projectConfig = $project->rawConfig();
+
         if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $projectConfig['excluded_files'], true)) {
             return;
         }
 
-        $localFullPath = $this->appDir.'/templates/'.$localPath;
+        $localFullPath = sprintf(
+            '%s/templates/%s',
+            $this->appDir,
+            $localPath
+        );
 
         $localFileType = filetype($localFullPath);
         if (false === $localFileType) {
@@ -290,10 +319,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             while (false !== ($entry = $localDirectory->read())) {
                 if (!\in_array($entry, ['.', '..'], true)) {
                     $this->renderFile(
-                        $package,
-                        $repositoryName,
+                        $project,
+                        $repository,
                         $branchName,
-                        $projectConfig,
                         $distPath.'/'.$entry,
                         $localPath.'/'.$entry,
                     );
@@ -339,11 +367,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $projectConfig,
                 $branchConfig,
                 [
-                    'package_title' => ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
+                    'package_title' => $project->title(),
                     'package_description' => $package->getDescription(),
                     'packagist_name' => $package->getName(),
                     'is_abandoned' => $package->isAbandoned(),
-                    'repository_name' => $repositoryName,
+                    'repository_name' => $repository->name(),
                     'current_branch' => $branchName,
                     'unstable_branch' => $unstableBranch,
                     'stable_branch' => $stableBranch,
