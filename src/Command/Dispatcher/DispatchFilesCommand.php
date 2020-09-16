@@ -98,7 +98,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         foreach ($this->projects as $name) {
             try {
                 $package = $this->packagist->get(static::PACKAGIST_GROUP.'/'.$name);
-                $projectConfig = $this->configs['projects'][$name];
+
                 $this->io->section($package->getName());
 
                 $this->dispatchFiles($package);
