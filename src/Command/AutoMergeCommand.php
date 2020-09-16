@@ -89,14 +89,13 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     private function mergeBranches(Project $project): void
     {
         $package = $project->package();
-        $projectConfig = $project->rawConfig();
 
-        if (!$this->apply || !\array_key_exists('branches', $projectConfig)) {
+        if (!$this->apply || !$project->hasBranches()) {
             return;
         }
 
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $branches = array_reverse(array_keys($projectConfig['branches']));
+        $branches = $project->branchNamesReverse();
 
         // Merge the oldest branch into the next newest, and so on.
         while (($head = current($branches))) {
