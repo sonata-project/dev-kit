@@ -189,6 +189,8 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
                             $currentHookUrl
                         ));
                     }
+                } else {
+                    $this->io->comment(static::LABEL_NOTHING_CHANGED);
                 }
             }
         }
