@@ -113,21 +113,35 @@ final class Project
     /**
      * @return Branch[]
      */
-    public function branches(bool $reverse = false): array
+    public function branches(): array
     {
-        return $reverse ? array_reverse($this->branches) : $this->branches;
+        return $this->branches;
+    }
+
+    /**
+     * @return Branch[]
+     */
+    public function branchesReverse(): array
+    {
+        return array_reverse($this->branches);
     }
 
     /**
      * @return string[]
      */
-    public function branchNames(bool $reverse = false): array
+    public function branchNames(): array
     {
-        $names = array_map(static function (Branch $branch): string {
+        return array_map(static function (Branch $branch): string {
             return $branch->name();
         }, $this->branches);
+    }
 
-        return $reverse ? array_reverse($names) : $names;
+    /**
+     * @return string[]
+     */
+    public function branchNamesReverse(): array
+    {
+        return array_reverse($this->branchNames());
     }
 
     /**

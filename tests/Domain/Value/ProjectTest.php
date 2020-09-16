@@ -73,7 +73,7 @@ CONFIG;
         self::assertTrue($project->hasBranches());
         self::assertCount(2, $project->branches());
         self::assertSame(['master', '3.x'], $project->branchNames());
-        self::assertSame(['3.x', 'master'], $project->branchNames(true));
+        self::assertSame(['3.x', 'master'], $project->branchNamesReverse());
     }
 
     /**
