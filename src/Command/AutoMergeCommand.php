@@ -32,7 +32,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     /**
      * @var string[]
      */
-    private $projects;
+    private array $projects;
 
     private PackagistClient $packagist;
     private GithubClient $github;
