@@ -48,7 +48,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('pull-request-auto-merge')
-            ->setDescription('Merge RTM pull requests. Only active for pull requests by SonataCI.')
+            ->setDescription(sprintf(
+                'Merge RTM pull requests. Only active for pull requests by %s.',
+                self::BOT_NAME
+            ))
         ;
     }
 
