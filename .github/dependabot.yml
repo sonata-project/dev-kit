@@ -14,3 +14,10 @@ updates:
         schedule:
             interval: daily
         versioning-strategy: "lockfile-only"
+
+    # Maintain dependencies for GitHub Actions
+    -
+        package-ecosystem: "github-actions"
+        directory: "/"
+        schedule:
+            interval: "daily"
