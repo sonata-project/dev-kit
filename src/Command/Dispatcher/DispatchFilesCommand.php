@@ -375,7 +375,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     'current_branch' => $branchName,
                     'unstable_branch' => $unstableBranch,
                     'stable_branch' => $stableBranch,
-                    'website_path' => str_replace([static::PACKAGIST_GROUP.'/', '-bundle'], '', $package->getName()),
+                    'website_path' => $project->websitePath(),
                 ]
             )));
         } else {
