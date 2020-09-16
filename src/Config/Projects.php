@@ -36,7 +36,6 @@ final class Projects
     public function __construct(PackagistClient $packagist)
     {
         $this->packagist = $packagist;
-        $this->logger = $logger;
 
         $processor = new Processor();
         $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration(), [
