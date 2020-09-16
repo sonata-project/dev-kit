@@ -21,6 +21,7 @@ use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -39,18 +40,22 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
 
     private PackagistClient $packagist;
     private GithubClient $github;
+    private string $devKitToken;
 
     /**
      * @var string[]
      */
     private array $projects;
 
-    public function __construct(PackagistClient $packagist, GithubClient $github)
+    public function __construct(PackagistClient $packagist, GithubClient $github, string $devKitToken)
     {
         parent::__construct();
 
         $this->packagist = $packagist;
         $this->github = $github;
+
+        Assert::stringNotEmpty($devKitToken, '$devKitToken must not be an empty string!');
+        $this->devKitToken = $devKitToken;
     }
 
     protected function configure(): void
@@ -91,14 +96,12 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
         $this->io->section('DevKit hook');
 
-        // Construct the hook url.
-        $hookToken = getenv('DEK_KIT_TOKEN') ? getenv('DEK_KIT_TOKEN') : 'INVALID_TOKEN';
         $hookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
         $hookCompleteUrl = sprintf(
             '%s?%s',
             $hookBaseUrl,
             http_build_query([
-                'token' => $hookToken,
+                'token' => $this->devKitToken,
             ])
         );
 
