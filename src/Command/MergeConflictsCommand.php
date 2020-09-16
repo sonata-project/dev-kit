@@ -16,7 +16,6 @@ namespace App\Command;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Domain\Value\Label;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -74,13 +73,15 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
     private function checkPullRequests(Project $project): void
     {
-        $package = $project->package();
+        $repository = $project->repository();
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-
-        foreach ($this->github->pullRequests()->all(static::GITHUB_GROUP, $repositoryName) as $pullRequest) {
+        foreach ($this->github->pullRequests()->all($repository->vendor(), $repository->name()) as $pullRequest) {
             $number = $pullRequest['number'];
-            $pullRequest = $this->github->pullRequests()->show(static::GITHUB_GROUP, $repositoryName, $number);
+            $pullRequest = $this->github->pullRequests()->show(
+                $repository->vendor(),
+                $repository->name(),
+                $number
+            );
 
             // The value of the mergeable attribute can be true, false, or null.
             // If the value is null this means that the mergeability hasn't been computed yet.
@@ -88,8 +89,8 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
             if (false === $pullRequest['mergeable']) {
                 $comments = array_filter(
                     $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
-                        static::GITHUB_GROUP,
-                        $repositoryName,
+                        $repository->vendor(),
+                        $repository->name(),
                         $number,
                     ]),
                     static function ($comment) {
@@ -100,8 +101,8 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
                 $lastCommentDate = $lastComment ? new \DateTime($lastComment['created_at']) : null;
 
                 $commits = $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
-                    static::GITHUB_GROUP,
-                    $repositoryName,
+                    $repository->vendor(),
+                    $repository->name(),
                     $number,
                 ]);
                 $lastCommit = end($commits);
@@ -109,13 +110,13 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->github->issues()->comments()->create(static::GITHUB_GROUP, $repositoryName, $number, [
+                        $this->github->issues()->comments()->create($repository->vendor(), $repository->name(), $number, [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
                         ]);
 
                         $this->github->issues()->labels()->add(
-                            static::GITHUB_GROUP,
-                            $repositoryName,
+                            $repository->vendor(),
+                            $repository->name(),
                             $number,
                             Label::PendingAuthor()->toString()
                         );

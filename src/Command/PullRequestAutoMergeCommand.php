@@ -15,7 +15,6 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -81,26 +80,22 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
     private function mergePullRequest(Project $project): void
     {
-        $package = $project->package();
-        $projectConfig = $project->rawConfig();
-
-        if (!\array_key_exists('branches', $projectConfig)) {
+        if (!$project->hasBranches()) {
             $this->io->comment('No branches defined.');
 
             return;
         }
 
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
-        $branches = array_keys($projectConfig['branches']);
+        $repository = $project->repository();
 
         $pulls = $this->githubPager->fetchAll($this->github->pullRequests(), 'all', [
-            static::GITHUB_GROUP,
-            $repositoryName,
+            $repository->vendor(),
+            $repository->name(),
         ]);
 
         foreach ($pulls as $pull) {
             // Do not manage not configured branches.
-            if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $branches, true)) {
+            if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $project->branchNames(), true)) {
                 continue;
             }
 
@@ -117,8 +112,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             ));
 
             $state = $this->github->repos()->statuses()->combined(
-                static::GITHUB_GROUP,
-                $repositoryName,
+                $repository->vendor(),
+                $repository->name(),
                 $pull['head']['sha']
             );
 
@@ -139,8 +134,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
-                static::GITHUB_GROUP,
-                $repositoryName,
+                $repository->vendor(),
+                $repository->name(),
                 $pull['number'],
             ]);
 
@@ -166,8 +161,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             if ($this->apply) {
                 try {
                     $this->github->pullRequests()->merge(
-                        static::GITHUB_GROUP,
-                        $repositoryName,
+                        $repository->vendor(),
+                        $repository->name(),
                         $pull['number'],
                         $squash ? '' : $pull['title'],
                         $pull['head']['sha'],
@@ -177,8 +172,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
                     if ('sonata-project' === $pull['head']['repo']['owner']['login']) {
                         $this->github->gitData()->references()->remove(
-                            static::GITHUB_GROUP,
-                            $repositoryName,
+                            $repository->vendor(),
+                            $repository->name(),
                             'heads/'.$pull['head']['ref']
                         );
                     }

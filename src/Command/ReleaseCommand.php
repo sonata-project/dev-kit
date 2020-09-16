@@ -15,10 +15,9 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Util\Util;
+use App\Domain\Value\Repository;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -127,28 +126,31 @@ EOT;
     {
         Assert::stringNotEmpty($branch);
 
-        $package = $project->package();
-
-        $repositoryName = Util::getRepositoryNameWithoutVendorPrefix($package);
+        $repository = $project->repository();
 
         $currentRelease = $this->github->repo()->releases()->latest(
-            static::GITHUB_GROUP,
-            $repositoryName
+            $repository->vendor(),
+            $repository->name()
         );
 
         $branchToRelease = $this->github->repo()->branches(
-            static::GITHUB_GROUP,
-            $repositoryName,
+            $repository->vendor(),
+            $repository->name(),
             $branch
         );
 
         $statuses = $this->github->repo()->statuses()->combined(
-            static::GITHUB_GROUP,
-            $repositoryName,
+            $repository->vendor(),
+            $repository->name(),
             $branchToRelease['commit']['sha']
         );
 
-        $pulls = $this->findPullRequestsSince($currentRelease['published_at'], $repositoryName, $branch);
+        $pulls = $this->findPullRequestsSince(
+            $currentRelease['published_at'],
+            $repository,
+            $branch
+        );
+
         $nextVersion = $this->determineNextVersion($currentRelease['tag_name'], $pulls);
         $changelog = array_reduce(
             array_filter(array_column($pulls, 'changelog')),
@@ -186,7 +188,7 @@ EOT;
 
             $errorOutput->section('Changelog');
 
-            $this->printRelease($currentRelease['tag_name'], $nextVersion, $package, $output);
+            $this->printRelease($currentRelease['tag_name'], $nextVersion, $repository, $output);
             $this->printChangelog($changelog, $output);
         }
     }
@@ -227,11 +229,16 @@ EOT;
         $output->writeln('');
     }
 
-    private function printRelease(string $currentVersion, string $nextVersion, Package $package, OutputInterface $output): void
+    private function printRelease(string $currentVersion, string $nextVersion, Repository $repository, OutputInterface $output): void
     {
-        $output->writeln('## ['.$nextVersion.']('
-            .$package->getRepository().'/compare/'.$currentVersion.'...'.$nextVersion
-            .') - '.date('Y-m-d'));
+        $output->writeln(sprintf(
+            '## [%s](%s/compare/%s...%s) - %s',
+            $nextVersion,
+            $repository->toString(),
+            $currentVersion,
+            $nextVersion,
+            date('Y-m-d')
+        ));
     }
 
     private function printChangelog(array $changelog, OutputInterface $output): void
@@ -310,12 +317,16 @@ EOT;
         return 'unknown';
     }
 
-    private function findPullRequestsSince(string $date, string $repositoryName, string $branch): array
+    private function findPullRequestsSince(string $date, Repository $repository, string $branch): array
     {
-        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [
-            'repo:'.static::GITHUB_GROUP.'/'.$repositoryName.
-            ' type:pr is:merged base:'.$branch.' merged:>'.$date,
-        ]);
+        Assert::stringNotEmpty($branch);
+
+        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [sprintf(
+            'repo:%s type:pr is:merged base:%s merged:>%s',
+            $repository->toString(),
+            $branch,
+            $date
+        )]);
 
         $filteredPulls = [];
         foreach ($pulls as $pull) {
