@@ -20,6 +20,7 @@ use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -93,7 +94,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $repository->name(),
         ]) as $pull) {
             // Do not manage not configured branches.
-            if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $project->branchNames(), true)) {
+            if (!\in_array(u($pull['base']['ref'])->replace('-dev-kit', '')->toString(), $project->branchNames(), true)) {
                 continue;
             }
 
