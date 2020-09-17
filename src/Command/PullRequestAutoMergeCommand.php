@@ -88,12 +88,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         $repository = $project->repository();
 
-        $pulls = $this->githubPager->fetchAll($this->github->pullRequests(), 'all', [
+        foreach ($this->githubPager->fetchAll($this->github->pullRequests(), 'all', [
             $repository->vendor(),
             $repository->name(),
-        ]);
-
-        foreach ($pulls as $pull) {
+        ]) as $pull) {
             // Do not manage not configured branches.
             if (!\in_array(str_replace('-dev-kit', '', $pull['base']['ref']), $project->branchNames(), true)) {
                 continue;
