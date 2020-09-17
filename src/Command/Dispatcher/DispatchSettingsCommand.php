@@ -80,7 +80,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         );
 
         $infoToUpdate = [
-            'homepage' => 'https://sonata-project.org/',
+            'homepage' => 'https://sonata-project.org',
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
