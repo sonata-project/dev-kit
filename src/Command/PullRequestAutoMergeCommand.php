@@ -66,7 +66,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->section($project->name());
 
-                $this->mergePullRequest($project);
+                $this->mergePullRequests($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -78,7 +78,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    private function mergePullRequest(Project $project): void
+    private function mergePullRequests(Project $project): void
     {
         if (!$project->hasBranches()) {
             $this->io->comment('No branches defined.');
