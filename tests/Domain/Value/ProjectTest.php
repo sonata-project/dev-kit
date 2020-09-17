@@ -20,6 +20,25 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ProjectTest extends TestCase
 {
+    private const DEFAULT_CONFIG_NAME = 'admin-bundle';
+    private const DEFAULT_CONFIG = <<<CONFIG
+admin-bundle:
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  docs_target: true
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      services: []
+      docs_path: docs
+      tests_path: tests
+CONFIG;
+
     /**
      * @test
      */
@@ -128,6 +147,153 @@ CONFIG;
         self::assertSame(
             $config['admin-bundle'],
             $project->rawConfig()
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider homepageProvider
+     */
+    public function homepage(string $expected, string $value): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'homepage' => $value,
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        self::assertSame(
+            $expected,
+            $project->homepage()
+        );
+    }
+
+    /**
+     * @return \Generator<string, array<0: string, 1: string>>
+     */
+    public function homepageProvider(): \Generator
+    {
+        yield 'empty string' => [
+            'https://sonata-project.org',
+            '',
+        ];
+
+        yield 'real homepage' => [
+            'https://sonata-project.org/bundles/admin',
+            'https://sonata-project.org/bundles/admin',
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider descriptionProvider
+     */
+    public function description(string $expected, string $value, bool $abandoned): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'description' => $value,
+            'abandoned' => $abandoned,
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        self::assertSame(
+            $expected,
+            $project->description()
+        );
+    }
+
+    /**
+     * @return \Generator<string, array<0: string, 1: string, 2: bool>>
+     */
+    public function descriptionProvider(): \Generator
+    {
+        yield 'empty string' => [
+            '',
+            '',
+            false,
+        ];
+
+        yield 'has description' => [
+            'Foo bar',
+            'Foo bar',
+            false,
+        ];
+
+        yield 'has description, but package is abandoned' => [
+            '[Abandoned] Foo bar',
+            'Foo bar',
+            true,
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function topics(): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'keywords' => [
+                'Sonata',
+                'Admin Generator',
+                'orm',
+                'Admin'
+            ],
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        $expected = [
+            'admin',
+            'admin-generator',
+            'orm',
+            'sonata',
+        ];
+
+        self::assertSame(
+            $expected,
+            $project->topics()
         );
     }
 }

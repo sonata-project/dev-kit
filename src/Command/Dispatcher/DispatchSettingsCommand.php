@@ -18,9 +18,9 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -58,7 +58,12 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->title($project->name());
 
+                if ('doctrine-phpcr-admin-bundle' !== $project->name()) {
+                    continue;
+                }
+
                 $this->updateRepositories($project);
+                $this->updateTopics($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -73,8 +78,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     private function updateRepositories(Project $project): void
     {
         $repository = $project->repository();
-        $branchNames = $project->branchNames();
-        $latestVersion = $this->getLatestPackageVersion($project->package());
 
         $repositoryInfo = $this->github->repo()->show(
             $repository->vendor(),
@@ -82,19 +85,24 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         );
 
         $infoToUpdate = [
-            'homepage' => $latestVersion->getHomepage() ?: 'https://sonata-project.org',
-            'description' => $latestVersion->isAbandoned()
-                ? '[Abandonned] '.$latestVersion->getDescription()
-                : $latestVersion->getDescription(),
-            'topics' => $latestVersion->getKeywords(),
+            'homepage' => $project->homepage(),
+            'description' => $project->description(),
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
-            'default_branch' => end($branchNames),
             'allow_squash_merge' => true,
             'allow_merge_commit' => false,
             'allow_rebase_merge' => true,
         ];
+
+        if ($project->hasBranches()) {
+            $branchNames = $project->branchNames();
+            $defaultBranch = end($branchNames);
+
+            if (\is_string($defaultBranch)) {
+                $infoToUpdate['default_branch'] = $defaultBranch;
+            }
+        }
 
         foreach ($infoToUpdate as $info => $value) {
             if ($value === $repositoryInfo[$info]) {
@@ -103,10 +111,15 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         }
 
         if (\count($infoToUpdate)) {
-            $this->io->comment(sprintf(
-                'Following info have to be changed: %s.',
-                implode(', ', array_keys($infoToUpdate))
-            ));
+            $this->io->writeln('    Following info have to be changed:');
+
+            foreach ($infoToUpdate as $info => $value) {
+                $this->io->writeln(sprintf(
+                    '        %s: <info>%s</info>',
+                    $info,
+                    $value
+                ));
+            }
 
             if ($this->apply) {
                 $this->github->repo()->update($repository->vendor(), $repository->name(), array_merge($infoToUpdate, [
@@ -118,19 +131,32 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         }
     }
 
-    /**
-     * Return the latest packagist version.
-     */
-    private function getLatestPackageVersion(Package $package): Package\Version
+    private function updateTopics(Project $project): void
     {
-        $versions = $package->getVersions();
-        $lastVersion = reset($versions);
+        $repository = $project->repository();
 
-        if (false === $lastVersion) {
-            // This package was never released, we create a fake empty version
-            return new Package\Version();
+        $topics = $this->github->repo()->topics(
+            $repository->vendor(),
+            $repository->name()
+        );
+        Assert::keyExists($topics, 'names');
+
+        if ([] !== array_diff($topics['names'], $project->topics())) {
+            $this->io->writeln('    Following topics have to be set:');
+            $this->io->writeln(sprintf(
+                '        <info>%s</info>',
+                implode(', ', $project->topics()),
+            ));
+
+            if ($this->apply) {
+                $this->github->repo()->replaceTopics(
+                    $repository->vendor(),
+                    $repository->name(),
+                    $project->topics()
+                );
+            }
+        } else {
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
-
-        return $lastVersion;
     }
 }
