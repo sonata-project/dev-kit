@@ -21,6 +21,8 @@ use Github\Exception\ExceptionInterface;
 use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -58,7 +60,12 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             try {
                 $this->io->title($project->name());
 
+                if ('doctrine-phpcr-admin-bundle' !== $project->name()) {
+                    continue;
+                }
+
                 $this->updateRepositories($project);
+                $this->updateTopics($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -73,7 +80,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     private function updateRepositories(Project $project): void
     {
         $repository = $project->repository();
-        $branchNames = $project->branchNames();
         $latestVersion = $this->getLatestPackageVersion($project->package());
 
         $repositoryInfo = $this->github->repo()->show(
@@ -86,15 +92,20 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             'description' => $latestVersion->isAbandoned()
                 ? '[Abandonned] '.$latestVersion->getDescription()
                 : $latestVersion->getDescription(),
-            'topics' => $latestVersion->getKeywords(),
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
-            'default_branch' => end($branchNames),
             'allow_squash_merge' => true,
             'allow_merge_commit' => false,
             'allow_rebase_merge' => true,
         ];
+
+        $branchNames = $project->branchNames();
+        $defaultBranch = end($branchNames);
+
+        if (is_string($defaultBranch)) {
+            $infoToUpdate['default_branch'] = $defaultBranch;
+        }
 
         foreach ($infoToUpdate as $info => $value) {
             if ($value === $repositoryInfo[$info]) {
@@ -103,15 +114,63 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         }
 
         if (\count($infoToUpdate)) {
-            $this->io->comment(sprintf(
-                'Following info have to be changed: %s.',
-                implode(', ', array_keys($infoToUpdate))
-            ));
+            $this->io->writeln('    Following info have to be changed:');
+
+            foreach ($infoToUpdate as $info => $value) {
+                $this->io->writeln(sprintf(
+                    '        %s: <info>%s</info>',
+                    $info,
+                    $value
+                ));
+            }
 
             if ($this->apply) {
                 $this->github->repo()->update($repository->vendor(), $repository->name(), array_merge($infoToUpdate, [
                     'name' => $repository->name(),
                 ]));
+
+                if ([] !== $latestVersion->getKeywords()) {
+                    $infoToUpdate['topics'] = $latestVersion->getKeywords();
+                }
+            }
+        } else {
+            $this->io->comment(static::LABEL_NOTHING_CHANGED);
+        }
+    }
+
+    private function updateTopics(Project $project): void
+    {
+        $repository = $project->repository();
+        $latestVersion = $this->getLatestPackageVersion($project->package());
+
+        $topics = $this->github->repo()->topics(
+            $repository->vendor(),
+            $repository->name()
+        );
+        Assert::keyExists($topics, 'names');
+
+        $keywords = $latestVersion->getKeywords();
+        \assert(is_array($keywords));
+
+        natsort($keywords);
+
+        $keywords = array_map(static function(string $keyword): string {
+            return u($keyword)->lower()->replace(' ', '-')->toString();
+        }, $keywords);
+
+        if ([] !== array_diff($topics['names'], $keywords)) {
+            $this->io->writeln('    Following topics have to be set:');
+            $this->io->writeln(sprintf(
+                '        <info>%s</info>',
+                implode(', ', $keywords),
+            ));
+
+            if ($this->apply) {
+                $this->github->repo()->replaceTopics(
+                    $repository->vendor(),
+                    $repository->name(),
+                    $keywords
+                );
             }
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
