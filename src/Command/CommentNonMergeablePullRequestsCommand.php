@@ -24,8 +24,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class MergeConflictsCommand extends AbstractNeedApplyCommand
+final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
     private GithubClient $github;
@@ -45,7 +46,7 @@ final class MergeConflictsCommand extends AbstractNeedApplyCommand
         parent::configure();
 
         $this
-            ->setName('merge-conflicts')
+            ->setName('comment-non-mergeable-pull-requests')
             ->setDescription('Comments non-mergeable pull requests, asking the author to solve conflicts.')
         ;
     }
