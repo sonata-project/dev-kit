@@ -104,8 +104,9 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 continue;
             }
 
-            $this->io->section(sprintf(
-                '#%d > %s - %s',
+            $this->io->writeln(sprintf(
+                '%s: #%d > %s - %s',
+                $project->name(),
                 $pull['number'],
                 $pull['base']['ref'],
                 $pull['title']
