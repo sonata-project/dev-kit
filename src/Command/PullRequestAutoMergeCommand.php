@@ -129,7 +129,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $updatedAt = new \DateTime($pull['updated_at'], new \DateTimeZone('UTC'));
             // Wait a bit to be sure the PR state is updated.
             if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
-                - $updatedAt->getTimestamp() < self::TIME_BEFORE_MERGE) {
+                - $updatedAt->getTimestamp() < self::TIME_BEFORE_MERGE
+            ) {
                 continue;
             }
 
