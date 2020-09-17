@@ -16,6 +16,7 @@ namespace App\Command;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Domain\Value\Label;
+use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -76,23 +77,23 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     {
         $repository = $project->repository();
 
-        foreach ($this->github->pullRequests()->all($repository->vendor(), $repository->name()) as $pullRequest) {
-            $number = $pullRequest['number'];
-            $pullRequest = $this->github->pullRequests()->show(
+        foreach ($this->github->pullRequests()->all($repository->vendor(), $repository->name()) as $listResponse) {
+            $number = PullRequest\PullRequestNumber::fromResponse($listResponse);
+
+            $detailedResponse = $this->github->pullRequests()->show(
                 $repository->vendor(),
                 $repository->name(),
-                $number
+                $number->toInt()
             );
 
-            // The value of the mergeable attribute can be true, false, or null.
-            // If the value is null this means that the mergeability hasn't been computed yet.
-            // @see: https://developer.github.com/v3/pulls/#get-a-single-pull-request
-            if (false === $pullRequest['mergeable']) {
+            $pullRequest = PullRequest::fromDetailResponse($detailedResponse);
+
+            if (false === $pullRequest->isMergeable()) {
                 $comments = array_filter(
                     $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
                         $repository->vendor(),
                         $repository->name(),
-                        $number,
+                        $number->toInt(),
                     ]),
                     static function ($comment) {
                         return $comment['user']['login'] === static::GITHUB_USER;
@@ -104,29 +105,29 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                 $commits = $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
                     $repository->vendor(),
                     $repository->name(),
-                    $number,
+                    $number->toInt(),
                 ]);
                 $lastCommit = end($commits);
                 $lastCommitDate = new \DateTime($lastCommit['commit']['committer']['date']);
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->github->issues()->comments()->create($repository->vendor(), $repository->name(), $number, [
+                        $this->github->issues()->comments()->create($repository->vendor(), $repository->name(), $number->toInt(), [
                             'body' => 'Could you please rebase your PR and fix merge conflicts?',
                         ]);
 
                         $this->github->issues()->labels()->add(
                             $repository->vendor(),
                             $repository->name(),
-                            $number,
+                            $number->toInt(),
                             Label::PendingAuthor()->toString()
                         );
                     }
 
                     $this->io->text(sprintf(
                         '#%d - %s',
-                        $pullRequest['number'],
-                        $pullRequest['title']
+                        $pullRequest->number()->toInt(),
+                        $pullRequest->title()
                     ));
                 }
             }
