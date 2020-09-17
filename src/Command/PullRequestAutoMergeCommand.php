@@ -15,6 +15,8 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\PullRequest\CombinedStatus;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -92,44 +94,50 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         foreach ($this->githubPager->fetchAll($this->github->pullRequests(), 'all', [
             $repository->vendor(),
             $repository->name(),
-        ]) as $pull) {
+        ]) as $response) {
+            $pullRequest = PullRequest::fromListResponse($response);
+
             // Do not manage not configured branches.
-            if (!\in_array(u($pull['base']['ref'])->replace('-dev-kit', '')->toString(), $project->branchNames(), true)) {
+            if (!\in_array(u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(), $project->branchNames(), true)) {
                 continue;
             }
 
             // Proceed only bot PR for now.
-            if (self::BOT_NAME !== $pull['user']['login']) {
+            if (self::BOT_NAME !== $pullRequest->user()->login()) {
                 continue;
             }
 
             $this->io->writeln(sprintf(
                 '%s: <comment>%s (#%d)</comment> by %s -> <comment>%s</comment>',
                 $project->name(),
-                $pull['title'],
-                $pull['number'],
-                $pull['user']['login'],
-                $pull['base']['ref']
+                $pullRequest->title(),
+                $pullRequest->number()->toInt(),
+                $pullRequest->user()->login(),
+                $pullRequest->base()->ref()
             ));
 
-            $state = $this->github->repos()->statuses()->combined(
+            $combinedStatusResponse = $this->github->repos()->statuses()->combined(
                 $repository->vendor(),
                 $repository->name(),
-                $pull['head']['sha']
+                $pullRequest->head()->sha()
             );
 
-            $this->io->writeln(sprintf('    Combined status: %s', $state['state']));
+            $combinedStatus = CombinedStatus::fromResponse($combinedStatusResponse);
+
+            $this->io->writeln(sprintf(
+                '    Combined status: %s',
+                $combinedStatus->toString()
+            ));
             $this->io->newLine();
 
-            // Ignore the PR if status is not good.
-            if ('success' !== $state['state']) {
+            // Ignore the PR for now if status is not good.
+            if (!$combinedStatus->isSuccessful()) {
                 continue;
             }
 
-            $updatedAt = new \DateTime($pull['updated_at'], new \DateTimeZone('UTC'));
             // Wait a bit to be sure the PR state is updated.
             if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
-                - $updatedAt->getTimestamp() < self::TIME_BEFORE_MERGE
+                - $pullRequest->updatedAt()->getTimestamp() < self::TIME_BEFORE_MERGE
             ) {
                 continue;
             }
@@ -137,7 +145,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
                 $repository->vendor(),
                 $repository->name(),
-                $pull['number'],
+                $pullRequest->number()->toInt(),
             ]);
 
             $commitMessages = array_map(static function ($commit): string {
@@ -164,24 +172,24 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                     $this->github->pullRequests()->merge(
                         $repository->vendor(),
                         $repository->name(),
-                        $pull['number'],
-                        $squash ? '' : $pull['title'],
-                        $pull['head']['sha'],
+                        $pullRequest->number()->toInt(),
+                        $squash ? '' : $pullRequest->title(),
+                        $pullRequest->head()->sha(),
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pull['number']) : null
+                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pullRequest->number()->toInt()) : null
                     );
 
-                    if ('sonata-project' === $pull['head']['repo']['owner']['login']) {
+                    if ('sonata-project' === $pullRequest->head()->repo()->owner()->login()) {
                         $this->github->gitData()->references()->remove(
                             $repository->vendor(),
                             $repository->name(),
-                            'heads/'.$pull['head']['ref']
+                            u('heads/')->append($pullRequest->head()->ref())->toString()
                         );
                     }
 
                     $this->io->success(sprintf(
                         'Merged PR #%d',
-                        $pull['number']
+                        $pullRequest->number()->toInt()
                     ));
                 } catch (ExceptionInterface $e) {
                     $this->io->error(sprintf(
