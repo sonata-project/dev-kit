@@ -186,6 +186,46 @@ final class Project
             ->toString();
     }
 
+    public function homepage(): string
+    {
+        $latestVersion = $this->getLatestPackagistVersion();
+
+        return $latestVersion->getHomepage() ?: 'https://sonata-project.org';
+    }
+
+    public function description(): string
+    {
+        $latestVersion = $this->getLatestPackagistVersion();
+
+        return $latestVersion->isAbandoned()
+            ? '[Abandoned] '.$latestVersion->getDescription()
+            : $latestVersion->getDescription();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function topics(): array
+    {
+        $latestVersion = $this->getLatestPackagistVersion();
+
+        /**
+         * Remove this doc type, after using knplabs/packagist-api release
+         * which includes: https://github.com/KnpLabs/packagist-api/pull/63.
+         *
+         * @var array $keywords
+         */
+        $keywords = $latestVersion->getKeywords();
+
+        $keywords = array_map(static function (string $keyword): string {
+            return u($keyword)->lower()->replace(' ', '-')->toString();
+        }, $keywords);
+
+        sort($keywords);
+
+        return $keywords;
+    }
+
     /**
      * We keep this method to have a smooth transition and
      * remove it when we did not use config arrays anymore. Oskar.
@@ -195,5 +235,17 @@ final class Project
     public function rawConfig(): array
     {
         return $this->rawConfig;
+    }
+
+    private function getLatestPackagistVersion(): Package\Version
+    {
+        $versions = $this->package->getVersions();
+        $latest = reset($versions);
+
+        if (false === $latest) {
+            return new Package\Version();
+        }
+
+        return $latest;
     }
 }
