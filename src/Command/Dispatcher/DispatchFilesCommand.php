@@ -205,16 +205,21 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $git->commit('DevKit updates');
                     $git->push('-u', 'origin', $currentDevKit);
 
+                    $currentHead = u('sonata-project:')->append($currentDevKit)->toString();
+
                     // If the Pull Request does not exists yet, create it.
                     $pulls = $this->github->pullRequests()->all($repository->vendor(), $repository->name(), [
                         'state' => 'open',
-                        'head' => 'sonata-project:'.$currentDevKit,
+                        'head' => $currentHead,
                     ]);
 
                     if (0 === \count($pulls)) {
                         $this->github->pullRequests()->create($repository->vendor(), $repository->name(), [
-                            'title' => 'DevKit updates for '.$currentBranch.' branch',
-                            'head' => 'sonata-project:'.$currentDevKit,
+                            'title' => sprintf(
+                                'DevKit updates for %s branch',
+                                $currentBranch
+                            ),
+                            'head' => $currentHead,
                             'base' => $currentBranch,
                             'body' => '',
                         ]);
