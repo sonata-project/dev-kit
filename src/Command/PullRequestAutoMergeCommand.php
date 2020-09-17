@@ -118,7 +118,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pull['head']['sha']
             );
 
-            $this->io->writeln(sprintf('    Status: %s', $state['state']));
+            $this->io->writeln(sprintf('    Combined status: %s', $state['state']));
             $this->io->newLine();
 
             // Ignore the PR if status is not good.
