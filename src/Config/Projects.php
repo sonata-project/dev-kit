@@ -86,7 +86,14 @@ final class Projects
 
         $projects = [];
         foreach ($names as $name) {
-            Assert::keyExists($this->projects, $name, sprintf('Unknown project: %s', $name));
+            Assert::keyExists(
+                $this->projects,
+                $name,
+                sprintf(
+                    'Unknown project: %s',
+                    $name
+                )
+            );
 
             $projects[$name] = $this->projects[$name];
         }
