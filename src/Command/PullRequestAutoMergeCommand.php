@@ -105,11 +105,12 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             $this->io->writeln(sprintf(
-                '%s: #%d > %s - %s',
+                '%s: <comment>%s (#%d)</comment> by %s -> <comment>%s</comment>',
                 $project->name(),
+                $pull['title'],
                 $pull['number'],
-                $pull['base']['ref'],
-                $pull['title']
+                $pull['user']['login'],
+                $pull['base']['ref']
             ));
 
             $state = $this->github->repos()->statuses()->combined(
@@ -118,8 +119,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pull['head']['sha']
             );
 
-            $this->io->comment(sprintf('Author: %s', $pull['user']['login']));
-            $this->io->comment(sprintf('Status: %s', $state['state']));
+            $this->io->writeln(sprintf('Status: %s', $state['state']));
 
             // Ignore the PR if status is not good.
             if ('success' !== $state['state']) {
