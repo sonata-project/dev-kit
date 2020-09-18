@@ -80,7 +80,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     private function updateRepositories(Project $project): void
     {
         $repository = $project->repository();
-        $latestVersion = $this->getLatestPackageVersion($project->package());
 
         $repositoryInfo = $this->github->repo()->show(
             $repository->vendor(),
@@ -88,10 +87,8 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         );
 
         $infoToUpdate = [
-            'homepage' => $latestVersion->getHomepage() ?: 'https://sonata-project.org',
-            'description' => $latestVersion->isAbandoned()
-                ? '[Abandonned] '.$latestVersion->getDescription()
-                : $latestVersion->getDescription(),
+            'homepage' => $project->homepage(),
+            'description' => $project->description(),
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
@@ -100,11 +97,13 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             'allow_rebase_merge' => true,
         ];
 
-        $branchNames = $project->branchNames();
-        $defaultBranch = end($branchNames);
+        if ($project->hasBranches()) {
+            $branchNames = $project->branchNames();
+            $defaultBranch = end($branchNames);
 
-        if (is_string($defaultBranch)) {
-            $infoToUpdate['default_branch'] = $defaultBranch;
+            if (is_string($defaultBranch)) {
+                $infoToUpdate['default_branch'] = $defaultBranch;
+            }
         }
 
         foreach ($infoToUpdate as $info => $value) {
@@ -128,10 +127,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
                 $this->github->repo()->update($repository->vendor(), $repository->name(), array_merge($infoToUpdate, [
                     'name' => $repository->name(),
                 ]));
-
-                if ([] !== $latestVersion->getKeywords()) {
-                    $infoToUpdate['topics'] = $latestVersion->getKeywords();
-                }
             }
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
@@ -141,7 +136,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     private function updateTopics(Project $project): void
     {
         $repository = $project->repository();
-        $latestVersion = $this->getLatestPackageVersion($project->package());
 
         $topics = $this->github->repo()->topics(
             $repository->vendor(),
@@ -149,47 +143,23 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         );
         Assert::keyExists($topics, 'names');
 
-        $keywords = $latestVersion->getKeywords();
-        \assert(is_array($keywords));
 
-        natsort($keywords);
-
-        $keywords = array_map(static function(string $keyword): string {
-            return u($keyword)->lower()->replace(' ', '-')->toString();
-        }, $keywords);
-
-        if ([] !== array_diff($topics['names'], $keywords)) {
+        if ([] !== array_diff($topics['names'], $project->topics())) {
             $this->io->writeln('    Following topics have to be set:');
             $this->io->writeln(sprintf(
                 '        <info>%s</info>',
-                implode(', ', $keywords),
+                implode(', ', $project->topics()),
             ));
 
             if ($this->apply) {
                 $this->github->repo()->replaceTopics(
                     $repository->vendor(),
                     $repository->name(),
-                    $keywords
+                    $project->topics()
                 );
             }
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         }
-    }
-
-    /**
-     * Return the latest packagist version.
-     */
-    private function getLatestPackageVersion(Package $package): Package\Version
-    {
-        $versions = $package->getVersions();
-        $lastVersion = reset($versions);
-
-        if (false === $lastVersion) {
-            // This package was never released, we create a fake empty version
-            return new Package\Version();
-        }
-
-        return $lastVersion;
     }
 }

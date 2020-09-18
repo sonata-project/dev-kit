@@ -130,4 +130,66 @@ CONFIG;
             $project->rawConfig()
         );
     }
+
+    /**
+     * @test
+     *
+     * @dataProvider homepageProvider
+     */
+    public function homepage(string $expected, string $value): void
+    {
+        $name = 'admin-bundle';
+
+        $package = new Package();
+        $package->fromArray([
+            'homepage' => $value,
+        ]);
+
+        $config = <<<CONFIG
+admin-bundle:
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  docs_target: true
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      services: []
+      docs_path: docs
+      tests_path: tests
+CONFIG;
+
+        $config = Yaml::parse($config);
+
+        $project = Project::fromValues(
+            $name,
+            $config['admin-bundle'],
+            $package
+        );
+
+        self::assertSame(
+            $$expected,
+            $project->homepage()
+        );
+    }
+
+    /**
+     * @return \Generator<array<0: string, 1: string>>
+     */
+    public function homepageProvider(): \Generator
+    {
+        yield [
+            'https://sonata-project.org',
+            '',
+        ];
+
+        yield [
+            'https://sonata-project.org/bundles/admin',
+            'https://sonata-project.org/bundles/admin',
+        ];
+    }
 }
