@@ -208,11 +208,11 @@ CONFIG;
         $version = new Package\Version();
         $version->fromArray([
             'description' => $value,
-            'abandoned' => $abandoned,
         ]);
 
         $package = new Package();
         $package->fromArray([
+            'abandoned' => $abandoned,
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
             'versions' => [$version],
         ]);
