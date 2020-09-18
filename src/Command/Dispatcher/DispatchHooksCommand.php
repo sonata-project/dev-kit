@@ -16,7 +16,7 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Github\Api\HooksApi;
+use App\Github\Api\Hooks;
 use App\Github\Domain\Value\Hook;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,15 +40,15 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
     ];
 
     private Projects $projects;
-    private HooksApi $hooksApi;
+    private Hooks $hooks;
     private string $devKitToken;
 
-    public function __construct(Projects $projects, HooksApi $hooksApi, string $devKitToken)
+    public function __construct(Projects $projects, Hooks $hooks, string $devKitToken)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->hooksApi = $hooksApi;
+        $this->hooks = $hooks;
 
         Assert::stringNotEmpty($devKitToken, '$devKitToken must not be an empty string!');
         $this->devKitToken = $devKitToken;
@@ -114,7 +114,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
         // First, check if the DevKit Hook exists.
         $devKitHook = null;
-        foreach ($this->hooksApi->all($repository) as $hook) {
+        foreach ($this->hooks->all($repository) as $hook) {
             if (u($hook->config()->url())->startsWith($devKitHookBaseUrl)) {
                 $devKitHook = $hook;
 
@@ -126,7 +126,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
             $this->io->writeln('        Has to be created.');
 
             if ($this->apply) {
-                $this->hooksApi->create(
+                $this->hooks->create(
                     $repository,
                     [
                         'name' => 'web',
@@ -146,7 +146,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
             $this->io->writeln('        Has to be updated.');
 
             if ($this->apply) {
-                $this->hooksApi->update(
+                $this->hooks->update(
                     $repository,
                     $devKitHook,
                     [
@@ -157,7 +157,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
                     ]
                 );
 
-                $this->hooksApi->ping($repository, $devKitHook);
+                $this->hooks->ping($repository, $devKitHook);
 
                 $this->io->writeln('        <info>Hook updated.</info>');
             }
@@ -179,7 +179,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         $deleted = null;
 
         // Check if a Hook should be deleted.
-        foreach ($this->hooksApi->all($repository) as $hook) {
+        foreach ($this->hooks->all($repository) as $hook) {
             foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
                 if (u($hook->url())->startsWith($url)) {
                     $deleted = true;
@@ -189,7 +189,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
                     ));
 
                     if ($this->apply) {
-                        $this->hooksApi->remove($repository, $hook);
+                        $this->hooks->remove($repository, $hook);
 
                         $this->io->writeln(sprintf(
                             '        <info>Hook "%s" with ID %s deleted.</info>',

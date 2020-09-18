@@ -20,7 +20,7 @@ use Github\Client as GithubClient;
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class HooksApi
+final class Hooks
 {
     private GithubClient $github;
 
