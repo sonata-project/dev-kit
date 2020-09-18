@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Github\Domain\Value\Webhook;
+namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
-use App\Github\Domain\Value\Webhook\Action;
+use App\Github\Domain\Value\IncomingWebhook\Action;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Github\Domain\Value\Webhook;
+namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
-use App\Github\Domain\Value\Webhook\Event;
-use App\Github\Domain\Value\Webhook\Payload;
+use App\Github\Domain\Value\IncomingWebhook\Event;
+use App\Github\Domain\Value\IncomingWebhook\Payload;
 use PHPUnit\Framework\TestCase;
 
 final class PayloadTest extends TestCase

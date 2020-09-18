@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Domain\Value\Webhook;
+namespace App\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\Issue\IssueId;
 use App\Github\Domain\Value\Repository;
