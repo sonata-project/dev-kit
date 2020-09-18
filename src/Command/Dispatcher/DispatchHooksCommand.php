@@ -16,8 +16,8 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Api\HooksApi;
 use App\Github\Domain\Value\Hook;
-use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,15 +40,15 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
     ];
 
     private Projects $projects;
-    private GithubClient $github;
+    private HooksApi $hooksApi;
     private string $devKitToken;
 
-    public function __construct(Projects $projects, GithubClient $github, string $devKitToken)
+    public function __construct(Projects $projects, HooksApi $hooksApi, string $devKitToken)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->github = $github;
+        $this->hooksApi = $hooksApi;
 
         Assert::stringNotEmpty($devKitToken, '$devKitToken must not be an empty string!');
         $this->devKitToken = $devKitToken;
@@ -112,14 +112,9 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
             'pull_request_review_comment',
         ];
 
-        /** @var Hook[] $hooks */
-        $hooks = array_map(static function (array $response): Hook {
-            return Hook::fromResponse($response);
-        }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
-
         // First, check if the DevKit Hook exists.
         $devKitHook = null;
-        foreach ($hooks as $hook) {
+        foreach ($this->hooksApi->all($repository) as $hook) {
             if (u($hook->config()->url())->startsWith($devKitHookBaseUrl)) {
                 $devKitHook = $hook;
 
@@ -131,12 +126,15 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
             $this->io->writeln('        Has to be created.');
 
             if ($this->apply) {
-                $this->github->repo()->hooks()->create($repository->vendor(), $repository->name(), [
-                    'name' => 'web',
-                    'config' => $config,
-                    'events' => $events,
-                    'active' => true,
-                ]);
+                $this->hooksApi->create(
+                    $repository,
+                    [
+                        'name' => 'web',
+                        'config' => $config,
+                        'events' => $events,
+                        'active' => true,
+                    ]
+                );
 
                 $this->io->writeln('        <info>Hook created.</info>');
             }
@@ -148,18 +146,18 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
             $this->io->writeln('        Has to be updated.');
 
             if ($this->apply) {
-                $this->github->repo()->hooks()->update($repository->vendor(), $repository->name(), $devKitHook->id(), [
-                    'name' => 'web',
-                    'config' => $config,
-                    'events' => $events,
-                    'active' => true,
-                ]);
-
-                $this->github->repo()->hooks()->ping(
-                    $repository->vendor(),
-                    $repository->name(),
-                    $devKitHook->id()
+                $this->hooksApi->update(
+                    $repository,
+                    $devKitHook,
+                    [
+                        'name' => 'web',
+                        'config' => $config,
+                        'events' => $events,
+                        'active' => true,
+                    ]
                 );
+
+                $this->hooksApi->ping($repository, $devKitHook);
 
                 $this->io->writeln('        <info>Hook updated.</info>');
             }
@@ -178,15 +176,10 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
         $this->io->writeln('    Check if some Hooks needs to be deleted...');
 
-        /** @var Hook[] $hooks */
-        $hooks = array_map(static function (array $response): Hook {
-            return Hook::fromResponse($response);
-        }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
-
         $deleted = null;
 
         // Check if a Hook should be deleted.
-        foreach ($hooks as $hook) {
+        foreach ($this->hooksApi->all($repository) as $hook) {
             foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
                 if (u($hook->url())->startsWith($url)) {
                     $deleted = true;
@@ -196,11 +189,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
                     ));
 
                     if ($this->apply) {
-                        $this->github->repo()->hooks()->remove(
-                            $repository->vendor(),
-                            $repository->name(),
-                            $hook->id()
-                        );
+                        $this->hooksApi->remove($repository, $hook);
 
                         $this->io->writeln(sprintf(
                             '        <info>Hook "%s" with ID %s deleted.</info>',
