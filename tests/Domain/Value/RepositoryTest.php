@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Value;
 
 use App\Domain\Value\Repository;
-use App\Util\Util;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 
@@ -37,24 +36,5 @@ final class RepositoryTest extends TestCase
         self::assertSame('sonata-project', $repository->vendor());
         self::assertSame('SonataAdminBundle', $repository->name());
         self::assertSame('sonata-project/SonataAdminBundle', $repository->toString());
-    }
-
-    /**
-     * @test
-     */
-    public function ensureGetRepositoryNameWithoutVendorPrefixAndRepositoryNameReturnsTheSame(): void
-    {
-        $package = new Package();
-        $package->fromArray([
-            'name' => $name = 'sonata-project/admin-bundle',
-            'repository' => $url = 'https://github.com/sonata-project/SonataAdminBundle',
-        ]);
-
-        $repository = Repository::fromPackage($package);
-
-        self::assertSame(
-            $repository->name(),
-            Util::getRepositoryNameWithoutVendorPrefix($package)
-        );
     }
 }
