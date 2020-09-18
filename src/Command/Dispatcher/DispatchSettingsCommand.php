@@ -20,7 +20,6 @@ use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -59,7 +58,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
                 $this->io->title($project->name());
 
                 $this->updateRepositories($project);
-                $this->updateTopics($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -121,35 +119,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
                 $this->github->repo()->update($repository->vendor(), $repository->name(), array_merge($infoToUpdate, [
                     'name' => $repository->name(),
                 ]));
-            }
-        } else {
-            $this->io->comment(static::LABEL_NOTHING_CHANGED);
-        }
-    }
-
-    private function updateTopics(Project $project): void
-    {
-        $repository = $project->repository();
-
-        $topics = $this->github->repo()->topics(
-            $repository->vendor(),
-            $repository->name()
-        );
-        Assert::keyExists($topics, 'names');
-
-        if ([] !== array_diff($topics['names'], $project->topics())) {
-            $this->io->writeln('    Following topics have to be set:');
-            $this->io->writeln(sprintf(
-                '        <info>%s</info>',
-                implode(', ', $project->topics()),
-            ));
-
-            if ($this->apply) {
-                $this->github->repo()->replaceTopics(
-                    $repository->vendor(),
-                    $repository->name(),
-                    $project->topics()
-                );
             }
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
