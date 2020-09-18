@@ -265,7 +265,7 @@ CONFIG;
             'keywords' => [
                 'Sonata',
                 'Admin Generator',
-                'orm'
+                'orm',
             ],
         ]);
 
