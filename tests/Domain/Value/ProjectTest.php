@@ -266,7 +266,7 @@ CONFIG;
                 'Sonata',
                 'Admin Generator',
                 'orm',
-                'Admin'
+                'Admin',
             ],
         ]);
 
