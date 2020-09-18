@@ -28,7 +28,7 @@ use Webmozart\Assert\Assert;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
+final class DispatchHooksCommand extends AbstractNeedApplyCommand
 {
     /** @var string[] */
     private const HOOK_URLS_TO_BE_DELETED = [
@@ -59,14 +59,14 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
         parent::configure();
 
         $this
-            ->setName('dispatch:webhooks')
-            ->setDescription('Dispatches webhooks for all sonata projects.')
+            ->setName('dispatch:hooks')
+            ->setDescription('Dispatches hooks for all sonata projects.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->io->title('Dispatch webhooks for all sonata projects');
+        $this->io->title('Dispatch hooks for all sonata projects');
 
         /** @var Project $project */
         foreach ($this->projects->all() as $project) {

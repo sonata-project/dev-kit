@@ -66,7 +66,7 @@ crons:
         spec: '0 */6 * * *'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:webhooks --apply
+                croncape bin/console dispatch:hooks --apply
             fi
     dispatch-settings:
         spec: '0 5 * * *'
