@@ -26,7 +26,7 @@ final class GithubController
      */
     public function index(Request $request, Github\HookProcessor $hookProcessor, string $devKitToken): Response
     {
-        $event = Github\Domain\Value\Webhook\Event::fromString(
+        $event = Github\Domain\Value\IncomingWebhook\Event::fromString(
             $request->headers->get('X-GitHub-Event')
         );
 
@@ -39,7 +39,7 @@ final class GithubController
             );
         }
 
-        $payload = Github\Domain\Value\Webhook\Payload::fromJsonString(
+        $payload = Github\Domain\Value\IncomingWebhook\Payload::fromJsonString(
             $request->getContent(),
             $event
         );

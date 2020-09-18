@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace App\Github;
 
 use App\Github\Action\RemoveIssueLabel;
+use App\Github\Domain\Value\IncomingWebhook\Action;
+use App\Github\Domain\Value\IncomingWebhook\Payload;
 use App\Github\Domain\Value\Label;
-use App\Github\Domain\Value\Webhook\Action;
-use App\Github\Domain\Value\Webhook\Payload;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>

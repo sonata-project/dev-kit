@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Github\Domain\Value\Webhook;
+namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
-use App\Github\Domain\Value\Webhook\Event;
+use App\Github\Domain\Value\IncomingWebhook\Event;
 use PHPUnit\Framework\TestCase;
 
 final class EventTest extends TestCase
