@@ -78,11 +78,25 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
             $repository->name()
         );
         Assert::keyExists($topics, 'names');
+        $topics = $topics['names'];
 
-        if ([] !== array_diff($topics['names'], $project->topics())) {
-            $this->io->writeln('    Following topics have to be set:');
+        if ([] === $topics || [] === $project->topics()) {
             $this->io->writeln(sprintf(
-                '        <info>%s</info>',
+                '    <comment>%s</comment>',
+                'No topics are currently set on the repository, nor new ones are configured!'
+            ));
+
+            return;
+        }
+
+        if ([] !== array_diff($topics, $project->topics())) {
+            $this->io->writeln('    Topics would be changed...');
+            $this->io->writeln(sprintf(
+                '        from <comment>%s</comment>',
+                implode(', ', $topics),
+            ));
+            $this->io->writeln(sprintf(
+                '        to   <info>%s</info>',
                 implode(', ', $project->topics()),
             ));
 
@@ -94,7 +108,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
                 );
             }
         } else {
-            $this->io->comment(static::LABEL_NOTHING_CHANGED);
+            $this->io->writeln('    Topics are up to date!');
         }
     }
 }
