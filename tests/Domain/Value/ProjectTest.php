@@ -39,7 +39,6 @@ admin-bundle:
       tests_path: tests
 CONFIG;
 
-
     /**
      * @test
      */
