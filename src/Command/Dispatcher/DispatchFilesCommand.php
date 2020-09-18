@@ -373,14 +373,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $branchConfig,
                 [
                     'project' => $project,
-                    'package_description' => $package->getDescription(),
-                    'packagist_name' => $package->getName(),
-                    'is_abandoned' => $package->isAbandoned(),
-                    'repository_name' => $repository->name(),
                     'current_branch' => $branchName,
                     'unstable_branch' => $unstableBranch,
                     'stable_branch' => $stableBranch,
-                    'website_path' => $project->websitePath(),
                 ]
             )));
         } else {
