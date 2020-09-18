@@ -16,6 +16,7 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Domain\Value\Hook;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -89,47 +90,45 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
     {
         $repository = $project->repository();
 
-        $this->io->section('DevKit hook');
+        $this->io->writeln('    Check DevKit Hook for existence and configuration...');
 
-        $hookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
-        $hookCompleteUrl = sprintf(
-            '%s?%s',
-            $hookBaseUrl,
-            http_build_query([
-                'token' => $this->devKitToken,
-            ])
-        );
+        $devKitHookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
 
-        // Set hook configs
         $config = [
-            'url' => $hookCompleteUrl,
+            'url' => sprintf(
+                '%s?%s',
+                $devKitHookBaseUrl,
+                http_build_query([
+                    'token' => $this->devKitToken,
+                ])
+            ),
             'insecure_ssl' => '0',
             'content_type' => 'json',
         ];
+
         $events = [
             'issue_comment',
             'pull_request',
             'pull_request_review_comment',
         ];
 
-        $configuredHooks = $this->github->repo()->hooks()->all(
-            $repository->vendor(),
-            $repository->name()
-        );
+        /** @var Hook[] $hooks */
+        $hooks = array_map(static function (array $response): Hook {
+            return Hook::fromResponse($response);
+        }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
 
-        // First, check if the hook exists.
+        // First, check if the DevKit Hook exists.
         $devKitHook = null;
-        foreach ($configuredHooks as $hook) {
-            if (\array_key_exists('url', $hook['config'])
-                && 0 === strncmp($hook['config']['url'], $hookBaseUrl, \strlen($hookBaseUrl))) {
+        foreach ($hooks as $hook) {
+            if (u($hook->config()->url())->startsWith($devKitHookBaseUrl)) {
                 $devKitHook = $hook;
 
                 break;
             }
         }
 
-        if (!$devKitHook) {
-            $this->io->comment('Has to be created.');
+        if (!$devKitHook instanceof Hook) {
+            $this->io->writeln('        Has to be created.');
 
             if ($this->apply) {
                 $this->github->repo()->hooks()->create($repository->vendor(), $repository->name(), [
@@ -138,58 +137,86 @@ final class DispatchWebhooksCommand extends AbstractNeedApplyCommand
                     'events' => $events,
                     'active' => true,
                 ]);
-                $this->io->success('Hook created.');
+
+                $this->io->writeln('        <info>Hook created.</info>');
             }
-        } elseif (\count(array_diff_assoc($devKitHook['config'], $config))
-            || \count(array_diff($devKitHook['events'], $events))
-            || !$devKitHook['active']
+        } elseif (
+            !$devKitHook->config()->equals($config)
+            || !$devKitHook->events()->equals($events)
+            || !$devKitHook->active()
         ) {
-            $this->io->comment('Has to be updated.');
+            $this->io->writeln('        Has to be updated.');
 
             if ($this->apply) {
-                $this->github->repo()->hooks()->update($repository->vendor(), $repository->name(), $devKitHook['id'], [
+                $this->github->repo()->hooks()->update($repository->vendor(), $repository->name(), $devKitHook->id(), [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
                 ]);
-                $this->github->repo()->hooks()->ping($repository->vendor(), $repository->name(), $devKitHook['id']);
-                $this->io->success('Hook updated.');
+
+                $this->github->repo()->hooks()->ping(
+                    $repository->vendor(),
+                    $repository->name(),
+                    $devKitHook->id()
+                );
+
+                $this->io->writeln('        <info>Hook updated.</info>');
             }
         } else {
-            $this->io->comment(static::LABEL_NOTHING_CHANGED);
+            $this->io->writeln(sprintf(
+                '        <comment>%s</comment>',
+                static::LABEL_NOTHING_CHANGED
+            ));
         }
+        $this->io->newLine();
     }
 
     private function deleteHooks(Project $project): void
     {
         $repository = $project->repository();
 
-        $this->io->section('Check Hooks to be deleted');
+        $this->io->writeln('    Check if some Hooks needs to be deleted...');
 
-        $configuredHooks = $this->github->repo()->hooks()->all($repository->vendor(), $repository->name());
+        /** @var Hook[] $hooks */
+        $hooks = array_map(static function (array $response): Hook {
+            return Hook::fromResponse($response);
+        }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
 
-        // Check if hook should be deleted.
-        foreach ($configuredHooks as $key => $hook) {
+        $deleted = null;
+
+        // Check if a Hook should be deleted.
+        foreach ($hooks as $hook) {
             foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
-                $currentHookUrl = $hook['config']['url'];
-
-                if (u($currentHookUrl)->startsWith($url)) {
-                    $this->io->comment(sprintf(
-                        'Hook "%s" will be deleted',
-                        $currentHookUrl
+                if (u($hook->url())->startsWith($url)) {
+                    $deleted = true;
+                    $this->io->writeln(sprintf(
+                        '        Hook "%s" will be deleted',
+                        $hook->url()
                     ));
 
                     if ($this->apply) {
-                        $this->github->repo()->hooks()->remove($repository->vendor(), $repository->name(), $hook['id']);
+                        $this->github->repo()->hooks()->remove(
+                            $repository->vendor(),
+                            $repository->name(),
+                            $hook->id()
+                        );
 
-                        $this->io->success(sprintf(
-                            'Hook "%s" deleted.',
-                            $currentHookUrl
+                        $this->io->writeln(sprintf(
+                            '        <info>Hook "%s" with ID %s deleted.</info>',
+                            $hook->url(),
+                            $hook->id()
                         ));
                     }
                 }
             }
+        }
+
+        if (!$deleted) {
+            $this->io->writeln(sprintf(
+                '        <comment>%s</comment>',
+                static::LABEL_NOTHING_CHANGED
+            ));
         }
     }
 }
