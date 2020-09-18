@@ -208,11 +208,11 @@ CONFIG;
         $version = new Package\Version();
         $version->fromArray([
             'description' => $value,
+            'abandoned' => $abandoned,
         ]);
 
         $package = new Package();
         $package->fromArray([
-            'abandoned' => $abandoned,
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
             'versions' => [$version],
         ]);
@@ -253,5 +253,45 @@ CONFIG;
             'Foo bar',
             true,
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function topics(): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'keywords' => [
+                'Sonata',
+                'Admin Generator',
+                'orm'
+            ],
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        $expected = [
+            'admin-generator',
+            'orm',
+            'sonata',
+        ];
+
+        self::assertSame(
+            $expected,
+            $project->topics()
+        );
     }
 }
