@@ -37,37 +37,6 @@ admin-bundle:
       services: []
       docs_path: docs
       tests_path: tests
-CONFIG;
-
-    /**
-     * @test
-     */
-    public function valid(): void
-    {
-        $name = 'admin-bundle';
-
-        $package = new Package();
-        $package->fromArray([
-            'name' => $packageName = 'sonata-project/admin-bundle',
-            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
-        ]);
-
-        $config = <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_gitignore_part: ~
-  custom_doctor_rst_whitelist_part: ~
-  docs_target: true
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      services: []
-      docs_path: docs
-      tests_path: tests
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: ~
@@ -79,15 +48,26 @@ admin-bundle:
       tests_path: tests
 CONFIG;
 
-        $config = Yaml::parse($config);
+    /**
+     * @test
+     */
+    public function valid(): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => $packageName = 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
 
         $project = Project::fromValues(
-            $name,
-            $config['admin-bundle'],
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
             $package
         );
 
-        self::assertSame($name, $project->name());
+        self::assertSame(self::DEFAULT_CONFIG_NAME, $project->name());
         self::assertSame('SonataAdminBundle', $project->title());
         self::assertSame($packageName, $project->package()->getName());
         self::assertTrue($project->hasBranches());
@@ -101,46 +81,17 @@ CONFIG;
      */
     public function rawConfig(): void
     {
-        $name = 'admin-bundle';
-
         $package = new Package();
         $package->fromArray([
             'name' => $packageName = 'sonata-project/admin-bundle',
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
         ]);
 
-        $config = <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_gitignore_part: ~
-  custom_doctor_rst_whitelist_part: ~
-  docs_target: true
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      services: []
-      docs_path: docs
-      tests_path: tests
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      target_php: ~
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['3']
-      services: []
-      docs_path: docs
-      tests_path: tests
-CONFIG;
-
-        $config = Yaml::parse($config);
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
 
         $project = Project::fromValues(
-            $name,
-            $config['admin-bundle'],
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
             $package
         );
 
