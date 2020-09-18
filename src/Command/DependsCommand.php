@@ -67,6 +67,8 @@ final class DependsCommand extends AbstractCommand
             if (!u($version->getVersion())->endsWith('-dev')
                 && !u($version->getVersion())->equalsTo('dev-master')
             ) {
+                continue;
+            }
 
             $this->io->writeln(sprintf(
                 '    <info>%s</info>',
