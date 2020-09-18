@@ -20,6 +20,26 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ProjectTest extends TestCase
 {
+    private const DEFAULT_CONFIG_NAME = 'admin-bundle';
+    private const DEFAULT_CONFIG = <<<CONFIG
+admin-bundle:
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  docs_target: true
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      services: []
+      docs_path: docs
+      tests_path: tests
+CONFIG;
+
+
     /**
      * @test
      */
@@ -138,8 +158,6 @@ CONFIG;
      */
     public function homepage(string $expected, string $value): void
     {
-        $name = 'admin-bundle';
-
         $version = new Package\Version();
         $version->fromArray([
             'homepage' => $value,
@@ -151,29 +169,11 @@ CONFIG;
             'versions' => [$version],
         ]);
 
-        $config = <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_gitignore_part: ~
-  custom_doctor_rst_whitelist_part: ~
-  docs_target: true
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      services: []
-      docs_path: docs
-      tests_path: tests
-CONFIG;
-
-        $config = Yaml::parse($config);
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
 
         $project = Project::fromValues(
-            $name,
-            $config['admin-bundle'],
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
             $package
         );
 
@@ -196,6 +196,63 @@ CONFIG;
         yield 'real homepage' => [
             'https://sonata-project.org/bundles/admin',
             'https://sonata-project.org/bundles/admin',
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider descriptionProvider
+     */
+    public function description(string $expected, string $value, bool $abandoned): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'description' => $value,
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'abandoned' => $abandoned,
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        self::assertSame(
+            $expected,
+            $project->description()
+        );
+    }
+
+    /**
+     * @return \Generator<string, array<0: string, 1: string, 2: bool>>
+     */
+    public function descriptionProvider(): \Generator
+    {
+        yield 'empty string' => [
+            '',
+            '',
+            false,
+        ];
+
+        yield 'has description' => [
+            'Foo bar',
+            'Foo bar',
+            false,
+        ];
+
+        yield 'has description, but package is abandoned' => [
+            '[foo] Foo bar',
+            'Foo bar',
+            true,
         ];
     }
 }
