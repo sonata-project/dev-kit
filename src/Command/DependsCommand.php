@@ -64,9 +64,9 @@ final class DependsCommand extends AbstractCommand
     {
         $bd = 0;
         foreach ($project->package()->getVersions() as $version) {
-            if ('-dev' !== substr($version->getVersion(), -4) && 'dev-master' !== $version->getVersion()) {
-                continue;
-            }
+            if (!u($version->getVersion())->endsWith('-dev')
+                && !u($version->getVersion())->equalsTo('dev-master')
+            ) {
 
             $this->io->writeln(sprintf(
                 '    <info>%s</info>',
