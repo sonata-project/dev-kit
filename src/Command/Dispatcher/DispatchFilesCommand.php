@@ -372,7 +372,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $projectConfig,
                 $branchConfig,
                 [
-                    'package_title' => $project->title(),
+                    'project' => $project,
                     'package_description' => $package->getDescription(),
                     'packagist_name' => $package->getName(),
                     'is_abandoned' => $package->isAbandoned(),
