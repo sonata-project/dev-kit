@@ -198,7 +198,7 @@ CONFIG;
             '',
         ];
 
-        yield 'real homepage' =>[
+        yield 'real homepage' => [
             'https://sonata-project.org/bundles/admin',
             'https://sonata-project.org/bundles/admin',
         ];
