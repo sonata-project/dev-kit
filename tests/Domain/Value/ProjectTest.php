@@ -140,10 +140,15 @@ CONFIG;
     {
         $name = 'admin-bundle';
 
+        $version = new Package\Version();
+        $version->fromArray([
+            'homepage' => $value,
+        ]);
+
         $package = new Package();
         $package->fromArray([
-            'homepage' => $value,
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
         ]);
 
         $config = <<<CONFIG
@@ -179,16 +184,16 @@ CONFIG;
     }
 
     /**
-     * @return \Generator<array<0: string, 1: string>>
+     * @return \Generator<string, array<0: string, 1: string>>
      */
     public function homepageProvider(): \Generator
     {
-        yield [
+        yield 'empty string' => [
             'https://sonata-project.org',
             '',
         ];
 
-        yield [
+        yield 'real homepage' => [
             'https://sonata-project.org/bundles/admin',
             'https://sonata-project.org/bundles/admin',
         ];

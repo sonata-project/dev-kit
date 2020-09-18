@@ -209,8 +209,13 @@ final class Project
     {
         $latestVersion = $this->getLatestPackagistVersion();
 
+        /**
+         * Remove this doc type, after using knplabs/packagist-api release
+         * which includes: https://github.com/KnpLabs/packagist-api/pull/63.
+         *
+         * @var array $keywords
+         */
         $keywords = $latestVersion->getKeywords();
-        \assert(\is_array($keywords));
 
         sort($keywords);
 
@@ -236,7 +241,7 @@ final class Project
         $latest = reset($versions);
 
         if (false === $latest) {
-            $latest = new Package\Version();
+            return new Package\Version();
         }
 
         return $latest;
