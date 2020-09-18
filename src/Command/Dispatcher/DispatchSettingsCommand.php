@@ -18,11 +18,9 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
-use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -101,7 +99,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             $branchNames = $project->branchNames();
             $defaultBranch = end($branchNames);
 
-            if (is_string($defaultBranch)) {
+            if (\is_string($defaultBranch)) {
                 $infoToUpdate['default_branch'] = $defaultBranch;
             }
         }
@@ -142,7 +140,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             $repository->name()
         );
         Assert::keyExists($topics, 'names');
-
 
         if ([] !== array_diff($topics['names'], $project->topics())) {
             $this->io->writeln('    Following topics have to be set:');

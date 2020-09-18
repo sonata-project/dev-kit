@@ -210,11 +210,11 @@ final class Project
         $latestVersion = $this->getLatestPackagistVersion();
 
         $keywords = $latestVersion->getKeywords();
-        \assert(is_array($keywords));
+        \assert(\is_array($keywords));
 
         sort($keywords);
 
-        return array_map(static function(string $keyword): string {
+        return array_map(static function (string $keyword): string {
             return u($keyword)->lower()->replace(' ', '-')->toString();
         }, $keywords);
     }

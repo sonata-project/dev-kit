@@ -143,6 +143,7 @@ CONFIG;
         $package = new Package();
         $package->fromArray([
             'homepage' => $value,
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
         ]);
 
         $config = <<<CONFIG
@@ -172,7 +173,7 @@ CONFIG;
         );
 
         self::assertSame(
-            $$expected,
+            $expected,
             $project->homepage()
         );
     }
