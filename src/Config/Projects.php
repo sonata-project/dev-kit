@@ -42,8 +42,7 @@ final class Projects
 
         foreach ($projectsConfigs['projects'] as $name => $config) {
             $packageName = sprintf(
-                '%s/%s',
-                'sonata-project',
+                'sonata-project/%s',
                 $name
             );
 
