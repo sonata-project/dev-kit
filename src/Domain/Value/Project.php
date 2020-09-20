@@ -229,7 +229,11 @@ final class Project
         $keywords = $latestVersion->getKeywords();
 
         $keywords = array_map(static function (string $keyword): string {
-            return u($keyword)->lower()->replace(' ', '-')->toString();
+            return u($keyword)
+                ->lower()
+                ->replace(' ', '-')
+                ->trim()
+                ->toString();
         }, array_merge($default, $keywords));
 
         sort($keywords);
