@@ -18,7 +18,7 @@ use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\PhpVersion;
 use App\Domain\Value\Project;
-use Github\Client as GithubClient;
+use App\Github\Api\BranchProtections;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,14 +30,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
-    private GithubClient $github;
+    private BranchProtections $branchProtections;
 
-    public function __construct(Projects $projects, GithubClient $github)
+    public function __construct(Projects $projects, BranchProtections $branchProtections)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->github = $github;
+        $this->branchProtections = $branchProtections;
     }
 
     protected function configure(): void
@@ -82,23 +82,22 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             );
 
             if ($this->apply) {
-                $this->github->repo()->protection()
-                    ->update($repository->vendor(), $repository->name(), $branch->name(), [
-                        'required_status_checks' => [
-                            'strict' => false,
-                            'contexts' => $requiredStatusChecks,
+                $this->branchProtections->update($repository, $branch, [
+                    'required_status_checks' => [
+                        'strict' => false,
+                        'contexts' => $requiredStatusChecks,
+                    ],
+                    'required_pull_request_reviews' => [
+                        'dismissal_restrictions' => [
+                            'users' => [],
+                            'teams' => [],
                         ],
-                        'required_pull_request_reviews' => [
-                            'dismissal_restrictions' => [
-                                'users' => [],
-                                'teams' => [],
-                            ],
-                            'dismiss_stale_reviews' => true,
-                            'require_code_owner_reviews' => true,
-                        ],
-                        'restrictions' => null,
-                        'enforce_admins' => false,
-                    ]);
+                        'dismiss_stale_reviews' => true,
+                        'require_code_owner_reviews' => true,
+                    ],
+                    'restrictions' => null,
+                    'enforce_admins' => false,
+                ]);
             }
         }
 
