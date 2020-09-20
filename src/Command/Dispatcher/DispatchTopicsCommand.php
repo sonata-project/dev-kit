@@ -16,11 +16,10 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use Github\Client as GithubClient;
+use App\Github\Api\Topics;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -28,14 +27,14 @@ use Webmozart\Assert\Assert;
 final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
-    private GithubClient $github;
+    private Topics $topics;
 
-    public function __construct(Projects $projects, GithubClient $github)
+    public function __construct(Projects $projects, Topics $topics)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->github = $github;
+        $this->topics = $topics;
     }
 
     protected function configure(): void
@@ -73,12 +72,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
     {
         $repository = $project->repository();
 
-        $topics = $this->github->repo()->topics(
-            $repository->vendor(),
-            $repository->name()
-        );
-        Assert::keyExists($topics, 'names');
-        $topics = $topics['names'];
+        $topics = $this->topics->get($repository);
 
         if ([] === $topics && [] === $project->topics()) {
             $this->io->writeln(sprintf(
@@ -89,21 +83,20 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        if ([] !== array_diff($topics, $project->topics())) {
+        if ($topics !== $project->topics()) {
             $this->io->writeln('    Topics would be changed...');
             $this->io->writeln(sprintf(
                 '        from <comment>%s</comment>',
-                implode(', ', $topics),
+                [] === $topics ? '[]' : implode(', ', $topics),
             ));
             $this->io->writeln(sprintf(
                 '        to   <info>%s</info>',
-                implode(', ', $project->topics()),
+                [] === $project->topics() ? '[]' : implode(', ', $project->topics()),
             ));
 
             if ($this->apply) {
-                $this->github->repo()->replaceTopics(
-                    $repository->vendor(),
-                    $repository->name(),
+                $this->topics->replace(
+                    $repository,
                     $project->topics()
                 );
             }
