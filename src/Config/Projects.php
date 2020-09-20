@@ -43,7 +43,11 @@ final class Projects
         ]);
 
         foreach ($projectsConfigs['projects'] as $name => $config) {
-            $packageName = static::PACKAGIST_GROUP.'/'.$name;
+            $packageName = sprintf(
+                '%s/%s',
+                static::PACKAGIST_GROUP,
+                $name
+            );
 
             $package = $this->packagist->get($packageName);
 
