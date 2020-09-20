@@ -80,7 +80,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
         Assert::keyExists($topics, 'names');
         $topics = $topics['names'];
 
-        if ([] === $topics || [] === $project->topics()) {
+        if ([] === $topics && [] === $project->topics()) {
             $this->io->writeln(sprintf(
                 '    <comment>%s</comment>',
                 'No topics are currently set on the repository, nor new ones are configured!'
