@@ -158,13 +158,13 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             ];
         }
 
-        usort($rows, static function ($row1, $row2): int {
-            return strcasecmp($row1[0], $row2[0]);
-        });
-
         if (empty($rows)) {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         } else {
+            usort($rows, static function ($row1, $row2): int {
+                return strcasecmp($row1[0], $row2[0]);
+            });
+
             $this->io->table($headers, $rows);
 
             if ($this->apply) {
