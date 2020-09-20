@@ -277,4 +277,46 @@ CONFIG;
 
         self::assertNotEmpty($project->topics());
     }
+
+    /**
+     * @test
+     */
+    public function defaultTopicsAreNotDuplicatedWithPackageKeywords(): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'keywords' => [
+                'Symfony bundle',
+                'Sonata',
+                'php',
+            ],
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        $expected = [
+            'bundle',
+            'php',
+            'sonata',
+            'symfony',
+            'symfony-bundle',
+        ];
+
+        self::assertSame(
+            $expected,
+            $project->topics()
+        );
+    }
 }
