@@ -250,4 +250,31 @@ CONFIG;
             $project->topics()
         );
     }
+
+    /**
+     * @test
+     */
+    public function topicsReturnsDefaultTopicsIfNoTopicsAreSetInPackage(): void
+    {
+        $version = new Package\Version();
+        $version->fromArray([
+            'keywords' => [],
+        ]);
+
+        $package = new Package();
+        $package->fromArray([
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+            'versions' => [$version],
+        ]);
+
+        $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        $project = Project::fromValues(
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
+            $package
+        );
+
+        self::assertNotEmpty($project->topics());
+    }
 }
