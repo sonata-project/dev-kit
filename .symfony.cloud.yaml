@@ -78,7 +78,7 @@ crons:
         spec: '0 5 * * *'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:topics
+                croncape bin/console dispatch:topics --apply
             fi
     dispatch-files:
         spec: '5 */4 * * *'
