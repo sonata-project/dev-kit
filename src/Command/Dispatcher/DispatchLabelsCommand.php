@@ -17,7 +17,7 @@ use App\Command\AbstractNeedApplyCommand;
 use App\Config\LabelsConfiguration;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use Github\Client as GithubClient;
+use App\Github\Api\Labels;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,14 +32,14 @@ use Webmozart\Assert\Assert;
 final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
-    private GithubClient $github;
+    private Labels $labels;
 
-    public function __construct(Projects $projects, GithubClient $github)
+    public function __construct(Projects $projects, Labels $labels)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->github = $github;
+        $this->labels = $labels;
     }
 
     protected function configure(): void
@@ -102,9 +102,9 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
         $rows = [];
 
-        foreach ($this->github->repo()->labels()->all($repository->vendor(), $repository->name()) as $label) {
-            $name = $label['name'];
-            $color = $label['color'];
+        foreach ($this->labels->all($repository) as $label) {
+            $name = $label->name();
+            $color = $label->color();
 
             $shouldExist = \array_key_exists($name, $configuredLabels);
             $configuredColor = $shouldExist ? $configuredLabels[$name]['color'] : null;
@@ -118,12 +118,12 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->github->repo()->labels()->remove($repository->vendor(), $repository->name(), $name);
+                    $this->labels->remove($repository, $label);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->github->repo()->labels()->update($repository->vendor(), $repository->name(), $name, [
+                    $this->labels->update($repository, $label, [
                         'name' => $name,
                         'color' => $configuredColor,
                     ]);
@@ -131,12 +131,12 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             }
 
             if ($state) {
-                array_push($rows, [
+                $rows[] = [
                     $name,
                     '#'.$color,
                     $configuredColor ? '#'.$configuredColor : 'N/A',
                     $state,
-                ]);
+                ];
             }
         }
 
@@ -144,12 +144,18 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->github->repo()->labels()->create($repository->vendor(), $repository->name(), [
+                $this->labels->create($repository, [
                     'name' => $name,
                     'color' => $color,
                 ]);
             }
-            array_push($rows, [$name, 'N/A', '#'.$color, 'Created']);
+
+            $rows = [
+                $name,
+                'N/A',
+                '#'.$color,
+                'Created',
+            ];
         }
 
         usort($rows, static function ($row1, $row2): int {
