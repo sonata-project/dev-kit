@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
  */
 final class Projects
 {
-    public const PACKAGIST_GROUP = 'sonata-project';
+    private const PACKAGIST_GROUP = 'sonata-project';
 
     private PackagistClient $packagist;
 
