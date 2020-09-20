@@ -41,12 +41,10 @@ final class Projects
         ]);
 
         foreach ($projectsConfigs['projects'] as $name => $config) {
-            $packageName = sprintf(
+            $package = $this->packagist->get(sprintf(
                 'sonata-project/%s',
                 $name
-            );
-
-            $package = $this->packagist->get($packageName);
+            ));
 
             $this->projects[$name] = Project::fromValues($name, $config, $package);
         }
