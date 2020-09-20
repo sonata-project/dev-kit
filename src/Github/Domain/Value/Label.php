@@ -30,6 +30,7 @@ final class Label
 
         if (null !== $color) {
             Assert::stringNotEmpty($color);
+            Assert::notStartsWith($color, '#');
         }
 
         $this->name = $name;
