@@ -15,7 +15,7 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use Github\Client as GithubClient;
+use App\Github\Api\Repositories;
 use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Psr\Log\LoggerInterface;
@@ -29,15 +29,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class AutoMergeCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
-    private GithubClient $github;
+    private Repositories $repositories;
     private LoggerInterface $logger;
 
-    public function __construct(Projects $projects, GithubClient $github, LoggerInterface $logger)
+    public function __construct(Projects $projects, Repositories $repositories, LoggerInterface $logger)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->github = $github;
+        $this->repositories = $repositories;
         $this->logger = $logger;
     }
 
@@ -102,9 +102,8 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             try {
-                $response = $this->github->repo()->merge(
-                    $repository->vendor(),
-                    $repository->name(),
+                $response = $this->repositories->merge(
+                    $repository,
                     $base,
                     $head
                 );

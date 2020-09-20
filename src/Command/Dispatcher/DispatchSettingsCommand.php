@@ -16,7 +16,7 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use Github\Client as GithubClient;
+use App\Github\Api\Repositories;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,14 +28,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
-    private GithubClient $github;
+    private Repositories $repositories;
 
-    public function __construct(Projects $projects, GithubClient $github)
+    public function __construct(Projects $projects, Repositories $repositories)
     {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->github = $github;
+        $this->repositories = $repositories;
     }
 
     protected function configure(): void
@@ -73,10 +73,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     {
         $repository = $project->repository();
 
-        $repositoryInfo = $this->github->repo()->show(
-            $repository->vendor(),
-            $repository->name()
-        );
+        $repositoryInfo = $this->repositories->show($repository);
 
         $infoToUpdate = [
             'homepage' => $project->homepage(),
@@ -116,9 +113,10 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             }
 
             if ($this->apply) {
-                $this->github->repo()->update($repository->vendor(), $repository->name(), array_merge($infoToUpdate, [
-                    'name' => $repository->name(),
-                ]));
+                $this->repositories->update(
+                    $repository,
+                    $infoToUpdate
+                );
             }
         } else {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
