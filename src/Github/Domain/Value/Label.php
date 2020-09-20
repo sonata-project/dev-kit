@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,25 +22,28 @@ use Webmozart\Assert\Assert;
 final class Label
 {
     private string $name;
-    private ?string $color;
+    private string $color;
 
-    private function __construct(string $name, ?string $color = null)
+    private function __construct(string $name, string $color)
     {
         $name = trim($name);
         Assert::stringNotEmpty($name);
 
-        if (null !== $color) {
-            Assert::stringNotEmpty($color);
-            Assert::notStartsWith($color, '#');
-        }
+        $color = trim($color);
+        Assert::stringNotEmpty($color);
+        Assert::notStartsWith($color, '#');
+        Assert::length($color, 6);
 
         $this->name = $name;
         $this->color = $color;
     }
 
-    public static function fromString(string $name): self
+    public static function fromValues(string $name, string $color): self
     {
-        return new self($name);
+        return new self(
+            $name,
+            $color
+        );
     }
 
     /**
@@ -58,22 +62,33 @@ final class Label
 
     public static function RTM(): self
     {
-        return self::fromString('RTM');
+        return self::fromValues(
+            'RTM',
+            'ffffff'
+        );
     }
 
     public static function PendingAuthor(): self
     {
-        return self::fromString('pending author');
+        return self::fromValues(
+            'pending author',
+            'ededed'
+        );
     }
 
     public function equals(self $other): bool
     {
-        return $this->name === $other->name();
+        return $this->name === $other->name() && $this->color === $other->color;
     }
 
-    public function color(): ?string
+    public function color(): string
     {
         return $this->color;
+    }
+
+    public function colorWithLeadingHash(): string
+    {
+        return u('#')->append($this->color)->toString();
     }
 
     public function name(): string

@@ -21,24 +21,51 @@ final class LabelTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function throwsExceptionIfNameIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Label::fromString('');
+        Label::fromValues('', 'ededed');
     }
 
     /**
      * @test
      */
-    public function fromString(): void
+    public function throwsExceptionIfColorIsEmptyString(): void
     {
-        $value = 'foo';
+        $this->expectException(\InvalidArgumentException::class);
 
-        self::assertSame(
-            $value,
-            Label::fromString($value)->name()
-        );
+        Label::fromValues('foo', '');
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfColorStartsWithHash(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Label::fromValues('foo', '#123454');
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfColorLengthIsLessThan6(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Label::fromValues('foo', '12345');
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfColorLengthIsGreaterThan6(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Label::fromValues('foo', '1234567');
     }
 
     /**
@@ -48,11 +75,9 @@ final class LabelTest extends TestCase
     {
         $label = Label::RTM();
 
-        self::assertSame(
-            'RTM',
-            $label->name()
-        );
-        self::assertNull($label->color());
+        self::assertSame('RTM', $label->name());
+        self::assertSame('ffffff', $label->color());
+        self::assertSame('#ffffff', $label->colorWithLeadingHash());
     }
 
     /**
@@ -62,11 +87,9 @@ final class LabelTest extends TestCase
     {
         $label = Label::PendingAuthor();
 
-        self::assertSame(
-            'pending author',
-            $label->name()
-        );
-        self::assertNull($label->color());
+        self::assertSame('pending author', $label->name());
+        self::assertSame('ededed', $label->color());
+        self::assertSame('#ededed', $label->colorWithLeadingHash());
     }
 
     /**
@@ -86,12 +109,12 @@ final class LabelTest extends TestCase
     {
         yield [
             true,
-            Label::fromString('RTM'),
+            Label::fromValues('RTM', 'ffffff'),
             Label::RTM(),
         ];
 
-        yield 'equals, because color is not taken into account' => [
-            true,
+        yield 'not equal, because color is taken into account' => [
+            false,
             Label::fromResponse([
                 'name' => 'foo',
                 'color' => '1',
