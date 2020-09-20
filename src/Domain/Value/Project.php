@@ -238,7 +238,7 @@ final class Project
 
         sort($keywords);
 
-        return array_unique($keywords);
+        return array_values(array_unique($keywords));
     }
 
     /**
