@@ -207,6 +207,17 @@ final class Project
      */
     public function topics(): array
     {
+        $default = [
+            'PHP',
+            'Sonata',
+            'Symfony',
+        ];
+
+        if (u($this->name)->endsWith('bundle')) {
+            $default[] = 'Bundle';
+            $default[] = 'Symfony-Bundle';
+        }
+
         $latestVersion = $this->getLatestPackagistVersion();
 
         /**
@@ -219,7 +230,7 @@ final class Project
 
         $keywords = array_map(static function (string $keyword): string {
             return u($keyword)->lower()->replace(' ', '-')->toString();
-        }, $keywords);
+        }, array_merge($default, $keywords));
 
         sort($keywords);
 
