@@ -52,7 +52,7 @@ final class Topics
         $this->github->repo()->replaceTopics(
             $repository->vendor(),
             $repository->name(),
-            $topics
+            array_values($topics)
         );
     }
 }
