@@ -39,21 +39,21 @@ final class Hooks
         }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
     }
 
+    public function create(Repository $repository, array $params): void
+    {
+        $this->github->repo()->hooks()->create(
+            $repository->vendor(),
+            $repository->name(),
+            $params
+        );
+    }
+
     public function update(Repository $repository, Hook $hook, array $params): void
     {
         $this->github->repo()->hooks()->update(
             $repository->vendor(),
             $repository->name(),
             $hook->id(),
-            $params
-        );
-    }
-
-    public function create(Repository $repository, array $params): void
-    {
-        $this->github->repo()->hooks()->create(
-            $repository->vendor(),
-            $repository->name(),
             $params
         );
     }
