@@ -39,12 +39,12 @@ final class Labels
         }, $this->github->repo()->labels()->all($repository->vendor(), $repository->name()));
     }
 
-    public function create(Repository $repository, array $params): void
+    public function create(Repository $repository, Label $label): void
     {
         $this->github->repo()->labels()->create(
             $repository->vendor(),
             $repository->name(),
-            $params
+            $label->toGithubPayload()
         );
     }
 

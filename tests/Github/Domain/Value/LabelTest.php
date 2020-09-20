@@ -81,6 +81,13 @@ final class LabelTest extends TestCase
         self::assertSame('Test', $label->name());
         self::assertSame('ededed', $label->color());
         self::assertSame('#ededed', $label->colorWithLeadingHash());
+        self::assertSame(
+            [
+                'color' => 'ededed',
+                'name' => 'Test',
+            ],
+            $label->toGithubPayload()
+        );
     }
 
     /**
