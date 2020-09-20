@@ -14,16 +14,14 @@ declare(strict_types=1);
 namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
-use App\Config\LabelsConfiguration;
+use App\Config\ConfiguredLabels;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Labels;
+use App\Github\Domain\Value\Label;
 use Github\Exception\ExceptionInterface;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Yaml\Yaml;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -32,13 +30,15 @@ use Webmozart\Assert\Assert;
 final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
+    private ConfiguredLabels $configuredLabels;
     private Labels $labels;
 
-    public function __construct(Projects $projects, Labels $labels)
+    public function __construct(Projects $projects, ConfiguredLabels $configuredLabels, Labels $labels)
     {
         parent::__construct();
 
         $this->projects = $projects;
+        $this->configuredLabels = $configuredLabels;
         $this->labels = $labels;
     }
 
@@ -56,20 +56,12 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch labels for all sonata projects');
 
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new LabelsConfiguration(), [
-            'sonata' => Yaml::parseFile(__DIR__.'/../../../config/labels.yaml'),
-        ]);
-
         /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->section($project->name());
 
-                $this->updateLabels(
-                    $project,
-                    $config['labels']
-                );
+                $this->updateLabels($project);
             } catch (ExceptionInterface $e) {
                 $this->io->error(sprintf(
                     'Failed with message: %s',
@@ -81,17 +73,11 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
         return 0;
     }
 
-    /**
-     * @param array<string, array<string, string>> $labels
-     */
-    private function updateLabels(Project $project, array $labels): void
+    private function updateLabels(Project $project): void
     {
-        Assert::notEmpty($labels);
-
         $repository = $project->repository();
 
-        $configuredLabels = $labels;
-        $missingLabels = $labels;
+        $missingLabels = $this->configuredLabels->all();
 
         $headers = [
             'Name',
@@ -102,59 +88,58 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
         $rows = [];
 
-        foreach ($this->labels->all($repository) as $label) {
-            $name = $label->name();
-            $color = $label->color();
+        foreach ($this->labels->all($repository) as $remoteLabel) {
+            $name = $remoteLabel->name();
 
-            $shouldExist = \array_key_exists($name, $configuredLabels);
-            $configuredColor = $shouldExist ? $configuredLabels[$name]['color'] : null;
-            $shouldBeUpdated = $shouldExist && $color !== $configuredColor;
+            $shouldExist = $this->configuredLabels->shouldExist($remoteLabel);
 
             if ($shouldExist) {
                 unset($missingLabels[$name]);
             }
 
-            $state = null;
-            if (!$shouldExist) {
-                $state = 'Deleted';
-                if ($this->apply) {
-                    $this->labels->remove($repository, $label);
-                }
-            } elseif ($shouldBeUpdated) {
-                $state = 'Updated';
-                if ($this->apply) {
-                    $this->labels->update($repository, $label, [
-                        'name' => $name,
-                        'color' => $configuredColor,
-                    ]);
-                }
-            }
+            $shouldBeUpdated = $this->configuredLabels->needsUpdate($remoteLabel);
 
-            if ($state) {
+            if (!$shouldExist) {
+                if ($this->apply) {
+                    $this->labels->remove($repository, $remoteLabel);
+                }
+
                 $rows[] = [
                     $name,
-                    '#'.$color,
-                    $configuredColor ? '#'.$configuredColor : 'N/A',
-                    $state,
+                    $remoteLabel->colorWithLeadingHash(),
+                    '',
+                    'DELETE',
+                ];
+            } elseif ($shouldBeUpdated) {
+                $configuredLabel = $this->configuredLabels->byName($remoteLabel->name());
+
+                if ($this->apply) {
+                    $this->labels->update($repository, $remoteLabel, [
+                        'name' => $name,
+                        'color' => $configuredLabel->color(),
+                    ]);
+                }
+
+                $rows[] = [
+                    $name,
+                    $remoteLabel->colorWithLeadingHash(),
+                    $configuredLabel->colorWithLeadingHash(),
+                    'UPDATE',
                 ];
             }
         }
 
-        foreach ($missingLabels as $name => $label) {
-            $color = $label['color'];
-
+        /** @var Label $label */
+        foreach ($missingLabels as $label) {
             if ($this->apply) {
-                $this->labels->create($repository, [
-                    'name' => $name,
-                    'color' => $color,
-                ]);
+                $this->labels->create($repository, $label);
             }
 
-            $rows = [
-                $name,
-                'N/A',
-                '#'.$color,
-                'Created',
+            $rows[] = [
+                $label->name(),
+                '',
+                $label->colorWithLeadingHash(),
+                'CREATE',
             ];
         }
 

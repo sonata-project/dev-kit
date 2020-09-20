@@ -97,4 +97,15 @@ final class Label
     {
         return $this->name;
     }
+
+    /**
+     * @return array{color: string, name: string}
+     */
+    public function toGithubPayload(): array
+    {
+        return [
+            'color' => $this->color,
+            'name' => $this->name,
+        ];
+    }
 }
