@@ -220,21 +220,13 @@ final class Project
 
         $latestVersion = $this->getLatestPackagistVersion();
 
-        /**
-         * Remove this doc type, after using knplabs/packagist-api release
-         * which includes: https://github.com/KnpLabs/packagist-api/pull/63.
-         *
-         * @var array $keywords
-         */
-        $keywords = $latestVersion->getKeywords();
-
         $keywords = array_map(static function (string $keyword): string {
             return u($keyword)
                 ->lower()
                 ->replace(' ', '-')
                 ->trim()
                 ->toString();
-        }, array_merge($default, $keywords));
+        }, array_merge($default, $latestVersion->getKeywords()));
 
         sort($keywords);
 
