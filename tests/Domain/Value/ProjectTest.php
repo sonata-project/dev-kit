@@ -214,7 +214,6 @@ CONFIG;
         $version = new Package\Version();
         $version->fromArray([
             'keywords' => [
-                'Sonata',
                 'Admin Generator',
                 'orm',
                 'Admin',
@@ -238,8 +237,12 @@ CONFIG;
         $expected = [
             'admin',
             'admin-generator',
+            'bundle',
             'orm',
+            'php',
             'sonata',
+            'symfony',
+            'symfony-bundle',
         ];
 
         self::assertSame(
