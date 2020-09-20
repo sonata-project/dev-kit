@@ -47,7 +47,7 @@
         "symfony/symfony": "*"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.12.42",
+        "phpstan/phpstan": "0.12.43",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/var-dumper": "^5.1"
     },
