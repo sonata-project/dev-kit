@@ -24,8 +24,6 @@ use Webmozart\Assert\Assert;
  */
 final class Projects
 {
-    private const PACKAGIST_GROUP = 'sonata-project';
-
     private PackagistClient $packagist;
 
     /**
@@ -45,7 +43,7 @@ final class Projects
         foreach ($projectsConfigs['projects'] as $name => $config) {
             $packageName = sprintf(
                 '%s/%s',
-                static::PACKAGIST_GROUP,
+                'sonata-project',
                 $name
             );
 
