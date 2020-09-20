@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ecc7a997d8281bef3928734e40ac0111",
+    "content-hash": "1c404bffc09d09aedbafb0f6ddcf60d3",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -828,10 +828,6 @@
                 "utility",
                 "validation"
             ],
-            "support": {
-                "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.1.3"
-            },
             "time": "2020-08-07T10:34:21+00:00"
         },
         {
