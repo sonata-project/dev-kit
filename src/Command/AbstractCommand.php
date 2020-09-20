@@ -26,7 +26,6 @@ abstract class AbstractCommand extends Command
     public const GITHUB_GROUP = 'sonata-project';
     public const GITHUB_USER = 'SonataCI';
     public const GITHUB_EMAIL = 'thomas+ci@sonata-project.org';
-    public const PACKAGIST_GROUP = 'sonata-project';
     public const BOT_NAME = 'SonataCI';
 
     protected const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
