@@ -20,25 +20,25 @@ use Webmozart\Assert\Assert;
  */
 final class Label
 {
-    private string $value;
+    private string $name;
     private ?string $color;
 
-    private function __construct(string $value, ?string $color = null)
+    private function __construct(string $name, ?string $color = null)
     {
-        $value = trim($value);
-        Assert::stringNotEmpty($value);
+        $name = trim($name);
+        Assert::stringNotEmpty($name);
 
         if (null !== $color) {
             Assert::stringNotEmpty($color);
         }
 
-        $this->value = $value;
+        $this->name = $name;
         $this->color = $color;
     }
 
-    public static function fromString(string $value): self
+    public static function fromString(string $name): self
     {
-        return new self($value);
+        return new self($name);
     }
 
     /**
@@ -67,7 +67,7 @@ final class Label
 
     public function equals(self $other): bool
     {
-        return $this->value === $other->toString();
+        return $this->name === $other->name();
     }
 
     public function color(): ?string
@@ -75,8 +75,8 @@ final class Label
         return $this->color;
     }
 
-    public function toString(): string
+    public function name(): string
     {
-        return $this->value;
+        return $this->name;
     }
 }

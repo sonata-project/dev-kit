@@ -44,7 +44,7 @@ final class AddIssueLabel
             $repository->username(),
             $repository->name(),
             $issueId->toInt(),
-            $label->toString()
+            $label->name()
         );
     }
 }

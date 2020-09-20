@@ -120,7 +120,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                             $repository->vendor(),
                             $repository->name(),
                             $number->toInt(),
-                            Label::PendingAuthor()->toString()
+                            Label::PendingAuthor()->name()
                         );
                     }
 

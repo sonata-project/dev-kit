@@ -37,7 +37,7 @@ final class LabelTest extends TestCase
 
         self::assertSame(
             $value,
-            Label::fromString($value)->toString()
+            Label::fromString($value)->name()
         );
     }
 
@@ -50,7 +50,7 @@ final class LabelTest extends TestCase
 
         self::assertSame(
             'RTM',
-            $label->toString()
+            $label->name()
         );
         self::assertNull($label->color());
     }
@@ -64,7 +64,7 @@ final class LabelTest extends TestCase
 
         self::assertSame(
             'pending author',
-            $label->toString()
+            $label->name()
         );
         self::assertNull($label->color());
     }

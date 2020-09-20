@@ -40,7 +40,7 @@ final class RemoveIssueLabel
                     $repository->username(),
                     $repository->name(),
                     $issueId->toInt(),
-                    $label->toString()
+                    $label->name()
                 );
 
                 break;
