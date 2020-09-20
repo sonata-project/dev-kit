@@ -34,7 +34,6 @@ final class Hooks
      */
     public function all(Repository $repository): array
     {
-        /* @var Hook[] $hooks */
         return array_map(static function (array $response): Hook {
             return Hook::fromResponse($response);
         }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
