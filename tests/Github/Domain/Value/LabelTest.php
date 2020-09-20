@@ -71,6 +71,21 @@ final class LabelTest extends TestCase
     /**
      * @test
      */
+    public function valid(): void
+    {
+        $label = Label::fromValues(
+            'Test',
+            'EDEDED'
+        );
+
+        self::assertSame('Test', $label->name());
+        self::assertSame('ededed', $label->color());
+        self::assertSame('#ededed', $label->colorWithLeadingHash());
+    }
+
+    /**
+     * @test
+     */
     public function RTM(): void
     {
         $label = Label::RTM();
@@ -122,6 +137,18 @@ final class LabelTest extends TestCase
             Label::fromResponse([
                 'name' => 'foo',
                 'color' => '2',
+            ]),
+        ];
+
+        yield 'not equal, because of case sensitive' => [
+            false,
+            Label::fromResponse([
+                'name' => 'Foo',
+                'color' => '1',
+            ]),
+            Label::fromResponse([
+                'name' => 'foo',
+                'color' => '1',
             ]),
         ];
 

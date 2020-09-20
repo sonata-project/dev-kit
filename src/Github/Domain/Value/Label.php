@@ -29,7 +29,7 @@ final class Label
         $name = trim($name);
         Assert::stringNotEmpty($name);
 
-        $color = trim($color);
+        $color = u($color)->trim()->lower()->toString();
         Assert::stringNotEmpty($color);
         Assert::notStartsWith($color, '#');
         Assert::length($color, 6);
@@ -78,7 +78,9 @@ final class Label
 
     public function equals(self $other): bool
     {
-        return $this->name === $other->name() && $this->color === $other->color;
+        return u($this->name)->ignoreCase()->equalsTo($other->name())
+            && u($this->color)->ignoreCase()->equalsTo($other->color)
+            ;
     }
 
     public function color(): string
