@@ -16,7 +16,7 @@ namespace App\Command;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\PullRequests;
-use App\Github\Domain\Value\PullRequest\CombinedStatus;
+use App\Github\Api\Statuses;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -33,12 +33,14 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
     private Projects $projects;
     private PullRequests $pullRequests;
+    private Statuses $statuses;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
     public function __construct(
         Projects $projects,
         PullRequests $pullRequests,
+        Statuses $statuses,
         GithubClient $github,
         ResultPagerInterface $githubPager
     ) {
@@ -46,6 +48,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         $this->projects = $projects;
         $this->pullRequests = $pullRequests;
+        $this->statuses = $statuses;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -121,13 +124,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pr->base()->ref()
             ));
 
-            $combinedStatusResponse = $this->github->repos()->statuses()->combined(
-                $repository->vendor(),
-                $repository->name(),
-                $pr->head()->sha()
-            );
-
-            $combinedStatus = CombinedStatus::fromResponse($combinedStatusResponse);
+            $combinedStatus = $this->statuses->combined($repository, $pr);
 
             $this->io->writeln(sprintf(
                 '    Combined status: %s',
