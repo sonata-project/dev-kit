@@ -23,15 +23,15 @@ use Webmozart\Assert\Assert;
  */
 final class Repository
 {
-    private string $vendor;
+    private string $username;
     private string $name;
 
-    private function __construct(string $vendor, string $name)
+    private function __construct(string $username, string $name)
     {
-        Assert::stringNotEmpty($vendor);
+        Assert::stringNotEmpty($username);
         Assert::stringNotEmpty($name);
 
-        $this->vendor = $vendor;
+        $this->username = $username;
         $this->name = $name;
     }
 
@@ -50,9 +50,9 @@ final class Repository
         );
     }
 
-    public function vendor(): string
+    public function username(): string
     {
-        return $this->vendor;
+        return $this->username;
     }
 
     public function name(): string
@@ -62,7 +62,7 @@ final class Repository
 
     public function toString(): string
     {
-        return u($this->vendor)
+        return u($this->username)
             ->append('/')
             ->append($this->name)
             ->toString();
@@ -74,19 +74,19 @@ final class Repository
         Assert::contains($url, '/');
         Assert::startsWith($url, 'https://github.com/');
 
-        list($vendor, $name) = u($url)
+        list($username, $name) = u($url)
             ->replace('https://github.com/', '')
             ->replace('.git', '')
             ->split('/');
 
         return new self(
-            $vendor->toString(),
+            $username->toString(),
             $name->toString()
         );
     }
 
-    private static function fromValues(string $vendor, string $name): self
+    private static function fromValues(string $username, string $name): self
     {
-        return new self($vendor, $name);
+        return new self($username, $name);
     }
 }

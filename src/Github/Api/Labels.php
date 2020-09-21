@@ -36,13 +36,13 @@ final class Labels
     {
         return array_map(static function (array $response): Label {
             return Label::fromResponse($response);
-        }, $this->github->repo()->labels()->all($repository->vendor(), $repository->name()));
+        }, $this->github->repo()->labels()->all($repository->username(), $repository->name()));
     }
 
     public function create(Repository $repository, Label $label): void
     {
         $this->github->repo()->labels()->create(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $label->toGithubPayload()
         );
@@ -51,7 +51,7 @@ final class Labels
     public function update(Repository $repository, Label $label, array $params): void
     {
         $this->github->repo()->labels()->update(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $label->name(),
             $params
@@ -61,7 +61,7 @@ final class Labels
     public function remove(Repository $repository, Label $label): void
     {
         $this->github->repo()->labels()->remove(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $label->name()
         );

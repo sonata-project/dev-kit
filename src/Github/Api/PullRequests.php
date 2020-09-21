@@ -42,12 +42,12 @@ final class PullRequests
             $issue = Issue::fromInt($listResponse['number']);
 
             $detailResponse = $this->github->pullRequests()->show(
-                $repository->vendor(),
+                $repository->username(),
                 $repository->name(),
                 $issue->toInt()
             );
 
             return PullRequest::fromDetailResponse($detailResponse);
-        }, $this->github->pullRequests()->all($repository->vendor(), $repository->name()));
+        }, $this->github->pullRequests()->all($repository->username(), $repository->name()));
     }
 }

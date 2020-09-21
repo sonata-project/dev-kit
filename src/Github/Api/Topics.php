@@ -35,7 +35,7 @@ final class Topics
     public function get(Repository $repository): array
     {
         $topics = $this->github->repo()->topics(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name()
         );
         Assert::keyExists($topics, 'names');
@@ -50,7 +50,7 @@ final class Topics
     public function replace(Repository $repository, array $topics): void
     {
         $this->github->repo()->replaceTopics(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             array_values($topics)
         );

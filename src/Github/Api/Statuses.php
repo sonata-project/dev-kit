@@ -32,7 +32,7 @@ final class Statuses
     public function combined(Repository $repository, PullRequest $pullRequest): PullRequest\CombinedStatus
     {
         $response = $this->github->repos()->statuses()->combined(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $pullRequest->head()->sha()
         );

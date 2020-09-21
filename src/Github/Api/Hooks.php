@@ -36,13 +36,13 @@ final class Hooks
     {
         return array_map(static function (array $response): Hook {
             return Hook::fromResponse($response);
-        }, $this->github->repo()->hooks()->all($repository->vendor(), $repository->name()));
+        }, $this->github->repo()->hooks()->all($repository->username(), $repository->name()));
     }
 
     public function create(Repository $repository, array $params): void
     {
         $this->github->repo()->hooks()->create(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $params
         );
@@ -51,7 +51,7 @@ final class Hooks
     public function update(Repository $repository, Hook $hook, array $params): void
     {
         $this->github->repo()->hooks()->update(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $hook->id(),
             $params
@@ -61,7 +61,7 @@ final class Hooks
     public function remove(Repository $repository, Hook $hook): void
     {
         $this->github->repo()->hooks()->remove(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $hook->id()
         );
@@ -70,7 +70,7 @@ final class Hooks
     public function ping(Repository $repository, Hook $hook): void
     {
         $this->github->repo()->hooks()->ping(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $hook->id()
         );

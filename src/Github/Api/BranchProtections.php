@@ -32,7 +32,7 @@ final class BranchProtections
     public function update(Repository $repository, Branch $branch, array $params): void
     {
         $this->github->repo()->protection()->update(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $branch->name(),
             $params

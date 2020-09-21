@@ -145,7 +145,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
-                $repository->vendor(),
+                $repository->username(),
                 $repository->name(),
                 $pr->issue()->toInt(),
             ]);
@@ -172,7 +172,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             if ($this->apply) {
                 try {
                     $this->github->pullRequests()->merge(
-                        $repository->vendor(),
+                        $repository->username(),
                         $repository->name(),
                         $pr->issue()->toInt(),
                         $squash ? '' : $pr->title(),
@@ -183,7 +183,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
                     if ('sonata-project' === $pr->head()->repo()->owner()->login()) {
                         $this->github->gitData()->references()->remove(
-                            $repository->vendor(),
+                            $repository->username(),
                             $repository->name(),
                             u('heads/')->append($pr->head()->ref())->toString()
                         );

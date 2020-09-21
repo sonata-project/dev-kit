@@ -43,7 +43,7 @@ final class Comments
         $comments = array_map(static function (array $response): Comment {
             return Comment::fromResponse($response);
         }, $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $pullRequest->issue()->toInt(),
         ]));
@@ -78,7 +78,7 @@ final class Comments
         Assert::stringNotEmpty($message);
 
         $this->github->issues()->comments()->create(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $issue->toInt(),
             [

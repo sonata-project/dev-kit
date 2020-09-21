@@ -130,9 +130,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $git = $this->git->cloneRepository(
             sprintf(
                 'https://%s:%s@github.com/%s/%s',
-                $repository->vendor(),
+                $repository->username(),
                 $this->githubToken,
-                $repository->vendor(),
+                $repository->username(),
                 $repository->name()
             ),
             $clonePath
@@ -149,7 +149,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranches = array_map(static function ($branch) {
                 return $branch['name'];
-            }, $this->github->repos()->branches($repository->vendor(), $repository->name()));
+            }, $this->github->repos()->branches($repository->username(), $repository->name()));
 
             $currentBranch = key($branches);
             $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
@@ -165,7 +165,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->github->repos()->commits()->compare(
-                $repository->vendor(),
+                $repository->username(),
                 $repository->name(),
                 $currentBranch,
                 $previousBranch
@@ -215,13 +215,13 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $currentHead = u('sonata-project:')->append($currentDevKit)->toString();
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->github->pullRequests()->all($repository->vendor(), $repository->name(), [
+                    $pulls = $this->github->pullRequests()->all($repository->username(), $repository->name(), [
                         'state' => 'open',
                         'head' => $currentHead,
                     ]);
 
                     if (0 === \count($pulls)) {
-                        $this->github->pullRequests()->create($repository->vendor(), $repository->name(), [
+                        $this->github->pullRequests()->create($repository->username(), $repository->name(), [
                             'title' => sprintf(
                                 'DevKit updates for %s branch',
                                 $currentBranch

@@ -32,7 +32,7 @@ final class Repositories
     public function show(Repository $repository): array
     {
         return $this->github->repo()->show(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name()
         );
     }
@@ -40,7 +40,7 @@ final class Repositories
     public function update(Repository $repository, array $params): void
     {
         $this->github->repo()->update(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             array_merge(
                 $params,
@@ -57,7 +57,7 @@ final class Repositories
         Assert::stringNotEmpty($head);
 
         $response = $this->github->repo()->merge(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $base,
             $head

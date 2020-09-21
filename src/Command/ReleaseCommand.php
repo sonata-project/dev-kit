@@ -132,18 +132,18 @@ EOT;
         $repository = $project->repository();
 
         $currentRelease = $this->github->repo()->releases()->latest(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name()
         );
 
         $branchToRelease = $this->github->repo()->branches(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $branch
         );
 
         $statuses = $this->github->repo()->statuses()->combined(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $branchToRelease['commit']['sha']
         );

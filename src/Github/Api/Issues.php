@@ -34,7 +34,7 @@ final class Issues
     public function addLabel(Repository $repository, Issue $issue, Label $label): void
     {
         $this->github->issues()->labels()->add(
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $issue->toInt(),
             $label->name()
@@ -45,7 +45,7 @@ final class Issues
     {
         try {
             $this->github->issues()->labels()->remove(
-                $repository->vendor(),
+                $repository->username(),
                 $repository->name(),
                 $issue->toInt(),
                 $label->name()

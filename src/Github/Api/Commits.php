@@ -41,7 +41,7 @@ final class Commits
         return array_map(static function (array $response): Commit {
             return Commit::fromResponse($response);
         }, $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
-            $repository->vendor(),
+            $repository->username(),
             $repository->name(),
             $pullRequest->issue()->toInt(),
         ]));
