@@ -16,7 +16,6 @@ namespace App\Github\Domain\Value;
 use App\Github\Domain\Value\Issue\IssueId;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
-use App\Github\Domain\Value\PullRequest\PullRequestNumber;
 use App\Github\Domain\Value\PullRequest\User;
 use Webmozart\Assert\Assert;
 
@@ -25,7 +24,6 @@ use Webmozart\Assert\Assert;
  */
 final class PullRequest
 {
-    private PullRequestNumber $number;
     private IssueId $issueId;
     private string $title;
     private \DateTime $updatedAt;
@@ -34,12 +32,11 @@ final class PullRequest
     private User $user;
     private ?bool $mergeable;
 
-    private function __construct(PullRequestNumber $number, IssueId $issueId, string $title, string $updatedAt, Base $base, Head $head, User $user, ?bool $mergeable = null)
+    private function __construct(IssueId $issueId, string $title, string $updatedAt, Base $base, Head $head, User $user, ?bool $mergeable = null)
     {
         Assert::stringNotEmpty($title);
         Assert::stringNotEmpty($updatedAt);
 
-        $this->number = $number;
         $this->issueId = $issueId;
         $this->title = $title;
         $this->updatedAt = new \DateTime(
@@ -74,7 +71,6 @@ final class PullRequest
         Assert::notEmpty($response['user']);
 
         return new self(
-            PullRequestNumber::fromInt($response['number']),
             IssueId::fromInt($response['number']),
             $response['title'],
             $response['updated_at'],
@@ -109,7 +105,6 @@ final class PullRequest
         Assert::nullOrBoolean($response['mergeable']);
 
         return new self(
-            PullRequestNumber::fromInt($response['number']),
             IssueId::fromInt($response['number']),
             $response['title'],
             $response['updated_at'],
@@ -118,11 +113,6 @@ final class PullRequest
             User::fromResponse($response['user']),
             $response['mergeable']
         );
-    }
-
-    public function number(): PullRequestNumber
-    {
-        return $this->number;
     }
 
     public function issueId(): IssueId
