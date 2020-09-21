@@ -111,7 +111,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 '%s: <comment>%s (#%d)</comment> by %s -> <comment>%s</comment>',
                 $project->name(),
                 $pullRequest->title(),
-                $pullRequest->issueId()->toInt(),
+                $pullRequest->issue()->toInt(),
                 $pullRequest->user()->login(),
                 $pullRequest->base()->ref()
             ));
@@ -145,7 +145,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
                 $repository->vendor(),
                 $repository->name(),
-                $pullRequest->issueId()->toInt(),
+                $pullRequest->issue()->toInt(),
             ]);
 
             $commitMessages = array_map(static function ($commit): string {
@@ -172,11 +172,11 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                     $this->github->pullRequests()->merge(
                         $repository->vendor(),
                         $repository->name(),
-                        $pullRequest->issueId()->toInt(),
+                        $pullRequest->issue()->toInt(),
                         $squash ? '' : $pullRequest->title(),
                         $pullRequest->head()->sha(),
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pullRequest->issueId()->toInt()) : null
+                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pullRequest->issue()->toInt()) : null
                     );
 
                     if ('sonata-project' === $pullRequest->head()->repo()->owner()->login()) {
@@ -189,7 +189,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
                     $this->io->success(sprintf(
                         'Merged PR #%d',
-                        $pullRequest->issueId()->toInt()
+                        $pullRequest->issue()->toInt()
                     ));
                 } catch (ExceptionInterface $e) {
                     $this->io->error(sprintf(

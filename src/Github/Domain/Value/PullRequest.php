@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
-use App\Github\Domain\Value\Issue\IssueId;
+use App\Github\Domain\Value\Issue\Issue;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
 use App\Github\Domain\Value\PullRequest\User;
@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
  */
 final class PullRequest
 {
-    private IssueId $issueId;
+    private Issue $issue;
     private string $title;
     private \DateTime $updatedAt;
     private Base $base;
@@ -32,12 +32,12 @@ final class PullRequest
     private User $user;
     private ?bool $mergeable;
 
-    private function __construct(IssueId $issueId, string $title, string $updatedAt, Base $base, Head $head, User $user, ?bool $mergeable = null)
+    private function __construct(Issue $issue, string $title, string $updatedAt, Base $base, Head $head, User $user, ?bool $mergeable = null)
     {
         Assert::stringNotEmpty($title);
         Assert::stringNotEmpty($updatedAt);
 
-        $this->issueId = $issueId;
+        $this->issue = $issue;
         $this->title = $title;
         $this->updatedAt = new \DateTime(
             $updatedAt,
@@ -71,7 +71,7 @@ final class PullRequest
         Assert::notEmpty($response['user']);
 
         return new self(
-            IssueId::fromInt($response['number']),
+            Issue::fromInt($response['number']),
             $response['title'],
             $response['updated_at'],
             Base::fromResponse($response['base']),
@@ -105,7 +105,7 @@ final class PullRequest
         Assert::nullOrBoolean($response['mergeable']);
 
         return new self(
-            IssueId::fromInt($response['number']),
+            Issue::fromInt($response['number']),
             $response['title'],
             $response['updated_at'],
             Base::fromResponse($response['base']),
@@ -115,9 +115,9 @@ final class PullRequest
         );
     }
 
-    public function issueId(): IssueId
+    public function issue(): Issue
     {
-        return $this->issueId;
+        return $this->issue;
     }
 
     public function title(): string

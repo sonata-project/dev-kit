@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\IncomingWebhook;
 
-use App\Github\Domain\Value\Issue\IssueId;
+use App\Github\Domain\Value\Issue\Issue;
 use App\Github\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
 
@@ -23,12 +23,12 @@ use Webmozart\Assert\Assert;
 final class Payload
 {
     private Action $action;
-    private IssueId $issueId;
+    private Issue $issue;
     private int $issueAuthorId;
     private ?int $commentAuthorId;
     private Repository $repository;
 
-    private function __construct(Action $action, IssueId $issueId, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
+    private function __construct(Action $action, Issue $issue, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
     {
         Assert::greaterThan($issueAuthorId, 0);
         if (null !== $commentAuthorId) {
@@ -36,7 +36,7 @@ final class Payload
         }
 
         $this->action = $action;
-        $this->issueId = $issueId;
+        $this->issue = $issue;
         $this->issueAuthorId = $issueAuthorId;
         $this->commentAuthorId = $commentAuthorId;
         $this->repository = $repository;
@@ -53,7 +53,7 @@ final class Payload
 
         Assert::keyExists($payload, $issueKey);
         Assert::keyExists($payload[$issueKey], 'number');
-        $issueId = IssueId::fromInt($payload[$issueKey]['number']);
+        $issue = Issue::fromInt($payload[$issueKey]['number']);
 
         Assert::keyExists($payload[$issueKey], 'user');
         Assert::keyExists($payload[$issueKey]['user'], 'id');
@@ -71,7 +71,7 @@ final class Payload
 
         return new self(
             $action,
-            $issueId,
+            $issue,
             $issueAuthorId,
             $commentAuthorId,
             Repository::fromString($payload['repository']['full_name'])
@@ -91,9 +91,9 @@ final class Payload
         return $this->action;
     }
 
-    public function issueId(): IssueId
+    public function issue(): Issue
     {
-        return $this->issueId;
+        return $this->issue;
     }
 
     public function issueAuthorId(): int

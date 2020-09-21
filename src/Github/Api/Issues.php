@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Github\Api;
 
 use App\Domain\Value\Repository;
-use App\Github\Domain\Value\Issue\IssueId;
+use App\Github\Domain\Value\Issue\Issue;
 use App\Github\Domain\Value\Label;
 use Github\Client as GithubClient;
 
@@ -30,22 +30,22 @@ final class Issues
         $this->github = $github;
     }
 
-    public function addLabel(Repository $repository, IssueId $issueId, Label $label): void
+    public function addLabel(Repository $repository, Issue $issue, Label $label): void
     {
         $this->github->issues()->labels()->add(
             $repository->vendor(),
             $repository->name(),
-            $issueId->toInt(),
+            $issue->toInt(),
             $label->name()
         );
     }
 
-    public function removeLabel(Repository $repository, IssueId $issueId, Label $label): void
+    public function removeLabel(Repository $repository, Issue $issue, Label $label): void
     {
         $this->github->issues()->labels()->remove(
             $repository->vendor(),
             $repository->name(),
-            $issueId->toInt(),
+            $issue->toInt(),
             $label->name()
         );
     }

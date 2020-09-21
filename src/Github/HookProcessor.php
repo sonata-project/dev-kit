@@ -51,7 +51,7 @@ final class HookProcessor
 
         $this->issues->removeLabel(
             Repository::fromIncomingWebhookPayload($payload),
-            $payload->issueId(),
+            $payload->issue(),
             Label::PendingAuthor()
         );
     }
@@ -69,7 +69,7 @@ final class HookProcessor
 
         $this->issues->removeLabel(
             Repository::fromIncomingWebhookPayload($payload),
-            $payload->issueId(),
+            $payload->issue(),
             Label::RTM()
         );
     }

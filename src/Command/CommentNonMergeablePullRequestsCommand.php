@@ -17,6 +17,7 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Comments;
 use App\Github\Api\Issues;
+use App\Github\Domain\Value\Issue\Issue;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
@@ -84,12 +85,12 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
         $repository = $project->repository();
 
         foreach ($this->github->pullRequests()->all($repository->vendor(), $repository->name()) as $listResponse) {
-            $number = (PullRequest::fromListResponse($listResponse))->issueId();
+            $issue = Issue::fromInt($listResponse['number']);
 
             $detailedResponse = $this->github->pullRequests()->show(
                 $repository->vendor(),
                 $repository->name(),
-                $number->toInt()
+                $issue->toInt()
             );
 
             $pullRequest = PullRequest::fromDetailResponse($detailedResponse);
@@ -99,7 +100,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                     $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
                         $repository->vendor(),
                         $repository->name(),
-                        $number->toInt(),
+                        $pullRequest->issue()->toInt(),
                     ]),
                     static function ($comment) {
                         return $comment['user']['login'] === static::GITHUB_USER;
@@ -111,7 +112,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                 $commits = $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
                     $repository->vendor(),
                     $repository->name(),
-                    $number->toInt(),
+                    $pullRequest->issue()->toInt(),
                 ]);
                 $lastCommit = end($commits);
                 $lastCommitDate = new \DateTime($lastCommit['commit']['committer']['date']);
@@ -120,20 +121,20 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                     if ($this->apply) {
                         $this->comments->create(
                             $repository,
-                            $pullRequest->issueId(),
+                            $pullRequest->issue(),
                             'Could you please rebase your PR and fix merge conflicts?'
                         );
 
                         $this->issues->addLabel(
                             $repository,
-                            $pullRequest->issueId(),
+                            $pullRequest->issue(),
                             Label::PendingAuthor()
                         );
                     }
 
                     $this->io->text(sprintf(
                         '#%d - %s',
-                        $pullRequest->issueId()->toInt(),
+                        $pullRequest->issue()->toInt(),
                         $pullRequest->title()
                     ));
                 }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value\Issue;
 
-use App\Github\Domain\Value\Issue\IssueId;
+use App\Github\Domain\Value\Issue\Issue;
 use PHPUnit\Framework\TestCase;
 
-final class IssueIdTest extends TestCase
+final class IssueTest extends TestCase
 {
     /**
      * @test
@@ -25,7 +25,7 @@ final class IssueIdTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        IssueId::fromInt(0);
+        Issue::fromInt(0);
     }
 
     /**
@@ -35,7 +35,7 @@ final class IssueIdTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        IssueId::fromInt(-1);
+        Issue::fromInt(-1);
     }
 
     /**
@@ -47,7 +47,7 @@ final class IssueIdTest extends TestCase
 
         self::assertSame(
             $value,
-            IssueId::fromInt($value)->toInt()
+            Issue::fromInt($value)->toInt()
         );
     }
 }
