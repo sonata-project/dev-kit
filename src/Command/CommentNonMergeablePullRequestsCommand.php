@@ -19,10 +19,9 @@ use App\Github\Api\Comments;
 use App\Github\Api\Commits;
 use App\Github\Api\Issues;
 use App\Github\Api\PullRequests;
+use App\Github\Domain\Value\Comment;
 use App\Github\Domain\Value\Label;
-use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -37,10 +36,8 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     private Comments $comments;
     private Commits $commits;
     private Issues $issues;
-    private GithubClient $github;
-    private ResultPagerInterface $githubPager;
 
-    public function __construct(Projects $projects, PullRequests $pullRequests, Comments $comments, Commits $commits, Issues $issues, GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(Projects $projects, PullRequests $pullRequests, Comments $comments, Commits $commits, Issues $issues)
     {
         parent::__construct();
 
@@ -49,8 +46,6 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
         $this->comments = $comments;
         $this->commits = $commits;
         $this->issues = $issues;
-        $this->github = $github;
-        $this->githubPager = $githubPager;
     }
 
     protected function configure(): void
@@ -88,46 +83,61 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     {
         $repository = $project->repository();
 
-        foreach ($this->pullRequests->all($repository) as $pr) {
+        $pullRequests = $this->pullRequests->all($repository);
+
+        if ([] === $pullRequests) {
+            $this->io->text('No pull requests available!');
+        }
+
+        foreach ($pullRequests as $pr) {
+            $this->io->text(sprintf(
+                '#%d %s (%s)',
+                $pr->issue()->toInt(),
+                $pr->title(),
+                false === $pr->isMergeable() ? '<comment>not mergeable</comment>' : '<info>mergeable</info>',
+            ));
+
             if (false === $pr->isMergeable()) {
-                $comments = array_filter(
-                    $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
-                        $repository->vendor(),
-                        $repository->name(),
-                        $pr->issue()->toInt(),
-                    ]),
-                    static function ($comment) {
-                        return $comment['user']['login'] === static::GITHUB_USER;
-                    }
+                $lastComment = $this->comments->lastComment(
+                    $repository,
+                    $pr,
+                    static::GITHUB_USER
                 );
-                $lastComment = end($comments);
-                $lastCommentDate = $lastComment ? new \DateTime($lastComment['created_at']) : null;
 
                 $lastCommit = $this->commits->lastCommit(
                     $repository,
                     $pr
                 );
 
-                if (!$lastCommentDate || $lastCommentDate < $lastCommit->date()) {
+                if (!$lastComment instanceof Comment
+                    || $lastComment->before($lastCommit->date())
+                ) {
+                    $message = 'Could you please rebase your PR and fix merge conflicts?';
+                    $label = Label::PendingAuthor();
+
                     if ($this->apply) {
                         $this->comments->create(
                             $repository,
                             $pr->issue(),
-                            'Could you please rebase your PR and fix merge conflicts?'
+                            $message
                         );
 
                         $this->issues->addLabel(
                             $repository,
                             $pr->issue(),
-                            Label::PendingAuthor()
+                            $label
                         );
                     }
 
                     $this->io->text(sprintf(
-                        '#%d - %s',
-                        $pr->issue()->toInt(),
-                        $pr->title()
+                        '    Comment: <info>%s</info>',
+                        $message
                     ));
+                    $this->io->text(sprintf(
+                        '    Label:   <info>%s</info>',
+                        $label->name()
+                    ));
+                    $this->io->newLine();
                 }
             }
         }
