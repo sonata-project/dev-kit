@@ -19,7 +19,7 @@ use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use App\Github\Api\References;
 use App\Github\Api\Statuses;
-use App\Github\Domain\Value\Commit;
+use App\Github\Domain\Value\Commit\CommitCollection;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -153,16 +153,16 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 continue;
             }
 
-            $commits = $this->commits->all($repository, $pr);
+            $commits = CommitCollection::from(
+                $this->commits->all($repository, $pr)
+            );
 
-            $commitMessages = array_map(static function (Commit $commit): string {
-                return $commit->message();
-            }, $commits);
-            $commitsCount = \count($commitMessages);
-            $uniqueCommitsCount = \count(array_unique($commitMessages));
+            $uniqueCommitsCount = $commits->uniqueCount();
 
             // Some commit have the same message, but this cannot be squashed.
-            if ($commitsCount !== $uniqueCommitsCount && 1 !== $uniqueCommitsCount) {
+            if ($commits->count() !== $uniqueCommitsCount
+                && 1 !== $uniqueCommitsCount
+            ) {
                 $this->io->caution('This PR need a manual rebase.');
 
                 continue;
@@ -180,7 +180,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $repository,
                         $pr,
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pr->issue()->toInt()) : null
+                        $squash ? sprintf('%s (#%d)', $commits->firstMessage(), $pr->issue()->toInt()) : null
                     );
 
                     if ('sonata-project' === $pr->head()->repo()->owner()->login()) {
