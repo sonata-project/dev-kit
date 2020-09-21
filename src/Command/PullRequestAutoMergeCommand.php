@@ -99,7 +99,11 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         foreach ($this->pullRequests->all($repository) as $pullRequest) {
             // Do not manage not configured branches.
-            if (!\in_array(u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(), $project->branchNames(), true)) {
+            if (!\in_array(
+                u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(),
+                $project->branchNames(),
+                true
+            )) {
                 continue;
             }
 
