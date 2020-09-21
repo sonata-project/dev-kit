@@ -172,12 +172,9 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             if ($this->apply) {
                 try {
-                    $this->github->pullRequests()->merge(
-                        $repository->username(),
-                        $repository->name(),
-                        $pr->issue()->toInt(),
-                        $squash ? '' : $pr->title(),
-                        $pr->head()->sha(),
+                    $this->pullRequests->merge(
+                        $repository,
+                        $pr,
                         $squash,
                         $squash ? sprintf('%s (#%d)', $commitMessages[0], $pr->issue()->toInt()) : null
                     );
