@@ -102,13 +102,13 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             try {
-                $response = $this->repositories->merge(
+                $successful = $this->repositories->merge(
                     $repository,
                     $base,
                     $head
                 );
 
-                if (\is_array($response) && \array_key_exists('sha', $response)) {
+                if ($successful) {
                     $this->io->success(sprintf(
                         'Merged %s into %s',
                         $head,
