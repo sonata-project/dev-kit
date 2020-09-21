@@ -15,7 +15,7 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
-use App\Github\Domain\Value\PullRequest;
+use App\Github\Api\PullRequests;
 use App\Github\Domain\Value\PullRequest\CombinedStatus;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
@@ -32,17 +32,20 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private const TIME_BEFORE_MERGE = 60;
 
     private Projects $projects;
+    private PullRequests $pullRequests;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
     public function __construct(
         Projects $projects,
+        PullRequests $pullRequests,
         GithubClient $github,
         ResultPagerInterface $githubPager
     ) {
         parent::__construct();
 
         $this->projects = $projects;
+        $this->pullRequests = $pullRequests;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -94,12 +97,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         $repository = $project->repository();
 
-        foreach ($this->githubPager->fetchAll($this->github->pullRequests(), 'all', [
-            $repository->vendor(),
-            $repository->name(),
-        ]) as $response) {
-            $pullRequest = PullRequest::fromListResponse($response);
-
+        foreach ($this->pullRequests->all($repository) as $pullRequest) {
             // Do not manage not configured branches.
             if (!\in_array(u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(), $project->branchNames(), true)) {
                 continue;
