@@ -139,11 +139,11 @@ final class LabelTest extends TestCase
             false,
             Label::fromResponse([
                 'name' => 'foo',
-                'color' => '1',
+                'color' => 'eeeeee',
             ]),
             Label::fromResponse([
                 'name' => 'foo',
-                'color' => '2',
+                'color' => 'ffffff',
             ]),
         ];
 
@@ -151,11 +151,11 @@ final class LabelTest extends TestCase
             false,
             Label::fromResponse([
                 'name' => 'Foo',
-                'color' => '1',
+                'color' => 'ededed',
             ]),
             Label::fromResponse([
                 'name' => 'foo',
-                'color' => '1',
+                'color' => 'ededed',
             ]),
         ];
 
