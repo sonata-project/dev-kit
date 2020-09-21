@@ -17,6 +17,7 @@ use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Issue;
 use App\Github\Domain\Value\Label;
 use Github\Client as GithubClient;
+use Github\Exception\RuntimeException;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -42,11 +43,17 @@ final class Issues
 
     public function removeLabel(Repository $repository, Issue $issue, Label $label): void
     {
-        $this->github->issues()->labels()->remove(
-            $repository->vendor(),
-            $repository->name(),
-            $issue->toInt(),
-            $label->name()
-        );
+        try {
+            $this->github->issues()->labels()->remove(
+                $repository->vendor(),
+                $repository->name(),
+                $issue->toInt(),
+                $label->name()
+            );
+        } catch (RuntimeException $e) {
+            if (404 !== $e->getCode()) {
+                throw $e;
+            }
+        }
     }
 }
