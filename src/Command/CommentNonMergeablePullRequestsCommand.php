@@ -15,6 +15,7 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Api\Comments;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
@@ -30,14 +31,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyCommand
 {
     private Projects $projects;
+    private Comments $comments;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
-    public function __construct(Projects $projects, GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(Projects $projects, Comments $comments, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
         $this->projects = $projects;
+        $this->comments = $comments;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -112,9 +115,11 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
                     if ($this->apply) {
-                        $this->github->issues()->comments()->create($repository->vendor(), $repository->name(), $number->toInt(), [
-                            'body' => 'Could you please rebase your PR and fix merge conflicts?',
-                        ]);
+                        $this->comments->create(
+                            $repository,
+                            $pullRequest,
+                            'Could you please rebase your PR and fix merge conflicts?'
+                        );
 
                         $this->github->issues()->labels()->add(
                             $repository->vendor(),
