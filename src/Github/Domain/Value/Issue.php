@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Domain\Value\Issue;
+namespace App\Github\Domain\Value;
 
 use Webmozart\Assert\Assert;
 

@@ -17,7 +17,7 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Comments;
 use App\Github\Api\Issues;
-use App\Github\Domain\Value\Issue\Issue;
+use App\Github\Domain\Value\Issue;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
