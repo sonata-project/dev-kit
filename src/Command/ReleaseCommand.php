@@ -53,8 +53,11 @@ final class ReleaseCommand extends AbstractCommand
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
-    public function __construct(Projects $projects, GithubClient $github, ResultPagerInterface $githubPager)
-    {
+    public function __construct(
+        Projects $projects,
+        GithubClient $github,
+        ResultPagerInterface $githubPager
+    ) {
         parent::__construct();
 
         $this->projects = $projects;

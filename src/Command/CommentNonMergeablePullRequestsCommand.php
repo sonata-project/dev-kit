@@ -37,8 +37,13 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     private Commits $commits;
     private Issues $issues;
 
-    public function __construct(Projects $projects, PullRequests $pullRequests, Comments $comments, Commits $commits, Issues $issues)
-    {
+    public function __construct(
+        Projects $projects,
+        PullRequests $pullRequests,
+        Comments $comments,
+        Commits $commits,
+        Issues $issues
+    ) {
         parent::__construct();
 
         $this->projects = $projects;

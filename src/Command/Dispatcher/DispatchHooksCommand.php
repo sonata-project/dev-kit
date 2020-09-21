@@ -43,8 +43,11 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
     private Hooks $hooks;
     private string $devKitToken;
 
-    public function __construct(Projects $projects, Hooks $hooks, string $devKitToken)
-    {
+    public function __construct(
+        Projects $projects,
+        Hooks $hooks,
+        string $devKitToken
+    ) {
         parent::__construct();
 
         $this->projects = $projects;

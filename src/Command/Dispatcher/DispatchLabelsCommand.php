@@ -33,8 +33,11 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     private ConfiguredLabels $configuredLabels;
     private Labels $labels;
 
-    public function __construct(Projects $projects, ConfiguredLabels $configuredLabels, Labels $labels)
-    {
+    public function __construct(
+        Projects $projects,
+        ConfiguredLabels $configuredLabels,
+        Labels $labels
+    ) {
         parent::__construct();
 
         $this->projects = $projects;
