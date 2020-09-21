@@ -15,8 +15,10 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\Commit;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use Github\ResultPagerInterface;
@@ -34,6 +36,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private Projects $projects;
     private PullRequests $pullRequests;
     private Statuses $statuses;
+    private Commits $commits;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
@@ -41,6 +44,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         Projects $projects,
         PullRequests $pullRequests,
         Statuses $statuses,
+        Commits $commits,
         GithubClient $github,
         ResultPagerInterface $githubPager
     ) {
@@ -49,6 +53,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $this->projects = $projects;
         $this->pullRequests = $pullRequests;
         $this->statuses = $statuses;
+        $this->commits = $commits;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -144,14 +149,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 continue;
             }
 
-            $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
-                $repository->username(),
-                $repository->name(),
-                $pr->issue()->toInt(),
-            ]);
+            $commits = $this->commits->all($repository, $pr);
 
-            $commitMessages = array_map(static function ($commit): string {
-                return $commit['commit']['message'];
+            $commitMessages = array_map(static function (Commit $commit): string {
+                return $commit->message();
             }, $commits);
             $commitsCount = \count($commitMessages);
             $uniqueCommitsCount = \count(array_unique($commitMessages));

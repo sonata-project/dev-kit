@@ -20,10 +20,14 @@ use Webmozart\Assert\Assert;
  */
 final class Commit
 {
+    private string $message;
     private \DateTimeImmutable $date;
 
-    private function __construct(\DateTimeImmutable $date)
+    private function __construct(string $message, \DateTimeImmutable $date)
     {
+        Assert::stringNotEmpty($message);
+        $this->message = $message;
+
         $this->date = $date;
     }
 
@@ -32,12 +36,22 @@ final class Commit
         Assert::notEmpty($response);
 
         Assert::keyExists($response, 'commit');
+
+        Assert::keyExists($response['commit'], 'message');
+        Assert::stringNotEmpty($response['commit']['message']);
+
         Assert::keyExists($response['commit'], 'committer');
         Assert::keyExists($response['commit']['committer'], 'date');
 
         return new self(
+            $response['commit']['message'],
             new \DateTimeImmutable($response['commit']['committer']['date'])
         );
+    }
+
+    public function message(): string
+    {
+        return $this->message;
     }
 
     public function date(): \DateTimeImmutable
