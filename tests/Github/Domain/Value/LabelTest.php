@@ -147,11 +147,23 @@ final class LabelTest extends TestCase
             ]),
         ];
 
-        yield 'equal, because of case insensitive' => [
+        yield 'equal, because of name and case insensitive' => [
             true,
             Label::fromResponse([
                 'name' => 'Foo',
                 'color' => 'ededed',
+            ]),
+            Label::fromResponse([
+                'name' => 'foo',
+                'color' => 'ededed',
+            ]),
+        ];
+
+        yield 'equal, because of color and case insensitive' => [
+            true,
+            Label::fromResponse([
+                'name' => 'foo',
+                'color' => 'EDEDED',
             ]),
             Label::fromResponse([
                 'name' => 'foo',
