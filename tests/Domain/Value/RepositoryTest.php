@@ -27,12 +27,11 @@ final class RepositoryTest extends TestCase
         $package = new Package();
         $package->fromArray([
             'name' => 'sonata-project/admin-bundle',
-            'repository' => $url = 'https://github.com/sonata-project/SonataAdminBundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
         ]);
 
         $repository = Repository::fromPackage($package);
 
-        self::assertSame($url, $repository->url());
         self::assertSame('sonata-project', $repository->vendor());
         self::assertSame('SonataAdminBundle', $repository->name());
         self::assertSame('sonata-project/SonataAdminBundle', $repository->toString());

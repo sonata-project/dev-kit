@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use App\Github\Domain\Value\IncomingWebhook\Payload;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
@@ -22,36 +23,31 @@ use Webmozart\Assert\Assert;
  */
 final class Repository
 {
-    private string $url;
     private string $vendor;
     private string $name;
 
-    private function __construct(string $url)
+    private function __construct(string $vendor, string $name)
     {
-        Assert::stringNotEmpty($url);
-        Assert::contains($url, '/');
-        Assert::startsWith($url, 'https://github.com/');
-        $this->url = $url;
+        Assert::stringNotEmpty($vendor);
+        Assert::stringNotEmpty($name);
 
-        list($vendor, $name) = u($url)
-            ->replace('https://github.com/', '')
-            ->replace('.git', '')
-            ->split('/');
-
-        $this->vendor = $vendor->toString();
-        $this->name = $name->toString();
+        $this->vendor = $vendor;
+        $this->name = $name;
     }
 
     public static function fromPackage(Package $package): self
     {
-        return new self(
-            $package->getRepository()
-        );
+        return self::fromUrl($package->getRepository());
     }
 
-    public function url(): string
+    public static function fromIncomingWebhookPayload(Payload $payload): self
     {
-        return $this->url;
+        $repository = $payload->repository();
+
+        return self::fromValues(
+            $repository->username(),
+            $repository->name()
+        );
     }
 
     public function vendor(): string
@@ -70,5 +66,27 @@ final class Repository
             ->append('/')
             ->append($this->name)
             ->toString();
+    }
+
+    private static function fromUrl(string $url): self
+    {
+        Assert::stringNotEmpty($url);
+        Assert::contains($url, '/');
+        Assert::startsWith($url, 'https://github.com/');
+
+        list($vendor, $name) = u($url)
+            ->replace('https://github.com/', '')
+            ->replace('.git', '')
+            ->split('/');
+
+        return new self(
+            $vendor->toString(),
+            $name->toString()
+        );
+    }
+
+    private static function fromValues(string $vendor, string $name): self
+    {
+        return new self($vendor, $name);
     }
 }

@@ -11,19 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Action;
+namespace App\Github\Api;
 
+use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Issue\IssueId;
 use App\Github\Domain\Value\Label;
-use App\Github\Domain\Value\Repository;
 use Github\Client as GithubClient;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
- *
- * Adds a label from an issue if this one is not set.
  */
-final class AddIssueLabel
+final class Issues
 {
     private GithubClient $github;
 
@@ -32,16 +30,20 @@ final class AddIssueLabel
         $this->github = $github;
     }
 
-    public function __invoke(Repository $repository, IssueId $issueId, Label $label): void
+    public function addLabel(Repository $repository, IssueId $issueId, Label $label): void
     {
-        foreach ($this->github->issues()->labels()->all($repository->username(), $repository->name(), $issueId->toInt()) as $response) {
-            if ($label->equals(Label::fromResponse($response))) {
-                return;
-            }
-        }
-
         $this->github->issues()->labels()->add(
-            $repository->username(),
+            $repository->vendor(),
+            $repository->name(),
+            $issueId->toInt(),
+            $label->name()
+        );
+    }
+
+    public function removeLabel(Repository $repository, IssueId $issueId, Label $label): void
+    {
+        $this->github->issues()->labels()->remove(
+            $repository->vendor(),
             $repository->name(),
             $issueId->toInt(),
             $label->name()
