@@ -22,6 +22,9 @@ use Webmozart\Assert\Assert;
  */
 final class Project
 {
+    /**
+     * @deprecated should be removed after using it no more!
+     */
     private array $rawConfig;
     private string $name;
     private Package $package;
@@ -236,6 +239,8 @@ final class Project
     /**
      * We keep this method to have a smooth transition and
      * remove it when we did not use config arrays anymore. Oskar.
+     *
+     * @deprecated should be removed after using it no more!
      *
      * @return array<mixed>
      */
