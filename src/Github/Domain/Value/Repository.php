@@ -37,6 +37,7 @@ final class Repository
     {
         Assert::stringNotEmpty($repository);
         Assert::contains($repository, '/');
+        Assert::notEndsWith($repository, '/');
 
         [$username, $name] = u($repository)->split('/');
 
