@@ -84,7 +84,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
         $repository = $project->repository();
 
         foreach ($this->github->pullRequests()->all($repository->vendor(), $repository->name()) as $listResponse) {
-            $number = PullRequest\PullRequestNumber::fromResponse($listResponse);
+            $number = (PullRequest::fromListResponse($listResponse))->issueId();
 
             $detailedResponse = $this->github->pullRequests()->show(
                 $repository->vendor(),
@@ -120,7 +120,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                     if ($this->apply) {
                         $this->comments->create(
                             $repository,
-                            $pullRequest,
+                            $pullRequest->issueId(),
                             'Could you please rebase your PR and fix merge conflicts?'
                         );
 
@@ -133,7 +133,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
                     $this->io->text(sprintf(
                         '#%d - %s',
-                        $pullRequest->number()->toInt(),
+                        $pullRequest->issueId()->toInt(),
                         $pullRequest->title()
                     ));
                 }
