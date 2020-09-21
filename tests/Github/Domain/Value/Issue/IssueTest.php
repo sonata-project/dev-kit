@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value\Issue;
 
-use App\Github\Domain\Value\Issue\Issue;
+use App\Github\Domain\Value\Issue;
 use PHPUnit\Framework\TestCase;
 
 final class IssueTest extends TestCase

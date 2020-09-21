@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
-use App\Github\Domain\Value\Issue\Issue;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
 use App\Github\Domain\Value\PullRequest\User;

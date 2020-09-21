@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\IncomingWebhook;
 
-use App\Github\Domain\Value\Issue\Issue;
+use App\Github\Domain\Value\Issue;
 use App\Github\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
 
