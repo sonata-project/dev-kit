@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Github\Api;
 
 use App\Domain\Value\Repository;
-use App\Github\Domain\Value\Issue\IssueId;
+use App\Github\Domain\Value\Issue\Issue;
 use Github\Client as GithubClient;
 use Webmozart\Assert\Assert;
 
@@ -30,14 +30,14 @@ final class Comments
         $this->github = $github;
     }
 
-    public function create(Repository $repository, IssueId $issueId, string $message): void
+    public function create(Repository $repository, Issue $issue, string $message): void
     {
         Assert::stringNotEmpty($message);
 
         $this->github->repo()->comments()->create(
             $repository->vendor(),
             $repository->name(),
-            $issueId->toInt(),
+            $issue->toInt(),
             [
                 'body' => $message,
             ]

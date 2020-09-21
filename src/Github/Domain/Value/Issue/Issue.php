@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class IssueId
+final class Issue
 {
     private int $value;
 
