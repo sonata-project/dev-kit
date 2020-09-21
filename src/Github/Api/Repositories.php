@@ -51,16 +51,22 @@ final class Repositories
         );
     }
 
-    public function merge(Repository $repository, string $base, string $head): ?array
+    public function merge(Repository $repository, string $base, string $head): bool
     {
         Assert::stringNotEmpty($base);
         Assert::stringNotEmpty($head);
 
-        return $this->github->repo()->merge(
+        $response = $this->github->repo()->merge(
             $repository->vendor(),
             $repository->name(),
             $base,
             $head
         );
+
+        if (\is_array($response) && \array_key_exists('sha', $response)) {
+            return true;
+        }
+
+        return false;
     }
 }
