@@ -16,6 +16,7 @@ namespace App\Command;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Comments;
+use App\Github\Api\Commits;
 use App\Github\Api\Issues;
 use App\Github\Api\PullRequests;
 use App\Github\Domain\Value\Label;
@@ -34,17 +35,19 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     private Projects $projects;
     private PullRequests $pullRequests;
     private Comments $comments;
+    private Commits $commits;
     private Issues $issues;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
-    public function __construct(Projects $projects, PullRequests $pullRequests, Comments $comments, Issues $issues, GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(Projects $projects, PullRequests $pullRequests, Comments $comments, Commits $commits, Issues $issues, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
         $this->projects = $projects;
         $this->pullRequests = $pullRequests;
         $this->comments = $comments;
+        $this->commits = $commits;
         $this->issues = $issues;
         $this->github = $github;
         $this->githubPager = $githubPager;
@@ -100,15 +103,12 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                 $lastComment = end($comments);
                 $lastCommentDate = $lastComment ? new \DateTime($lastComment['created_at']) : null;
 
-                $commits = $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
-                    $repository->vendor(),
-                    $repository->name(),
-                    $pullRequest->issue()->toInt(),
-                ]);
-                $lastCommit = end($commits);
-                $lastCommitDate = new \DateTime($lastCommit['commit']['committer']['date']);
+                $lastCommit = $this->commits->lastCommit(
+                    $repository,
+                    $pullRequest
+                );
 
-                if (!$lastCommentDate || $lastCommentDate < $lastCommitDate) {
+                if (!$lastCommentDate || $lastCommentDate < $lastCommit->date()) {
                     if ($this->apply) {
                         $this->comments->create(
                             $repository,
