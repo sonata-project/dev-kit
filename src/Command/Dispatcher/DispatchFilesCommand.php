@@ -42,8 +42,15 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private Filesystem $filesystem;
     private Environment $twig;
 
-    public function __construct(string $appDir, string $githubToken, Projects $projects, GithubClient $github, GitWrapper $git, Filesystem $filesystem, Environment $twig)
-    {
+    public function __construct(
+        string $appDir,
+        string $githubToken,
+        Projects $projects,
+        GithubClient $github,
+        GitWrapper $git,
+        Filesystem $filesystem,
+        Environment $twig
+    ) {
         parent::__construct();
 
         $this->appDir = $appDir;
