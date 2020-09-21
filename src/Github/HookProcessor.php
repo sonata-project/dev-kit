@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace App\Github;
 
-use App\Github\Action\RemoveIssueLabel;
+use App\Domain\Value\Repository;
+use App\Github\Api\Issues;
 use App\Github\Domain\Value\IncomingWebhook\Action;
 use App\Github\Domain\Value\IncomingWebhook\Payload;
 use App\Github\Domain\Value\Label;
@@ -23,11 +24,11 @@ use App\Github\Domain\Value\Label;
  */
 final class HookProcessor
 {
-    private RemoveIssueLabel $removeIssueLabel;
+    private Issues $issues;
 
-    public function __construct(RemoveIssueLabel $removeIssueLabel)
+    public function __construct(Issues $issues)
     {
-        $this->removeIssueLabel = $removeIssueLabel;
+        $this->issues = $issues;
     }
 
     /**
@@ -48,8 +49,8 @@ final class HookProcessor
             return;
         }
 
-        $this->removeIssueLabel->__invoke(
-            $payload->repository(),
+        $this->issues->removeLabel(
+            Repository::fromIncomingWebhookPayload($payload),
             $payload->issueId(),
             Label::PendingAuthor()
         );
@@ -66,8 +67,8 @@ final class HookProcessor
             return;
         }
 
-        $this->removeIssueLabel->__invoke(
-            $payload->repository(),
+        $this->issues->removeLabel(
+            Repository::fromIncomingWebhookPayload($payload),
             $payload->issueId(),
             Label::RTM()
         );

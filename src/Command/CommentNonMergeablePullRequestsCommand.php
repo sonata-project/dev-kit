@@ -16,6 +16,7 @@ namespace App\Command;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Comments;
+use App\Github\Api\Issues;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
@@ -32,15 +33,17 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 {
     private Projects $projects;
     private Comments $comments;
+    private Issues $issues;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
-    public function __construct(Projects $projects, Comments $comments, GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(Projects $projects, Comments $comments, Issues $issues, GithubClient $github, ResultPagerInterface $githubPager)
     {
         parent::__construct();
 
         $this->projects = $projects;
         $this->comments = $comments;
+        $this->issues = $issues;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -121,11 +124,10 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                             'Could you please rebase your PR and fix merge conflicts?'
                         );
 
-                        $this->github->issues()->labels()->add(
-                            $repository->vendor(),
-                            $repository->name(),
-                            $number->toInt(),
-                            Label::PendingAuthor()->name()
+                        $this->issues->addLabel(
+                            $repository,
+                            $pullRequest->issueId(),
+                            Label::PendingAuthor()
                         );
                     }
 
