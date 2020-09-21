@@ -88,13 +88,13 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     {
         $repository = $project->repository();
 
-        foreach ($this->pullRequests->all($repository) as $pullRequest) {
-            if (false === $pullRequest->isMergeable()) {
+        foreach ($this->pullRequests->all($repository) as $pr) {
+            if (false === $pr->isMergeable()) {
                 $comments = array_filter(
                     $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
                         $repository->vendor(),
                         $repository->name(),
-                        $pullRequest->issue()->toInt(),
+                        $pr->issue()->toInt(),
                     ]),
                     static function ($comment) {
                         return $comment['user']['login'] === static::GITHUB_USER;
@@ -105,28 +105,28 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
                 $lastCommit = $this->commits->lastCommit(
                     $repository,
-                    $pullRequest
+                    $pr
                 );
 
                 if (!$lastCommentDate || $lastCommentDate < $lastCommit->date()) {
                     if ($this->apply) {
                         $this->comments->create(
                             $repository,
-                            $pullRequest->issue(),
+                            $pr->issue(),
                             'Could you please rebase your PR and fix merge conflicts?'
                         );
 
                         $this->issues->addLabel(
                             $repository,
-                            $pullRequest->issue(),
+                            $pr->issue(),
                             Label::PendingAuthor()
                         );
                     }
 
                     $this->io->text(sprintf(
                         '#%d - %s',
-                        $pullRequest->issue()->toInt(),
-                        $pullRequest->title()
+                        $pr->issue()->toInt(),
+                        $pr->title()
                     ));
                 }
             }
