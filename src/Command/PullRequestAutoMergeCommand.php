@@ -17,6 +17,7 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
+use App\Github\Api\References;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Commit;
 use Github\Client as GithubClient;
@@ -37,6 +38,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private PullRequests $pullRequests;
     private Statuses $statuses;
     private Commits $commits;
+    private References $references;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
@@ -45,6 +47,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         PullRequests $pullRequests,
         Statuses $statuses,
         Commits $commits,
+        References $references,
         GithubClient $github,
         ResultPagerInterface $githubPager
     ) {
@@ -54,6 +57,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $this->pullRequests = $pullRequests;
         $this->statuses = $statuses;
         $this->commits = $commits;
+        $this->references = $references;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -180,11 +184,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                     );
 
                     if ('sonata-project' === $pr->head()->repo()->owner()->login()) {
-                        $this->github->gitData()->references()->remove(
-                            $repository->username(),
-                            $repository->name(),
-                            u('heads/')->append($pr->head()->ref())->toString()
-                        );
+                        $this->references->remove($repository, $pr);
                     }
 
                     $this->io->success(sprintf(
