@@ -97,10 +97,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
         $repository = $project->repository();
 
-        foreach ($this->pullRequests->all($repository) as $pullRequest) {
+        foreach ($this->pullRequests->all($repository) as $pr) {
             // Do not manage not configured branches.
             if (!\in_array(
-                u($pullRequest->base()->ref())->replace('-dev-kit', '')->toString(),
+                u($pr->base()->ref())->replace('-dev-kit', '')->toString(),
                 $project->branchNames(),
                 true
             )) {
@@ -108,23 +108,23 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             // Proceed only bot PR for now.
-            if (self::BOT_NAME !== $pullRequest->user()->login()) {
+            if (self::BOT_NAME !== $pr->user()->login()) {
                 continue;
             }
 
             $this->io->writeln(sprintf(
                 '%s: <comment>%s (#%d)</comment> by %s -> <comment>%s</comment>',
                 $project->name(),
-                $pullRequest->title(),
-                $pullRequest->issue()->toInt(),
-                $pullRequest->user()->login(),
-                $pullRequest->base()->ref()
+                $pr->title(),
+                $pr->issue()->toInt(),
+                $pr->user()->login(),
+                $pr->base()->ref()
             ));
 
             $combinedStatusResponse = $this->github->repos()->statuses()->combined(
                 $repository->vendor(),
                 $repository->name(),
-                $pullRequest->head()->sha()
+                $pr->head()->sha()
             );
 
             $combinedStatus = CombinedStatus::fromResponse($combinedStatusResponse);
@@ -142,7 +142,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             // Wait a bit to be sure the PR state is updated.
             if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
-                - $pullRequest->updatedAt()->getTimestamp() < self::TIME_BEFORE_MERGE
+                - $pr->updatedAt()->getTimestamp() < self::TIME_BEFORE_MERGE
             ) {
                 continue;
             }
@@ -150,7 +150,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             $commits = $this->githubPager->fetchAll($this->github->pullRequests(), 'commits', [
                 $repository->vendor(),
                 $repository->name(),
-                $pullRequest->issue()->toInt(),
+                $pr->issue()->toInt(),
             ]);
 
             $commitMessages = array_map(static function ($commit): string {
@@ -177,24 +177,24 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                     $this->github->pullRequests()->merge(
                         $repository->vendor(),
                         $repository->name(),
-                        $pullRequest->issue()->toInt(),
-                        $squash ? '' : $pullRequest->title(),
-                        $pullRequest->head()->sha(),
+                        $pr->issue()->toInt(),
+                        $squash ? '' : $pr->title(),
+                        $pr->head()->sha(),
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pullRequest->issue()->toInt()) : null
+                        $squash ? sprintf('%s (#%d)', $commitMessages[0], $pr->issue()->toInt()) : null
                     );
 
-                    if ('sonata-project' === $pullRequest->head()->repo()->owner()->login()) {
+                    if ('sonata-project' === $pr->head()->repo()->owner()->login()) {
                         $this->github->gitData()->references()->remove(
                             $repository->vendor(),
                             $repository->name(),
-                            u('heads/')->append($pullRequest->head()->ref())->toString()
+                            u('heads/')->append($pr->head()->ref())->toString()
                         );
                     }
 
                     $this->io->success(sprintf(
                         'Merged PR #%d',
-                        $pullRequest->issue()->toInt()
+                        $pr->issue()->toInt()
                     ));
                 } catch (ExceptionInterface $e) {
                     $this->io->error(sprintf(
