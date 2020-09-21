@@ -50,4 +50,17 @@ final class PullRequests
             return PullRequest::fromDetailResponse($detailResponse);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name()));
     }
+
+    public function merge(Repository $repository, PullRequest $pullRequest, bool $squash, ?string $title = null): void
+    {
+        $this->github->pullRequests()->merge(
+            $repository->username(),
+            $repository->name(),
+            $pullRequest->issue()->toInt(),
+            $squash ? '' : $pullRequest->title(),
+            $pullRequest->head()->sha(),
+            $squash,
+            $title
+        );
+    }
 }
