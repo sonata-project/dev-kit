@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Github\Domain\Value\PullRequest;
+namespace App\Tests\Github\Domain\Value;
 
-use App\Github\Domain\Value\PullRequest\CombinedStatus;
+use App\Github\Domain\Value\CombinedStatus;
 use PHPUnit\Framework\TestCase;
 
 final class CombinedStatusTest extends TestCase
@@ -109,7 +109,7 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0:bool, 1: string}>
+     * @return \Generator<string, array{0: bool, 1: string}>
      */
     public function isSuccessfulProvider(): \Generator
     {
