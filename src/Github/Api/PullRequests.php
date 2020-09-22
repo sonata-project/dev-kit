@@ -92,8 +92,21 @@ final class PullRequests
         return 0 < \count($pullRequests);
     }
 
-    public function search(Query $query): array
+    /**
+     * @return PullRequest[]
+     */
+    public function search(Repository $repository, Query $query): array
     {
-        return $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]);
+        return array_map(function (array $searchResponse) use ($repository): PullRequest {
+            $issue = Issue::fromInt($searchResponse['number']);
+
+            $response = $this->github->pullRequests()->show(
+                $repository->username(),
+                $repository->name(),
+                $issue->toInt()
+            );
+
+            return PullRequest::fromResponse($response);
+        }, $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]));
     }
 }
