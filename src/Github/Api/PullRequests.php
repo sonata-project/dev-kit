@@ -51,6 +51,20 @@ final class PullRequests
         }, $this->github->pullRequests()->all($repository->username(), $repository->name()));
     }
 
+    public function create(Repository $repository, string $title, string $head, string $base, string $body = ''): void
+    {
+        $this->github->pullRequests()->create(
+            $repository->username(),
+            $repository->name(),
+            [
+                'title' => $title,
+                'head' => $head,
+                'base' => $base,
+                'body' => $body,
+            ]
+        );
+    }
+
     public function merge(Repository $repository, PullRequest $pullRequest, bool $squash, ?string $title = null): void
     {
         $this->github->pullRequests()->merge(

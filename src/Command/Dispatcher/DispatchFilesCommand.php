@@ -17,6 +17,7 @@ use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Github\Api\PullRequests;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
@@ -38,6 +39,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private string $githubToken;
     private Projects $projects;
     private GithubClient $github;
+    private PullRequests $pullRequests;
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -47,6 +49,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         string $githubToken,
         Projects $projects,
         GithubClient $github,
+        PullRequests $pullRequests,
         GitWrapper $git,
         Filesystem $filesystem,
         Environment $twig
@@ -57,6 +60,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->githubToken = $githubToken;
         $this->projects = $projects;
         $this->github = $github;
+        $this->pullRequests = $pullRequests;
         $this->git = $git;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
@@ -221,15 +225,15 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     ]);
 
                     if (0 === \count($pulls)) {
-                        $this->github->pullRequests()->create($repository->username(), $repository->name(), [
-                            'title' => sprintf(
+                        $this->pullRequests->create(
+                            $repository,
+                            sprintf(
                                 'DevKit updates for %s branch',
                                 $currentBranch
                             ),
-                            'head' => $currentHead,
-                            'base' => $currentBranch,
-                            'body' => '',
-                        ]);
+                            $currentHead,
+                            $currentBranch
+                        );
                     }
 
                     // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
