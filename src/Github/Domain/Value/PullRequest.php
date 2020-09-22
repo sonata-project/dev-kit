@@ -48,37 +48,6 @@ final class PullRequest
         $this->mergeable = $mergeable;
     }
 
-    public static function fromListResponse(array $response): self
-    {
-        Assert::notEmpty($response);
-
-        Assert::keyExists($response, 'number');
-
-        Assert::keyExists($response, 'title');
-        Assert::stringNotEmpty($response['title']);
-
-        Assert::keyExists($response, 'updated_at');
-        Assert::stringNotEmpty($response['updated_at']);
-
-        Assert::keyExists($response, 'base');
-        Assert::notEmpty($response['base']);
-
-        Assert::keyExists($response, 'head');
-        Assert::notEmpty($response['head']);
-
-        Assert::keyExists($response, 'user');
-        Assert::notEmpty($response['user']);
-
-        return new self(
-            Issue::fromInt($response['number']),
-            $response['title'],
-            $response['updated_at'],
-            Base::fromResponse($response['base']),
-            Head::fromResponse($response['head']),
-            User::fromResponse($response['user'])
-        );
-    }
-
     public static function fromDetailResponse(array $response): self
     {
         Assert::notEmpty($response);

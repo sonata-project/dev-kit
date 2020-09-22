@@ -21,16 +21,6 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfListRepsonseIsEmpty(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        PullRequest::fromListResponse([]);
-    }
-
-    /**
-     * @test
-     */
     public function throwsExceptionIfDetailRepsonseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
