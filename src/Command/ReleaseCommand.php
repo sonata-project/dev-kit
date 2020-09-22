@@ -339,20 +339,17 @@ EOT;
         Assert::stringNotEmpty($branch);
 
         $query = sprintf(
-            'repo:%s type:pr is:merged base:%s merged:>%s',
+            'repo:%s type:pr is:merged base:%s merged:>%s -author:%s',
             $repository->toString(),
             $branch,
-            $date->format('Y-m-d\TH:i:s\Z') // @todo check if there is a better way to format the datetime like this
+            $date->format('Y-m-d\TH:i:s\Z'), // @todo check if there is a better way to format the datetime like this
+            self::BOT_NAME
         );
 
         $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [$query]);
 
         $filteredPulls = [];
         foreach ($pulls as $pull) {
-            if (self::BOT_NAME === $pull['user']['login']) {
-                continue;
-            }
-
             $pull['changelog'] = $this->parseChangelog($pull);
             $pull['stability'] = $this->determinePullRequestStability($pull);
 
