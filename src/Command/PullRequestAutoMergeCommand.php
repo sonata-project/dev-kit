@@ -130,7 +130,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             $this->io->writeln(sprintf(
                 '    Combined status: %s',
-                $combinedStatus->toString()
+                $combinedStatus->state()
             ));
             $this->io->newLine();
 

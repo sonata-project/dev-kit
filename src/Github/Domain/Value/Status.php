@@ -18,26 +18,21 @@ use Webmozart\Assert\Assert;
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class CombinedStatus
+final class Status
 {
-    private const FAILURE = 'failure';
+    private const ERROR = 'error';
     private const PENDING = 'pending';
     private const SUCCESS = 'success';
 
     private string $state;
+    private string $description;
+    private string $targetUrl;
 
-    /**
-     * @var Status[]
-     */
-    private array $statuses;
-
-    /**
-     * @param Status[] $statuses
-     */
-    private function __construct(string $state, array $statuses)
+    private function __construct(string $state, string $description, string $targetUrl)
     {
         $this->state = $state;
-        $this->statuses = $statuses;
+        $this->description = $description;
+        $this->targetUrl = $targetUrl;
     }
 
     public static function fromResponse(array $response): self
@@ -49,23 +44,22 @@ final class CombinedStatus
         Assert::oneOf(
             $response['state'],
             [
-                self::FAILURE,
+                self::ERROR,
                 self::PENDING,
                 self::SUCCESS,
             ]
         );
 
-        Assert::keyExists($response, 'statuses');
-        Assert::notEmpty($response['statuses']);
+        Assert::keyExists($response, 'description');
+        Assert::stringNotEmpty($response['description']);
 
-        $statuses = [];
-        foreach ($response['statuses'] as $status) {
-            $statuses[] = Status::fromResponse($status);
-        }
+        Assert::keyExists($response, 'target_url');
+        Assert::stringNotEmpty($response['target_url']);
 
         return new self(
             $response['state'],
-            $statuses
+            $response['description'],
+            $response['target_url']
         );
     }
 
@@ -79,11 +73,13 @@ final class CombinedStatus
         return $this->state;
     }
 
-    /**
-     * @return Status[]
-     */
-    public function statuses(): array
+    public function description(): string
     {
-        return $this->statuses;
+        return $this->description;
+    }
+
+    public function targetUrl(): string
+    {
+        return $this->targetUrl;
     }
 }

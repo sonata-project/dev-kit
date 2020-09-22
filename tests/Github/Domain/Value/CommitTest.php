@@ -34,6 +34,7 @@ final class CommitTest extends TestCase
     public function valid(): void
     {
         $response = [
+            'sha' => $sha = 'sha',
             'commit' => [
                 'message' => $message = 'foo bar baz',
                 'committer' => [
@@ -44,6 +45,7 @@ final class CommitTest extends TestCase
 
         $commit = Commit::fromResponse($response);
 
+        self::assertSame($sha, $commit->sha()->toString());
         self::assertSame($message, $commit->message());
         self::assertSame(
             (new \DateTimeImmutable($date))->getTimestamp(),
