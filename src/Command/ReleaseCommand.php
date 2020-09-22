@@ -23,8 +23,6 @@ use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Release\TagName;
 use App\Github\Domain\Value\Search\Query;
-use Github\Client as GithubClient;
-use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -60,17 +58,13 @@ final class ReleaseCommand extends AbstractCommand
     private Branches $branches;
     private Statuses $statuses;
     private PullRequests $pullRequests;
-    private GithubClient $github;
-    private ResultPagerInterface $githubPager;
 
     public function __construct(
         Projects $projects,
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
-        PullRequests $pullRequests,
-        GithubClient $github,
-        ResultPagerInterface $githubPager
+        PullRequests $pullRequests
     ) {
         parent::__construct();
 
@@ -79,8 +73,6 @@ final class ReleaseCommand extends AbstractCommand
         $this->branches = $branches;
         $this->statuses = $statuses;
         $this->pullRequests = $pullRequests;
-        $this->github = $github;
-        $this->githubPager = $githubPager;
     }
 
     protected function configure(): void
