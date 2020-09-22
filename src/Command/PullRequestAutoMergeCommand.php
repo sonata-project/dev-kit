@@ -20,9 +20,7 @@ use App\Github\Api\PullRequests;
 use App\Github\Api\References;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Commit\CommitCollection;
-use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
-use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use function Symfony\Component\String\u;
@@ -39,17 +37,13 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private Statuses $statuses;
     private Commits $commits;
     private References $references;
-    private GithubClient $github;
-    private ResultPagerInterface $githubPager;
 
     public function __construct(
         Projects $projects,
         PullRequests $pullRequests,
         Statuses $statuses,
         Commits $commits,
-        References $references,
-        GithubClient $github,
-        ResultPagerInterface $githubPager
+        References $references
     ) {
         parent::__construct();
 
@@ -58,8 +52,6 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $this->statuses = $statuses;
         $this->commits = $commits;
         $this->references = $references;
-        $this->github = $github;
-        $this->githubPager = $githubPager;
     }
 
     protected function configure(): void
