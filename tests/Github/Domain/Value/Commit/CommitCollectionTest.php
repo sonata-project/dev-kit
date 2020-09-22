@@ -46,6 +46,7 @@ final class CommitCollectionTest extends TestCase
     {
         $commits = [
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => 'foo bar baz',
                     'committer' => [
@@ -68,6 +69,7 @@ final class CommitCollectionTest extends TestCase
     {
         $commits = [
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => 'foo bar baz',
                     'committer' => [
@@ -76,6 +78,7 @@ final class CommitCollectionTest extends TestCase
                 ],
             ]),
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => 'foo bar',
                     'committer' => [
@@ -104,6 +107,7 @@ final class CommitCollectionTest extends TestCase
     {
         $commits = [
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => 'foo bar baz',
                     'committer' => [
@@ -112,6 +116,7 @@ final class CommitCollectionTest extends TestCase
                 ],
             ]),
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => 'foo bar baz',
                     'committer' => [
@@ -134,6 +139,7 @@ final class CommitCollectionTest extends TestCase
     {
         $commits = [
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => $firstMessage = 'foo bar baz',
                     'committer' => [
@@ -142,6 +148,7 @@ final class CommitCollectionTest extends TestCase
                 ],
             ]),
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => 'foo bar',
                     'committer' => [
@@ -164,6 +171,7 @@ final class CommitCollectionTest extends TestCase
     {
         $commits = [
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => $message1 = 'foo bar baz',
                     'committer' => [
@@ -172,6 +180,7 @@ final class CommitCollectionTest extends TestCase
                 ],
             ]),
             Commit::fromResponse([
+                'sha' => 'sha',
                 'commit' => [
                     'message' => $message2 = 'foo bar',
                     'committer' => [

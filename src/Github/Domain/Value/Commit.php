@@ -21,10 +21,13 @@ use Webmozart\Assert\Assert;
 final class Commit
 {
     private string $message;
+    private Sha $sha;
     private \DateTimeImmutable $date;
 
-    private function __construct(string $message, \DateTimeImmutable $date)
+    private function __construct(Sha $sha, string $message, \DateTimeImmutable $date)
     {
+        $this->sha = $sha;
+
         Assert::stringNotEmpty($message);
         $this->message = $message;
 
@@ -37,6 +40,9 @@ final class Commit
 
         Assert::keyExists($response, 'commit');
 
+        Assert::keyExists($response, 'sha');
+        Assert::stringNotEmpty($response['sha']);
+
         Assert::keyExists($response['commit'], 'message');
         Assert::stringNotEmpty($response['commit']['message']);
 
@@ -44,6 +50,7 @@ final class Commit
         Assert::keyExists($response['commit']['committer'], 'date');
 
         return new self(
+            Sha::fromString($response['sha']),
             $response['commit']['message'],
             new \DateTimeImmutable($response['commit']['committer']['date'])
         );
@@ -52,6 +59,11 @@ final class Commit
     public function message(): string
     {
         return $this->message;
+    }
+
+    public function sha(): Sha
+    {
+        return $this->sha;
     }
 
     public function date(): \DateTimeImmutable

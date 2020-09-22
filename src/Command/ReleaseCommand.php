@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Config\Projects;
+use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Github\Api\Branches;
+use App\Github\Api\Releases;
+use App\Github\Api\Statuses;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,17 +54,26 @@ final class ReleaseCommand extends AbstractCommand
     ];
 
     private Projects $projects;
+    private Releases $releases;
+    private Branches $branches;
+    private Statuses $statuses;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
     public function __construct(
         Projects $projects,
+        Releases $releases,
+        Branches $branches,
+        Statuses $statuses,
         GithubClient $github,
         ResultPagerInterface $githubPager
     ) {
         parent::__construct();
 
         $this->projects = $projects;
+        $this->releases = $releases;
+        $this->branches = $branches;
+        $this->statuses = $statuses;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -100,7 +113,7 @@ EOT;
 
         $this->io->getErrorStyle()->title($project->name());
 
-        $branches = $project->branchNames();
+        $branches = $project->branches();
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
         $this->prepareRelease($project, $branch, $output);
@@ -125,36 +138,30 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Project $project, string $branch, OutputInterface $output): void
+    private function prepareRelease(Project $project, Branch $branch, OutputInterface $output): void
     {
-        Assert::stringNotEmpty($branch);
-
         $repository = $project->repository();
+        $branchName = $branch->name();
 
-        $currentRelease = $this->github->repo()->releases()->latest(
-            $repository->username(),
-            $repository->name()
+        $currentRelease = $this->releases->latest($repository);
+
+        $branchToRelease = $this->branches->get(
+            $repository,
+            $branchName
         );
 
-        $branchToRelease = $this->github->repo()->branches(
-            $repository->username(),
-            $repository->name(),
-            $branch
-        );
-
-        $statuses = $this->github->repo()->statuses()->combined(
-            $repository->username(),
-            $repository->name(),
-            $branchToRelease['commit']['sha']
+        $combined = $this->statuses->combined(
+            $repository,
+            $branchToRelease->commit()->sha()
         );
 
         $pulls = $this->findPullRequestsSince(
-            $currentRelease['published_at'],
+            $currentRelease->publishedAt(),
             $repository,
-            $branch
+            $branchName
         );
 
-        $nextVersion = $this->determineNextVersion($currentRelease['tag_name'], $pulls);
+        $nextVersion = $this->determineNextVersion($currentRelease->tagName(), $pulls);
         $changelog = array_reduce(
             array_filter(array_column($pulls, 'changelog')),
             'array_merge_recursive',
@@ -164,12 +171,12 @@ EOT;
         $errorOutput = $this->io->getErrorStyle();
         $errorOutput->section('Project');
 
-        foreach ($statuses['statuses'] as $status) {
-            $print = $status['description']."\n".$status['target_url'];
+        foreach ($combined->statuses() as $status) {
+            $print = $status->description()."\n".$status->targetUrl();
 
-            if ('success' === $status['state']) {
+            if ('success' === $status->state()) {
                 $errorOutput->success($print);
-            } elseif ('pending' === $status['state']) {
+            } elseif ('pending' === $status->state()) {
                 $errorOutput->warning($print);
             } else {
                 $errorOutput->error($print);
@@ -184,14 +191,14 @@ EOT;
 
         $errorOutput->section('Release');
 
-        if ($nextVersion === $currentRelease['tag_name']) {
+        if ($nextVersion === $currentRelease->tagName()) {
             $errorOutput->warning('Release is not needed');
         } else {
             $errorOutput->success('Next release will be: '.$nextVersion);
 
             $errorOutput->section('Changelog');
 
-            $this->printRelease($currentRelease['tag_name'], $nextVersion, $repository, $output);
+            $this->printRelease($currentRelease->tagName(), $nextVersion, $repository, $output);
             $this->printChangelog($changelog, $output);
         }
     }
@@ -252,7 +259,10 @@ EOT;
                 continue;
             }
 
-            $output->writeln('### '.$type);
+            $output->writeln(sprintf(
+                '### %s',
+                $type
+            ));
 
             foreach ($changes as $change) {
                 $output->writeln($change);
@@ -320,16 +330,18 @@ EOT;
         return 'unknown';
     }
 
-    private function findPullRequestsSince(string $date, Repository $repository, string $branch): array
+    private function findPullRequestsSince(\DateTimeImmutable $date, Repository $repository, string $branch): array
     {
         Assert::stringNotEmpty($branch);
 
-        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [sprintf(
+        $query = sprintf(
             'repo:%s type:pr is:merged base:%s merged:>%s',
             $repository->toString(),
             $branch,
-            $date
-        )]);
+            $date->format('Y-m-d\TH:i:s\Z') // @todo check if there is a better way to format the datetime like this
+        );
+
+        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [$query]);
 
         $filteredPulls = [];
         foreach ($pulls as $pull) {

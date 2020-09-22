@@ -47,6 +47,8 @@ final class Label
      */
     public static function fromResponse(array $response): self
     {
+        Assert::notEmpty($response);
+
         Assert::keyExists($response, 'name');
         Assert::keyExists($response, 'color');
 

@@ -37,6 +37,13 @@ final class CombinedStatusTest extends TestCase
 
         CombinedStatus::fromResponse([
             'foo' => 'bar',
+            'statuses' => [
+                [
+                    'state' => 'success',
+                    'description' => 'foo',
+                    'target_url' => 'https://test.de',
+                ],
+            ],
         ]);
     }
 
@@ -49,6 +56,13 @@ final class CombinedStatusTest extends TestCase
 
         CombinedStatus::fromResponse([
             'state' => '',
+            'statuses' => [
+                [
+                    'state' => 'success',
+                    'description' => 'foo',
+                    'target_url' => 'https://test.de',
+                ],
+            ],
         ]);
     }
 
@@ -61,6 +75,39 @@ final class CombinedStatusTest extends TestCase
 
         CombinedStatus::fromResponse([
             'state' => 'foo',
+            'statuses' => [
+                [
+                    'state' => 'success',
+                    'description' => 'foo',
+                    'target_url' => 'https://test.de',
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfStatusesKeyDoesNotExist(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        CombinedStatus::fromResponse([
+            'state' => 'success',
+            'foo' => [],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfStatusesKeyIsEmptyArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        CombinedStatus::fromResponse([
+            'state' => 'success',
+            'statuses' => [],
         ]);
     }
 
@@ -73,11 +120,20 @@ final class CombinedStatusTest extends TestCase
     {
         $response = [
             'state' => $value,
+            'statuses' => [
+                [
+                    'state' => 'success',
+                    'description' => 'foo',
+                    'target_url' => 'https://test.de',
+                ],
+            ],
         ];
+
+        $combined = CombinedStatus::fromResponse($response);
 
         self::assertSame(
             $value,
-            CombinedStatus::fromResponse($response)->toString()
+            $combined->state()
         );
     }
 
@@ -100,6 +156,13 @@ final class CombinedStatusTest extends TestCase
     {
         $response = [
             'state' => $value,
+            'statuses' => [
+                [
+                    'state' => 'success',
+                    'description' => 'foo',
+                    'target_url' => 'https://test.de',
+                ],
+            ],
         ];
 
         self::assertSame(
