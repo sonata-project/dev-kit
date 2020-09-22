@@ -48,7 +48,7 @@ final class PullRequest
         $this->mergeable = $mergeable;
     }
 
-    public static function fromDetailResponse(array $response): self
+    public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);
 

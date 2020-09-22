@@ -21,11 +21,11 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfDetailRepsonseIsEmpty(): void
+    public function throwsExceptionIfRepsonseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        PullRequest::fromDetailResponse([]);
+        PullRequest::fromResponse([]);
     }
 
     /**
@@ -55,7 +55,7 @@ final class PullRequestTest extends TestCase
             'mergeable' => true,
         ];
 
-        $pr = PullRequest::fromDetailResponse($response);
+        $pr = PullRequest::fromResponse($response);
 
         self::assertSame($issue, $pr->issue()->toInt());
         self::assertSame($title, $pr->title());
@@ -100,7 +100,7 @@ final class PullRequestTest extends TestCase
             'mergeable' => true,
         ];
 
-        $pr = PullRequest::fromDetailResponse($response);
+        $pr = PullRequest::fromResponse($response);
 
         self::assertTrue($pr->updatedWithinTheLast60Seconds());
     }
@@ -137,7 +137,7 @@ final class PullRequestTest extends TestCase
             'mergeable' => true,
         ];
 
-        $pr = PullRequest::fromDetailResponse($response);
+        $pr = PullRequest::fromResponse($response);
 
         self::assertFalse($pr->updatedWithinTheLast60Seconds());
     }

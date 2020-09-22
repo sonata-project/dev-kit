@@ -48,7 +48,7 @@ final class PullRequests
                 $issue->toInt()
             );
 
-            return PullRequest::fromDetailResponse($detailResponse);
+            return PullRequest::fromResponse($detailResponse);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
     }
 
