@@ -123,7 +123,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pr->base()->ref()
             ));
 
-            $combinedStatus = $this->statuses->combined($repository, $pr);
+            $combinedStatus = $this->statuses->combined(
+                $repository,
+                $pr->head()->sha()
+            );
 
             $this->io->writeln(sprintf(
                 '    Combined status: %s',
