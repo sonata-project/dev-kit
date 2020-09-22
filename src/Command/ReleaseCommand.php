@@ -249,7 +249,7 @@ EOT;
             $next->toString(),
             $repository->toString(),
             $currentVersion->toString(),
-            $next,
+            $next->toString(),
             date('Y-m-d')
         ));
     }
