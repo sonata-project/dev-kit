@@ -209,18 +209,31 @@ EOT;
     private function printPullRequest(array $pull): void
     {
         if (\array_key_exists($pull['stability'], static::$stabilities)) {
-            $this->io->write('<fg=black;bg='.static::$stabilities[$pull['stability']].'>['
-                .strtoupper($pull['stability']).']</> ');
+            $this->io->write(sprintf(
+                '<fg=black;bg=%s>[%s]</> ',
+                static::$stabilities[$pull['stability']],
+                strtoupper($pull['stability'])
+            ));
         } else {
             $this->io->write('<error>[NOT SET]</error> ');
         }
-        $this->io->write('<info>'.$pull['title'].'</info>');
+        $this->io->write(sprintf(
+            '<info>%s</info>',
+            $pull['title']
+        ));
 
         foreach ($pull['labels'] as $label) {
             if (!\array_key_exists($label['name'], static::$labels)) {
-                $this->io->write(' <error>['.$label['name'].']</error>');
+                $this->io->write(sprintf(
+                    ' <error>[%s]</error>',
+                    $label['name']
+                ));
             } else {
-                $this->io->write(' <fg='.static::$labels[$label['name']].'>['.$label['name'].']</>');
+                $this->io->write(sprintf(
+                    ' <fg=%s>[%s]</>',
+                    static::$labels[$label['name']],
+                    $label['name']
+                ));
             }
         }
 
