@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Github\Domain\Value\Label\Color;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
@@ -22,23 +23,18 @@ use Webmozart\Assert\Assert;
 final class Label
 {
     private string $name;
-    private string $color;
+    private Color $color;
 
-    private function __construct(string $name, string $color)
+    private function __construct(string $name, Color $color)
     {
         $name = trim($name);
         Assert::stringNotEmpty($name);
-
-        $color = u($color)->trim()->lower()->toString();
-        Assert::stringNotEmpty($color);
-        Assert::notStartsWith($color, '#');
-        Assert::length($color, 6);
 
         $this->name = $name;
         $this->color = $color;
     }
 
-    public static function fromValues(string $name, string $color): self
+    public static function fromValues(string $name, Color $color): self
     {
         return new self(
             $name,
@@ -56,7 +52,7 @@ final class Label
 
         return new self(
             $response['name'],
-            $response['color']
+            Color::fromString($response['color'])
         );
     }
 
@@ -64,7 +60,7 @@ final class Label
     {
         return self::fromValues(
             'RTM',
-            'ffffff'
+            Color::fromString('ffffff')
         );
     }
 
@@ -72,25 +68,20 @@ final class Label
     {
         return self::fromValues(
             'pending author',
-            'ededed'
+            Color::fromString('ededed')
         );
     }
 
     public function equals(self $other): bool
     {
         return u($this->name)->ignoreCase()->equalsTo($other->name())
-            && u($this->color)->ignoreCase()->equalsTo($other->color)
+            && $this->color->equals($other->color())
             ;
     }
 
-    public function color(): string
+    public function color(): Color
     {
         return $this->color;
-    }
-
-    public function colorWithLeadingHash(): string
-    {
-        return u('#')->append($this->color)->toString();
     }
 
     public function name(): string
@@ -104,7 +95,7 @@ final class Label
     public function toGithubPayload(): array
     {
         return [
-            'color' => $this->color,
+            'color' => $this->color->toString(),
             'name' => $this->name,
         ];
     }

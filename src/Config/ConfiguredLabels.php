@@ -38,7 +38,7 @@ final class ConfiguredLabels
         foreach ($config['labels'] as $name => $config) {
             $this->labels[$name] = Label::fromValues(
                 $name,
-                $config['color']
+                Label\Color::fromString($config['color'])
             );
         }
     }
