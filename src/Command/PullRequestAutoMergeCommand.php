@@ -137,9 +137,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             // Wait a bit to be sure the PR state is updated.
-            if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
-                - $pr->updatedAt()->getTimestamp() < 60
-            ) {
+            if ($pr->updatedWithinTheLast60Seconds()) {
                 continue;
             }
 

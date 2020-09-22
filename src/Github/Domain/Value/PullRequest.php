@@ -25,7 +25,7 @@ final class PullRequest
 {
     private Issue $issue;
     private string $title;
-    private \DateTime $updatedAt;
+    private \DateTimeImmutable $updatedAt;
     private Base $base;
     private Head $head;
     private User $user;
@@ -38,7 +38,7 @@ final class PullRequest
 
         $this->issue = $issue;
         $this->title = $title;
-        $this->updatedAt = new \DateTime(
+        $this->updatedAt = new \DateTimeImmutable(
             $updatedAt,
             new \DateTimeZone('UTC')
         );
@@ -124,7 +124,7 @@ final class PullRequest
         return $this->title;
     }
 
-    public function updatedAt(): \DateTime
+    public function updatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -153,5 +153,13 @@ final class PullRequest
     public function isMergeable(): ?bool
     {
         return $this->mergeable;
+    }
+
+    public function updatedWithinTheLast60Seconds(): bool
+    {
+        $diff = (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
+            - $this->updatedAt->getTimestamp();
+
+        return  $diff < 60;
     }
 }
