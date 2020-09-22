@@ -42,13 +42,13 @@ final class PullRequests
         return array_map(function (array $listResponse) use ($repository): PullRequest {
             $issue = Issue::fromInt($listResponse['number']);
 
-            $detailResponse = $this->github->pullRequests()->show(
+            $response = $this->github->pullRequests()->show(
                 $repository->username(),
                 $repository->name(),
                 $issue->toInt()
             );
 
-            return PullRequest::fromResponse($detailResponse);
+            return PullRequest::fromResponse($response);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
     }
 
