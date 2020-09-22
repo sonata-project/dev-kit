@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value\Release;
 
-use App\Github\Domain\Value\Release\TagName;
+use App\Github\Domain\Value\Release\Tag;
 use PHPUnit\Framework\TestCase;
 
-final class TagNameTest extends TestCase
+final class TagTest extends TestCase
 {
     /**
      * @test
@@ -25,7 +25,7 @@ final class TagNameTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        TagName::fromString('');
+        Tag::fromString('');
     }
 
     /**
@@ -33,8 +33,8 @@ final class TagNameTest extends TestCase
      */
     public function valid(): void
     {
-        $tagName = TagName::fromString('1.1.0');
+        $tag = Tag::fromString('1.1.0');
 
-        self::assertSame('1.1.0', $tagName->toString());
+        self::assertSame('1.1.0', $tag->toString());
     }
 }

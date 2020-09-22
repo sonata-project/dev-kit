@@ -21,7 +21,7 @@ use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
-use App\Github\Domain\Value\Release\TagName;
+use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -157,7 +157,7 @@ EOT;
             $branch
         );
 
-        $nextVersion = $this->determineNextVersion($currentRelease->tagName(), $pulls);
+        $nextVersion = $this->determineNextVersion($currentRelease->tag(), $pulls);
         $changelog = array_reduce(
             array_filter(array_column($pulls, 'changelog')),
             'array_merge_recursive',
@@ -186,17 +186,17 @@ EOT;
 
         $this->io->section('Release');
 
-        if ($nextVersion === $currentRelease->tagName()->toString()) {
+        if ($nextVersion->toString() === $currentRelease->tag()->toString()) {
             $this->io->warning('Release is not needed');
         } else {
             $this->io->success(sprintf(
                 'Next release will be: %s',
-                $nextVersion
+                $nextVersion->toString()
             ));
 
             $this->io->section('Changelog');
 
-            $this->printRelease($currentRelease->tagName(), $nextVersion, $repository);
+            $this->printRelease($currentRelease->tag(), $nextVersion, $repository);
             $this->printChangelog($changelog);
         }
     }
@@ -237,11 +237,11 @@ EOT;
         $this->io->writeln('');
     }
 
-    private function printRelease(TagName $currentVersion, string $nextVersion, Repository $repository): void
+    private function printRelease(Tag $currentVersion, Tag $nextVersion, Repository $repository): void
     {
         $this->io->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
-            $nextVersion,
+            $nextVersion->toString(),
             $repository->toString(),
             $currentVersion->toString(),
             $nextVersion,
@@ -299,18 +299,18 @@ EOT;
         return $changelog;
     }
 
-    private function determineNextVersion(TagName $currentVersion, array $pulls): string
+    private function determineNextVersion(Tag $currentVersion, array $pulls): Tag
     {
         $stabilities = array_column($pulls, 'stability');
         $parts = explode('.', $currentVersion->toString());
 
         if (\in_array('minor', $stabilities, true)) {
-            return implode('.', [$parts[0], (int) $parts[1] + 1, 0]);
+            return Tag::fromString(implode('.', [$parts[0], (int) $parts[1] + 1, 0]));
         } elseif (\in_array('patch', $stabilities, true)) {
-            return implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]);
+            return Tag::fromString(implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]));
         }
 
-        return $currentVersion->toString();
+        return $currentVersion;
     }
 
     private function determinePullRequestStability(array $pull): string

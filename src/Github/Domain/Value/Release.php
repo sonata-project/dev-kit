@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
-use App\Github\Domain\Value\Release\TagName;
+use App\Github\Domain\Value\Release\Tag;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,12 +21,12 @@ use Webmozart\Assert\Assert;
  */
 final class Release
 {
-    private TagName $tagName;
+    private Tag $tag;
     private \DateTimeImmutable $publishedAt;
 
-    private function __construct(TagName $tagName, \DateTimeImmutable $publishedAt)
+    private function __construct(Tag $tag, \DateTimeImmutable $publishedAt)
     {
-        $this->tagName = $tagName;
+        $this->tag = $tag;
         $this->publishedAt = $publishedAt;
     }
 
@@ -41,14 +41,14 @@ final class Release
         Assert::stringNotEmpty($response['published_at']);
 
         return new self(
-            TagName::fromString($response['tag_name']),
+            Tag::fromString($response['tag_name']),
             new \DateTimeImmutable($response['published_at'])
         );
     }
 
-    public function tagName(): TagName
+    public function tag(): Tag
     {
-        return $this->tagName;
+        return $this->tag;
     }
 
     public function publishedAt(): \DateTimeImmutable
