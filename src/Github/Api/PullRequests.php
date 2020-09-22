@@ -16,6 +16,7 @@ namespace App\Github\Api;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Issue;
 use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\Search\Query;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
 
@@ -90,5 +91,10 @@ final class PullRequests
         );
 
         return 0 < \count($pullRequests);
+    }
+
+    public function search(Query $query): array
+    {
+        return $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]);
     }
 }

@@ -18,6 +18,7 @@ use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
+use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Release\TagName;
@@ -58,6 +59,7 @@ final class ReleaseCommand extends AbstractCommand
     private Releases $releases;
     private Branches $branches;
     private Statuses $statuses;
+    private PullRequests $pullRequests;
     private GithubClient $github;
     private ResultPagerInterface $githubPager;
 
@@ -66,6 +68,7 @@ final class ReleaseCommand extends AbstractCommand
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
+        PullRequests $pullRequests,
         GithubClient $github,
         ResultPagerInterface $githubPager
     ) {
@@ -75,6 +78,7 @@ final class ReleaseCommand extends AbstractCommand
         $this->releases = $releases;
         $this->branches = $branches;
         $this->statuses = $statuses;
+        $this->pullRequests = $pullRequests;
         $this->github = $github;
         $this->githubPager = $githubPager;
     }
@@ -343,7 +347,7 @@ EOT;
             self::BOT_NAME
         ));
 
-        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]);
+        $pulls = $this->pullRequests->search($query);
 
         $filteredPulls = [];
         foreach ($pulls as $pull) {
