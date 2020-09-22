@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\PullRequest;
 
 use App\Github\Domain\Value\PullRequest\Head;
-use App\Github\Domain\Value\PullRequest\Head\Repo;
 use PHPUnit\Framework\TestCase;
 
 final class HeadTest extends TestCase
@@ -36,7 +35,7 @@ final class HeadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Repo::fromResponse([
+        Head::fromResponse([
             'foo' => 'bar',
             'sha' => 'sha',
             'repo' => [
@@ -54,7 +53,7 @@ final class HeadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Repo::fromResponse([
+        Head::fromResponse([
             'ref' => '',
             'sha' => 'sha',
             'repo' => [
@@ -72,7 +71,7 @@ final class HeadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Repo::fromResponse([
+        Head::fromResponse([
             'ref' => 'ref',
             'foo' => 'bar',
             'repo' => [
@@ -90,7 +89,7 @@ final class HeadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Repo::fromResponse([
+        Head::fromResponse([
             'ref' => 'ref',
             'sha' => '',
             'repo' => [
@@ -108,7 +107,7 @@ final class HeadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Repo::fromResponse([
+        Head::fromResponse([
             'ref' => 'ref',
             'sha' => 'sha',
             'foo' => [
@@ -126,7 +125,7 @@ final class HeadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Repo::fromResponse([
+        Head::fromResponse([
             'ref' => 'ref',
             'sha' => 'sha',
             'repo' => [],
@@ -136,18 +135,22 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function owner(): void
+    public function valid(): void
     {
         $response = [
             'ref' => $ref = 'foo',
-            'owner' => [
-                'login' => $value = 'foo-bar',
+            'sha' => $sha = 'sha',
+            'repo' => [
+                'owner' => [
+                    'login' => $ownerLogin = 'foo-bar',
+                ],
             ],
         ];
 
-        self::assertSame(
-            $value,
-            Repo::fromResponse($response)->owner()->login()
-        );
+        $head = Head::fromResponse($response);
+
+        self::assertSame($ref, $head->ref());
+        self::assertSame($sha, $head->sha());
+        self::assertSame($ownerLogin, $head->repo()->owner()->login());
     }
 }
