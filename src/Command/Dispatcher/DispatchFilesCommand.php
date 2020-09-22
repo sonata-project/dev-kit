@@ -222,7 +222,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $currentHead = u('sonata-project:')->append($currentDevKit)->toString();
 
                     // If the Pull Request does not exists yet, create it.
-                    if ($this->pullRequests->hasOpenPullRequest($repository, $currentHead)) {
+                    if (!$this->pullRequests->hasOpenPullRequest($repository, $currentHead)) {
                         $this->pullRequests->create(
                             $repository,
                             sprintf(

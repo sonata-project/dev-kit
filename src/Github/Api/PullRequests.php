@@ -80,7 +80,7 @@ final class PullRequests
 
     public function hasOpenPullRequest(Repository $repository, string $head): bool
     {
-        return 0 !== $this->all(
+        $pullRequests = $this->all(
             $repository,
             [
                 'state' => 'open',
@@ -88,5 +88,7 @@ final class PullRequests
 
             ]
         );
+
+        return 0 < \count($pullRequests);
     }
 }
