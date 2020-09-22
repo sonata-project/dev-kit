@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Github\Api;
 
 use App\Domain\Value\Repository;
+use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
 
@@ -29,7 +30,7 @@ final class Statuses
         $this->github = $github;
     }
 
-    public function combined(Repository $repository, PullRequest $pullRequest): PullRequest\CombinedStatus
+    public function combined(Repository $repository, PullRequest $pullRequest): CombinedStatus
     {
         $response = $this->github->repos()->statuses()->combined(
             $repository->username(),
@@ -37,6 +38,6 @@ final class Statuses
             $pullRequest->head()->sha()
         );
 
-        return PullRequest\CombinedStatus::fromResponse($response);
+        return CombinedStatus::fromResponse($response);
     }
 }

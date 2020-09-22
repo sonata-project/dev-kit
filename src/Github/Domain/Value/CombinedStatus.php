@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Domain\Value\PullRequest;
+namespace App\Github\Domain\Value;
 
 use Webmozart\Assert\Assert;
 
