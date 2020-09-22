@@ -25,47 +25,10 @@ final class LabelTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Label::fromValues('', 'ededed');
-    }
-
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorIsEmptyString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        Label::fromValues('foo', '');
-    }
-
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorStartsWithHash(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        Label::fromValues('foo', '#123454');
-    }
-
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorLengthIsLessThan6(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        Label::fromValues('foo', '12345');
-    }
-
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorLengthIsGreaterThan6(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        Label::fromValues('foo', '1234567');
+        Label::fromValues(
+            '',
+            Label\Color::fromString('ededed')
+        );
     }
 
     /**
@@ -75,12 +38,12 @@ final class LabelTest extends TestCase
     {
         $label = Label::fromValues(
             'Test',
-            'EDEDED'
+            Label\Color::fromString('EDEDED')
         );
 
         self::assertSame('Test', $label->name());
-        self::assertSame('ededed', $label->color());
-        self::assertSame('#ededed', $label->colorWithLeadingHash());
+        self::assertSame('ededed', $label->color()->toString());
+        self::assertSame('#ededed', $label->color()->asHexCode());
         self::assertSame(
             [
                 'color' => 'ededed',
@@ -98,8 +61,8 @@ final class LabelTest extends TestCase
         $label = Label::RTM();
 
         self::assertSame('RTM', $label->name());
-        self::assertSame('ffffff', $label->color());
-        self::assertSame('#ffffff', $label->colorWithLeadingHash());
+        self::assertSame('ffffff', $label->color()->toString());
+        self::assertSame('#ffffff', $label->color()->asHexCode());
     }
 
     /**
@@ -110,8 +73,8 @@ final class LabelTest extends TestCase
         $label = Label::PendingAuthor();
 
         self::assertSame('pending author', $label->name());
-        self::assertSame('ededed', $label->color());
-        self::assertSame('#ededed', $label->colorWithLeadingHash());
+        self::assertSame('ededed', $label->color()->toString());
+        self::assertSame('#ededed', $label->color()->asHexCode());
     }
 
     /**
@@ -119,11 +82,11 @@ final class LabelTest extends TestCase
      *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Label $action, Label $other): void
+    public function equals(bool $expected, Label $label, Label $other): void
     {
         self::assertSame(
             $expected,
-            $action->equals($other)
+            $label->equals($other)
         );
     }
 
@@ -131,7 +94,7 @@ final class LabelTest extends TestCase
     {
         yield [
             true,
-            Label::fromValues('RTM', 'ffffff'),
+            Label::fromValues('RTM', Label\Color::fromString('ffffff')),
             Label::RTM(),
         ];
 

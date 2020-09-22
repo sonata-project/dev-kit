@@ -109,7 +109,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
                 $rows[] = [
                     $name,
-                    $remoteLabel->colorWithLeadingHash(),
+                    $remoteLabel->color()->asHexCode(),
                     '',
                     'DELETE',
                 ];
@@ -119,14 +119,14 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
                 if ($this->apply) {
                     $this->labels->update($repository, $remoteLabel, [
                         'name' => $name,
-                        'color' => $configuredLabel->color(),
+                        'color' => $configuredLabel->color()->toString(),
                     ]);
                 }
 
                 $rows[] = [
                     $name,
-                    $remoteLabel->colorWithLeadingHash(),
-                    $configuredLabel->colorWithLeadingHash(),
+                    $remoteLabel->color()->asHexCode(),
+                    $configuredLabel->color()->asHexCode(),
                     'UPDATE',
                 ];
             }
@@ -141,7 +141,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             $rows[] = [
                 $label->name(),
                 '',
-                $label->colorWithLeadingHash(),
+                $label->color()->asHexCode(),
                 'CREATE',
             ];
         }
