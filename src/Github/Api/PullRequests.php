@@ -86,7 +86,6 @@ final class PullRequests
             [
                 'state' => 'open',
                 'head' => $head,
-
             ]
         );
 
