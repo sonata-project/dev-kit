@@ -116,12 +116,12 @@ EOT;
     {
         $project = $this->selectProject($input, $output);
 
-        $this->io->getErrorStyle()->title($project->name());
+        $this->io->title($project->name());
 
         $branches = $project->branches();
         $branch = \count($branches) > 1 ? next($branches) : current($branches);
 
-        $this->prepareRelease($project, $branch, $output);
+        $this->prepareRelease($project, $branch);
 
         return 0;
     }
@@ -143,7 +143,7 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Project $project, Branch $branch, OutputInterface $output): void
+    private function prepareRelease(Project $project, Branch $branch): void
     {
         $repository = $project->repository();
 
@@ -172,83 +172,82 @@ EOT;
             []
         );
 
-        $errorOutput = $this->io->getErrorStyle();
-        $errorOutput->section('Project');
+        $this->io->section('Project');
 
         foreach ($combined->statuses() as $status) {
             $print = $status->description()."\n".$status->targetUrl();
 
             if ('success' === $status->state()) {
-                $errorOutput->success($print);
+                $this->io->success($print);
             } elseif ('pending' === $status->state()) {
-                $errorOutput->warning($print);
+                $this->io->warning($print);
             } else {
-                $errorOutput->error($print);
+                $this->io->error($print);
             }
         }
 
-        $errorOutput->section('Pull requests');
+        $this->io->section('Pull requests');
 
         foreach ($pulls as $pull) {
-            $this->printPullRequest($pull, $errorOutput);
+            $this->printPullRequest($pull);
         }
 
-        $errorOutput->section('Release');
+        $this->io->section('Release');
 
         if ($nextVersion === $currentRelease->tagName()->toString()) {
-            $errorOutput->warning('Release is not needed');
+            $this->io->warning('Release is not needed');
         } else {
-            $errorOutput->success(sprintf(
+            $this->io->success(sprintf(
                 'Next release will be: %s',
                 $nextVersion
             ));
 
-            $errorOutput->section('Changelog');
+            $this->io->section('Changelog');
 
-            $this->printRelease($currentRelease->tagName(), $nextVersion, $repository, $output);
-            $this->printChangelog($changelog, $output);
+            $this->printRelease($currentRelease->tagName(), $nextVersion, $repository);
+            $this->printChangelog($changelog);
         }
     }
 
-    private function printPullRequest(array $pull, OutputInterface $output): void
+    private function printPullRequest(array $pull): void
     {
         if (\array_key_exists($pull['stability'], static::$stabilities)) {
-            $output->write('<fg=black;bg='.static::$stabilities[$pull['stability']].'>['
+            $this->io->write('<fg=black;bg='.static::$stabilities[$pull['stability']].'>['
                 .strtoupper($pull['stability']).']</> ');
         } else {
-            $output->write('<error>[NOT SET]</error> ');
+            $this->io->write('<error>[NOT SET]</error> ');
         }
-        $output->write('<info>'.$pull['title'].'</info>');
+        $this->io->write('<info>'.$pull['title'].'</info>');
 
         foreach ($pull['labels'] as $label) {
             if (!\array_key_exists($label['name'], static::$labels)) {
-                $output->write(' <error>['.$label['name'].']</error>');
+                $this->io->write(' <error>['.$label['name'].']</error>');
             } else {
-                $output->write(' <fg='.static::$labels[$label['name']].'>['.$label['name'].']</>');
+                $this->io->write(' <fg='.static::$labels[$label['name']].'>['.$label['name'].']</>');
             }
         }
 
         if (empty($pull['labels'])) {
-            $output->write(' <fg=black;bg=yellow>[No labels]</>');
+            $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
         }
 
         if (!$pull['changelog'] && 'pedantic' !== $pull['stability']) {
-            $output->write(' <error>[Changelog not found]</error>');
+            $this->io->write(' <error>[Changelog not found]</error>');
         } elseif (!$pull['changelog']) {
-            $output->write(' <fg=black;bg=green>[Changelog not found]</>');
+            $this->io->write(' <fg=black;bg=green>[Changelog not found]</>');
         } elseif ($pull['changelog'] && 'pedantic' === $pull['stability']) {
-            $output->write(' <fg=black;bg=yellow>[Changelog found]</>');
+            $this->io->write(' <fg=black;bg=yellow>[Changelog found]</>');
         } else {
-            $output->write(' <fg=black;bg=green>[Changelog found]</>');
+            $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
         }
-        $output->writeln('');
-        $output->writeln($pull['html_url']);
-        $output->writeln('');
+        $this->io->writeln('');
+        $this->io->writeln($pull['html_url']);
+        $this->io->writeln('');
     }
 
-    private function printRelease(TagName $currentVersion, string $nextVersion, Repository $repository, OutputInterface $output): void
+    private function printRelease(TagName $currentVersion, string $nextVersion, Repository $repository): void
     {
-        $output->writeln(sprintf(
+        $this->io->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
             $nextVersion,
             $repository->toString(),
@@ -258,7 +257,7 @@ EOT;
         ));
     }
 
-    private function printChangelog(array $changelog, OutputInterface $output): void
+    private function printChangelog(array $changelog): void
     {
         ksort($changelog);
         foreach ($changelog as $type => $changes) {
@@ -266,13 +265,13 @@ EOT;
                 continue;
             }
 
-            $output->writeln(sprintf(
+            $this->io->writeln(sprintf(
                 '### %s',
                 $type
             ));
 
             foreach ($changes as $change) {
-                $output->writeln($change);
+                $this->io->writeln($change);
             }
             $this->io->newLine();
         }
