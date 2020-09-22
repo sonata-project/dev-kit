@@ -20,6 +20,7 @@ use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\Release\TagName;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -191,7 +192,7 @@ EOT;
 
         $errorOutput->section('Release');
 
-        if ($nextVersion === $currentRelease->tagName()) {
+        if ($nextVersion === $currentRelease->tagName()->toString()) {
             $errorOutput->warning('Release is not needed');
         } else {
             $errorOutput->success('Next release will be: '.$nextVersion);
@@ -239,13 +240,13 @@ EOT;
         $output->writeln('');
     }
 
-    private function printRelease(string $currentVersion, string $nextVersion, Repository $repository, OutputInterface $output): void
+    private function printRelease(TagName $currentVersion, string $nextVersion, Repository $repository, OutputInterface $output): void
     {
         $output->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
             $nextVersion,
             $repository->toString(),
-            $currentVersion,
+            $currentVersion->toString(),
             $nextVersion,
             date('Y-m-d')
         ));
@@ -301,10 +302,10 @@ EOT;
         return $changelog;
     }
 
-    private function determineNextVersion(string $currentVersion, array $pulls): string
+    private function determineNextVersion(TagName $currentVersion, array $pulls): string
     {
         $stabilities = array_column($pulls, 'stability');
-        $parts = explode('.', $currentVersion);
+        $parts = explode('.', $currentVersion->toString());
 
         if (\in_array('minor', $stabilities, true)) {
             return implode('.', [$parts[0], (int) $parts[1] + 1, 0]);
@@ -312,7 +313,7 @@ EOT;
             return implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]);
         }
 
-        return $currentVersion;
+        return $currentVersion->toString();
     }
 
     private function determinePullRequestStability(array $pull): string
