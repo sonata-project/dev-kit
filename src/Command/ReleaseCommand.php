@@ -349,14 +349,14 @@ EOT;
 
         $pulls = $this->pullRequests->search($query);
 
-        $filteredPulls = [];
+        $extendedPulls = [];
         foreach ($pulls as $pull) {
             $pull['changelog'] = $this->parseChangelog($pull);
             $pull['stability'] = $this->determinePullRequestStability($pull);
 
-            $filteredPulls[] = $pull;
+            $extendedPulls[] = $pull;
         }
 
-        return $filteredPulls;
+        return $extendedPulls;
     }
 }
