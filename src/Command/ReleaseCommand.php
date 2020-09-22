@@ -21,12 +21,12 @@ use App\Github\Api\Branches;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Release\TagName;
+use App\Github\Domain\Value\Search\Query;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
@@ -142,13 +142,12 @@ EOT;
     private function prepareRelease(Project $project, Branch $branch, OutputInterface $output): void
     {
         $repository = $project->repository();
-        $branchName = $branch->name();
 
         $currentRelease = $this->releases->latest($repository);
 
         $branchToRelease = $this->branches->get(
             $repository,
-            $branchName
+            $branch->name()
         );
 
         $combined = $this->statuses->combined(
@@ -159,7 +158,7 @@ EOT;
         $pulls = $this->findPullRequestsSince(
             $currentRelease->publishedAt(),
             $repository,
-            $branchName
+            $branch
         );
 
         $nextVersion = $this->determineNextVersion($currentRelease->tagName(), $pulls);
@@ -334,19 +333,17 @@ EOT;
         return 'unknown';
     }
 
-    private function findPullRequestsSince(\DateTimeImmutable $date, Repository $repository, string $branch): array
+    private function findPullRequestsSince(\DateTimeImmutable $date, Repository $repository, Branch $branch): array
     {
-        Assert::stringNotEmpty($branch);
-
-        $query = sprintf(
+        $query = Query::fromString(sprintf(
             'repo:%s type:pr is:merged base:%s merged:>%s -author:%s',
             $repository->toString(),
-            $branch,
+            $branch->name(),
             $date->format('Y-m-d\TH:i:s\Z'), // @todo check if there is a better way to format the datetime like this
             self::BOT_NAME
-        );
+        ));
 
-        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [$query]);
+        $pulls = $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]);
 
         $filteredPulls = [];
         foreach ($pulls as $pull) {
