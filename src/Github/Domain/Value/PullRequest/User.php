@@ -21,12 +21,15 @@ use Webmozart\Assert\Assert;
 final class User
 {
     private string $login;
+    private string $htmlUrl;
 
-    private function __construct(string $login)
+    private function __construct(string $login, string $htmlUrl)
     {
         Assert::stringNotEmpty($login);
+        Assert::stringNotEmpty($htmlUrl);
 
         $this->login = $login;
+        $this->htmlUrl = $htmlUrl;
     }
 
     public static function fromResponse(array $response): self
@@ -36,11 +39,22 @@ final class User
         Assert::keyExists($response, 'login');
         Assert::stringNotEmpty($response['login']);
 
-        return new self($response['login']);
+        Assert::keyExists($response, 'html_url');
+        Assert::stringNotEmpty($response['html_url']);
+
+        return new self(
+            $response['login'],
+            $response['html_url']
+        );
     }
 
     public function login(): string
     {
         return $this->login;
+    }
+
+    public function htmlUrl(): string
+    {
+        return $this->htmlUrl;
     }
 }

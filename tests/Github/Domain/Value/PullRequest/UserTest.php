@@ -31,39 +31,74 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyState(): void
+    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyLogin(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         User::fromResponse([
             'foo' => 'bar',
+            'html_url' => 'https://test.com',
         ]);
     }
 
     /**
      * @test
      */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyHtmlUrl(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        User::fromResponse([
+            'login' => 'bar',
+            'foo' => 'https://test.com',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfLoginIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         User::fromResponse([
             'login' => '',
+            'html_url' => 'https://test.com',
         ]);
     }
 
     /**
      * @test
      */
-    public function login(): void
+    public function throwsExceptionIfHtmlUrlIsEmptyString(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        User::fromResponse([
+            'login' => 'foo',
+            'html_url' => '',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function valid(): void
     {
         $response = [
-            'login' => $value = 'foo-bar',
+            'login' => $login = 'foo-bar',
+            'html_url' => $htmlUrl = 'https://test.com',
         ];
 
+        $user = User::fromResponse($response);
+
         self::assertSame(
-            $value,
-            User::fromResponse($response)->login()
+            $login,
+            $user->login()
+        );
+        self::assertSame(
+            $htmlUrl,
+            $user->htmlUrl()
         );
     }
 }

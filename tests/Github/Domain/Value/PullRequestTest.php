@@ -51,8 +51,17 @@ final class PullRequestTest extends TestCase
             ],
             'user' => [
                 'login' => $userLogin = 'userLogin',
+                'html_url' => $userHtmlUrl = 'https://test.com',
             ],
             'mergeable' => true,
+            'body' => $body = 'The body!',
+            'html_url' => $htmlUrl = 'https://test.com',
+            'labels' => [
+                [
+                    'name' => $labelName = 'patch',
+                    'color' => $labelColor = 'ededed',
+                ],
+            ],
         ];
 
         $pr = PullRequest::fromResponse($response);
@@ -65,7 +74,15 @@ final class PullRequestTest extends TestCase
         self::assertSame($headSha, $pr->head()->sha()->toString());
         self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
         self::assertSame($userLogin, $pr->user()->login());
+        self::assertSame($userHtmlUrl, $pr->user()->htmlUrl());
         self::assertTrue($pr->isMergeable());
+        self::assertSame($body, $pr->body());
+        self::assertSame($htmlUrl, $pr->htmlUrl());
+        self::assertTrue($pr->hasLabels());
+
+        $label = $pr->labels()[0];
+        self::assertSame($labelName, $label->name());
+        self::assertSame($labelColor, $label->color()->toString());
     }
 
     /**
@@ -96,8 +113,12 @@ final class PullRequestTest extends TestCase
             ],
             'user' => [
                 'login' => $userLogin = 'userLogin',
+                'html_url' => $userHtmlUrl = 'https://test.com',
             ],
             'mergeable' => true,
+            'body' => '',
+            'html_url' => $htmlUrl = 'https://test.com',
+            'labels' => [],
         ];
 
         $pr = PullRequest::fromResponse($response);
@@ -133,8 +154,12 @@ final class PullRequestTest extends TestCase
             ],
             'user' => [
                 'login' => $userLogin = 'userLogin',
+                'html_url' => $userHtmlUrl = 'https://test.com',
             ],
             'mergeable' => true,
+            'body' => '',
+            'html_url' => $htmlUrl = 'https://test.com',
+            'labels' => [],
         ];
 
         $pr = PullRequest::fromResponse($response);
