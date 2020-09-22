@@ -255,13 +255,13 @@ EOT;
         $this->io->writeln('');
     }
 
-    private function printRelease(Repository $repository, Tag $currentVersion, Tag $next): void
+    private function printRelease(Repository $repository, Tag $current, Tag $next): void
     {
         $this->io->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
             $next->toString(),
             $repository->toString(),
-            $currentVersion->toString(),
+            $current->toString(),
             $next->toString(),
             date('Y-m-d')
         ));
