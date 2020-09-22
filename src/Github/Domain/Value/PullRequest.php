@@ -31,8 +31,15 @@ final class PullRequest
     private User $user;
     private ?bool $mergeable;
 
-    private function __construct(Issue $issue, string $title, string $updatedAt, Base $base, Head $head, User $user, ?bool $mergeable)
-    {
+    private function __construct(
+        Issue $issue,
+        string $title,
+        string $updatedAt,
+        Base $base,
+        Head $head,
+        User $user,
+        ?bool $mergeable
+    ) {
         Assert::stringNotEmpty($title);
         Assert::stringNotEmpty($updatedAt);
 
