@@ -30,8 +30,6 @@ use function Symfony\Component\String\u;
  */
 final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 {
-    private const TIME_BEFORE_MERGE = 60;
-
     private Projects $projects;
     private PullRequests $pullRequests;
     private Statuses $statuses;
@@ -140,7 +138,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             // Wait a bit to be sure the PR state is updated.
             if ((new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
-                - $pr->updatedAt()->getTimestamp() < self::TIME_BEFORE_MERGE
+                - $pr->updatedAt()->getTimestamp() < 60
             ) {
                 continue;
             }
