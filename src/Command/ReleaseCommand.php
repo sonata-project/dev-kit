@@ -197,9 +197,9 @@ EOT;
             $this->io->section('Changelog');
 
             $this->printRelease(
+                $repository,
                 $currentRelease->tag(),
-                $nextVersion,
-                $repository
+                $nextVersion
             );
 
             $this->printChangelog($changelog);
@@ -242,7 +242,7 @@ EOT;
         $this->io->writeln('');
     }
 
-    private function printRelease(Tag $currentVersion, Tag $nextVersion, Repository $repository): void
+    private function printRelease(Repository $repository, Tag $currentVersion, Tag $nextVersion): void
     {
         $this->io->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
