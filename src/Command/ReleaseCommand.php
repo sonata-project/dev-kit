@@ -196,7 +196,12 @@ EOT;
 
             $this->io->section('Changelog');
 
-            $this->printRelease($currentRelease->tag(), $nextVersion, $repository);
+            $this->printRelease(
+                $currentRelease->tag(),
+                $nextVersion,
+                $repository
+            );
+
             $this->printChangelog($changelog);
         }
     }
