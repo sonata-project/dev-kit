@@ -165,7 +165,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
 
             // Diff application
-            $this->io->section('Files for '.$currentBranch);
+            $this->io->section(sprintf(
+                'Files for %s',
+                $currentBranch
+            ));
 
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->github->repos()->commits()->compare(
