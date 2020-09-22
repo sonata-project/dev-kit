@@ -290,8 +290,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private function renderFile(Project $project, Repository $repository, string $branchName, string $distPath, string $localPath = self::FILES_DIR): void
     {
-        $package = $project->package();
-
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
                 'This method only supports files inside the "%s" directory',
