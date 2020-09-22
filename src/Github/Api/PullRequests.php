@@ -72,7 +72,7 @@ final class PullRequests
             $repository->name(),
             $pullRequest->issue()->toInt(),
             $squash ? '' : $pullRequest->title(),
-            $pullRequest->head()->sha(),
+            $pullRequest->head()->sha()->toString(),
             $squash,
             $title
         );

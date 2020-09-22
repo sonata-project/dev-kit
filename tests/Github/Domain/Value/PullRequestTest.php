@@ -72,7 +72,7 @@ final class PullRequestTest extends TestCase
         self::assertSame($updatedAt, $pr->updatedAt()->format('Y-m-d H:i:s'));
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
-        self::assertSame($headSha, $pr->head()->sha());
+        self::assertSame($headSha, $pr->head()->sha()->toString());
         self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
         self::assertSame($userLogin, $pr->user()->login());
         self::assertTrue($pr->isMergeable());

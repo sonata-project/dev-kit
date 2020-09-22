@@ -121,7 +121,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayContainKeyShaButEmptyArray(): void
+    public function throwsExceptionIfRepsonseArrayContainKeyRepoButEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -150,7 +150,7 @@ final class HeadTest extends TestCase
         $head = Head::fromResponse($response);
 
         self::assertSame($ref, $head->ref());
-        self::assertSame($sha, $head->sha());
+        self::assertSame($sha, $head->sha()->toString());
         self::assertSame($ownerLogin, $head->repo()->owner()->login());
     }
 }

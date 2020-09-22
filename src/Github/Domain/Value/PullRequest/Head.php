@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Github\Domain\Value\PullRequest;
 
 use App\Github\Domain\Value\PullRequest\Head\Repo;
+use App\Github\Domain\Value\Sha;
 use Webmozart\Assert\Assert;
 
 /**
@@ -22,13 +23,12 @@ use Webmozart\Assert\Assert;
 final class Head
 {
     private string $ref;
-    private string $sha;
+    private Sha $sha;
     private Repo $repo;
 
-    private function __construct(string $ref, string $sha, Repo $repo)
+    private function __construct(string $ref, Sha $sha, Repo $repo)
     {
         Assert::stringNotEmpty($ref);
-        Assert::stringNotEmpty($sha);
 
         $this->ref = $ref;
         $this->sha = $sha;
@@ -50,7 +50,7 @@ final class Head
 
         return new self(
             $config['ref'],
-            $config['sha'],
+            Sha::fromString($config['sha']),
             Repo::fromResponse($config['repo'])
         );
     }
@@ -60,7 +60,7 @@ final class Head
         return $this->ref;
     }
 
-    public function sha(): string
+    public function sha(): Sha
     {
         return $this->sha;
     }

@@ -15,6 +15,7 @@ namespace App\Github\Api;
 
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\CombinedStatus;
+use App\Github\Domain\Value\Sha;
 use Github\Client as GithubClient;
 
 /**
@@ -29,12 +30,12 @@ final class Statuses
         $this->github = $github;
     }
 
-    public function combined(Repository $repository, string $sha): CombinedStatus
+    public function combined(Repository $repository, Sha $sha): CombinedStatus
     {
         $response = $this->github->repos()->statuses()->combined(
             $repository->username(),
             $repository->name(),
-            $sha
+            $sha->toString()
         );
 
         return CombinedStatus::fromResponse($response);
