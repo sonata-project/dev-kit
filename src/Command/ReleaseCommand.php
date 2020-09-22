@@ -195,7 +195,10 @@ EOT;
         if ($nextVersion === $currentRelease->tagName()->toString()) {
             $errorOutput->warning('Release is not needed');
         } else {
-            $errorOutput->success('Next release will be: '.$nextVersion);
+            $errorOutput->success(sprintf(
+                'Next release will be: %s',
+                $nextVersion
+            ));
 
             $errorOutput->section('Changelog');
 
