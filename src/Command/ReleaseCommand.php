@@ -157,7 +157,7 @@ EOT;
             $branch
         );
 
-        $nextVersion = $this->determineNextVersion($currentRelease->tag(), $pulls);
+        $next = $this->determineNextVersion($currentRelease->tag(), $pulls);
         $changelog = array_reduce(
             array_filter(array_column($pulls, 'changelog')),
             'array_merge_recursive',
@@ -186,12 +186,12 @@ EOT;
 
         $this->io->section('Release');
 
-        if ($nextVersion->toString() === $currentRelease->tag()->toString()) {
+        if ($next->toString() === $currentRelease->tag()->toString()) {
             $this->io->warning('Release is not needed');
         } else {
             $this->io->success(sprintf(
                 'Next release will be: %s',
-                $nextVersion->toString()
+                $next->toString()
             ));
 
             $this->io->section('Changelog');
@@ -199,7 +199,7 @@ EOT;
             $this->printRelease(
                 $repository,
                 $currentRelease->tag(),
-                $nextVersion
+                $next
             );
 
             $this->printChangelog($changelog);
@@ -242,14 +242,14 @@ EOT;
         $this->io->writeln('');
     }
 
-    private function printRelease(Repository $repository, Tag $currentVersion, Tag $nextVersion): void
+    private function printRelease(Repository $repository, Tag $currentVersion, Tag $next): void
     {
         $this->io->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
-            $nextVersion->toString(),
+            $next->toString(),
             $repository->toString(),
             $currentVersion->toString(),
-            $nextVersion,
+            $next,
             date('Y-m-d')
         ));
     }
