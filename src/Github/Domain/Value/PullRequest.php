@@ -30,7 +30,17 @@ final class PullRequest
     private Head $head;
     private User $user;
     private ?bool $mergeable;
+    private string $body;
+    private string $htmlUrl;
 
+    /**
+     * @var Label[]
+     */
+    private array $labels;
+
+    /**
+     * @param Label[] $labels
+     */
     private function __construct(
         Issue $issue,
         string $title,
@@ -38,10 +48,15 @@ final class PullRequest
         Base $base,
         Head $head,
         User $user,
-        ?bool $mergeable
+        ?bool $mergeable,
+        string $body,
+        string $htmlUrl,
+        array $labels
     ) {
         Assert::stringNotEmpty($title);
         Assert::stringNotEmpty($updatedAt);
+        Assert::stringNotEmpty($body);
+        Assert::stringNotEmpty($htmlUrl);
 
         $this->issue = $issue;
         $this->title = $title;
@@ -53,6 +68,9 @@ final class PullRequest
         $this->head = $head;
         $this->user = $user;
         $this->mergeable = $mergeable;
+        $this->body = $body;
+        $this->htmlUrl = $htmlUrl;
+        $this->labels = $labels;
     }
 
     public static function fromResponse(array $response): self
@@ -79,6 +97,17 @@ final class PullRequest
         Assert::keyExists($response, 'mergeable');
         Assert::nullOrBoolean($response['mergeable']);
 
+        Assert::keyExists($response, 'body');
+
+        Assert::keyExists($response, 'html_url');
+        Assert::stringNotEmpty($response['html_url']);
+
+        Assert::keyExists($response, 'labels');
+        $labels = [];
+        foreach ($response['labels'] as $label) {
+            $labels[] = Label::fromResponse($label);
+        }
+
         return new self(
             Issue::fromInt($response['number']),
             $response['title'],
@@ -86,7 +115,10 @@ final class PullRequest
             Base::fromResponse($response['base']),
             Head::fromResponse($response['head']),
             User::fromResponse($response['user']),
-            $response['mergeable']
+            $response['mergeable'],
+            $response['body'],
+            $response['html_url'],
+            $labels
         );
     }
 
@@ -131,11 +163,91 @@ final class PullRequest
         return $this->mergeable;
     }
 
+    public function body(): string
+    {
+        return $this->body;
+    }
+
+    public function htmlUrl(): string
+    {
+        return $this->htmlUrl;
+    }
+
+    /**
+     * @return Label[]
+     */
+    public function labels(): array
+    {
+        return $this->labels;
+    }
+
+    public function hasLabels(): bool
+    {
+        return [] !== $this->labels;
+    }
+
     public function updatedWithinTheLast60Seconds(): bool
     {
         $diff = (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
             - $this->updatedAt->getTimestamp();
 
         return  $diff < 60;
+    }
+
+    public function stability(): string
+    {
+        $labels = array_map(static function (Label $label): string {
+            return $label->name();
+        }, $this->labels);
+
+        if (\in_array('minor', $labels, true)) {
+            return 'minor';
+        }
+
+        if (\in_array('patch', $labels, true)) {
+            return 'patch';
+        }
+
+        if (array_intersect(['docs', 'pedantic'], $labels)) {
+            return 'pedantic';
+        }
+
+        return 'unknown';
+    }
+
+    public function changelog(): array
+    {
+        $changelog = [];
+        $body = preg_replace('/<!--(.*)-->/Uis', '', $this->body);
+        preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
+
+        if (2 === \count($matches)) {
+            $lines = explode(PHP_EOL, $matches[1]);
+
+            $section = '';
+            foreach ($lines as $line) {
+                $line = trim($line);
+
+                if (empty($line)) {
+                    continue;
+                }
+
+                if (0 === strpos($line, '#')) {
+                    $section = preg_replace('/^#* /i', '', $line);
+                } elseif (!empty($section)) {
+                    $line = preg_replace('/^- /i', '', $line);
+                    $changelog[$section][] = sprintf(
+                        '- [[#%s](%s)] %s ([@%s](%s))',
+                        $this->issue->toInt(),
+                        $this->htmlUrl,
+                        ucfirst($line),
+                        $this->user->login(),
+                        $this->user->htmlUrl()
+                    );
+                }
+            }
+        }
+
+        return $changelog;
     }
 }

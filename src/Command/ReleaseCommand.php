@@ -21,6 +21,7 @@ use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
 use Symfony\Component\Console\Input\InputInterface;
@@ -158,24 +159,32 @@ EOT;
         );
 
         $next = $this->determineNextVersion($currentRelease->tag(), $pulls);
-        $changelog = array_reduce(
-            array_filter(array_column($pulls, 'changelog')),
-            'array_merge_recursive',
-            []
-        );
 
-        $this->io->section('Project');
+        $this->io->section('Checks');
 
         foreach ($combined->statuses() as $status) {
-            $print = $status->description()."\n".$status->targetUrl();
-
             if ('success' === $status->state()) {
-                $this->io->success($print);
+                $this->io->writeln(sprintf(
+                    '    <info>%s</info>',
+                    $status->description()
+                ));
             } elseif ('pending' === $status->state()) {
-                $this->io->warning($print);
+                $this->io->writeln(sprintf(
+                    '    <comment>%s</comment>',
+                    $status->description()
+                ));
             } else {
-                $this->io->error($print);
+                $this->io->writeln(sprintf(
+                    '    <error>%s</error>',
+                    $status->description()
+                ));
             }
+
+            $this->io->text(sprintf(
+                '     %s',
+                $status->targetUrl()
+            ));
+            $this->io->newLine();
         }
 
         $this->io->section('Pull requests');
@@ -202,57 +211,67 @@ EOT;
                 $next
             );
 
+            $changelogs = array_map(static function (PullRequest $pr): array {
+                return $pr->changelog();
+            }, $pulls);
+
+            $changelog = array_reduce(
+                $changelogs,
+                'array_merge_recursive',
+                []
+            );
+
             $this->printChangelog($changelog);
         }
     }
 
-    private function printPullRequest(array $pull): void
+    private function printPullRequest(PullRequest $pr): void
     {
-        if (\array_key_exists($pull['stability'], static::$stabilities)) {
+        if (\array_key_exists($pr->stability(), static::$stabilities)) {
             $this->io->write(sprintf(
                 '<fg=black;bg=%s>[%s]</> ',
-                static::$stabilities[$pull['stability']],
-                strtoupper($pull['stability'])
+                static::$stabilities[$pr->stability()],
+                strtoupper($pr->stability())
             ));
         } else {
             $this->io->write('<error>[NOT SET]</error> ');
         }
         $this->io->write(sprintf(
             '<info>%s</info>',
-            $pull['title']
+            $pr->title()
         ));
 
-        foreach ($pull['labels'] as $label) {
-            if (!\array_key_exists($label['name'], static::$labels)) {
+        foreach ($pr->labels() as $label) {
+            if (!\array_key_exists($label->name(), static::$labels)) {
                 $this->io->write(sprintf(
                     ' <error>[%s]</error>',
-                    $label['name']
+                    $label->name()
                 ));
             } else {
                 $this->io->write(sprintf(
                     ' <fg=%s>[%s]</>',
-                    static::$labels[$label['name']],
-                    $label['name']
+                    static::$labels[$label->name()],
+                    $label->name()
                 ));
             }
         }
 
-        if (empty($pull['labels'])) {
+        if (!$pr->hasLabels()) {
             $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
         }
 
-        if (!$pull['changelog'] && 'pedantic' !== $pull['stability']) {
+        if (!$pr->changelog() && 'pedantic' !== $pr->stability()) {
             $this->io->write(' <error>[Changelog not found]</error>');
-        } elseif (!$pull['changelog']) {
+        } elseif (!$pr->changelog()) {
             $this->io->write(' <fg=black;bg=green>[Changelog not found]</>');
-        } elseif ($pull['changelog'] && 'pedantic' === $pull['stability']) {
+        } elseif ($pr->changelog() && 'pedantic' === $pr->stability()) {
             $this->io->write(' <fg=black;bg=yellow>[Changelog found]</>');
         } else {
             $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
         }
-        $this->io->writeln('');
-        $this->io->writeln($pull['html_url']);
-        $this->io->writeln('');
+        $this->io->newLine();
+        $this->io->writeln($pr->htmlUrl());
+        $this->io->newLine();
     }
 
     private function printRelease(Repository $repository, Tag $current, Tag $next): void
@@ -287,65 +306,31 @@ EOT;
         }
     }
 
-    private function parseChangelog(array $pull): array
+    /**
+     * @param PullRequest[] $pullRequests
+     */
+    private function determineNextVersion(Tag $currentVersion, array $pullRequests): Tag
     {
-        $changelog = [];
-        $body = preg_replace('/<!--(.*)-->/Uis', '', $pull['body']);
-        preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
+        $stabilities = array_map(static function (PullRequest $pr): string {
+            return $pr->stability();
+        }, $pullRequests);
 
-        if (2 === \count($matches)) {
-            $lines = explode(PHP_EOL, $matches[1]);
-
-            $section = '';
-            foreach ($lines as $line) {
-                $line = trim($line);
-
-                if (empty($line)) {
-                    continue;
-                }
-
-                if (0 === strpos($line, '#')) {
-                    $section = preg_replace('/^#* /i', '', $line);
-                } elseif (!empty($section)) {
-                    $line = preg_replace('/^- /i', '', $line);
-                    $changelog[$section][] = '- [[#'.$pull['number'].']('.$pull['html_url'].')] '.
-                        ucfirst($line).' ([@'.$pull['user']['login'].']('.$pull['user']['html_url'].'))';
-                }
-            }
-        }
-
-        return $changelog;
-    }
-
-    private function determineNextVersion(Tag $currentVersion, array $pulls): Tag
-    {
-        $stabilities = array_column($pulls, 'stability');
         $parts = explode('.', $currentVersion->toString());
 
         if (\in_array('minor', $stabilities, true)) {
             return Tag::fromString(implode('.', [$parts[0], (int) $parts[1] + 1, 0]));
-        } elseif (\in_array('patch', $stabilities, true)) {
+        }
+
+        if (\in_array('patch', $stabilities, true)) {
             return Tag::fromString(implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]));
         }
 
         return $currentVersion;
     }
 
-    private function determinePullRequestStability(array $pull): string
-    {
-        $labels = array_column($pull['labels'], 'name');
-
-        if (\in_array('minor', $labels, true)) {
-            return 'minor';
-        } elseif (\in_array('patch', $labels, true)) {
-            return 'patch';
-        } elseif (array_intersect(['docs', 'pedantic'], $labels)) {
-            return 'pedantic';
-        }
-
-        return 'unknown';
-    }
-
+    /**
+     * @return PullRequest[]
+     */
     private function findPullRequestsSince(\DateTimeImmutable $date, Repository $repository, Branch $branch): array
     {
         $query = Query::fromString(sprintf(
@@ -356,16 +341,6 @@ EOT;
             self::BOT_NAME
         ));
 
-        $pulls = $this->pullRequests->search($query);
-
-        $extendedPulls = [];
-        foreach ($pulls as $pull) {
-            $pull['changelog'] = $this->parseChangelog($pull);
-            $pull['stability'] = $this->determinePullRequestStability($pull);
-
-            $extendedPulls[] = $pull;
-        }
-
-        return $extendedPulls;
+        return $this->pullRequests->search($repository, $query);
     }
 }
