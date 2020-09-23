@@ -47,6 +47,7 @@
         "symfony/symfony": "*"
     },
     "require-dev": {
+        "fzaninotto/faker": "^1.9",
         "phpstan/phpstan": "0.12.43",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/var-dumper": "^5.1"
