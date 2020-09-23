@@ -151,7 +151,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $git->config('user.email', static::GITHUB_EMAIL);
 
         $previousBranch = null;
-        $previousDevKit = null;
+        $previousDevKitBranchName = null;
         foreach ($project->branchesReverse() as $branch) {
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranchNames = array_map(static function (\App\Github\Domain\Value\Branch $branch) {
@@ -161,7 +161,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $devKitBranchName = u($branch->name())->append('-dev-kit')->toString();
 
             // A PR is already here for previous branch, do nothing on the current one.
-            if (\in_array($previousDevKit, $remoteBranchNames, true)) {
+            if (\in_array($previousDevKitBranchName, $remoteBranchNames, true)) {
                 continue;
             }
 
@@ -244,7 +244,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
             // Save the current branch to the previous and go to next step
             $previousBranch = $branch;
-            $previousDevKit = $devKitBranchName;
+            $previousDevKitBranchName = $devKitBranchName;
         }
     }
 
