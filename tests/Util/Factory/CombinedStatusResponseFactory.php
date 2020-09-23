@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Util\Factory;
 
 use App\Tests\Util\Helper;
-use function Symfony\Component\String\u;
 
 final class CombinedStatusResponseFactory
 {
