@@ -21,6 +21,7 @@ use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Domain\Value\Service;
 use App\Github\Api\Branches;
+use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
@@ -45,6 +46,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private GithubClient $github;
     private PullRequests $pullRequests;
     private Branches $branches;
+    private Commits $commits;
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -56,6 +58,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         GithubClient $github,
         PullRequests $pullRequests,
         Branches $branches,
+        Commits $commits,
         GitWrapper $git,
         Filesystem $filesystem,
         Environment $twig
@@ -68,6 +71,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->github = $github;
         $this->pullRequests = $pullRequests;
         $this->branches = $branches;
+        $this->commits = $commits;
         $this->git = $git;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
@@ -172,15 +176,16 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
 
             // If the previous branch is not merged into the current one, do nothing.
-            if ($previousBranch && $this->github->repos()->commits()->compare(
-                $repository->username(),
-                $repository->name(),
-                $branch->name(),
-                $previousBranch->name()
-            )['ahead_by']) {
-                $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
+            if ($previousBranch instanceof Branch) {
+                if ($this->commits->compare(
+                    $repository,
+                    $branch,
+                    $previousBranch
+                )['ahead_by']) {
+                    $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
 
-                continue;
+                    continue;
+                }
             }
 
             $git->reset(['hard' => true]);
