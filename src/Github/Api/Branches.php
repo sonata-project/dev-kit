@@ -35,9 +35,8 @@ final class Branches
     public function all(Repository $repository): array
     {
         return array_map(function (array $listResponse) use ($repository): Branch {
-            $detailResponse = $this->get($repository, $listResponse['name']);
-
-            return Branch::fromResponse($detailResponse);
+            // Fetch the more detailed information
+            return $this->get($repository, $listResponse['name']);
         }, $this->github->repos()->branches($repository->username(), $repository->name()));
     }
 
