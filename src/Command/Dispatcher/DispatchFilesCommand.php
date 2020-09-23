@@ -356,8 +356,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $this->filesystem->mkdir(\dirname($distPath));
         }
 
-        $projectConfig = $project->rawConfig();
-        $branchConfig = $projectConfig['branches'][$branch->name()];
         $localPathInfo = pathinfo($localFullPath);
 
         if (u($localPathInfo['basename'])->startsWith('DELETE_')) {
