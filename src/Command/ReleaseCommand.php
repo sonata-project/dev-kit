@@ -333,14 +333,9 @@ EOT;
      */
     private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
     {
-        $query = Query::fromString(sprintf(
-            'repo:%s type:pr is:merged base:%s merged:>%s -author:%s',
-            $repository->toString(),
-            $branch->name(),
-            $date->format('Y-m-d\TH:i:s\Z'), // @todo check if there is a better way to format the datetime like this
-            self::BOT_NAME
-        ));
-
-        return $this->pullRequests->search($repository, $query);
+        return $this->pullRequests->search(
+            $repository,
+            Query::pullRequestsSince($repository, $branch, $date, self::BOT_NAME)
+        );
     }
 }
