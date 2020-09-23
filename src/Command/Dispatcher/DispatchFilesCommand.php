@@ -366,7 +366,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
 
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
-            $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
+            $distPath = sprintf(
+                '%s/%s',
+                \dirname($distPath),
+                basename($distPath, '.twig')
+            );
 
             reset($projectConfig['branches']);
             $unstableBranch = key($projectConfig['branches']);
