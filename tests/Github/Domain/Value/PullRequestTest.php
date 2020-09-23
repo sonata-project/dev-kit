@@ -357,7 +357,8 @@ final class PullRequestTest extends TestCase
     public function body(): void
     {
         $response = PullRequestResponseFactory::create([
-            'body' => sprintf(<<<BODY
+            'body' => sprintf(
+                <<<BODY
 %s
 
 ```markdown
@@ -365,7 +366,7 @@ final class PullRequestTest extends TestCase
 - The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
 ```
 BODY,
-            self::faker()->text
+                self::faker()->text
             ),
         ]);
 
