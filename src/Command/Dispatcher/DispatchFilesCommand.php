@@ -295,7 +295,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string{
+        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string {
             return $excludedFile->filename();
         }, $project->excludedFiles());
 
