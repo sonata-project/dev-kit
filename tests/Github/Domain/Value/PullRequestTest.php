@@ -307,7 +307,7 @@ final class PullRequestTest extends TestCase
                     'name' => 'foo',
                     'color' => 'ededed',
                 ],
-            ]
+            ],
         ];
 
         yield [
@@ -317,7 +317,7 @@ final class PullRequestTest extends TestCase
                     'name' => 'patch',
                     'color' => 'ededed',
                 ],
-            ]
+            ],
         ];
 
         yield [
@@ -327,7 +327,7 @@ final class PullRequestTest extends TestCase
                     'name' => 'minor',
                     'color' => 'ededed',
                 ],
-            ]
+            ],
         ];
 
         yield [
@@ -337,7 +337,7 @@ final class PullRequestTest extends TestCase
                     'name' => 'pedantic',
                     'color' => 'ededed',
                 ],
-            ]
+            ],
         ];
 
         yield [
@@ -347,7 +347,7 @@ final class PullRequestTest extends TestCase
                     'name' => 'docs',
                     'color' => 'ededed',
                 ],
-            ]
+            ],
         ];
     }
 }
