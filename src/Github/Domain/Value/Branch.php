@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,10 +21,12 @@ use Webmozart\Assert\Assert;
  */
 final class Branch
 {
+    private string $name;
     private Commit $commit;
 
-    private function __construct(Commit $commit)
+    private function __construct(string $name, Commit $commit)
     {
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->commit = $commit;
     }
 
@@ -31,12 +34,21 @@ final class Branch
     {
         Assert::notEmpty($response);
 
+        Assert::keyExists($response, 'name');
+        Assert::stringNotEmpty($response['name']);
+
         Assert::keyExists($response, 'commit');
         Assert::notEmpty($response['commit']);
 
         return new self(
+            $response['name'],
             Commit::fromResponse($response['commit'])
         );
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 
     public function commit(): Commit
