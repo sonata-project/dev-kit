@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          head: ${{ github.head_ref }}
+          ref: ${{ github.head_ref }}
 
       - name: Run PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga:2.16.4
