@@ -37,12 +37,12 @@ rules:
 whitelist:
     lines:
         - '.. versionadded:: {{ project.stableBranch.name }}'
-{% if custom_doctor_rst_whitelist_part is not empty %}
-    {{ custom_doctor_rst_whitelist_part|raw }}
+{% if project.customDoctorRstWhitelistPart is not empty %}
+    {{ project.customDoctorRstWhitelistPart|raw }}
 {% endif %}
-{% elseif custom_doctor_rst_whitelist_part is not empty %}
+{% elseif project.customDoctorRstWhitelistPart is not empty %}
 
 whitelist:
     lines:
-    {{ custom_doctor_rst_whitelist_part|raw }}
+    {{ project.customDoctorRstWhitelistPart|raw }}
 {% endif %}
