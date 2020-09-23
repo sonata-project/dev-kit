@@ -358,26 +358,36 @@ final class PullRequestTest extends TestCase
         $response = PullRequestResponseFactory::create([
             'body' => sprintf(
                 <<<BODY
+<!-- %s -->
+
+## Subject
+
 %s
+
+## Changelog
 
 ```markdown
 ### Changed
-- The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
+- %s
 ```
 BODY,
-                self::faker()->text
+                self::faker()->text,
+                self::faker()->text,
+                $message = 'The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.'
             ),
         ]);
 
         $pr = PullRequest::fromResponse($response);
 
-        $expected = [
+        $changelog = $pr->changelog();
 
-        ];
-
-        self::assertSame(
-            $expected,
-            $pr->changelog()
+        self::assertArrayHasKey(
+            'Changed',
+            $changelog
+        );
+        self::assertStringContainsString(
+            $message,
+            $changelog['Changed'][0]
         );
     }
 }

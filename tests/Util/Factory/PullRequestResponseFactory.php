@@ -52,13 +52,20 @@ final class PullRequestResponseFactory
             'mergeable' => $faker->optional()->boolean,
             'body' => sprintf(
                 <<<'BODY'
+<!-- %s -->
+
+## Subject
+
 %s
+
+## Changelog
 
 ```markdown
 ### Changed
 - The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
 ```
 BODY,
+                $faker->text,
                 $faker->text
             ),
             'html_url' => $faker->url,
