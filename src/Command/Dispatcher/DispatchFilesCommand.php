@@ -377,7 +377,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 basename($distPath, '.twig')
             );
 
-            $res = file_put_contents($distPath, $this->twig->render(
+            $localContent = $this->twig->render(
                 $localPath,
                 [
                     'project' => $project,
@@ -386,10 +386,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                         return $service->toString();
                     }, $branch->services()),
                 ]
-            ));
-        } else {
-            $res = file_put_contents($distPath, $localContent);
+            );
         }
+
+        $res = file_put_contents($distPath, $localContent);
 
         if (false === $res) {
             throw new \RuntimeException(sprintf(
