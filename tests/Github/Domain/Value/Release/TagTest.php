@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\Release;
 
 use App\Github\Domain\Value\Release\Tag;
-use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class TagTest extends TestCase
