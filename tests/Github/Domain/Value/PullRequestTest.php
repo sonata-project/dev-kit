@@ -186,7 +186,7 @@ final class PullRequestTest extends TestCase
         $response = [
             'number' => 123,
             'title' => 'Update dependecy',
-            'updated_at' => $updatedAt = '2020-01-01 19:00:00',
+            'updated_at' => '2020-01-01 19:00:00',
             'base' => [
                 'ref' => $baseRef = 'baseRef',
             ],
@@ -216,7 +216,6 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertSame($updatedAt, $pr->updatedAt()->format('Y-m-d H:i:s'));
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
         self::assertSame($headSha, $pr->head()->sha()->toString());
