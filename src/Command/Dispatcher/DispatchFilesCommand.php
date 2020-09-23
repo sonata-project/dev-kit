@@ -377,9 +377,8 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 basename($distPath, '.twig')
             );
 
-            $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
-                $projectConfig,
-                $branchConfig,
+            $res = file_put_contents($distPath, $this->twig->render(
+                $localPath,
                 [
                     'project' => $project,
                     'branch' => $branch,
@@ -389,7 +388,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     'unstable_branch' => $project->unstableBranch()->name(),
                     'stable_branch' => $project->stableBranch()->name(),
                 ]
-            )));
+            ));
         } else {
             $res = file_put_contents($distPath, $localContent);
         }

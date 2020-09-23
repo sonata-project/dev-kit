@@ -32,11 +32,11 @@ rules:
     no_config_yaml: ~
     kernel_instead_of_app_kernel: ~
     no_app_console: ~
-{% if stable_branch ends with '.x' %}
+{% if project.stableBranch.name ends with '.x' %}
 
 whitelist:
     lines:
-        - '.. versionadded:: {{ stable_branch }}'
+        - '.. versionadded:: {{ project.stableBranch.name }}'
 {% if custom_doctor_rst_whitelist_part is not empty %}
     {{ custom_doctor_rst_whitelist_part|raw }}
 {% endif %}
