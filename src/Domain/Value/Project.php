@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Domain\Value;
 
 use Packagist\Api\Result\Package;
-use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
