@@ -21,7 +21,7 @@ final class CombinedStatusTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,7 +31,7 @@ final class CombinedStatusTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyState(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyState(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

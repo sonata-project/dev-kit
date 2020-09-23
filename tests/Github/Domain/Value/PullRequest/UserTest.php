@@ -21,7 +21,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,7 +31,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyLogin(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyLogin(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -44,7 +44,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyHtmlUrl(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyHtmlUrl(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

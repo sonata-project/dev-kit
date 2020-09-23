@@ -21,7 +21,7 @@ final class OwnerTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,7 +31,7 @@ final class OwnerTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyLogin(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyLogin(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
