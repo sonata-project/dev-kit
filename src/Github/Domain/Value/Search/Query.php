@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\Search;
 
+use App\Domain\Value\Branch;
+use App\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -34,6 +36,19 @@ final class Query
         Assert::stringNotEmpty($value);
 
         return new self($value);
+    }
+
+    public static function pullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date, string $excludedAuthor): self
+    {
+        return new self(
+            sprintf(
+                'repo:%s type:pr is:merged base:%s merged:>%s -author:%s',
+                $repository->toString(),
+                $branch->name(),
+                $date->format('Y-m-d\TH:i:s\Z'), // @todo check if there is a better way to format the datetime like this
+                $excludedAuthor
+            )
+        );
     }
 
     public function toString(): string
