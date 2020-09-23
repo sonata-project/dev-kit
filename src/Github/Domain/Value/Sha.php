@@ -24,6 +24,7 @@ final class Sha
 
     private function __construct(string $value)
     {
+        $value = trim($value);
         Assert::stringNotEmpty($value);
 
         $this->value = $value;

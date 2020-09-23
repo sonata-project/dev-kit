@@ -20,21 +20,24 @@ final class ActionTest extends TestCase
 {
     /**
      * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function throwsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Action::fromString('');
+        Action::fromString($value);
     }
 
     /**
      * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::arbitrary()
      */
-    public function fromString(): void
+    public function fromString(string $value): void
     {
-        $value = 'foo';
-
         self::assertSame(
             $value,
             Action::fromString($value)->toString()
