@@ -116,13 +116,13 @@ Please also note that multiline signatures are allowed when the line is longer t
 
 #### Documentation
 
-The documentation is mostly written with the `rst` format, and can be found in the `{{ docs_path }}` directory.
+The documentation is mostly written with the `rst` format, and can be found in the `{{ branch.docsPath.toString }}` directory.
 You can test the doc rendering with the `make docs` command, but to do this, you will need [Sphinx][sphinx_install].
 Just like php dependencies can be managed with Composer, python dependencies can be managed with [pip][pip_install].
 To get sphinx, simply run the following command.
 
 ```bash
-pip install --requirement {{ docs_path }}/requirements.txt --user
+pip install --requirement {{ branch.docsPath.toString }}/requirements.txt --user
 ```
 
 Some python binaries SHOULD be downloaded to `~/.local/bin` for Linux or `~/Library/Python/2.7/bin` for Mac OS,
@@ -132,7 +132,7 @@ so that it contains this path and then, from the root of the project, run `make 
 If `make docs` is successful, you SHOULD be able to see your modifications:
 
 ```bash
-$YOUR_FAVORITE_BROWSER {{ docs_path }}/_build/html/index.html
+$YOUR_FAVORITE_BROWSER {{ branch.docsPath.toString }}/_build/html/index.html
 ```
 
 If your PR contains a new feature, you MUST add documentation for it.
@@ -230,20 +230,20 @@ Here is a short table resuming on which you have to start:
 
 Kind of modification | Backward Compatible (BC) | Type of release | Branch to target        | Label |
 -------------------- | ------------------------ | --------------- | ----------------------- | ----- |
-Bug fixes            | Yes                      | Patch           | `{{ stable_branch }}`   |       |
-Bug fixes            | No (Only if no choice)   | Major           | `{{ unstable_branch }}` |       |
-Feature              | Yes                      | Minor           | `{{ stable_branch }}`   |       |
-Feature              | No (Only if no choice)   | Major           | `{{ unstable_branch }}` |       |
-Deprecation          | Yes (Have to)            | Minor           | `{{ stable_branch }}`   |       |
-Deprecation removal  | No (Can't be)            | Major           | `{{ unstable_branch }}` |       |
+Bug fixes            | Yes                      | Patch           | `{{ project.stableBranch.name }}`   |       |
+Bug fixes            | No (Only if no choice)   | Major           | `{{ project.unstableBranch.name }}` |       |
+Feature              | Yes                      | Minor           | `{{ project.stableBranch.name }}`   |       |
+Feature              | No (Only if no choice)   | Major           | `{{ project.unstableBranch.name }}` |       |
+Deprecation          | Yes (Have to)            | Minor           | `{{ project.stableBranch.name }}`   |       |
+Deprecation removal  | No (Can't be)            | Major           | `{{ project.unstableBranch.name }}` |       |
 
 Notes:
-  * Branch `{{ stable_branch }}` is the branch of the **latest stable** minor release and
+  * Branch `{{ project.stableBranch.name }}` is the branch of the **latest stable** minor release and
   has to be used for Backward compatible PRs.
   * If you PR is not **Backward Compatible** but can be, it **MUST** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
-    * If your BC PR is accepted, you can do a new one on the `{{ unstable_branch }}` branch which removes the deprecated code.
+    * If your BC PR is accepted, you can do a new one on the `{{ project.unstableBranch.name }}` branch which removes the deprecated code.
     * SYMFONY DOC REF (same logic)?
 
 If you have a non-BC PR to propose, please try to create a related BC PR first.

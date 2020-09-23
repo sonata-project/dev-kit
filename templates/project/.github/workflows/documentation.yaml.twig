@@ -7,8 +7,8 @@ name: Documentation
 on:
   push:
     branches:
-{% for branch in branches|keys %}
-      - {{ branch }}
+{% for branch in project.branches %}
+      - {{ branch.name }}
 {% endfor %}
   pull_request:
 

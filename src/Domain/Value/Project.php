@@ -15,6 +15,7 @@ namespace App\Domain\Value;
 
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -245,6 +246,30 @@ final class Project
     public function rawConfig(): array
     {
         return $this->rawConfig;
+    }
+
+    public function unstableBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw new \InvalidArgumentException('No branches available!');
+        }
+
+        return $this->branches[0];
+    }
+
+    public function stableBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw new \InvalidArgumentException('No branches available!');
+        }
+
+        try {
+            Assert::keyExists($this->branches, 1);
+
+            return $this->branches[1];
+        } catch (\InvalidArgumentException $e) {
+            return $this->unstableBranch();
+        }
     }
 
     private function getLatestPackagistVersion(): Package\Version

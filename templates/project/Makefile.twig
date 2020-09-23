@@ -63,5 +63,5 @@ endif
 .PHONY: test
 
 docs:
-	cd {{ docs_path }} && sphinx-build -W -b html -d _build/doctrees . _build/html
+	cd {{ branch.docsPath.toString }} && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs

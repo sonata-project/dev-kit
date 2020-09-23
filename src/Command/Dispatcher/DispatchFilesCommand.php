@@ -16,8 +16,10 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
+use App\Domain\Value\ExcludedFile;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Domain\Value\Service;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use Github\Client as GithubClient;
@@ -226,7 +228,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                             $repository,
                             sprintf(
                                 'DevKit updates for %s branch',
-                                $currentBranch
+                                $currentBranch->name()
                             ),
                             $currentHead,
                             $currentBranch->name()
@@ -294,9 +296,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        $projectConfig = $project->rawConfig();
+        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string {
+            return $excludedFile->filename();
+        }, $project->excludedFiles());
 
-        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $projectConfig['excluded_files'], true)) {
+        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $excludedFiles, true)) {
             return;
         }
 
@@ -352,7 +356,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $this->filesystem->mkdir(\dirname($distPath));
         }
 
-        $branchConfig = $projectConfig['branches'][$branch->name()];
         $localPathInfo = pathinfo($localFullPath);
 
         if (u($localPathInfo['basename'])->startsWith('DELETE_')) {
@@ -366,22 +369,22 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
 
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
-            $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
+            $distPath = sprintf(
+                '%s/%s',
+                \dirname($distPath),
+                basename($distPath, '.twig')
+            );
 
-            reset($projectConfig['branches']);
-            $unstableBranch = key($projectConfig['branches']);
-            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-
-            $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
-                $projectConfig,
-                $branchConfig,
+            $res = file_put_contents($distPath, $this->twig->render(
+                $localPath,
                 [
                     'project' => $project,
-                    'current_branch' => $branch->name(),
-                    'unstable_branch' => $unstableBranch,
-                    'stable_branch' => $stableBranch,
+                    'branch' => $branch,
+                    'services' => array_map(static function (Service $service): string {
+                        return $service->toString();
+                    }, $branch->services()),
                 ]
-            )));
+            ));
         } else {
             $res = file_put_contents($distPath, $localContent);
         }

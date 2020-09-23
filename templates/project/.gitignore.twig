@@ -10,10 +10,10 @@ composer.lock
 phpunit.xml
 phpstan.neon
 /.phpunit.result.cache
-{% if docs_target %}
+{% if project.docsTarget %}
 /docs/_build/
 {% endif %}
-{% if custom_gitignore_part is not empty %}
+{% if project.customGitignorePart is not empty %}
 
-{{ custom_gitignore_part }}
+{{ project.customGitignorePart }}
 {% endif %}
