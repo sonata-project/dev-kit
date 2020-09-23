@@ -50,7 +50,16 @@ final class PullRequestResponseFactory
                 'html_url' => $faker->url,
             ],
             'mergeable' => $faker->optional()->boolean,
-            'body' => $faker->text,
+            'body' => sprintf(<<<'BODY'
+%s
+
+```markdown
+### Changed
+- The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
+```
+BODY,
+$faker->text
+),
             'html_url' => $faker->url,
             'labels' => array_map(static function () use ($faker): array {
                 return [

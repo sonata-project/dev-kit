@@ -350,4 +350,34 @@ final class PullRequestTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function body(): void
+    {
+        $response = PullRequestResponseFactory::create([
+            'body' => sprintf(<<<BODY
+%s
+
+```markdown
+### Changed
+- The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
+```
+BODY,
+            self::faker()->text
+            ),
+        ]);
+
+        $pr = PullRequest::fromResponse($response);
+
+        $expected = [
+
+        ];
+
+        self::assertSame(
+            $expected,
+            $pr->changelog()
+        );
+    }
 }
