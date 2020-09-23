@@ -376,18 +376,14 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 basename($distPath, '.twig')
             );
 
-            reset($projectConfig['branches']);
-            $unstableBranch = key($projectConfig['branches']);
-            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-
             $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $projectConfig,
                 $branchConfig,
                 [
                     'project' => $project,
-                    'current_branch' => $branch,
-                    'unstable_branch' => $unstableBranch,
-                    'stable_branch' => $stableBranch,
+                    'branch' => $branch,
+                    'unstable_branch' => $project->unstableBranch()->name(),
+                    'stable_branch' => $project->stableBranch()->name(),
                 ]
             )));
         } else {

@@ -7,8 +7,8 @@ name: Test
 on:
   push:
     branches:
-{% for branch in branches|keys %}
-      - {{ branch }}
+{% for branch in project.branches %}
+      - {{ branch.name }}
 {% endfor %}
   pull_request:
 
@@ -31,8 +31,8 @@ jobs:
     strategy:
       matrix:
         php-version:
-{% for version in php %}
-          - '{{ version }}'
+{% for version in branch.php %}
+          - '{{ version.toString }}'
 {% endfor %}
         dependencies: [highest]
         allowed_to_fail: [false]
@@ -95,7 +95,7 @@ jobs:
         {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
-{% if project.repository.name == 'SonataBlockBundle' and current_branch.name == '3.x' %}
+{% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
       - name: Allow cyclic dependency between block-bundle and admin-bundle
         run: sed --in-place "s/\"dev-master\":/\"dev-${GITHUB_SHA}\":/" composer.json
 

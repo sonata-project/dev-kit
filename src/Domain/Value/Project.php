@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Domain\Value;
 
 use Packagist\Api\Result\Package;
+use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
 
 /**
@@ -245,6 +246,26 @@ final class Project
     public function rawConfig(): array
     {
         return $this->rawConfig;
+    }
+
+    public function unstableBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw new \InvalidArgumentException('No branches available!');
+        }
+
+        return $this->branches[0];
+    }
+
+    public function stableBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw new \InvalidArgumentException('No branches available!');
+        }
+
+        Assert::keyExists($this->branches, 1);
+
+        return $this->branches[1];
     }
 
     private function getLatestPackagistVersion(): Package\Version
