@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value;
 
-use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use App\Tests\Util\Factory\PullRequestResponseFactory;
 use App\Tests\Util\Helper;
@@ -138,14 +137,14 @@ final class PullRequestTest extends TestCase
     public function usesUpdatedAtFromResponse()
     {
         $response = PullRequestResponseFactory::create([
-            'updated_at' => $value = new \DateTimeImmutable(self::faker()->date('Y-m-d H:i:s')),
+            'updated_at' => $value = self::faker()->date('Y-m-d H:i:s'),
         ]);
 
         $pullRequest = PullRequest::fromResponse($response);
 
         self::assertSame(
-            $value->getTimestamp(),
-            $pullRequest->updatedAt()->getTimestamp()
+            $value,
+            $pullRequest->updatedAt()->format('Y-m-d H:i:s')
         );
     }
 
@@ -292,7 +291,7 @@ final class PullRequestTest extends TestCase
     }
 
     /**
-     * @return \Generator<array{0: string, 1: array<Label>}>
+     * @return \Generator<array{0: string, 1: array{name: string, color: string}}>
      */
     public function stabilityProvider(): \Generator
     {
@@ -304,36 +303,51 @@ final class PullRequestTest extends TestCase
         yield [
             'unknown',
             [
-                Label::fromValues('foo', Label\Color::fromString('ededed')),
-            ],
+                [
+                    'name' => 'foo',
+                    'color' => 'ededed',
+                ],
+            ]
         ];
 
         yield [
             'patch',
             [
-                Label::fromValues('patch', Label\Color::fromString('ededed')),
-            ],
+                [
+                    'name' => 'patch',
+                    'color' => 'ededed',
+                ],
+            ]
         ];
 
         yield [
             'minor',
             [
-                Label::fromValues('minor', Label\Color::fromString('ededed')),
-            ],
+                [
+                    'name' => 'minor',
+                    'color' => 'ededed',
+                ],
+            ]
         ];
 
         yield [
             'pedantic',
             [
-                Label::fromValues('pedantic', Label\Color::fromString('ededed')),
-            ],
+                [
+                    'name' => 'pedantic',
+                    'color' => 'ededed',
+                ],
+            ]
         ];
 
         yield [
             'pedantic',
             [
-                Label::fromValues('docs', Label\Color::fromString('ededed')),
-            ],
+                [
+                    'name' => 'docs',
+                    'color' => 'ededed',
+                ],
+            ]
         ];
     }
 }

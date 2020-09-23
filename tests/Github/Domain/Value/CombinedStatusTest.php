@@ -160,14 +160,17 @@ final class CombinedStatusTest extends TestCase
     {
         $response = CombinedStatusResponseFactory::create([
             'statuses' => $statuses = [
-                Status::fromResponse(StatusResponseFactory::create()),
-                Status::fromResponse(StatusResponseFactory::create()),
+                $statusResponse1 = StatusResponseFactory::create(),
+                $statusResponse2 = StatusResponseFactory::create(),
             ],
         ]);
 
         self::assertCount(2, $statuses);
         self::assertSame(
-            $statuses,
+            [
+                Status::fromResponse($statusResponse1),
+                Status::fromResponse($statusResponse2),
+            ],
             CombinedStatus::fromResponse($response)->statuses()
         );
     }
