@@ -62,6 +62,7 @@ else
 endif
 .PHONY: test
 {% if project.docsTarget %}
+
 docs:
 	cd {{ branch.docsPath.toString }} && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs

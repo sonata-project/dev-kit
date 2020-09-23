@@ -46,13 +46,11 @@ jobs:
             dependencies: highest
             allowed_to_fail: true
             variant: normal
-{% for package_name, package_versions in variants %}
-{% for version in package_versions %}
+{% for variant in branch.variants %}
           - php-version: '{{ target_php|default(php|last) }}'
             dependencies: highest
             allowed_to_fail: false
-            variant: '{{ package_name }}:"{{ version }}{% if not is_dev_branch(version) %}.*{% endif %}"'
-{% endfor %}
+            variant: '{{ variant.package }}:"{{ variant.version }}{% if not is_dev_branch(variant.version) %}.*{% endif %}"'
 {% endfor %}
 
     steps:

@@ -19,6 +19,7 @@ use App\Domain\Value\Branch;
 use App\Domain\Value\ExcludedFile;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Domain\Value\Service;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use Github\Client as GithubClient;
@@ -382,6 +383,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 [
                     'project' => $project,
                     'branch' => $branch,
+                    'services' => array_map(static function (Service $service): string {
+                        return $service->toString();
+                    }, $branch->services()),
                     'unstable_branch' => $project->unstableBranch()->name(),
                     'stable_branch' => $project->stableBranch()->name(),
                 ]
