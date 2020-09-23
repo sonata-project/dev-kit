@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\PullRequest;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
 
 /**
@@ -25,11 +26,8 @@ final class User
 
     private function __construct(string $login, string $htmlUrl)
     {
-        Assert::stringNotEmpty($login);
-        Assert::stringNotEmpty($htmlUrl);
-
-        $this->login = $login;
-        $this->htmlUrl = $htmlUrl;
+        $this->login = TrimmedNonEmptyString::fromString($login)->toString();
+        $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
     }
 
     public static function fromResponse(array $response): self

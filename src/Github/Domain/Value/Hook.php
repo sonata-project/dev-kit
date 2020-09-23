@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\Hook\Config;
 use App\Github\Domain\Value\Hook\Events;
 use Webmozart\Assert\Assert;
@@ -31,11 +32,9 @@ final class Hook
     private function __construct(int $id, string $url, bool $active, Config $config, Events $events)
     {
         Assert::greaterThan($id, 0);
-        Assert::stringNotEmpty($url);
-        Assert::notEmpty($config);
 
         $this->id = $id;
-        $this->url = $url;
+        $this->url = TrimmedNonEmptyString::fromString($url)->toString();
         $this->active = $active;
         $this->config = $config;
         $this->events = $events;

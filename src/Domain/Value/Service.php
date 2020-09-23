@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
@@ -24,8 +22,7 @@ final class Service
 
     private function __construct(string $name)
     {
-        Assert::stringNotEmpty($name);
-        $this->name = $name;
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
     }
 
     public static function fromString(string $name): self

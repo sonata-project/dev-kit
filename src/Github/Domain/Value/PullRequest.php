@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
 use App\Github\Domain\Value\PullRequest\User;
@@ -53,19 +54,10 @@ final class PullRequest
         string $htmlUrl,
         array $labels
     ) {
-        $title = trim($title);
-        Assert::stringNotEmpty($title);
-
-        $updatedAt = trim($updatedAt);
-        Assert::stringNotEmpty($updatedAt);
-
-        $htmlUrl = trim($htmlUrl);
-        Assert::stringNotEmpty($htmlUrl);
-
         $this->issue = $issue;
-        $this->title = $title;
+        $this->title = TrimmedNonEmptyString::fromString($title)->toString();
         $this->updatedAt = new \DateTimeImmutable(
-            $updatedAt,
+            TrimmedNonEmptyString::fromString($updatedAt)->toString(),
             new \DateTimeZone('UTC')
         );
         $this->base = $base;
@@ -73,7 +65,7 @@ final class PullRequest
         $this->user = $user;
         $this->mergeable = $mergeable;
         $this->body = $body;
-        $this->htmlUrl = $htmlUrl;
+        $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
         $this->labels = $labels;
     }
 

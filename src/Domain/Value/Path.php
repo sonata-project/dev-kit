@@ -24,8 +24,11 @@ final class Path
 
     private function __construct(string $path)
     {
+        $path = TrimmedNonEmptyString::fromString($path)->toString();
+
         Assert::notStartsWith($path, '/');
         Assert::notEndsWith($path, '/');
+
         $this->path = $path;
     }
 

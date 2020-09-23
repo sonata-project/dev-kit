@@ -15,7 +15,7 @@ namespace App\Github\Domain\Value\Search;
 
 use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
-use Webmozart\Assert\Assert;
+use App\Domain\Value\TrimmedNonEmptyString;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -26,15 +26,11 @@ final class Query
 
     private function __construct(string $value)
     {
-        Assert::stringNotEmpty($value);
-
-        $this->value = $value;
+        $this->value = TrimmedNonEmptyString::fromString($value)->toString();
     }
 
     public static function fromString(string $value): self
     {
-        Assert::stringNotEmpty($value);
-
         return new self($value);
     }
 
