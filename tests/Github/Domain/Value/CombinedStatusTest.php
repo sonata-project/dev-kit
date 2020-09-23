@@ -17,10 +17,13 @@ use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Status;
 use App\Tests\Util\Factory\CombinedStatusResponseFactory;
 use App\Tests\Util\Factory\StatusResponseFactory;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class CombinedStatusTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -158,19 +161,23 @@ final class CombinedStatusTest extends TestCase
     public function usesStatusesFromResponse(): void
     {
         $response = CombinedStatusResponseFactory::create([
-            'statuses' => $statuses = [
+            'statuses' => [
                 $statusResponse1 = StatusResponseFactory::create(),
                 $statusResponse2 = StatusResponseFactory::create(),
             ],
         ]);
 
+        $combined = CombinedStatus::fromResponse($response);
+        $statuses = $combined->statuses();
+
         self::assertCount(2, $statuses);
-        self::assertSame(
-            [
-                Status::fromResponse($statusResponse1),
-                Status::fromResponse($statusResponse2),
-            ],
-            CombinedStatus::fromResponse($response)->statuses()
+        self::assertStatusEqualsStatus(
+            Status::fromResponse($statusResponse1),
+            $statuses[0]
+        );
+        self::assertStatusEqualsStatus(
+            Status::fromResponse($statusResponse2),
+            $statuses[1]
         );
     }
 }
