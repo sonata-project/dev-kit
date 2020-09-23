@@ -298,42 +298,42 @@ final class PullRequestTest extends TestCase
     {
         yield [
             'unknown',
-            []
+            [],
         ];
 
         yield [
             'unknown',
             [
                 Label::fromValues('foo', Label\Color::fromString('ededed')),
-            ]
+            ],
         ];
 
         yield [
             'patch',
             [
                 Label::fromValues('patch', Label\Color::fromString('ededed')),
-            ]
+            ],
         ];
 
         yield [
             'minor',
             [
                 Label::fromValues('minor', Label\Color::fromString('ededed')),
-            ]
+            ],
         ];
 
         yield [
             'pedantic',
             [
                 Label::fromValues('pedantic', Label\Color::fromString('ededed')),
-            ]
+            ],
         ];
 
         yield [
             'pedantic',
             [
                 Label::fromValues('docs', Label\Color::fromString('ededed')),
-            ]
+            ],
         ];
     }
 }
