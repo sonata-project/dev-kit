@@ -15,11 +15,11 @@ namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
+use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
-use App\Domain\Value\Branch;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
