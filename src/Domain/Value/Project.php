@@ -263,9 +263,13 @@ final class Project
             throw new \InvalidArgumentException('No branches available!');
         }
 
-        Assert::keyExists($this->branches, 1);
+        try {
+            Assert::keyExists($this->branches, 1);
 
-        return $this->branches[1];
+            return $this->branches[1];
+        } catch (\InvalidArgumentException $e) {
+            return $this->unstableBranch();
+        }
     }
 
     private function getLatestPackagistVersion(): Package\Version
