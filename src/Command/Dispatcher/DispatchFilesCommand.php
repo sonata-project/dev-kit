@@ -377,7 +377,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $branchConfig,
                 [
                     'project' => $project,
-                    'current_branch' => $branch->name(),
+                    'current_branch' => $branch,
                     'unstable_branch' => $unstableBranch,
                     'stable_branch' => $stableBranch,
                 ]
