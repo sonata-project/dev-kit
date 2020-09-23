@@ -53,8 +53,13 @@ final class PullRequest
         string $htmlUrl,
         array $labels
     ) {
+        $title = trim($title);
         Assert::stringNotEmpty($title);
+
+        $updatedAt = trim($updatedAt);
         Assert::stringNotEmpty($updatedAt);
+
+        $htmlUrl = trim($htmlUrl);
         Assert::stringNotEmpty($htmlUrl);
 
         $this->issue = $issue;

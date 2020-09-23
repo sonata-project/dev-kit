@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\PullRequest;
+use App\Tests\Util\Factory\PullRequestResponseFactory;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class PullRequestTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -31,11 +35,110 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
+    public function usesNumberFromResponse()
+    {
+        $response = PullRequestResponseFactory::create();
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame($response['number'], $pullRequest->issue()->toInt());
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfNumberIsNotSet()
+    {
+        $response = PullRequestResponseFactory::create();
+        unset($response['number']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfNumberIsZero()
+    {
+        $response = PullRequestResponseFactory::create([
+            'number' => 0,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfNumberIsNgeative()
+    {
+        $response = PullRequestResponseFactory::create([
+            'number' => -1,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function usesTitleFromResponse()
+    {
+        $value = self::faker()->sentence;
+
+        $response = PullRequestResponseFactory::create([
+            'title' => $value,
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame($value, $pullRequest->title());
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfTitleIsNotSet()
+    {
+        $response = PullRequestResponseFactory::create();
+        unset($response['title']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfTitleIs(string $value)
+    {
+        $response = PullRequestResponseFactory::create([
+            'title' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
     public function valid(): void
     {
         $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
+            'number' => 123,
+            'title' => 'Update dependecy',
             'updated_at' => $updatedAt = '2020-01-01 19:00:00',
             'base' => [
                 'ref' => $baseRef = 'baseRef',
@@ -66,8 +169,6 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertSame($issue, $pr->issue()->toInt());
-        self::assertSame($title, $pr->title());
         self::assertSame($updatedAt, $pr->updatedAt()->format('Y-m-d H:i:s'));
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
