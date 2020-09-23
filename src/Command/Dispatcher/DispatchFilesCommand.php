@@ -152,13 +152,13 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         $previousBranch = null;
         $previousDevKit = null;
-        foreach ($project->branchesReverse() as $currentBranch) {
+        foreach ($project->branchesReverse() as $branch) {
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranchNames = array_map(static function (\App\Github\Domain\Value\Branch $branch) {
                 return $branch->name();
             }, $this->branches->all($repository));
 
-            $currentDevKit = u($currentBranch->name())->append('-dev-kit')->toString();
+            $currentDevKit = u($branch->name())->append('-dev-kit')->toString();
 
             // A PR is already here for previous branch, do nothing on the current one.
             if (\in_array($previousDevKit, $remoteBranchNames, true)) {
@@ -168,14 +168,14 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             // Diff application
             $this->io->section(sprintf(
                 'Files for %s',
-                $currentBranch->name()
+                $branch->name()
             ));
 
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->github->repos()->commits()->compare(
                 $repository->username(),
                 $repository->name(),
-                $currentBranch->name(),
+                $branch->name(),
                 $previousBranch->name()
             )['ahead_by']) {
                 $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
@@ -186,10 +186,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $git->reset(['hard' => true]);
 
             // Checkout the targeted branch
-            if (\in_array($currentBranch->name(), $git->getBranches()->all(), true)) {
-                $git->checkout($currentBranch->name());
+            if (\in_array($branch->name(), $git->getBranches()->all(), true)) {
+                $git->checkout($branch->name());
             } else {
-                $git->checkout('-b', $currentBranch->name(), '--track', 'origin/'.$currentBranch->name());
+                $git->checkout('-b', $branch->name(), '--track', 'origin/'.$branch->name());
             }
             // Checkout the dev-kit branch
             if (\in_array('remotes/origin/'.$currentDevKit, $git->getBranches()->all(), true)) {
@@ -201,13 +201,13 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $this->renderFile(
                 $project,
                 $repository,
-                $currentBranch,
+                $branch,
                 $clonePath
             );
 
             $this->deleteNotNeededFilesAndDirs(
                 $project,
-                $currentBranch,
+                $branch,
                 $clonePath
             );
 
@@ -228,10 +228,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                             $repository,
                             sprintf(
                                 'DevKit updates for %s branch',
-                                $currentBranch->name()
+                                $branch->name()
                             ),
                             $currentHead,
-                            $currentBranch->name()
+                            $branch->name()
                         );
                     }
 
@@ -243,7 +243,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
 
             // Save the current branch to the previous and go to next step
-            $previousBranch = $currentBranch;
+            $previousBranch = $branch;
             $previousDevKit = $currentDevKit;
         }
     }
