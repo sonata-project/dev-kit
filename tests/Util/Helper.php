@@ -13,11 +13,19 @@ declare(strict_types=1);
 
 namespace App\Tests\Util;
 
+use App\Github\Domain\Value\Status;
 use Faker\Factory;
 use Faker\Generator;
 
 trait Helper
 {
+    public static function assertStatusEqualsStatus(Status $expected, Status $other): void
+    {
+        self::assertSame($expected->state(), $other->state());
+        self::assertSame($expected->description(), $other->description());
+        self::assertSame($expected->targetUrl(), $other->targetUrl());
+    }
+
     final protected static function faker(string $locale = 'en_US'): Generator
     {
         static $fakers = [];

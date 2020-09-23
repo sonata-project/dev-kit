@@ -21,7 +21,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,7 +31,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyRef(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyRef(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -49,7 +49,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayContainKeyRefButEmptyString(): void
+    public function throwsExceptionIfResponseArrayContainKeyRefButEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -67,7 +67,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeySha(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeySha(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -85,7 +85,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayContainKeyShaButEmptyString(): void
+    public function throwsExceptionIfResponseArrayContainKeyShaButEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -103,7 +103,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyRepo(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyRepo(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -121,7 +121,7 @@ final class HeadTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayContainKeyRepoButEmptyArray(): void
+    public function throwsExceptionIfResponseArrayContainKeyRepoButEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

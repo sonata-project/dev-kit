@@ -21,7 +21,7 @@ final class RepoTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,7 +31,7 @@ final class RepoTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyOwner(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyOwner(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

@@ -25,7 +25,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -134,12 +134,59 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
+    public function usesUpdatedAtFromResponse()
+    {
+        $response = PullRequestResponseFactory::create([
+            'updated_at' => $value = self::faker()->date('Y-m-d H:i:s'),
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $value,
+            $pullRequest->updatedAt()->format('Y-m-d H:i:s')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfUpdatedAtIsNotSet()
+    {
+        $response = PullRequestResponseFactory::create();
+        unset($response['updated_at']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfUpdatedAtIs(string $value)
+    {
+        $response = PullRequestResponseFactory::create([
+            'updated_at' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
     public function valid(): void
     {
         $response = [
             'number' => 123,
             'title' => 'Update dependecy',
-            'updated_at' => $updatedAt = '2020-01-01 19:00:00',
+            'updated_at' => '2020-01-01 19:00:00',
             'base' => [
                 'ref' => $baseRef = 'baseRef',
             ],
@@ -169,7 +216,6 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertSame($updatedAt, $pr->updatedAt()->format('Y-m-d H:i:s'));
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
         self::assertSame($headSha, $pr->head()->sha()->toString());
@@ -196,31 +242,9 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
+        $response = PullRequestResponseFactory::create([
             'updated_at' => $now->format('Y-m-d H:i:s'),
-            'base' => [
-                'ref' => $baseRef = 'baseRef',
-            ],
-            'head' => [
-                'ref' => $headRef = 'headRef',
-                'sha' => $headSha = 'sha',
-                'repo' => [
-                    'owner' => [
-                        'login' => $ownerLogin = 'ownerLogin',
-                    ],
-                ],
-            ],
-            'user' => [
-                'login' => $userLogin = 'userLogin',
-                'html_url' => $userHtmlUrl = 'https://test.com',
-            ],
-            'mergeable' => true,
-            'body' => '',
-            'html_url' => $htmlUrl = 'https://test.com',
-            'labels' => [],
-        ];
+        ]);
 
         $pr = PullRequest::fromResponse($response);
 
@@ -237,34 +261,133 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
+        $response = PullRequestResponseFactory::create([
             'updated_at' => $now->format('Y-m-d H:i:s'),
-            'base' => [
-                'ref' => $baseRef = 'baseRef',
-            ],
-            'head' => [
-                'ref' => $headRef = 'headRef',
-                'sha' => $headSha = 'sha',
-                'repo' => [
-                    'owner' => [
-                        'login' => $ownerLogin = 'ownerLogin',
-                    ],
-                ],
-            ],
-            'user' => [
-                'login' => $userLogin = 'userLogin',
-                'html_url' => $userHtmlUrl = 'https://test.com',
-            ],
-            'mergeable' => true,
-            'body' => '',
-            'html_url' => $htmlUrl = 'https://test.com',
-            'labels' => [],
-        ];
+        ]);
 
         $pr = PullRequest::fromResponse($response);
 
         self::assertFalse($pr->updatedWithinTheLast60Seconds());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider stabilityProvider
+     */
+    public function stability(string $expected, array $labels): void
+    {
+        $response = PullRequestResponseFactory::create([
+            'labels' => $labels,
+        ]);
+
+        $pr = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $expected,
+            $pr->stability()
+        );
+    }
+
+    /**
+     * @return \Generator<array{0: string, 1: array{name: string, color: string}}>
+     */
+    public function stabilityProvider(): \Generator
+    {
+        yield [
+            'unknown',
+            [],
+        ];
+
+        yield [
+            'unknown',
+            [
+                [
+                    'name' => 'foo',
+                    'color' => 'ededed',
+                ],
+            ],
+        ];
+
+        yield [
+            'patch',
+            [
+                [
+                    'name' => 'patch',
+                    'color' => 'ededed',
+                ],
+            ],
+        ];
+
+        yield [
+            'minor',
+            [
+                [
+                    'name' => 'minor',
+                    'color' => 'ededed',
+                ],
+            ],
+        ];
+
+        yield [
+            'pedantic',
+            [
+                [
+                    'name' => 'pedantic',
+                    'color' => 'ededed',
+                ],
+            ],
+        ];
+
+        yield [
+            'pedantic',
+            [
+                [
+                    'name' => 'docs',
+                    'color' => 'ededed',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function body(): void
+    {
+        $response = PullRequestResponseFactory::create([
+            'body' => sprintf(
+                <<<BODY
+<!-- %s -->
+
+## Subject
+
+%s
+
+## Changelog
+
+```markdown
+### Changed
+- %s
+```
+BODY,
+                self::faker()->text,
+                self::faker()->text,
+                $message = 'The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.'
+            ),
+        ]);
+
+        $pr = PullRequest::fromResponse($response);
+
+        $changelog = $pr->changelog();
+
+        self::assertArrayHasKey(
+            'Changed',
+            $changelog
+        );
+        self::assertStringContainsString(
+            $message,
+            $changelog['Changed'][0]
+        );
     }
 }

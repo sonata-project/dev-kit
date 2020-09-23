@@ -50,7 +50,24 @@ final class PullRequestResponseFactory
                 'html_url' => $faker->url,
             ],
             'mergeable' => $faker->optional()->boolean,
-            'body' => $faker->text,
+            'body' => sprintf(
+                <<<'BODY'
+<!-- %s -->
+
+## Subject
+
+%s
+
+## Changelog
+
+```markdown
+### Changed
+- The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
+```
+BODY,
+                $faker->text,
+                $faker->text
+            ),
             'html_url' => $faker->url,
             'labels' => array_map(static function () use ($faker): array {
                 return [
@@ -59,10 +76,6 @@ final class PullRequestResponseFactory
                 ];
             }, range(0, $faker->numberBetween(0, 5))),
         ];
-
-        if ([] === $parameters) {
-            return $response;
-        }
 
         return array_replace_recursive(
             $response,
