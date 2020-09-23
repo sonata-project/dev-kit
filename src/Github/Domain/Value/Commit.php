@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
 
 /**
@@ -27,10 +28,7 @@ final class Commit
     private function __construct(Sha $sha, string $message, \DateTimeImmutable $date)
     {
         $this->sha = $sha;
-
-        Assert::stringNotEmpty($message);
-        $this->message = $message;
-
+        $this->message = TrimmedNonEmptyString::fromString($message)->toString();
         $this->date = $date;
     }
 

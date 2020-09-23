@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
@@ -34,8 +32,7 @@ final class PhpVersion
 
     private function __construct(string $version)
     {
-        Assert::stringNotEmpty($version);
-        $this->version = $version;
+        $this->version = TrimmedNonEmptyString::fromString($version)->toString();
     }
 
     public static function fromString(string $version): self

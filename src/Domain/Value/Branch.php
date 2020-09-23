@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
@@ -55,9 +53,7 @@ final class Branch
         Path $testsPath,
         ?PhpVersion $targetPhpVersion
     ) {
-        Assert::stringNotEmpty($name);
-        $this->name = $name;
-
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;
         $this->services = $services;
         $this->variants = $variants;

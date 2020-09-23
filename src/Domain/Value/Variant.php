@@ -31,8 +31,7 @@ final class Variant
         Assert::notEndsWith($package, '/', 'Package must not end with a "/"!');
         $this->package = $package;
 
-        Assert::stringNotEmpty($version, 'Version must not be empty!');
-        $this->version = $version;
+        $this->version = TrimmedNonEmptyString::fromString($version, 'Version must not be empty!')->toString();
     }
 
     public static function fromValues(string $package, string $version): self

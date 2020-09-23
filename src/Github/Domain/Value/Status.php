@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
 
 /**
@@ -31,8 +32,8 @@ final class Status
     private function __construct(string $state, string $description, string $targetUrl)
     {
         $this->state = $state;
-        $this->description = $description;
-        $this->targetUrl = $targetUrl;
+        $this->description = TrimmedNonEmptyString::fromString($description)->toString();
+        $this->targetUrl = TrimmedNonEmptyString::fromString($targetUrl)->toString();
     }
 
     public static function fromResponse(array $response): self

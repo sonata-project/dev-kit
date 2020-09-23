@@ -15,7 +15,6 @@ namespace App\Domain\Value;
 
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -54,8 +53,7 @@ final class Project
         ?string $customGitignorePart,
         ?string $customDoctorRstWhitelistPart
     ) {
-        Assert::stringNotEmpty($name);
-        $this->name = $name;
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
 
         $this->package = $package;
         $this->branches = $branches;
