@@ -90,9 +90,8 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStatusesKeyIsEmptyArray(): void
     {
-        $response = CombinedStatusResponseFactory::create([
-            'statuses' => [],
-        ]);
+        $response = CombinedStatusResponseFactory::create();
+        $response['statuses'] = [];
 
         $this->expectException(\InvalidArgumentException::class);
 
