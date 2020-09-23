@@ -23,7 +23,6 @@ use App\Domain\Value\Service;
 use App\Github\Api\Branches;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
-use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,7 +42,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private string $appDir;
     private string $githubToken;
     private Projects $projects;
-    private GithubClient $github;
     private PullRequests $pullRequests;
     private Branches $branches;
     private Commits $commits;
@@ -55,7 +53,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         string $appDir,
         string $githubToken,
         Projects $projects,
-        GithubClient $github,
         PullRequests $pullRequests,
         Branches $branches,
         Commits $commits,
@@ -68,7 +65,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->appDir = $appDir;
         $this->githubToken = $githubToken;
         $this->projects = $projects;
-        $this->github = $github;
         $this->pullRequests = $pullRequests;
         $this->branches = $branches;
         $this->commits = $commits;
