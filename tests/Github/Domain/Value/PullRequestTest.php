@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\PullRequest;
+use App\Tests\Util\Factory\PullRequestResponseFactory;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class PullRequestTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -26,6 +30,39 @@ final class PullRequestTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         PullRequest::fromResponse([]);
+    }
+
+    /**
+     * @test
+     */
+    public function usesTitleFromResponse()
+    {
+        $value = self::faker()->sentence;
+
+        $response = PullRequestResponseFactory::create([
+            'title' => $value,
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame($value, $pullRequest->title());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfTitleIs(string $value)
+    {
+        $response = PullRequestResponseFactory::create([
+            'title' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
     }
 
     /**
