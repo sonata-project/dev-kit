@@ -256,13 +256,11 @@ exporter:
             php: ['7.2', '7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
-                doctrine/mongodb-odm: ['1']
             services: [mongodb]
         2.x:
             php: ['7.2', '7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
-                doctrine/mongodb-odm: ['1']
             services: [mongodb]
 
 formatter-bundle:
@@ -320,7 +318,6 @@ media-bundle:
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
-                doctrine/mongodb-odm: ['1']
                 sonata-project/admin-bundle: ['3']
                 imagine/imagine: ['0.7', '1']
         3.x:
@@ -328,7 +325,6 @@ media-bundle:
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
-                doctrine/mongodb-odm: ['1']
                 sonata-project/admin-bundle: ['3']
                 imagine/imagine: ['0.7', '1']
 
