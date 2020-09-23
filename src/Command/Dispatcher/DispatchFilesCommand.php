@@ -228,7 +228,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                             $repository,
                             sprintf(
                                 'DevKit updates for %s branch',
-                                $currentBranch
+                                $currentBranch->name()
                             ),
                             $currentHead,
                             $currentBranch->name()
