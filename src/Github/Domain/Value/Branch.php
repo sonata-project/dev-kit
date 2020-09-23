@@ -34,8 +34,6 @@ final class Branch
     {
         Assert::notEmpty($response);
 
-        dd($response);
-
         Assert::keyExists($response, 'name');
         Assert::stringNotEmpty($response['name']);
 

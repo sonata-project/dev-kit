@@ -116,8 +116,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private function dispatchFiles(Project $project): void
     {
-        $projectConfig = $project->rawConfig();
-
         $repository = $project->repository();
 
         // No branch to manage, continue to next project.
@@ -150,24 +148,26 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $git->config('user.name', static::GITHUB_USER);
         $git->config('user.email', static::GITHUB_EMAIL);
 
-        $branches = array_reverse($projectConfig['branches']);
+        /** @var Branch[] $branches */
+        $branches = $project->branchesReverse();
 
         $previousBranch = null;
         $previousDevKit = null;
-        while (($branchConfig = current($branches))) {
+        while (($currentBranch = current($branches))) {
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranchNames = array_map(static function (Branch $branch) {
                 return $branch->name();
             }, $this->branches->all($repository));
 
-            $currentBranch = key($branches);
-            $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
+            $currentDevKit = u($currentBranch->name())->append('-dev-kit')->toString();
             next($branches);
 
             // A PR is already here for previous branch, do nothing on the current one.
             if (\in_array($previousDevKit, $remoteBranchNames, true)) {
                 continue;
             }
+
+            return;
 
             // Diff application
             $this->io->section(sprintf(
