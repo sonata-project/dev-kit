@@ -335,7 +335,7 @@ EOT;
     {
         return $this->pullRequests->search(
             $repository,
-            Query::pullRequestsSince($repository, $branch, $date, self::BOT_NAME)
+            Query::pullRequestsSince($repository, $branch, $date, self::SONATA_CI_BOT)
         );
     }
 }

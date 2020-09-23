@@ -60,7 +60,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             ->setName('pull-request-auto-merge')
             ->setDescription(sprintf(
                 'Merge RTM pull requests. Only active for pull requests by %s.',
-                self::BOT_NAME
+                self::SONATA_CI_BOT
             ))
         ;
     }
@@ -69,7 +69,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     {
         $this->io->title(sprintf(
             'Merge RTM pull requests (by %s)',
-            self::BOT_NAME
+            self::SONATA_CI_BOT
         ));
 
         /** @var Project $project */
@@ -110,7 +110,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             // Proceed only bot PR for now.
-            if (self::BOT_NAME !== $pr->user()->login()) {
+            if (self::SONATA_CI_BOT !== $pr->user()->login()) {
                 continue;
             }
 
