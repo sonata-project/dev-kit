@@ -153,9 +153,9 @@ EOT;
         );
 
         $pulls = $this->findPullRequestsSince(
-            $currentRelease->publishedAt(),
             $repository,
-            $branch
+            $branch,
+            $currentRelease->publishedAt()
         );
 
         $next = $this->determineNextVersion($currentRelease->tag(), $pulls);
@@ -331,7 +331,7 @@ EOT;
     /**
      * @return PullRequest[]
      */
-    private function findPullRequestsSince(\DateTimeImmutable $date, Repository $repository, Branch $branch): array
+    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
     {
         $query = Query::fromString(sprintf(
             'repo:%s type:pr is:merged base:%s merged:>%s -author:%s',
