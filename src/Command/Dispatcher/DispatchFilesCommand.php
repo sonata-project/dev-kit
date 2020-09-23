@@ -158,7 +158,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 return $branch->name();
             }, $this->branches->all($repository));
 
-            $currentDevKit = u($branch->name())->append('-dev-kit')->toString();
+            $devKitBranchName = u($branch->name())->append('-dev-kit')->toString();
 
             // A PR is already here for previous branch, do nothing on the current one.
             if (\in_array($previousDevKit, $remoteBranchNames, true)) {
@@ -192,10 +192,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $git->checkout('-b', $branch->name(), '--track', 'origin/'.$branch->name());
             }
             // Checkout the dev-kit branch
-            if (\in_array('remotes/origin/'.$currentDevKit, $git->getBranches()->all(), true)) {
-                $git->checkout('-b', $currentDevKit, '--track', 'origin/'.$currentDevKit);
+            if (\in_array('remotes/origin/'.$devKitBranchName, $git->getBranches()->all(), true)) {
+                $git->checkout('-b', $devKitBranchName, '--track', 'origin/'.$devKitBranchName);
             } else {
-                $git->checkout('-b', $currentDevKit);
+                $git->checkout('-b', $devKitBranchName);
             }
 
             $this->renderFile(
@@ -218,9 +218,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $this->io->writeln($diff);
                 if ($this->apply) {
                     $git->commit('DevKit updates');
-                    $git->push('-u', 'origin', $currentDevKit);
+                    $git->push('-u', 'origin', $devKitBranchName);
 
-                    $currentHead = u('sonata-project:')->append($currentDevKit)->toString();
+                    $currentHead = u('sonata-project:')->append($devKitBranchName)->toString();
 
                     // If the Pull Request does not exists yet, create it.
                     if (!$this->pullRequests->hasOpenPullRequest($repository, $currentHead)) {
@@ -244,7 +244,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
             // Save the current branch to the previous and go to next step
             $previousBranch = $branch;
-            $previousDevKit = $currentDevKit;
+            $previousDevKit = $devKitBranchName;
         }
     }
 
