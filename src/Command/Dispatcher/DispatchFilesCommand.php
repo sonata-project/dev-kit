@@ -17,7 +17,9 @@ use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
+use App\Github\Domain\Value\Branch;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
@@ -40,6 +42,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private Projects $projects;
     private GithubClient $github;
     private PullRequests $pullRequests;
+    private Branches $branches;
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -50,6 +53,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         Projects $projects,
         GithubClient $github,
         PullRequests $pullRequests,
+        Branches $branches,
         GitWrapper $git,
         Filesystem $filesystem,
         Environment $twig
@@ -61,6 +65,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->projects = $projects;
         $this->github = $github;
         $this->pullRequests = $pullRequests;
+        $this->branches = $branches;
         $this->git = $git;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
@@ -151,16 +156,16 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $previousDevKit = null;
         while (($branchConfig = current($branches))) {
             // We have to fetch all branches on each step in case a PR is submitted.
-            $remoteBranches = array_map(static function ($branch) {
-                return $branch['name'];
-            }, $this->github->repos()->branches($repository->username(), $repository->name()));
+            $remoteBranchNames = array_map(static function (Branch $branch) {
+                return $branch->name();
+            }, $this->branches->all($repository));
 
             $currentBranch = key($branches);
             $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
             next($branches);
 
             // A PR is already here for previous branch, do nothing on the current one.
-            if (\in_array($previousDevKit, $remoteBranches, true)) {
+            if (\in_array($previousDevKit, $remoteBranchNames, true)) {
                 continue;
             }
 

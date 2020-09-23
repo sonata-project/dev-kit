@@ -29,6 +29,16 @@ final class Branches
         $this->github = $github;
     }
 
+    /**
+     * @return Branch[]
+     */
+    public function all(Repository $repository): array
+    {
+        return array_map(static function ($response): Branch {
+            return Branch::fromResponse($response);
+        }, $this->github->repos()->branches($repository->username(), $repository->name()));
+    }
+
     public function get(Repository $repository, string $name): Branch
     {
         $response = $this->github->repo()->branches(
