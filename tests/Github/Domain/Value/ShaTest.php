@@ -14,18 +14,24 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Sha;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class ShaTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function throwsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Sha::fromString('');
+        Sha::fromString($value);
     }
 
     /**
@@ -33,8 +39,10 @@ final class ShaTest extends TestCase
      */
     public function valid(): void
     {
-        $sha = Sha::fromString('abc');
+        $value = self::faker()->sha256;
 
-        self::assertSame('abc', $sha->toString());
+        $sha = Sha::fromString($value);
+
+        self::assertSame($value, $sha->toString());
     }
 }

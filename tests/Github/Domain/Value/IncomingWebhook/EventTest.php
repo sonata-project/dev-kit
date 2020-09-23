@@ -20,21 +20,24 @@ final class EventTest extends TestCase
 {
     /**
      * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function throwsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Event::fromString('');
+        Event::fromString($value);
     }
 
     /**
      * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::arbitrary()
      */
-    public function fromString(): void
+    public function fromString(string $value): void
     {
-        $value = 'issue';
-
         self::assertSame(
             $value,
             Event::fromString($value)->toString()
