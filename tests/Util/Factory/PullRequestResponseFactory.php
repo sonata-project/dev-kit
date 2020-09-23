@@ -60,10 +60,6 @@ final class PullRequestResponseFactory
             }, range(0, $faker->numberBetween(0, 5))),
         ];
 
-        if ([] === $parameters) {
-            return $response;
-        }
-
         return array_replace_recursive(
             $response,
             $parameters

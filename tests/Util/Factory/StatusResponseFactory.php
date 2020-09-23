@@ -38,10 +38,6 @@ final class StatusResponseFactory
             'target_url' => $faker->url,
         ];
 
-        if ([] === $parameters) {
-            return $response;
-        }
-
         return array_replace_recursive(
             $response,
             $parameters
