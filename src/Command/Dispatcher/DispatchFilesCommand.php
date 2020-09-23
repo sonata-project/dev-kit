@@ -192,6 +192,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             } else {
                 $git->checkout('-b', $branch->name(), '--track', 'origin/'.$branch->name());
             }
+
             // Checkout the dev-kit branch
             if (\in_array('remotes/origin/'.$devKitBranchName, $git->getBranches()->all(), true)) {
                 $git->checkout('-b', $devKitBranchName, '--track', 'origin/'.$devKitBranchName);
