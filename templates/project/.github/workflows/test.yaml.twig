@@ -31,14 +31,14 @@ jobs:
     strategy:
       matrix:
         php-version:
-{% for version in branch.php %}
-          - '{{ version.toString }}'
+{% for phpVersion in branch.phpVersions %}
+          - '{{ phpVersion.toString }}'
 {% endfor %}
         dependencies: [highest]
         allowed_to_fail: [false]
         variant: [normal]
         include:
-          - php-version: '{{ php|first }}'
+          - php-version: '{{ branch.lowestPhpVersion.toString }}'
             dependencies: lowest
             allowed_to_fail: false
             variant: normal
@@ -47,7 +47,7 @@ jobs:
             allowed_to_fail: true
             variant: normal
 {% for variant in branch.variants %}
-          - php-version: '{{ target_php|default(php|last) }}'
+          - php-version: '{{ branch.targetPhpVersion.toString }}'
             dependencies: highest
             allowed_to_fail: false
             variant: '{{ variant.package }}:"{{ variant.version }}{% if not is_dev_branch(variant.version) %}.*{% endif %}"'
