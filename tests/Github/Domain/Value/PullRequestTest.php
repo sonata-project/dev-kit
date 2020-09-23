@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value;
 
-use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use PHPUnit\Framework\TestCase;
 
