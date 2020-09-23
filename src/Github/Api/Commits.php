@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Api;
 
+use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Commit;
 use App\Github\Domain\Value\PullRequest;
@@ -52,5 +53,18 @@ final class Commits
         $allCommits = $this->all($repository, $pullRequest);
 
         return end($allCommits);
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function compare(Repository $repository, Branch $branch, Branch $branchToCompare): array
+    {
+        return $this->github->repos()->commits()->compare(
+            $repository->username(),
+            $repository->name(),
+            $branch->name(),
+            $branchToCompare->name()
+        );
     }
 }
