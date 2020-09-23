@@ -19,7 +19,7 @@ use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
-use App\Github\Domain\Value\Branch;
+use App\Domain\Value\Branch;
 use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
@@ -152,7 +152,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $previousDevKit = null;
         foreach ($project->branchesReverse() as $currentBranch) {
             // We have to fetch all branches on each step in case a PR is submitted.
-            $remoteBranchNames = array_map(static function (Branch $branch) {
+            $remoteBranchNames = array_map(static function (\App\Github\Domain\Value\Branch $branch) {
                 return $branch->name();
             }, $this->branches->all($repository));
 
@@ -246,7 +246,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
     }
 
-    private function deleteNotNeededFilesAndDirs(Project $project, \App\Domain\Value\Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
+    private function deleteNotNeededFilesAndDirs(Project $project, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
@@ -285,7 +285,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->filesystem->remove($documentationWorkflowFile);
     }
 
-    private function renderFile(Project $project, Repository $repository, \App\Domain\Value\Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
+    private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
