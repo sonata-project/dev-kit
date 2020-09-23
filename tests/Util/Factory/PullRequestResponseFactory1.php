@@ -16,7 +16,7 @@ namespace App\Tests\Util\Factory;
 use App\Tests\Util\Helper;
 use function Symfony\Component\String\u;
 
-final class PullRequestResponseFactory
+final class PullRequestResponseFactory1
 {
     use Helper;
 
