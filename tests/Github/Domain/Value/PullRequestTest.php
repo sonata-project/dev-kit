@@ -196,31 +196,9 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
+        $response = PullRequestResponseFactory::create([
             'updated_at' => $now->format('Y-m-d H:i:s'),
-            'base' => [
-                'ref' => $baseRef = 'baseRef',
-            ],
-            'head' => [
-                'ref' => $headRef = 'headRef',
-                'sha' => $headSha = 'sha',
-                'repo' => [
-                    'owner' => [
-                        'login' => $ownerLogin = 'ownerLogin',
-                    ],
-                ],
-            ],
-            'user' => [
-                'login' => $userLogin = 'userLogin',
-                'html_url' => $userHtmlUrl = 'https://test.com',
-            ],
-            'mergeable' => true,
-            'body' => '',
-            'html_url' => $htmlUrl = 'https://test.com',
-            'labels' => [],
-        ];
+        ]);
 
         $pr = PullRequest::fromResponse($response);
 
@@ -237,31 +215,9 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
+        $response = PullRequestResponseFactory::create([
             'updated_at' => $now->format('Y-m-d H:i:s'),
-            'base' => [
-                'ref' => $baseRef = 'baseRef',
-            ],
-            'head' => [
-                'ref' => $headRef = 'headRef',
-                'sha' => $headSha = 'sha',
-                'repo' => [
-                    'owner' => [
-                        'login' => $ownerLogin = 'ownerLogin',
-                    ],
-                ],
-            ],
-            'user' => [
-                'login' => $userLogin = 'userLogin',
-                'html_url' => $userHtmlUrl = 'https://test.com',
-            ],
-            'mergeable' => true,
-            'body' => '',
-            'html_url' => $htmlUrl = 'https://test.com',
-            'labels' => [],
-        ];
+        ]);
 
         $pr = PullRequest::fromResponse($response);
 
