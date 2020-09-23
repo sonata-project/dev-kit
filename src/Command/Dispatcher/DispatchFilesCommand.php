@@ -16,6 +16,7 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
+use App\Domain\Value\ExcludedFile;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
@@ -294,9 +295,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        $projectConfig = $project->rawConfig();
+        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string{
+            return $excludedFile->filename();
+        }, $project->excludedFiles());
 
-        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $projectConfig['excluded_files'], true)) {
+        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $excludedFiles, true)) {
             return;
         }
 
@@ -352,6 +355,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $this->filesystem->mkdir(\dirname($distPath));
         }
 
+        $projectConfig = $project->rawConfig();
         $branchConfig = $projectConfig['branches'][$branch->name()];
         $localPathInfo = pathinfo($localFullPath);
 
