@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value;
 
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use App\Tests\Util\Factory\PullRequestResponseFactory;
 use App\Tests\Util\Helper;
@@ -134,6 +135,53 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
+    public function usesUpdatedAtFromResponse()
+    {
+        $response = PullRequestResponseFactory::create([
+            'updated_at' => $value = new \DateTimeImmutable(self::faker()->date('Y-m-d H:i:s')),
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $value->getTimestamp(),
+            $pullRequest->updatedAt()->getTimestamp()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfUpdatedAtIsNotSet()
+    {
+        $response = PullRequestResponseFactory::create();
+        unset($response['updated_at']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfUpdatedAtIs(string $value)
+    {
+        $response = PullRequestResponseFactory::create([
+            'updated_at' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
     public function valid(): void
     {
         $response = [
@@ -222,5 +270,70 @@ final class PullRequestTest extends TestCase
         $pr = PullRequest::fromResponse($response);
 
         self::assertFalse($pr->updatedWithinTheLast60Seconds());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider stabilityProvider
+     */
+    public function stability(string $expected, array $labels): void
+    {
+        $response = PullRequestResponseFactory::create([
+            'labels' => $labels,
+        ]);
+
+        $pr = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $expected,
+            $pr->stability()
+        );
+    }
+
+    /**
+     * @return \Generator<array{0: string, 1: array<Label>}>
+     */
+    public function stabilityProvider(): \Generator
+    {
+        yield [
+            'unknown',
+            []
+        ];
+
+        yield [
+            'unknown',
+            [
+                Label::fromValues('foo', Label\Color::fromString('ededed')),
+            ]
+        ];
+
+        yield [
+            'patch',
+            [
+                Label::fromValues('patch', Label\Color::fromString('ededed')),
+            ]
+        ];
+
+        yield [
+            'minor',
+            [
+                Label::fromValues('minor', Label\Color::fromString('ededed')),
+            ]
+        ];
+
+        yield [
+            'pedantic',
+            [
+                Label::fromValues('pedantic', Label\Color::fromString('ededed')),
+            ]
+        ];
+
+        yield [
+            'pedantic',
+            [
+                Label::fromValues('docs', Label\Color::fromString('ededed')),
+            ]
+        ];
     }
 }
