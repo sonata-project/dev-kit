@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace App\Tests\Action;
 
 use App\Action\DetermineNextReleaseVersion;
-use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\Release\Tag;
 use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
-use App\Github\Domain\Value\Release\Tag;
-use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 final class DetermineNextReleaseVersionTest extends TestCase
 {
@@ -73,7 +72,6 @@ final class DetermineNextReleaseVersionTest extends TestCase
         );
     }
 
-
     public function determineProvider(): \Generator
     {
         yield [
@@ -83,7 +81,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
                 self::createPullRequestWithStability('unkown'),
                 self::createPullRequestWithStability('minor'),
                 self::createPullRequestWithStability('patch'),
-            ]
+            ],
         ];
 
         yield [
@@ -92,7 +90,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
             [
                 self::createPullRequestWithStability('unkown'),
                 self::createPullRequestWithStability('patch'),
-            ]
+            ],
         ];
     }
 
@@ -114,7 +112,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
         } else {
             $response['labels'] = [
                 'name' => $stability,
-                'color' => u(self::faker()->hexColor)->replace('#', '')->toString()
+                'color' => u(self::faker()->hexColor)->replace('#', '')->toString(),
             ];
         }
 

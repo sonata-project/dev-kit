@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 /*
@@ -13,7 +12,6 @@ declare(strict_types=1);
  */
 
 namespace App\Action;
-
 
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
