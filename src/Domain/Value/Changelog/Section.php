@@ -57,10 +57,12 @@ final class Section
     public function asMarkdown(): string
     {
         return implode(PHP_EOL, array_merge(
-            sprintf(
-                '### %s',
-                $this->headline
-            ),
+            [
+                sprintf(
+                    '### %s',
+                    $this->headline
+                )
+            ],
             $this->lines
         ));
     }
