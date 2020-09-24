@@ -21,6 +21,7 @@ use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
@@ -33,27 +34,6 @@ use Symfony\Component\Console\Question\Question;
  */
 final class ReleaseCommand extends AbstractCommand
 {
-    /**
-     * @var array<string, string>
-     */
-    private static $labels = [
-        'patch' => 'blue',
-        'bug' => 'red',
-        'docs' => 'yellow',
-        'minor' => 'green',
-        'pedantic' => 'cyan',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    private static $stabilities = [
-        'patch' => 'blue',
-        'minor' => 'green',
-        'pedantic' => 'yellow',
-        'unknown' => 'red',
-    ];
-
     private Projects $projects;
     private Releases $releases;
     private Branches $branches;
@@ -227,34 +207,16 @@ EOT;
 
     private function printPullRequest(PullRequest $pr): void
     {
-        if (\array_key_exists($pr->stability(), static::$stabilities)) {
-            $this->io->write(sprintf(
-                '<fg=black;bg=%s>[%s]</> ',
-                static::$stabilities[$pr->stability()],
-                strtoupper($pr->stability())
-            ));
-        } else {
-            $this->io->write('<error>[NOT SET]</error> ');
-        }
+        $this->renderStability($pr->stability());
+
         $this->io->write(sprintf(
             '<info>%s</info>',
             $pr->title()
         ));
 
-        foreach ($pr->labels() as $label) {
-            if (!\array_key_exists($label->name(), static::$labels)) {
-                $this->io->write(sprintf(
-                    ' <error>[%s]</error>',
-                    $label->name()
-                ));
-            } else {
-                $this->io->write(sprintf(
-                    ' <fg=%s>[%s]</>',
-                    static::$labels[$label->name()],
-                    $label->name()
-                ));
-            }
-        }
+        array_map(function (Label $label): void {
+            $this->renderLabel($label);
+        }, $pr->labels());
 
         if (!$pr->hasLabels()) {
             $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
@@ -337,5 +299,47 @@ EOT;
             $repository,
             Query::pullRequestsSince($repository, $branch, $date, self::SONATA_CI_BOT)
         );
+    }
+
+    private function renderLabel(Label $label): void
+    {
+        $colors = [
+            'patch' => 'blue',
+            'bug' => 'red',
+            'docs' => 'yellow',
+            'minor' => 'green',
+            'pedantic' => 'cyan',
+        ];
+
+        $color = 'default';
+        if (\array_key_exists($label->name(), $colors)) {
+            $color = $colors[$label->name()];
+        }
+
+        $this->io->write(sprintf(
+            ' <fg=%s>[%s]</>',
+            $color,
+            $label->name()
+        ));
+    }
+
+    private function renderStability(string $stability): void
+    {
+        $stabilities = [
+            'patch' => 'blue',
+            'minor' => 'green',
+            'pedantic' => 'yellow',
+            'unknown' => 'red',
+        ];
+
+        if (\array_key_exists($stability, $stabilities)) {
+            $this->io->write(sprintf(
+                '<fg=black;bg=%s>[%s]</> ',
+                $stabilities[$stability],
+                strtoupper($stability)
+            ));
+        } else {
+            $this->io->write('<error>[NOT SET]</error> ');
+        }
     }
 }
