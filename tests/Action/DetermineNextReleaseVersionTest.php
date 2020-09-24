@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Action;
 
-use App\Tests\Util\Factory\PullRequestResponseFactory;
 use App\Action\DetermineNextReleaseVersion;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
+use App\Tests\Util\Factory\PullRequestResponseFactory;
 use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 use function Symfony\Component\String\u;
@@ -115,7 +115,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
                 [
                     'name' => $stability,
                     'color' => u(self::faker()->hexColor)->replace('#', '')->toString(),
-                ]
+                ],
             ];
         }
 
