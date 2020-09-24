@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\Util\Factory;
 
 use App\Tests\Util\Helper;
-use function Symfony\Component\String\u;
 
 final class PullRequestResponseFactory
 {
@@ -69,11 +68,8 @@ BODY,
                 $faker->text
             ),
             'html_url' => $faker->url,
-            'labels' => array_map(static function () use ($faker): array {
-                return [
-                    'name' => $faker->sentence(1),
-                    'color' => u($faker->hexColor)->replace('#', '')->toString(),
-                ];
+            'labels' => array_map(static function (): array {
+                return LabelResponseFactory::create();
             }, range(0, $faker->numberBetween(0, 5))),
         ];
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Action;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
@@ -39,13 +40,15 @@ final class ReleaseCommand extends AbstractCommand
     private Branches $branches;
     private Statuses $statuses;
     private PullRequests $pullRequests;
+    private Action\DetermineNextReleaseVersion $determineNextReleaseVersion;
 
     public function __construct(
         Projects $projects,
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
-        PullRequests $pullRequests
+        PullRequests $pullRequests,
+        Action\DetermineNextReleaseVersion $determineNextReleaseVersion
     ) {
         parent::__construct();
 
@@ -54,6 +57,7 @@ final class ReleaseCommand extends AbstractCommand
         $this->branches = $branches;
         $this->statuses = $statuses;
         $this->pullRequests = $pullRequests;
+        $this->determineNextReleaseVersion = $determineNextReleaseVersion;
     }
 
     protected function configure(): void
@@ -138,7 +142,7 @@ EOT;
             $currentRelease->publishedAt()
         );
 
-        $next = $this->determineNextVersion($currentRelease->tag(), $pulls);
+        $next = $this->determineNextReleaseVersion->__invoke($currentRelease->tag(), $pulls);
 
         $this->io->section('Checks');
 
@@ -266,28 +270,6 @@ EOT;
             }
             $this->io->newLine();
         }
-    }
-
-    /**
-     * @param PullRequest[] $pullRequests
-     */
-    private function determineNextVersion(Tag $current, array $pullRequests): Tag
-    {
-        $stabilities = array_map(static function (PullRequest $pr): string {
-            return $pr->stability();
-        }, $pullRequests);
-
-        $parts = explode('.', $current->toString());
-
-        if (\in_array('minor', $stabilities, true)) {
-            return Tag::fromString(implode('.', [$parts[0], (int) $parts[1] + 1, 0]));
-        }
-
-        if (\in_array('patch', $stabilities, true)) {
-            return Tag::fromString(implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]));
-        }
-
-        return $current;
     }
 
     /**
