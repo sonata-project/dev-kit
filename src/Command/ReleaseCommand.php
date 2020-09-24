@@ -27,6 +27,7 @@ use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
+use App\Github\Domain\Value\Status;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -147,30 +148,9 @@ EOT;
 
         $this->io->section('Checks');
 
-        foreach ($combined->statuses() as $status) {
-            if ('success' === $status->state()) {
-                $this->io->writeln(sprintf(
-                    '    <info>%s</info>',
-                    $status->description()
-                ));
-            } elseif ('pending' === $status->state()) {
-                $this->io->writeln(sprintf(
-                    '    <comment>%s</comment>',
-                    $status->description()
-                ));
-            } else {
-                $this->io->writeln(sprintf(
-                    '    <error>%s</error>',
-                    $status->description()
-                ));
-            }
-
-            $this->io->text(sprintf(
-                '     %s',
-                $status->targetUrl()
-            ));
-            $this->io->newLine();
-        }
+        array_map(function (Status $status): void {
+            $this->renderStatus($status);
+        }, $combined->statuses());
 
         $this->io->section('Pull requests');
 
@@ -324,5 +304,31 @@ EOT;
         } else {
             $this->io->write('<error>[NOT SET]</error> ');
         }
+    }
+
+    private function renderStatus(Status $status): void
+    {
+        if ('success' === $status->state()) {
+            $this->io->writeln(sprintf(
+                '    <info>%s</info>',
+                $status->description()
+            ));
+        } elseif ('pending' === $status->state()) {
+            $this->io->writeln(sprintf(
+                '    <comment>%s</comment>',
+                $status->description()
+            ));
+        } else {
+            $this->io->writeln(sprintf(
+                '    <error>%s</error>',
+                $status->description()
+            ));
+        }
+
+        $this->io->text(sprintf(
+            '     %s',
+            $status->targetUrl()
+        ));
+        $this->io->newLine();
     }
 }
