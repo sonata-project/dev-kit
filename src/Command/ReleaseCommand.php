@@ -81,7 +81,11 @@ the projects configured on <info>projects.yaml</info>.
 The command will show what is the status of the project, then a list of pull requests
 made against the stable branch with the following information:
 
-stability, name, labels, changelog, url.
+ * stability
+ * name
+ * labels
+ * changelog
+ * url
 
 After that, it will show what is the next version to release and the changelog for that release.
 EOT;
