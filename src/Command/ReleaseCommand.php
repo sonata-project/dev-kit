@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Config\ConfiguredLabels;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
@@ -22,6 +21,7 @@ use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
@@ -37,17 +37,6 @@ final class ReleaseCommand extends AbstractCommand
     /**
      * @var array<string, string>
      */
-    private static $labels = [
-        'patch' => 'blue',
-        'bug' => 'red',
-        'docs' => 'yellow',
-        'minor' => 'green',
-        'pedantic' => 'cyan',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
     private static $stabilities = [
         'patch' => 'blue',
         'minor' => 'green',
@@ -56,7 +45,6 @@ final class ReleaseCommand extends AbstractCommand
     ];
 
     private Projects $projects;
-    private ConfiguredLabels $configuredLabels;
     private Releases $releases;
     private Branches $branches;
     private Statuses $statuses;
@@ -64,7 +52,6 @@ final class ReleaseCommand extends AbstractCommand
 
     public function __construct(
         Projects $projects,
-        ConfiguredLabels $configuredLabels,
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
@@ -73,7 +60,6 @@ final class ReleaseCommand extends AbstractCommand
         parent::__construct();
 
         $this->projects = $projects;
-        $this->configuredLabels = $configuredLabels;
         $this->releases = $releases;
         $this->branches = $branches;
         $this->statuses = $statuses;
@@ -245,20 +231,9 @@ EOT;
             $pr->title()
         ));
 
-        foreach ($pr->labels() as $label) {
-            if (!\array_key_exists($label->name(), static::$labels)) {
-                $this->io->write(sprintf(
-                    ' <error>[%s]</error>',
-                    $label->name()
-                ));
-            } else {
-                $this->io->write(sprintf(
-                    ' <fg=%s>[%s]</>',
-                    $label->color(),
-                    $label->name()
-                ));
-            }
-        }
+        array_map(function (Label $label): void {
+            $this->renderLabel($label);
+        }, $pr->labels());
 
         if (!$pr->hasLabels()) {
             $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
@@ -341,5 +316,27 @@ EOT;
             $repository,
             Query::pullRequestsSince($repository, $branch, $date, self::SONATA_CI_BOT)
         );
+    }
+
+    private function renderLabel(Label $label): void
+    {
+        $colors = [
+            'patch' => 'blue',
+            'bug' => 'red',
+            'docs' => 'yellow',
+            'minor' => 'green',
+            'pedantic' => 'cyan',
+        ];
+
+        $color = 'default';
+        if (array_key_exists($label->name(), $colors)) {
+            $color = $colors[$label->name()];
+        }
+
+        $this->io->write(sprintf(
+            ' <fg=%s>[%s]</>',
+            $color,
+            $label->name()
+        ));
     }
 }
