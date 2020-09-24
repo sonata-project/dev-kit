@@ -18,6 +18,7 @@ use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Domain\Value\Stability;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
@@ -226,11 +227,11 @@ EOT;
             $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
         }
 
-        if (!$pr->changelog() && 'pedantic' !== $pr->stability()) {
+        if (!$pr->changelog() && $pr->stability()->notEquals(Stability::pedantic())) {
             $this->io->write(' <error>[Changelog not found]</error>');
         } elseif (!$pr->changelog()) {
             $this->io->write(' <fg=black;bg=green>[Changelog not found]</>');
-        } elseif ($pr->changelog() && 'pedantic' === $pr->stability()) {
+        } elseif ($pr->changelog() && $pr->stability()->equals(Stability::pedantic())) {
             $this->io->write(' <fg=black;bg=yellow>[Changelog found]</>');
         } else {
             $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
@@ -305,7 +306,7 @@ EOT;
         ));
     }
 
-    private function renderStability(string $stability): void
+    private function renderStability(Stability $stability): void
     {
         $stabilities = [
             'patch' => 'blue',
@@ -314,11 +315,11 @@ EOT;
             'unknown' => 'red',
         ];
 
-        if (\array_key_exists($stability, $stabilities)) {
+        if (\array_key_exists($stability->toString(), $stabilities)) {
             $this->io->write(sprintf(
                 '<fg=black;bg=%s>[%s]</> ',
-                $stabilities[$stability],
-                strtoupper($stability)
+                $stabilities[$stability->toString()],
+                $stability->toUppercaseString()
             ));
         } else {
             $this->io->write('<error>[NOT SET]</error> ');

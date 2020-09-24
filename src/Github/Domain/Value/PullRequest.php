@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\Stability;
 use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
@@ -190,10 +191,10 @@ final class PullRequest
         return  $diff < 60;
     }
 
-    public function stability(): string
+    public function stability(): Stability
     {
         if ([] === $this->labels) {
-            return 'unknown';
+            return Stability::unknown();
         }
 
         $labels = array_map(static function (Label $label): string {
@@ -201,18 +202,18 @@ final class PullRequest
         }, $this->labels);
 
         if (\in_array('minor', $labels, true)) {
-            return 'minor';
+            return Stability::minor();
         }
 
         if (\in_array('patch', $labels, true)) {
-            return 'patch';
+            return Stability::patch();
         }
 
         if (array_intersect(['docs', 'pedantic'], $labels)) {
-            return 'pedantic';
+            return Stability::pedantic();
         }
 
-        return 'unknown';
+        return Stability::unknown();
     }
 
     public function changelog(): array

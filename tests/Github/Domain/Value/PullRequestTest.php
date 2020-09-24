@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value;
 
+use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
 use App\Tests\Util\Factory\Github;
 use App\Tests\Util\Helper;
@@ -275,7 +276,7 @@ final class PullRequestTest extends TestCase
      *
      * @dataProvider stabilityProvider
      */
-    public function stability(string $expected, array $labels): void
+    public function stability(Stability $expected, array $labels): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'labels' => $labels,
@@ -284,68 +285,63 @@ final class PullRequestTest extends TestCase
         $pr = PullRequest::fromResponse($response);
 
         self::assertSame(
-            $expected,
-            $pr->stability()
+            $expected->toString(),
+            $pr->stability()->toString()
         );
     }
 
     /**
-     * @return \Generator<array{0: string, 1: array{name: string, color: string}}>
+     * @return \Generator<array{0: Stability, 1: array<mixed>}>
      */
     public function stabilityProvider(): \Generator
     {
         yield [
-            'unknown',
+            Stability::unknown(),
             [],
         ];
 
         yield [
-            'unknown',
+            Stability::unknown(),
             [
-                [
+                Github\Response\LabelFactory::create([
                     'name' => 'foo',
-                    'color' => 'ededed',
-                ],
+                ]),
             ],
         ];
 
         yield [
-            'patch',
+            Stability::patch(),
             [
-                [
+                Github\Response\LabelFactory::create([
                     'name' => 'patch',
-                    'color' => 'ededed',
-                ],
+                ]),
             ],
         ];
 
         yield [
-            'minor',
+            Stability::minor(),
             [
-                [
+                Github\Response\LabelFactory::create([
                     'name' => 'minor',
-                    'color' => 'ededed',
-                ],
+                ]),
             ],
         ];
 
         yield [
-            'pedantic',
+            Stability::pedantic(),
             [
-                [
+                Github\Response\LabelFactory::create([
                     'name' => 'pedantic',
-                    'color' => 'ededed',
-                ],
+                ]),
             ],
         ];
 
         yield [
-            'pedantic',
+            Stability::pedantic(),
             [
-                [
+                Github\Response\LabelFactory::create([
                     'name' => 'docs',
-                    'color' => 'ededed',
-                ],
+                ]),
             ],
         ];
     }
