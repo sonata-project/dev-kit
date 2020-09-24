@@ -192,6 +192,10 @@ final class PullRequest
 
     public function stability(): string
     {
+        if ([] === $this->labels) {
+            return 'unknown';
+        }
+
         $labels = array_map(static function (Label $label): string {
             return $label->name();
         }, $this->labels);
