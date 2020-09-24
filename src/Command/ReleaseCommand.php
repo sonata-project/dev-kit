@@ -16,6 +16,7 @@ namespace App\Command;
 use App\Action;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
+use App\Domain\Value\Changelog;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Domain\Value\Stability;
@@ -173,23 +174,21 @@ EOT;
 
             $this->io->section('Changelog');
 
-            $this->printRelease(
-                $project->package(),
-                $currentRelease->tag(),
-                $next
+            $releaseHeadline = sprintf(
+                '## [%s](%s/compare/%s...%s) - %s',
+                $next->toString(),
+                $project->package()->getRepository(),
+                $currentRelease->tag()->toString(),
+                $next->toString(),
+                date('Y-m-d')
             );
 
-            $changelogs = array_map(static function (PullRequest $pr): array {
-                return $pr->changelog();
-            }, $pullRequests);
-
-            $changelog = array_reduce(
-                $changelogs,
-                'array_merge_recursive',
-                []
+            $changelog = Changelog::fromPullRequests(
+                $releaseHeadline,
+                $pullRequests
             );
 
-            $this->printChangelog($changelog);
+            $this->text($changelog->asMarkdown());
         }
     }
 
@@ -222,38 +221,6 @@ EOT;
         $this->io->newLine();
         $this->io->writeln($pr->htmlUrl());
         $this->io->newLine();
-    }
-
-    private function printRelease(Package $package, Tag $current, Tag $next): void
-    {
-        $this->io->writeln(sprintf(
-            '## [%s](%s/compare/%s...%s) - %s',
-            $next->toString(),
-            $package->getRepository(),
-            $current->toString(),
-            $next->toString(),
-            date('Y-m-d')
-        ));
-    }
-
-    private function printChangelog(array $changelog): void
-    {
-        ksort($changelog);
-        foreach ($changelog as $type => $changes) {
-            if (0 === \count($changes)) {
-                continue;
-            }
-
-            $this->io->writeln(sprintf(
-                '### %s',
-                $type
-            ));
-
-            foreach ($changes as $change) {
-                $this->io->writeln($change);
-            }
-            $this->io->newLine();
-        }
     }
 
     /**
