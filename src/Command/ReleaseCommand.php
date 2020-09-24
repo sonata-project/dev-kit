@@ -79,7 +79,7 @@ First, a question about what bundle to release will be shown, this will be autoc
 the projects configured on <info>projects.yaml</info>.
 
 The command will show what is the status of the project, then a list of pull requests
-made against selected branch (default: stable branch) with the following information:
+made against the stable branch with the following information:
 
 stability, name, labels, changelog, url.
 
