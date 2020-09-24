@@ -139,13 +139,13 @@ EOT;
             $branchToRelease->commit()->sha()
         );
 
-        $pulls = $this->findPullRequestsSince(
+        $pullRequests = $this->findPullRequestsSince(
             $repository,
             $branch,
             $currentRelease->publishedAt()
         );
 
-        $next = $this->determineNextReleaseVersion->__invoke($currentRelease->tag(), $pulls);
+        $next = $this->determineNextReleaseVersion->__invoke($currentRelease->tag(), $pullRequests);
 
         $this->io->section('Checks');
 
@@ -157,7 +157,7 @@ EOT;
 
         array_map(function (PullRequest $pullRequest): void {
             $this->printPullRequest($pullRequest);
-        }, $pulls);
+        }, $pullRequests);
 
         $this->io->section('Release');
 
@@ -179,7 +179,7 @@ EOT;
 
             $changelogs = array_map(static function (PullRequest $pr): array {
                 return $pr->changelog();
-            }, $pulls);
+            }, $pullRequests);
 
             $changelog = array_reduce(
                 $changelogs,
