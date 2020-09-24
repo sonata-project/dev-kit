@@ -108,6 +108,9 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         }
     }
 
+    /**
+     * @return string[]
+     */
     private function buildRequiredStatusChecks(Project $project, Branch $branch): array
     {
         $lowestPhpVersion = $branch->lowestPhpVersion();
