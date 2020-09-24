@@ -98,10 +98,7 @@ EOT;
 
         $this->io->title($project->name());
 
-        $this->prepareRelease(
-            $project,
-            $project->stableBranch()
-        );
+        $this->prepareRelease($project);
 
         return 0;
     }
@@ -123,9 +120,10 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Project $project, Branch $branch): void
+    private function prepareRelease(Project $project): void
     {
         $repository = $project->repository();
+        $branch = $project->stableBranch();
 
         $currentRelease = $this->releases->latest($repository);
 
