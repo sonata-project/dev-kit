@@ -155,9 +155,9 @@ EOT;
 
         $this->io->section('Pull requests');
 
-        foreach ($pulls as $pull) {
-            $this->printPullRequest($pull);
-        }
+        array_map(function (PullRequest $pullRequest): void {
+            $this->printPullRequest($pullRequest);
+        }, $pulls);
 
         $this->io->section('Release');
 
