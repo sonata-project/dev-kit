@@ -309,13 +309,13 @@ EOT;
     /**
      * @param PullRequest[] $pullRequests
      */
-    private function determineNextVersion(Tag $currentVersion, array $pullRequests): Tag
+    private function determineNextVersion(Tag $current, array $pullRequests): Tag
     {
         $stabilities = array_map(static function (PullRequest $pr): string {
             return $pr->stability();
         }, $pullRequests);
 
-        $parts = explode('.', $currentVersion->toString());
+        $parts = explode('.', $current->toString());
 
         if (\in_array('minor', $stabilities, true)) {
             return Tag::fromString(implode('.', [$parts[0], (int) $parts[1] + 1, 0]));
@@ -325,7 +325,7 @@ EOT;
             return Tag::fromString(implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]));
         }
 
-        return $currentVersion;
+        return $current;
     }
 
     /**
