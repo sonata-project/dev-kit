@@ -16,6 +16,7 @@ namespace App\Command;
 use App\Action;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
+use App\Domain\Value\Changelog;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
 use App\Domain\Value\Stability;
@@ -25,10 +26,8 @@ use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
-use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
 use App\Github\Domain\Value\Status;
-use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -173,23 +172,14 @@ EOT;
 
             $this->io->section('Changelog');
 
-            $this->printRelease(
-                $project->package(),
+            $changelog = Changelog::fromPullRequests(
+                $pullRequests,
+                $next,
                 $currentRelease->tag(),
-                $next
+                $project->package()
             );
 
-            $changelogs = array_map(static function (PullRequest $pr): array {
-                return $pr->changelog();
-            }, $pullRequests);
-
-            $changelog = array_reduce(
-                $changelogs,
-                'array_merge_recursive',
-                []
-            );
-
-            $this->printChangelog($changelog);
+            $this->io->text($changelog->asMarkdown());
         }
     }
 
@@ -222,38 +212,6 @@ EOT;
         $this->io->newLine();
         $this->io->writeln($pr->htmlUrl());
         $this->io->newLine();
-    }
-
-    private function printRelease(Package $package, Tag $current, Tag $next): void
-    {
-        $this->io->writeln(sprintf(
-            '## [%s](%s/compare/%s...%s) - %s',
-            $next->toString(),
-            $package->getRepository(),
-            $current->toString(),
-            $next->toString(),
-            date('Y-m-d')
-        ));
-    }
-
-    private function printChangelog(array $changelog): void
-    {
-        ksort($changelog);
-        foreach ($changelog as $type => $changes) {
-            if (0 === \count($changes)) {
-                continue;
-            }
-
-            $this->io->writeln(sprintf(
-                '### %s',
-                $type
-            ));
-
-            foreach ($changes as $change) {
-                $this->io->writeln($change);
-            }
-            $this->io->newLine();
-        }
     }
 
     /**
