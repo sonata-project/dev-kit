@@ -15,6 +15,8 @@ namespace App\Domain\Value;
 
 use App\Domain\Value\Changelog\Section;
 use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\Release\Tag;
+use Packagist\Api\Result\Package;
 use Webmozart\Assert\Assert;
 
 /**
@@ -42,8 +44,17 @@ final class Changelog
         return new self($headline, $sections);
     }
 
-    public static function fromPullRequests(string $headline, array $pullRequests): self
+    public static function fromPullRequests(array $pullRequests, Tag $next, Tag $current, Package $package): self
     {
+        $headline = sprintf(
+            '## [%s](%s/compare/%s...%s) - %s',
+            $next->toString(),
+            $package->getRepository(),
+            $current->toString(),
+            $next->toString(),
+            date('Y-m-d')
+        );
+
         $changelogs = array_map(static function (PullRequest $pr): array {
             return $pr->changelog();
         }, $pullRequests);
@@ -88,8 +99,8 @@ final class Changelog
     {
         $markdown[] = $this->headline;
         foreach ($this->sections as $section) {
-            $markdown[] = '';
             $markdown[] = $section->asMarkdown();
+            $markdown[] = '';
         }
 
         return implode(PHP_EOL, $markdown);

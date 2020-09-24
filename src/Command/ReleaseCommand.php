@@ -174,18 +174,11 @@ EOT;
 
             $this->io->section('Changelog');
 
-            $releaseHeadline = sprintf(
-                '## [%s](%s/compare/%s...%s) - %s',
-                $next->toString(),
-                $project->package()->getRepository(),
-                $currentRelease->tag()->toString(),
-                $next->toString(),
-                date('Y-m-d')
-            );
-
             $changelog = Changelog::fromPullRequests(
-                $releaseHeadline,
-                $pullRequests
+                $pullRequests,
+                $next,
+                $currentRelease->tag(),
+                $project->package()
             );
 
             $this->io->text($changelog->asMarkdown());
