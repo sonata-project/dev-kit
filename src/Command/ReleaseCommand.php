@@ -15,18 +15,10 @@ namespace App\Command;
 
 use App\Action;
 use App\Config\Projects;
-use App\Domain\Value\Branch;
-use App\Domain\Value\Changelog;
 use App\Domain\Value\Project;
-use App\Domain\Value\Repository;
 use App\Domain\Value\Stability;
-use App\Github\Api\Branches;
-use App\Github\Api\PullRequests;
-use App\Github\Api\Releases;
-use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
-use App\Github\Domain\Value\Search\Query;
 use App\Github\Domain\Value\Status;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,28 +30,16 @@ use Symfony\Component\Console\Question\Question;
 final class ReleaseCommand extends AbstractCommand
 {
     private Projects $projects;
-    private Releases $releases;
-    private Branches $branches;
-    private Statuses $statuses;
-    private PullRequests $pullRequests;
-    private Action\DetermineNextReleaseVersion $determineNextReleaseVersion;
+    private Action\DetermineNextRelease $determineNextRelease;
 
     public function __construct(
         Projects $projects,
-        Releases $releases,
-        Branches $branches,
-        Statuses $statuses,
-        PullRequests $pullRequests,
-        Action\DetermineNextReleaseVersion $determineNextReleaseVersion
+        Action\DetermineNextRelease $determineNextRelease
     ) {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->releases = $releases;
-        $this->branches = $branches;
-        $this->statuses = $statuses;
-        $this->pullRequests = $pullRequests;
-        $this->determineNextReleaseVersion = $determineNextReleaseVersion;
+        $this->determineNextRelease = $determineNextRelease;
     }
 
     protected function configure(): void
@@ -101,7 +81,7 @@ EOT;
 
         $this->io->title($project->name());
 
-        $this->prepareRelease($project);
+        $this->renderNextRelease($project);
 
         return 0;
     }
@@ -123,67 +103,41 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Project $project): void
+    private function renderNextRelease(Project $project): void
     {
-        $repository = $project->repository();
-        $branch = $project->stableBranch();
+        $nextRelease = $this->determineNextRelease->__invoke($project);
 
-        $currentRelease = $this->releases->latest($repository);
+        if (!$nextRelease->isNeeded()) {
+            $this->io->warning('Release is not needed');
 
-        $branchToRelease = $this->branches->get(
-            $repository,
-            $branch->name()
-        );
-
-        $combined = $this->statuses->combined(
-            $repository,
-            $branchToRelease->commit()->sha()
-        );
-
-        $pullRequests = $this->findPullRequestsSince(
-            $repository,
-            $branch,
-            $currentRelease->publishedAt()
-        );
-
-        $next = $this->determineNextReleaseVersion->__invoke($currentRelease->tag(), $pullRequests);
+            return;
+        }
 
         $this->io->section('Checks');
 
         array_map(function (Status $status): void {
             $this->renderStatus($status);
-        }, $combined->statuses());
+        }, $nextRelease->combinedStatus()->statuses());
 
-        $this->io->section('Pull requests');
+        $this->io->section('Pull Requests');
 
         array_map(function (PullRequest $pullRequest): void {
-            $this->printPullRequest($pullRequest);
-        }, $pullRequests);
+            $this->renderPullRequest($pullRequest);
+        }, $nextRelease->pullRequests());
 
         $this->io->section('Release');
 
-        if ($next->toString() === $currentRelease->tag()->toString()) {
-            $this->io->warning('Release is not needed');
-        } else {
-            $this->io->success(sprintf(
-                'Next release will be: %s',
-                $next->toString()
-            ));
+        $this->io->success(sprintf(
+            'Next release will be: %s',
+            $nextRelease->nextTag()->toString()
+        ));
 
-            $this->io->section('Changelog');
+        $this->io->section('Changelog');
 
-            $changelog = Changelog::fromPullRequests(
-                $pullRequests,
-                $next,
-                $currentRelease->tag(),
-                $project->package()
-            );
-
-            $this->io->text($changelog->asMarkdown());
-        }
+        $this->io->writeln($nextRelease->changelog()->asMarkdown());
     }
 
-    private function printPullRequest(PullRequest $pr): void
+    private function renderPullRequest(PullRequest $pr): void
     {
         $this->renderStability($pr->stability());
 
@@ -212,17 +166,6 @@ EOT;
         $this->io->newLine();
         $this->io->writeln($pr->htmlUrl());
         $this->io->newLine();
-    }
-
-    /**
-     * @return PullRequest[]
-     */
-    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
-    {
-        return $this->pullRequests->search(
-            $repository,
-            Query::pullRequestsSince($repository, $branch, $date, self::SONATA_CI_BOT)
-        );
     }
 
     private function renderLabel(Label $label): void
