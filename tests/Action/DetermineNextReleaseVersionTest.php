@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace App\Tests\Action;
 
 use App\Action\DetermineNextReleaseVersion;
+use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Tests\Util\Factory\Github;
 use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
-use Webmozart\Assert\Assert;
 
 final class DetermineNextReleaseVersionTest extends TestCase
 {
@@ -46,7 +46,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
         $tag = Tag::fromString('1.1.0');
 
         $pullRequests = [
-            self::createPullRequestWithStability('unknown'),
+            self::createPullRequestWithStability(Stability::unknown()),
         ];
 
         self::assertSame(
@@ -81,9 +81,9 @@ final class DetermineNextReleaseVersionTest extends TestCase
             '1.2.0',
             '1.1.0',
             [
-                self::createPullRequestWithStability('unknown'),
-                self::createPullRequestWithStability('minor'),
-                self::createPullRequestWithStability('patch'),
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
             ],
         ];
 
@@ -91,38 +91,32 @@ final class DetermineNextReleaseVersionTest extends TestCase
             '1.1.1',
             '1.1.0',
             [
-                self::createPullRequestWithStability('unknown'),
-                self::createPullRequestWithStability('patch'),
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::patch()),
             ],
         ];
     }
 
-    private static function createPullRequestWithStability(string $stability): PullRequest
+    private static function createPullRequestWithStability(Stability $stability): PullRequest
     {
-        Assert::oneOf(
-            $stability,
-            [
-                'unknown',
-                'minor',
-                'patch',
-            ]
-        );
-
         $response = Github\Response\PullRequestFactory::create();
 
-        if ('unknown' === $stability) {
+        if ($stability->equals(Stability::unknown())) {
             $response['labels'] = [];
         } else {
             $response['labels'] = [
                 Github\Response\LabelFactory::create([
-                    'name' => $stability,
+                    'name' => $stability->toString(),
                 ]),
             ];
         }
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame($stability, $pullRequest->stability());
+        self::assertSame(
+            $stability->toString(),
+            $pullRequest->stability()->toString()
+        );
 
         return $pullRequest;
     }
