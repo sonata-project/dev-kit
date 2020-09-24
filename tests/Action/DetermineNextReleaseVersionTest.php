@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Action;
 
+use App\Tests\Util\Factory\PullRequestResponseFactory;
 use App\Action\DetermineNextReleaseVersion;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
@@ -75,20 +76,20 @@ final class DetermineNextReleaseVersionTest extends TestCase
     public function determineProvider(): \Generator
     {
         yield [
-            '1.1.0',
             '1.2.0',
+            '1.1.0',
             [
-                self::createPullRequestWithStability('unkown'),
+                self::createPullRequestWithStability('unknown'),
                 self::createPullRequestWithStability('minor'),
                 self::createPullRequestWithStability('patch'),
             ],
         ];
 
         yield [
-            '1.1.0',
             '1.1.1',
+            '1.1.0',
             [
-                self::createPullRequestWithStability('unkown'),
+                self::createPullRequestWithStability('unknown'),
                 self::createPullRequestWithStability('patch'),
             ],
         ];
@@ -111,13 +112,17 @@ final class DetermineNextReleaseVersionTest extends TestCase
             $response['labels'] = [];
         } else {
             $response['labels'] = [
-                'name' => $stability,
-                'color' => u(self::faker()->hexColor)->replace('#', '')->toString(),
+                [
+                    'name' => $stability,
+                    'color' => u(self::faker()->hexColor)->replace('#', '')->toString(),
+                ]
             ];
         }
 
         $pullRequest = PullRequest::fromResponse($response);
 
         self::assertSame($stability, $pullRequest->stability());
+
+        return $pullRequest;
     }
 }
