@@ -188,7 +188,7 @@ EOT;
                 $pullRequests
             );
 
-            $this->text($changelog->asMarkdown());
+            $this->io->text($changelog->asMarkdown());
         }
     }
 
