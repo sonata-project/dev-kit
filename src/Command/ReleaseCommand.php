@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config\ConfiguredLabels;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
@@ -55,6 +56,7 @@ final class ReleaseCommand extends AbstractCommand
     ];
 
     private Projects $projects;
+    private ConfiguredLabels $configuredLabels;
     private Releases $releases;
     private Branches $branches;
     private Statuses $statuses;
@@ -62,6 +64,7 @@ final class ReleaseCommand extends AbstractCommand
 
     public function __construct(
         Projects $projects,
+        ConfiguredLabels $configuredLabels,
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
@@ -70,6 +73,7 @@ final class ReleaseCommand extends AbstractCommand
         parent::__construct();
 
         $this->projects = $projects;
+        $this->configuredLabels = $configuredLabels;
         $this->releases = $releases;
         $this->branches = $branches;
         $this->statuses = $statuses;
@@ -250,7 +254,7 @@ EOT;
             } else {
                 $this->io->write(sprintf(
                     ' <fg=%s>[%s]</>',
-                    static::$labels[$label->name()],
+                    $label->color(),
                     $label->name()
                 ));
             }
