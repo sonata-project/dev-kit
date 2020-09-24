@@ -312,7 +312,7 @@ EOT;
         ];
 
         $color = 'default';
-        if (array_key_exists($label->name(), $colors)) {
+        if (\array_key_exists($label->name(), $colors)) {
             $color = $colors[$label->name()];
         }
 
