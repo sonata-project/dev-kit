@@ -11,12 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Util\Factory;
+namespace App\Tests\Util\Factory\Github\Response;
 
 use App\Tests\Util\Helper;
-use function Symfony\Component\String\u;
 
-final class LabelResponseFactory
+final class StatusFactory
 {
     use Helper;
 
@@ -30,8 +29,13 @@ final class LabelResponseFactory
         $faker = self::faker();
 
         $response = [
-            'name' => $faker->word,
-            'color' => u($faker->hexColor)->replace('#', '')->toString(),
+            'state' => $faker->randomElement([
+                'error',
+                'pending',
+                'success',
+            ]),
+            'description' => $faker->sentence(5),
+            'target_url' => $faker->url,
         ];
 
         return array_replace_recursive(

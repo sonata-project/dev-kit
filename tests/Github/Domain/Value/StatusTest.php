@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Status;
-use App\Tests\Util\Factory\StatusResponseFactory;
+use App\Tests\Util\Factory\Github;
 use PHPUnit\Framework\TestCase;
 
 final class StatusTest extends TestCase
@@ -34,7 +34,7 @@ final class StatusTest extends TestCase
      */
     public function throwsExceptionIfResponseArrayDoesNotContainKeyState(): void
     {
-        $response = StatusResponseFactory::create();
+        $response = Github\Response\StatusFactory::create();
         unset($response['state']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -47,7 +47,7 @@ final class StatusTest extends TestCase
      */
     public function throwsExceptionIfStateIsEmptyString(): void
     {
-        $response = StatusResponseFactory::create([
+        $response = Github\Response\StatusFactory::create([
             'state' => '',
         ]);
 
@@ -61,7 +61,7 @@ final class StatusTest extends TestCase
      */
     public function throwsExceptionIfStateIsUnknown(): void
     {
-        $response = StatusResponseFactory::create([
+        $response = Github\Response\StatusFactory::create([
             'state' => 'foo',
         ]);
 
@@ -75,7 +75,7 @@ final class StatusTest extends TestCase
      */
     public function throwsExceptionIfDescriptionKeyDoesNotExist(): void
     {
-        $response = StatusResponseFactory::create();
+        $response = Github\Response\StatusFactory::create();
         unset($response['description']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -88,7 +88,7 @@ final class StatusTest extends TestCase
      */
     public function throwsExceptionIfDescriptionKeyIsEmptyString(): void
     {
-        $response = StatusResponseFactory::create([
+        $response = Github\Response\StatusFactory::create([
             'description' => '',
         ]);
 
@@ -104,7 +104,7 @@ final class StatusTest extends TestCase
      */
     public function usesStateFromResponse(string $state): void
     {
-        $response = StatusResponseFactory::create([
+        $response = Github\Response\StatusFactory::create([
             'state' => $state,
         ]);
 
@@ -129,7 +129,7 @@ final class StatusTest extends TestCase
      */
     public function usesDescriptionFromResponse(): void
     {
-        $response = StatusResponseFactory::create();
+        $response = Github\Response\StatusFactory::create();
 
         self::assertSame(
             $response['description'],
@@ -142,7 +142,7 @@ final class StatusTest extends TestCase
      */
     public function usesTargetUrlFromResponse(): void
     {
-        $response = StatusResponseFactory::create();
+        $response = Github\Response\StatusFactory::create();
 
         self::assertSame(
             $response['target_url'],

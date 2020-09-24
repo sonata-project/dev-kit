@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\PullRequest;
-use App\Tests\Util\Factory\PullRequestResponseFactory;
+use App\Tests\Util\Factory\Github;
 use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +37,7 @@ final class PullRequestTest extends TestCase
      */
     public function usesNumberFromResponse()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
 
         $pullRequest = PullRequest::fromResponse($response);
 
@@ -49,7 +49,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfNumberIsNotSet()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
         unset($response['number']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -62,7 +62,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfNumberIsZero()
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'number' => 0,
         ]);
 
@@ -76,7 +76,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfNumberIsNgeative()
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'number' => -1,
         ]);
 
@@ -92,7 +92,7 @@ final class PullRequestTest extends TestCase
     {
         $value = self::faker()->sentence;
 
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
         ]);
 
@@ -106,7 +106,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfTitleIsNotSet()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
         unset($response['title']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -122,7 +122,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfTitleIs(string $value)
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
         ]);
 
@@ -136,7 +136,7 @@ final class PullRequestTest extends TestCase
      */
     public function usesUpdatedAtFromResponse()
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'updated_at' => $value = self::faker()->date('Y-m-d H:i:s'),
         ]);
 
@@ -153,7 +153,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfUpdatedAtIsNotSet()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
         unset($response['updated_at']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -169,7 +169,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfUpdatedAtIs(string $value)
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'updated_at' => $value,
         ]);
 
@@ -242,7 +242,7 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'updated_at' => $now->format('Y-m-d H:i:s'),
         ]);
 
@@ -261,7 +261,7 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'updated_at' => $now->format('Y-m-d H:i:s'),
         ]);
 
@@ -277,7 +277,7 @@ final class PullRequestTest extends TestCase
      */
     public function stability(string $expected, array $labels): void
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'labels' => $labels,
         ]);
 
@@ -355,7 +355,7 @@ final class PullRequestTest extends TestCase
      */
     public function body(): void
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'body' => sprintf(
                 <<<BODY
 <!-- %s -->

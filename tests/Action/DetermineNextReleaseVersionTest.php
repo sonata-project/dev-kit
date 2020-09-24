@@ -16,8 +16,7 @@ namespace App\Tests\Action;
 use App\Action\DetermineNextReleaseVersion;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
-use App\Tests\Util\Factory\LabelResponseFactory;
-use App\Tests\Util\Factory\PullRequestResponseFactory;
+use App\Tests\Util\Factory\Github;
 use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\Assert;
@@ -109,13 +108,13 @@ final class DetermineNextReleaseVersionTest extends TestCase
             ]
         );
 
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
 
         if ('unknown' === $stability) {
             $response['labels'] = [];
         } else {
             $response['labels'] = [
-                LabelResponseFactory::create([
+                Github\Response\LabelFactory::create([
                     'name' => $stability,
                 ]),
             ];

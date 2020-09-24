@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Util\Factory;
+namespace App\Tests\Util\Factory\Github\Response;
 
 use App\Tests\Util\Helper;
 
-final class CombinedStatusResponseFactory
+final class CombinedStatusFactory
 {
     use Helper;
 
@@ -35,7 +35,7 @@ final class CombinedStatusResponseFactory
                 'success',
             ]),
             'statuses' => array_map(static function (): array {
-                return StatusResponseFactory::create();
+                return StatusFactory::create();
             }, range(0, $faker->numberBetween(0, 3))),
         ];
 

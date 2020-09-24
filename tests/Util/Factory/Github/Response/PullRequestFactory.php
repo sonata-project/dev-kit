@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Util\Factory;
+namespace App\Tests\Util\Factory\Github\Response;
 
 use App\Tests\Util\Helper;
 
-final class PullRequestResponseFactory
+class PullRequestFactory
 {
     use Helper;
 
@@ -69,7 +69,7 @@ BODY,
             ),
             'html_url' => $faker->url,
             'labels' => array_map(static function (): array {
-                return LabelResponseFactory::create();
+                return LabelFactory::create();
             }, range(0, $faker->numberBetween(0, 5))),
         ];
 
