@@ -28,6 +28,7 @@ use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
 use App\Github\Domain\Value\Status;
+use Packagist\Api\Result\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -171,7 +172,7 @@ EOT;
             $this->io->section('Changelog');
 
             $this->printRelease(
-                $repository,
+                $project->package(),
                 $currentRelease->tag(),
                 $next
             );
@@ -221,12 +222,12 @@ EOT;
         $this->io->newLine();
     }
 
-    private function printRelease(Repository $repository, Tag $current, Tag $next): void
+    private function printRelease(Package $package, Tag $current, Tag $next): void
     {
         $this->io->writeln(sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
             $next->toString(),
-            $repository->toString(),
+            $package->getRepository(),
             $current->toString(),
             $next->toString(),
             date('Y-m-d')
