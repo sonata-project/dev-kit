@@ -98,10 +98,10 @@ EOT;
 
         $this->io->title($project->name());
 
-        $branches = $project->branches();
-        $branch = \count($branches) > 1 ? next($branches) : current($branches);
-
-        $this->prepareRelease($project, $branch);
+        $this->prepareRelease(
+            $project,
+            $project->stableBranch()
+        );
 
         return 0;
     }
