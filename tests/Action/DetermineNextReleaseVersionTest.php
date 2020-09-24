@@ -16,10 +16,10 @@ namespace App\Tests\Action;
 use App\Action\DetermineNextReleaseVersion;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
+use App\Tests\Util\Factory\LabelResponseFactory;
 use App\Tests\Util\Factory\PullRequestResponseFactory;
 use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
-use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
 final class DetermineNextReleaseVersionTest extends TestCase
@@ -73,6 +73,9 @@ final class DetermineNextReleaseVersionTest extends TestCase
         );
     }
 
+    /**
+     * @return \Generator<array{0: string, 1: string, 2: array<PullRequest>}>
+     */
     public function determineProvider(): \Generator
     {
         yield [
@@ -112,10 +115,9 @@ final class DetermineNextReleaseVersionTest extends TestCase
             $response['labels'] = [];
         } else {
             $response['labels'] = [
-                [
+                LabelResponseFactory::create([
                     'name' => $stability,
-                    'color' => u(self::faker()->hexColor)->replace('#', '')->toString(),
-                ],
+                ]),
             ];
         }
 
