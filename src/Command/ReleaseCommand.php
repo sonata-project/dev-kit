@@ -34,16 +34,6 @@ use Symfony\Component\Console\Question\Question;
  */
 final class ReleaseCommand extends AbstractCommand
 {
-    /**
-     * @var array<string, string>
-     */
-    private static $stabilities = [
-        'patch' => 'blue',
-        'minor' => 'green',
-        'pedantic' => 'yellow',
-        'unknown' => 'red',
-    ];
-
     private Projects $projects;
     private Releases $releases;
     private Branches $branches;
@@ -217,15 +207,8 @@ EOT;
 
     private function printPullRequest(PullRequest $pr): void
     {
-        if (\array_key_exists($pr->stability(), static::$stabilities)) {
-            $this->io->write(sprintf(
-                '<fg=black;bg=%s>[%s]</> ',
-                static::$stabilities[$pr->stability()],
-                strtoupper($pr->stability())
-            ));
-        } else {
-            $this->io->write('<error>[NOT SET]</error> ');
-        }
+        $this->renderStability($pr->stability());
+
         $this->io->write(sprintf(
             '<info>%s</info>',
             $pr->title()
@@ -338,5 +321,25 @@ EOT;
             $color,
             $label->name()
         ));
+    }
+
+    private function renderStability(string $stability): void
+    {
+        $stabilities = [
+            'patch' => 'blue',
+            'minor' => 'green',
+            'pedantic' => 'yellow',
+            'unknown' => 'red',
+        ];
+
+        if (\array_key_exists($stability, $stabilities)) {
+            $this->io->write(sprintf(
+                '<fg=black;bg=%s>[%s]</> ',
+                $stabilities[$stability],
+                strtoupper($stability)
+            ));
+        } else {
+            $this->io->write('<error>[NOT SET]</error> ');
+        }
     }
 }
