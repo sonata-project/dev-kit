@@ -61,7 +61,7 @@ final class Section
                 sprintf(
                     '### %s',
                     $this->headline
-                )
+                ),
             ],
             $this->lines
         ));
