@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
@@ -258,7 +259,7 @@ final class Project
     public function unstableBranch(): Branch
     {
         if (!$this->hasBranches()) {
-            throw new \InvalidArgumentException('No branches available!');
+            throw NoBranchesAvailable::forProject($this);
         }
 
         return $this->branches[0];
@@ -267,7 +268,7 @@ final class Project
     public function stableBranch(): Branch
     {
         if (!$this->hasBranches()) {
-            throw new \InvalidArgumentException('No branches available!');
+            throw NoBranchesAvailable::forProject($this);
         }
 
         try {
