@@ -28,6 +28,15 @@ class PullRequestFactory
     {
         $faker = self::faker();
 
+        $repo = null;
+        if ($faker->boolean) {
+            $repo = [
+                'owner' => [
+                    'login' => $faker->userName,
+                ],
+            ];
+        }
+
         $response = [
             'number' => $faker->numberBetween(1, 99999),
             'title' => $faker->sentence,
@@ -38,11 +47,7 @@ class PullRequestFactory
             'head' => [
                 'ref' => $faker->sentence(1),
                 'sha' => $faker->sha256,
-                'repo' => [
-                    'owner' => [
-                        'login' => $faker->userName,
-                    ],
-                ],
+                'repo' => $repo,
             ],
             'user' => [
                 'login' => $faker->userName,
