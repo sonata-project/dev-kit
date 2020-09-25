@@ -45,7 +45,7 @@ final class Head
         Assert::stringNotEmpty($config['sha']);
 
         Assert::keyExists($config, 'repo');
-        if (is_array($config['repo'])) {
+        if (\is_array($config['repo'])) {
             Assert::notEmpty($config['repo']);
         }
 

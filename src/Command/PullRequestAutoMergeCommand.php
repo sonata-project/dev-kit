@@ -175,7 +175,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $squash ? sprintf('%s (#%d)', $commits->firstMessage(), $pr->issue()->toInt()) : null
                     );
 
-                    $repo =  $pr->head()->repo();
+                    $repo = $pr->head()->repo();
                     if ($repo instanceof Repo
                         && 'sonata-project' === $repo->owner()->login()
                     ) {
