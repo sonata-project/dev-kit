@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Config;
 
+use App\Config\Exception\UnknownProject;
 use App\Domain\Value\Project;
 use Packagist\Api\Client as PackagistClient;
 use Symfony\Component\Config\Definition\Processor;
@@ -60,15 +61,12 @@ final class Projects
 
     public function byName(string $name): Project
     {
-        Assert::stringNotEmpty($name);
-        Assert::keyExists(
-            $this->projects,
-            $name,
-            sprintf(
-                'Unknown project: %s',
-                $name
-            )
-        );
+        try {
+            Assert::stringNotEmpty($name);
+            Assert::keyExists($this->projects, $name);
+        } catch (\InvalidArgumentException $e) {
+            throw UnknownProject::forName($name);
+        }
 
         return $this->projects[$name];
     }
@@ -85,14 +83,12 @@ final class Projects
 
         $projects = [];
         foreach ($names as $name) {
-            Assert::keyExists(
-                $this->projects,
-                $name,
-                sprintf(
-                    'Unknown project: %s',
-                    $name
-                )
-            );
+            try {
+                Assert::stringNotEmpty($name);
+                Assert::keyExists($this->projects, $name);
+            } catch (\InvalidArgumentException $e) {
+                throw UnknownProject::forName($name);
+            }
 
             $projects[$name] = $this->projects[$name];
         }
