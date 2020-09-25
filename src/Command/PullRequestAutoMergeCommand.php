@@ -20,6 +20,7 @@ use App\Github\Api\PullRequests;
 use App\Github\Api\References;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Commit\CommitCollection;
+use App\Github\Domain\Value\PullRequest\Head\Repo;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -174,7 +175,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $squash ? sprintf('%s (#%d)', $commits->firstMessage(), $pr->issue()->toInt()) : null
                     );
 
-                    if ('sonata-project' === $pr->head()->repo()->owner()->login()) {
+                    $repo = $pr->head()->repo();
+                    if ($repo instanceof Repo
+                        && 'sonata-project' === $repo->owner()->login()
+                    ) {
                         $this->references->remove($repository, $pr);
                     }
 
