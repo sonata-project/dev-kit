@@ -22,6 +22,7 @@
         "doctrine/annotations": "^1.10",
         "knplabs/github-api": "^2.15",
         "knplabs/packagist-api": "^1.6.1",
+        "league/commonmark": "^1.5",
         "nyholm/psr7": "^1.2",
         "symfony/console": "^5.1",
         "symfony/dotenv": "^5.1",
@@ -32,6 +33,8 @@
         "symfony/string": "^5.1",
         "symfony/twig-pack": "^1.0",
         "symfony/yaml": "^5.1",
+        "twig/extra-bundle": "^3.0",
+        "twig/markdown-extra": "^3.0",
         "webmozart/assert": "^1.9"
     },
     "replace": {

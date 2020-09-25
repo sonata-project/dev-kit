@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Action;
+use App\Action\DetermineNextRelease;
+use App\Action\Exception\CannotDetermineNextRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
@@ -30,11 +31,11 @@ use Symfony\Component\Console\Question\Question;
 final class ReleaseCommand extends AbstractCommand
 {
     private Projects $projects;
-    private Action\DetermineNextRelease $determineNextRelease;
+    private DetermineNextRelease $determineNextRelease;
 
     public function __construct(
         Projects $projects,
-        Action\DetermineNextRelease $determineNextRelease
+        DetermineNextRelease $determineNextRelease
     ) {
         parent::__construct();
 
@@ -81,9 +82,7 @@ EOT;
 
         $this->io->title($project->name());
 
-        $this->renderNextRelease($project);
-
-        return 0;
+        return $this->renderNextRelease($project);
     }
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
@@ -103,14 +102,20 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function renderNextRelease(Project $project): void
+    private function renderNextRelease(Project $project): int
     {
-        $nextRelease = $this->determineNextRelease->__invoke($project);
+        try {
+            $nextRelease = $this->determineNextRelease->__invoke($project);
+        } catch (CannotDetermineNextRelease $e) {
+            $this->io->error($e->getMessage());
+
+            return 1;
+        }
 
         if (!$nextRelease->isNeeded()) {
             $this->io->warning('Release is not needed');
 
-            return;
+            return 0;
         }
 
         $this->io->section('Checks');
@@ -135,6 +140,8 @@ EOT;
         $this->io->section('Changelog');
 
         $this->io->writeln($nextRelease->changelog()->asMarkdown());
+
+        return 0;
     }
 
     private function renderPullRequest(PullRequest $pr): void

@@ -1,0 +1,43 @@
+{% extends 'nav_and_content.html.twig' %}
+
+{% block content_title %}
+    Next Releases
+{% endblock %}
+
+{% block content %}
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Project</th>
+                <th scope="col">Current</th>
+                <th scope="col">Next</th>
+                <th scope="col">Merged PullRequests</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for release in releases %}
+            {% if release.isNeeded %}
+                <tr>
+                    <th scope="row">
+                        <a href="{{ path('next_release_project', {'project': release.project.name}) }}">
+                            {{ release.project.title }}
+                        </a>
+                    </th>
+                    <td>
+                        {{ release.currentTag.toString }}
+                    </td>
+                    <td>
+                        {{ release.nextTag.toString }}
+                    </td>
+                    <td>
+                        {{ release.pullRequests|length }}
+                    </td>
+                </tr>
+
+            {% endif %}
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

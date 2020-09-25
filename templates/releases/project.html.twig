@@ -1,0 +1,16 @@
+{% extends 'nav_and_content.html.twig' %}
+
+{% block content_title %}
+    Next Release for {{ release.project.title }}
+{% endblock %}
+
+{% block content %}
+    {% if release.isNeeded %}
+        <h2>Changelog</h2>
+        <p>
+            {{ release.changelog.asMarkdown|markdown_to_html }}
+        </p>
+    {% else %}
+        <h1>No Release needed for {{ release.project.title }}</h1>
+    {% endif %}
+{% endblock %}
