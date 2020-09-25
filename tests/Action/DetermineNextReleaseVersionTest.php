@@ -34,7 +34,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         self::assertSame(
             $tag,
-            (new DetermineNextReleaseVersion())->__invoke($tag, [])
+            DetermineNextReleaseVersion::forTagAndPullRequests($tag, [])
         );
     }
 
@@ -51,7 +51,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         self::assertSame(
             $tag,
-            (new DetermineNextReleaseVersion())->__invoke($tag, $pullRequests)
+            DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequests)
         );
     }
 
@@ -64,7 +64,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     {
         $tag = Tag::fromString($current);
 
-        $nextVersion = (new DetermineNextReleaseVersion())->__invoke($tag, $pullRequets)->toString();
+        $nextVersion = DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequets)->toString();
 
         self::assertSame(
             $expected,

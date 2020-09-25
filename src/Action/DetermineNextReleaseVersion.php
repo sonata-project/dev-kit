@@ -22,7 +22,7 @@ final class DetermineNextReleaseVersion
     /**
      * @param PullRequest[] $pullRequests
      */
-    public function __invoke(Tag $current, array $pullRequests): Tag
+    public static function forTagAndPullRequests(Tag $current, array $pullRequests): Tag
     {
         if ([] === $pullRequests) {
             return $current;
