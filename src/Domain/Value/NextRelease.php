@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use App\Action\DetermineNextReleaseVersion;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
@@ -24,7 +25,6 @@ final class NextRelease
 {
     private Project $project;
     private Tag $currentTag;
-    private Tag $nextTag;
     private CombinedStatus $combinedStatus;
 
     /**
@@ -32,18 +32,24 @@ final class NextRelease
      */
     private array $pullRequests;
 
+    private Tag $nextTag;
+
     private function __construct(
         Project $project,
         Tag $currentTag,
-        Tag $nextTag,
         CombinedStatus $combinedStatus,
         array $pullRequests
     ) {
         $this->project = $project;
         $this->currentTag = $currentTag;
-        $this->nextTag = $nextTag;
+
         $this->combinedStatus = $combinedStatus;
         $this->pullRequests = $pullRequests;
+
+        $this->nextTag = DetermineNextReleaseVersion::forTagAndPullRequests(
+            $currentTag,
+            $pullRequests
+        );
     }
 
     /**
@@ -52,14 +58,12 @@ final class NextRelease
     public static function fromValues(
         Project $project,
         Tag $currentTag,
-        Tag $nextTag,
         CombinedStatus $combinedStatus,
         array $pullRequests
     ): self {
         return new self(
             $project,
             $currentTag,
-            $nextTag,
             $combinedStatus,
             $pullRequests
         );
@@ -110,5 +114,22 @@ final class NextRelease
         }
 
         return $this->nextTag->toString() !== $this->currentTag->toString();
+    }
+
+    public function stability(): Stability
+    {
+        $stabilities = array_map(static function (PullRequest $pr): string {
+            return $pr->stability()->toString();
+        }, $this->pullRequests);
+
+        if (\in_array(Stability::minor()->toString(), $stabilities, true)) {
+            return Stability::minor();
+        }
+
+        if (\in_array(Stability::patch()->toString(), $stabilities, true)) {
+            return Stability::patch();
+        }
+
+        return Stability::pedantic();
     }
 }

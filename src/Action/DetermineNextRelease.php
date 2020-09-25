@@ -34,20 +34,17 @@ final class DetermineNextRelease
     private Branches $branches;
     private Statuses $statuses;
     private PullRequests $pullRequests;
-    private DetermineNextReleaseVersion $determineNextReleaseVersion;
 
     public function __construct(
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
-        PullRequests $pullRequests,
-        DetermineNextReleaseVersion $determineNextReleaseVersion
+        PullRequests $pullRequests
     ) {
         $this->releases = $releases;
         $this->branches = $branches;
         $this->statuses = $statuses;
         $this->pullRequests = $pullRequests;
-        $this->determineNextReleaseVersion = $determineNextReleaseVersion;
     }
 
     public function __invoke(Project $project): NextRelease
@@ -88,12 +85,9 @@ final class DetermineNextRelease
             $currentRelease->publishedAt()
         );
 
-        $nextTag = $this->determineNextReleaseVersion->__invoke($currentRelease->tag(), $pullRequests);
-
         return NextRelease::fromValues(
             $project,
             $currentRelease->tag(),
-            $nextTag,
             $combinedStatus,
             $pullRequests
         );
