@@ -20,8 +20,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ProjectTest extends TestCase
 {
-    private const DEFAULT_CONFIG_NAME = 'admin-bundle';
-    private const DEFAULT_CONFIG = <<<CONFIG
+    public const DEFAULT_CONFIG_NAME = 'admin-bundle';
+    public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
   excluded_files: []
   custom_gitignore_part: ~
