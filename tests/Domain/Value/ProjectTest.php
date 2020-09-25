@@ -247,6 +247,12 @@ CONFIG;
             'symfony-bundle',
         ];
 
+        if ('09' === (new \DateTimeImmutable())->format('m')) {
+            $expected[] = 'hacktoberfest';
+
+            sort($expected);
+        }
+
         self::assertSame(
             $expected,
             $project->topics()
@@ -315,6 +321,12 @@ CONFIG;
             'symfony',
             'symfony-bundle',
         ];
+
+        if ('09' === (new \DateTimeImmutable())->format('m')) {
+            $expected[] = 'hacktoberfest';
+
+            sort($expected);
+        }
 
         self::assertSame(
             $expected,
