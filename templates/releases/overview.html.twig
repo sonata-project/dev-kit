@@ -11,6 +11,7 @@
                 <th scope="col">Project</th>
                 <th scope="col">Current</th>
                 <th scope="col">Next</th>
+                <th scope="col">Stability</th>
                 <th scope="col">Merged PullRequests</th>
             </tr>
         </thead>
@@ -29,6 +30,9 @@
                     </td>
                     <td>
                         {{ release.nextTag.toString }}
+                    </td>
+                    <td>
+                        {{ release.stability.toString }}
                     </td>
                     <td>
                         {{ release.pullRequests|length }}
