@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace App\Action;
 
+use App\Action\Exception\CannotDetermineNextRelease;
 use App\Command\AbstractCommand;
+use App\Domain\Exception\NoBranchesAvailable;
 use App\Domain\Value\Branch;
 use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
@@ -24,6 +26,7 @@ use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Search\Query;
+use App\Github\Exception\LatestReleaseNotFound;
 
 final class DetermineNextRelease
 {
@@ -50,9 +53,24 @@ final class DetermineNextRelease
     public function __invoke(Project $project): NextRelease
     {
         $repository = $project->repository();
-        $branch = $project->stableBranch();
 
-        $currentRelease = $this->releases->latest($repository);
+        try {
+            $branch = $project->stableBranch();
+        } catch (NoBranchesAvailable $e) {
+            throw CannotDetermineNextRelease::forProject(
+                $project,
+                $e
+            );
+        }
+
+        try {
+            $currentRelease = $this->releases->latest($repository);
+        } catch (LatestReleaseNotFound $e) {
+            throw CannotDetermineNextRelease::forProject(
+                $project,
+                $e
+            );
+        }
 
         $branchToRelease = $this->branches->get(
             $repository,
