@@ -115,4 +115,21 @@ final class NextRelease
 
         return $this->nextTag->toString() !== $this->currentTag->toString();
     }
+
+    public function stability(): Stability
+    {
+        $stabilities = array_map(static function (PullRequest $pr): string {
+            return $pr->stability()->toString();
+        }, $this->pullRequests);
+
+        if (\in_array(Stability::minor()->toString(), $stabilities, true)) {
+            return Stability::minor();
+        }
+
+        if (\in_array(Stability::patch()->toString(), $stabilities, true)) {
+            return Stability::patch();
+        }
+
+        return Stability::pedantic();
+    }
 }
