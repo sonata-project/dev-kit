@@ -220,6 +220,13 @@ final class Project
             $default[] = 'Symfony-Bundle';
         }
 
+        /*
+         * add "hacktoberfest" topic to repositories in october
+         */
+        if ('09' === (new \DateTimeImmutable())->format('m')) {
+            $default[] = 'Hacktoberfest';
+        }
+
         $latestVersion = $this->getLatestPackagistVersion();
 
         $keywords = array_map(static function (string $keyword): string {
