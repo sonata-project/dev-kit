@@ -16,14 +16,13 @@ namespace App\Domain\Value;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
-use Packagist\Api\Result\Package;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
 final class NextRelease
 {
-    private Package $package;
+    private Project $project;
     private Tag $currentTag;
     private Tag $nextTag;
     private CombinedStatus $combinedStatus;
@@ -34,13 +33,13 @@ final class NextRelease
     private array $pullRequests;
 
     private function __construct(
-        Package $package,
+        Project $project,
         Tag $currentTag,
         Tag $nextTag,
         CombinedStatus $combinedStatus,
         array $pullRequests
     ) {
-        $this->package = $package;
+        $this->project = $project;
         $this->currentTag = $currentTag;
         $this->nextTag = $nextTag;
         $this->combinedStatus = $combinedStatus;
@@ -51,19 +50,24 @@ final class NextRelease
      * @param PullRequest[] $pullRequests
      */
     public static function fromValues(
-        Package $package,
+        Project $project,
         Tag $currentTag,
         Tag $nextTag,
         CombinedStatus $combinedStatus,
         array $pullRequests
     ): self {
         return new self(
-            $package,
+            $project,
             $currentTag,
             $nextTag,
             $combinedStatus,
             $pullRequests
         );
+    }
+
+    public function project(): Project
+    {
+        return $this->project;
     }
 
     public function currentTag(): Tag
@@ -95,12 +99,16 @@ final class NextRelease
             $this->pullRequests,
             $this->nextTag,
             $this->currentTag,
-            $this->package
+            $this->project->package()
         );
     }
 
     public function isNeeded(): bool
     {
+        if ($this->project->package()->isAbandoned()) {
+            return false;
+        }
+
         return $this->nextTag->toString() !== $this->currentTag->toString();
     }
 }

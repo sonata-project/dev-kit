@@ -91,7 +91,7 @@ final class DetermineNextRelease
         $nextTag = $this->determineNextReleaseVersion->__invoke($currentRelease->tag(), $pullRequests);
 
         return NextRelease::fromValues(
-            $project->package(),
+            $project,
             $currentRelease->tag(),
             $nextTag,
             $combinedStatus,
