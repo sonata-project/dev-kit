@@ -15,6 +15,7 @@ namespace App\Command;
 
 use App\Action\DetermineNextRelease;
 use App\Action\Exception\CannotDetermineNextRelease;
+use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
@@ -106,6 +107,10 @@ EOT;
     {
         try {
             $nextRelease = $this->determineNextRelease->__invoke($project);
+        } catch (NoPullRequestsMergedSinceLastRelease $e) {
+            $this->io->warning($e->getMessage());
+
+            return 0;
         } catch (CannotDetermineNextRelease $e) {
             $this->io->error($e->getMessage());
 

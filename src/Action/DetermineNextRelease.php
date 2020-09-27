@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Action;
 
 use App\Action\Exception\CannotDetermineNextRelease;
+use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Command\AbstractCommand;
 use App\Domain\Exception\NoBranchesAvailable;
 use App\Domain\Value\Branch;
@@ -69,6 +70,19 @@ final class DetermineNextRelease
             );
         }
 
+        $pullRequests = $this->findPullRequestsSince(
+            $repository,
+            $branch,
+            $currentRelease->publishedAt()
+        );
+
+        if ([] === $pullRequests) {
+            throw NoPullRequestsMergedSinceLastRelease::forProject(
+                $project,
+                $currentRelease->publishedAt()
+            );
+        }
+
         $branchToRelease = $this->branches->get(
             $repository,
             $branch->name()
@@ -77,12 +91,6 @@ final class DetermineNextRelease
         $combinedStatus = $this->statuses->combined(
             $repository,
             $branchToRelease->commit()->sha()
-        );
-
-        $pullRequests = $this->findPullRequestsSince(
-            $repository,
-            $branch,
-            $currentRelease->publishedAt()
         );
 
         return NextRelease::fromValues(
