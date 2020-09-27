@@ -21,7 +21,7 @@
             {% if release.isNeeded %}
                 <tr>
                     <th scope="row">
-                        <a href="{{ path('next_release_project', {'project': release.project.name}) }}">
+                        <a href="{{ path('next_release_project', {'projectName': release.project.name}) }}">
                             {{ release.project.title }}
                         </a>
                     </th>
