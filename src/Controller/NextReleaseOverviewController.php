@@ -15,6 +15,7 @@ namespace App\Controller;
 
 use App\Action\DetermineNextRelease;
 use App\Action\Exception\CannotDetermineNextRelease;
+use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,7 @@ final class NextReleaseOverviewController
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
             try {
                 $release = $this->determineNextRelease->__invoke($project);
-            } catch (CannotDetermineNextRelease $e) {
+            } catch (CannotDetermineNextRelease|NoPullRequestsMergedSinceLastRelease $e) {
                 return $releases;
             }
 
