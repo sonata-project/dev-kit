@@ -32,7 +32,7 @@ final class NextReleaseForProjectController
     {
         $this->projects = $projects;
         $this->determineNextRelease = $determineNextRelease;
-        $this->environment = $twig;
+        $this->twig = $twig;
     }
 
     /**
