@@ -11,16 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-    use Cache\Adapter\Redis\RedisCachePool;
-
-    $client = new \Redis();
-    $client->connect('127.0.0.1', 6379);
-#    // Create a PSR6 cache pool
-#    $pool = new RedisCachePool($client);
-#
-#    $client = new \Github\Client();
-#    $client->addCache($pool);
-
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
