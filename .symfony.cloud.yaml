@@ -14,6 +14,9 @@ runtime:
 relationships:
     redis: "cache:redis"
 
+relationships:
+    redis: "cache:redis"
+
 build:
     flavor: none
 
