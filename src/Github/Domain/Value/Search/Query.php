@@ -16,6 +16,7 @@ namespace App\Github\Domain\Value\Search;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 use App\Domain\Value\TrimmedNonEmptyString;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -26,7 +27,14 @@ final class Query
 
     private function __construct(string $value)
     {
-        $this->value = TrimmedNonEmptyString::fromString($value)->toString();
+        $value = TrimmedNonEmptyString::fromString($value)->toString();
+
+        /*
+         * @see https://docs.github.com/en/free-pro-team@latest/github/searching-for-information-on-github/troubleshooting-search-queries#limitations-on-query-length
+         */
+        Assert::maxLength($value, 256);
+
+        $this->value = $value;
     }
 
     public static function fromString(string $value): self

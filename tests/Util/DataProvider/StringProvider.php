@@ -44,6 +44,14 @@ final class StringProvider
     }
 
     /**
+     * @return \Generator<string, array{0: string}>
+     */
+    public static function lengthGreaterThan256Characters(): \Generator
+    {
+        yield 'string-longer-than-256-characters' => [self::stringWithLength(257)];
+    }
+
+    /**
      * @return \Generator<string, array<string>>
      */
     public static function untrimmed(): \Generator
@@ -71,5 +79,20 @@ final class StringProvider
                 ),
             ];
         }
+    }
+
+    private static function stringWithLength(int $length): string
+    {
+        $faker = self::faker();
+
+        return str_pad(
+            substr(
+                $faker->sentence,
+                0,
+                $length
+            ),
+            $length,
+            $faker->randomLetter
+        );
     }
 }
