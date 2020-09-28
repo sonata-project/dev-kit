@@ -25,14 +25,12 @@ use Twig\Environment;
 
 final class NextReleaseOverviewController
 {
-    private Client $github;
     private Projects $projects;
     private DetermineNextRelease $determineNextRelease;
     private Environment $twig;
 
-    public function __construct(Client $github, Projects $projects, DetermineNextRelease $determineNextRelease, Environment $twig)
+    public function __construct(Projects $projects, DetermineNextRelease $determineNextRelease, Environment $twig)
     {
-        $this->github = $github;
         $this->projects = $projects;
         $this->determineNextRelease = $determineNextRelease;
         $this->twig = $twig;
@@ -43,9 +41,6 @@ final class NextReleaseOverviewController
      */
     public function __invoke(): Response
     {
-        $resources = $this->github->rateLimit()->getResources();
-        dd($resources);
-
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
             try {
                 $release = $this->determineNextRelease->__invoke($project);
