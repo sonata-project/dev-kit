@@ -40,7 +40,8 @@ class PullRequestFactory
         $response = [
             'number' => $faker->numberBetween(1, 99999),
             'title' => $faker->sentence,
-            'updated_at' => $faker->date('Y-m-d H:i:s'),
+            'updated_at' => $faker->date('Y-m-d\TH:i:s\Z'),
+            'merged_at' => $faker->date('Y-m-d\TH:i:s\Z'),
             'base' => [
                 'ref' => $faker->sentence(1),
             ],
