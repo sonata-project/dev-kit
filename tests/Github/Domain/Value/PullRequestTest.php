@@ -138,14 +138,14 @@ final class PullRequestTest extends TestCase
     public function usesUpdatedAtFromResponse()
     {
         $response = Github\Response\PullRequestFactory::create([
-            'updated_at' => $value = self::faker()->date('Y-m-d H:i:s'),
+            'updated_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
         ]);
 
         $pullRequest = PullRequest::fromResponse($response);
 
         self::assertSame(
             $value,
-            $pullRequest->updatedAt()->format('Y-m-d H:i:s')
+            $pullRequest->updatedAt()->format('Y-m-d\TH:i:s\Z')
         );
     }
 
@@ -182,12 +182,76 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
+    public function usesMergedAtFromResponse()
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'merged_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $value,
+            $pullRequest->mergedAt()->format('Y-m-d\TH:i:s\Z')
+        );
+        self::assertTrue($pullRequest->isMerged());
+    }
+
+    /**
+     * @test
+     */
+    public function mergedAtCanBeNull()
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'merged_at' => null,
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertNull($pullRequest->mergedAt());
+        self::assertFalse($pullRequest->isMerged());
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfMergedAtIsNotSet()
+    {
+        $response = Github\Response\PullRequestFactory::create();
+        unset($response['merged_at']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfMergedAtIs(string $value)
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'merged_at' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
     public function valid(): void
     {
         $response = [
             'number' => 123,
             'title' => 'Update dependecy',
-            'updated_at' => '2020-01-01 19:00:00',
+            'updated_at' => '2020-01-01T19:00:00Z',
+            'merged_at' => '2020-01-01T19:00:00Z',
             'base' => [
                 'ref' => $baseRef = 'baseRef',
             ],
@@ -244,7 +308,7 @@ final class PullRequestTest extends TestCase
         );
 
         $response = Github\Response\PullRequestFactory::create([
-            'updated_at' => $now->format('Y-m-d H:i:s'),
+            'updated_at' => $now->format('Y-m-d\TH:i:s\Z'),
         ]);
 
         $pr = PullRequest::fromResponse($response);
@@ -263,7 +327,7 @@ final class PullRequestTest extends TestCase
         );
 
         $response = Github\Response\PullRequestFactory::create([
-            'updated_at' => $now->format('Y-m-d H:i:s'),
+            'updated_at' => $now->format('Y-m-d\TH:i:s\Z'),
         ]);
 
         $pr = PullRequest::fromResponse($response);
