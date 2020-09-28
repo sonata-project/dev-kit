@@ -106,6 +106,7 @@ final class DetermineNextRelease
      */
     private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
     {
+        return [];
         return $this->pullRequests->search(
             $repository,
             Query::pullRequestsSince($repository, $branch, $date, AbstractCommand::SONATA_CI_BOT)
