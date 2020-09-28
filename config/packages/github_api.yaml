@@ -4,8 +4,8 @@ services:
         arguments:
             - '%env(REDIS_URL)%'
 
-    Cache\Adapter\Redis\RedisCachePool:
-        class: \Cache\Adapter\Redis\RedisCachePool
+    Symfony\Component\Cache\Adapter\RedisAdapter:
+        class: \Symfony\Component\Cache\Adapter\RedisAdapter
         arguments:
             - '@Predis\Client'
 
@@ -16,7 +16,7 @@ services:
             # use: !php/const \Github\Client::AUTH_ACCESS_TOKEN instead of: 'access_token_header'
             # when the yaml linter can deal with custom tags
             - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, 'access_token_header']]
-            - ['addCache', ['@Cache\Adapter\Redis\RedisCachePool']]
+            - ['addCache', ['@Symfony\Component\Cache\Adapter\RedisAdapter']]
 
     Github\HttpClient\Builder:
         arguments:
