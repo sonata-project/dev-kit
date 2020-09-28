@@ -18,18 +18,21 @@ use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use Github\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 final class NextReleaseOverviewController
 {
+    private Client $github;
     private Projects $projects;
     private DetermineNextRelease $determineNextRelease;
     private Environment $twig;
 
-    public function __construct(Projects $projects, DetermineNextRelease $determineNextRelease, Environment $twig)
+    public function __construct(Client $github, Projects $projects, DetermineNextRelease $determineNextRelease, Environment $twig)
     {
+        $this->github = $github;
         $this->projects = $projects;
         $this->determineNextRelease = $determineNextRelease;
         $this->twig = $twig;
@@ -40,6 +43,8 @@ final class NextReleaseOverviewController
      */
     public function __invoke(): Response
     {
+        dd($this->github->rateLimit());
+
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
             try {
                 $release = $this->determineNextRelease->__invoke($project);
