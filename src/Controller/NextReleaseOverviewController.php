@@ -61,8 +61,8 @@ final class NextReleaseOverviewController
 
         $response = new Response();
         $response->setContent($content);
-//        $response->setPublic();
-//        $response->setMaxAge(3600);
+        $response->setPublic();
+        $response->setMaxAge(3600);
 
         return $response;
     }
