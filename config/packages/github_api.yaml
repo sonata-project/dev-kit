@@ -1,13 +1,13 @@
 services:
-    Redis:
-        class: \Redis
-        calls:
-            - ['connect', ['%env(REDIS_HOST)%', '%env(REDIS_PORT)']]
+    Predis\Client:
+        class: \Predis\Client
+        arguments:
+            - '%env(REDIS_URL)%'
 
     Cache\Adapter\Redis\RedisCachePool:
         class: \Cache\Adapter\Redis\RedisCachePool
         arguments:
-            - '@Redis'
+            - '@Predis\Client'
 
     Github\Client:
         arguments:
