@@ -6,6 +6,7 @@ services:
             # use: !php/const \Github\Client::AUTH_ACCESS_TOKEN instead of: 'access_token_header'
             # when the yaml linter can deal with custom tags
             - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, 'access_token_header']]
+            - ['addCache', ['@cache.app']]
 
     Github\HttpClient\Builder:
         arguments:

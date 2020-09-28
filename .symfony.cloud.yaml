@@ -9,6 +9,10 @@ runtime:
         - ctype
         - iconv
         - json
+        - redis
+
+relationships:
+    redis: "cache:redis"
 
 build:
     flavor: none
