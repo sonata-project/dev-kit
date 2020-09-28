@@ -43,7 +43,7 @@ final class NextReleaseOverviewController
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
             try {
                 $release = $this->determineNextRelease->__invoke($project);
-            } catch (CannotDetermineNextRelease|NoPullRequestsMergedSinceLastRelease $e) {
+            } catch (CannotDetermineNextRelease | NoPullRequestsMergedSinceLastRelease $e) {
                 return $releases;
             }
 
