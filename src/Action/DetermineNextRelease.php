@@ -17,18 +17,14 @@ use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Command\AbstractCommand;
 use App\Domain\Exception\NoBranchesAvailable;
-use App\Domain\Value\Branch;
 use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
-use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
-use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Search\Query;
 use App\Github\Exception\LatestReleaseNotFound;
-use Webmozart\Assert\Assert;
 
 final class DetermineNextRelease
 {
