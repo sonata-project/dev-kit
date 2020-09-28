@@ -44,7 +44,8 @@ final class NextReleaseOverviewController
     public function __invoke(): Response
     {
         $resources = $this->github->rateLimit()->getResources()
-        dd($resources);
+        dump($resources);
+        die();
 
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
             try {
