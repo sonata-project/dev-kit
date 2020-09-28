@@ -73,7 +73,8 @@ final class DetermineNextRelease
         $pullRequests = $this->findPullRequestsSince(
             $repository,
             $branch,
-            $currentRelease->publishedAt()
+            $currentRelease->publishedAt(),
+            AbstractCommand::SONATA_CI_BOT
         );
 
         if ([] === $pullRequests) {
@@ -104,13 +105,38 @@ final class DetermineNextRelease
     /**
      * @return PullRequest[]
      */
-    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
+    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date, ?string $filterUsername = null): array
     {
-        return [];
 
-        return $this->pullRequests->search(
+        $mergedPullRequests = $this->pullRequests->all(
             $repository,
-            Query::pullRequestsSince($repository, $branch, $date, AbstractCommand::SONATA_CI_BOT)
+            [
+                'state' => 'merged',
+                'base' => $branch->name(),
+            ]
         );
+
+        return array_reduce($mergedPullRequests, function (array $pullRequests, PullRequest $pullRequest) use ($date, $filterUsername): array {
+            if (null !== $filterUsername
+                && $filterUsername === $pullRequest->user()->login()
+            ) {
+                return $pullRequests;
+            }
+
+            if (!$pullRequest->isMerged()) {
+                return $pullRequests;
+            }
+
+            $mergedAt = $pullRequest->mergedAt();
+            if ($mergedAt instanceof \DateTimeImmutable
+                && $mergedAt <= $date
+            ) {
+                return $pullRequests;
+            }
+
+            $pullRequests[] = $pullRequest;
+
+            return $pullRequests;
+        }, []);
     }
 }
