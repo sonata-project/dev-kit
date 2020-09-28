@@ -26,7 +26,6 @@ use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\PullRequest;
-use App\Github\Domain\Value\Search\Query;
 use App\Github\Exception\LatestReleaseNotFound;
 
 final class DetermineNextRelease
@@ -107,7 +106,6 @@ final class DetermineNextRelease
      */
     private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date, ?string $filterUsername = null): array
     {
-
         $mergedPullRequests = $this->pullRequests->all(
             $repository,
             [
@@ -116,7 +114,7 @@ final class DetermineNextRelease
             ]
         );
 
-        return array_reduce($mergedPullRequests, function (array $pullRequests, PullRequest $pullRequest) use ($date, $filterUsername): array {
+        return array_reduce($mergedPullRequests, static function (array $pullRequests, PullRequest $pullRequest) use ($date, $filterUsername): array {
             if (null !== $filterUsername
                 && $filterUsername === $pullRequest->user()->login()
             ) {
