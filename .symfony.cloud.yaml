@@ -9,10 +9,6 @@ runtime:
         - ctype
         - iconv
         - json
-        - redis
-
-relationships:
-    redis: "cache:redis"
 
 relationships:
     redis: "cache:redis"
