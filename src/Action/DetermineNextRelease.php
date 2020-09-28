@@ -26,7 +26,9 @@ use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\PullRequest;
+use App\Github\Domain\Value\Search\Query;
 use App\Github\Exception\LatestReleaseNotFound;
+use Webmozart\Assert\Assert;
 
 final class DetermineNextRelease
 {
@@ -69,11 +71,9 @@ final class DetermineNextRelease
             );
         }
 
-        $pullRequests = $this->findPullRequestsSince(
+        $pullRequests = $this->pullRequests->search(
             $repository,
-            $branch,
-            $currentRelease->publishedAt(),
-            AbstractCommand::SONATA_CI_BOT
+            Query::pullRequestsSince($repository, $branch, $currentRelease->publishedAt(), AbstractCommand::SONATA_CI_BOT)
         );
 
         if ([] === $pullRequests) {
@@ -99,42 +99,5 @@ final class DetermineNextRelease
             $combinedStatus,
             $pullRequests
         );
-    }
-
-    /**
-     * @return PullRequest[]
-     */
-    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date, ?string $filterUsername = null): array
-    {
-        $mergedPullRequests = $this->pullRequests->all(
-            $repository,
-            [
-                'state' => 'merged',
-                'base' => $branch->name(),
-            ]
-        );
-
-        return array_reduce($mergedPullRequests, static function (array $pullRequests, PullRequest $pullRequest) use ($date, $filterUsername): array {
-            if (null !== $filterUsername
-                && $filterUsername === $pullRequest->user()->login()
-            ) {
-                return $pullRequests;
-            }
-
-            if (!$pullRequest->isMerged()) {
-                return $pullRequests;
-            }
-
-            $mergedAt = $pullRequest->mergedAt();
-            if ($mergedAt instanceof \DateTimeImmutable
-                && $mergedAt <= $date
-            ) {
-                return $pullRequests;
-            }
-
-            $pullRequests[] = $pullRequest;
-
-            return $pullRequests;
-        }, []);
     }
 }
