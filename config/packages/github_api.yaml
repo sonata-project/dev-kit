@@ -1,12 +1,12 @@
 services:
-#    Redis:
-#        class: Redis
-#        calls:
-#            - ['connect', ['%env(REDIS_HOST)%', '%env(REDIS_PORT)%']]
-#
-#    Cache\Adapter\Redis\RedisCachePool:
-#        arguments:
-#            - '@Redis'
+    Redis:
+        class: Redis
+        calls:
+            - ['connect', ['%env(REDIS_HOST)%', '%env(REDIS_PORT)%']]
+
+    Cache\Adapter\Redis\RedisCachePool:
+        arguments:
+            - '@Redis'
 
     Github\Client:
         arguments:
@@ -15,7 +15,7 @@ services:
             # use: !php/const \Github\Client::AUTH_ACCESS_TOKEN instead of: 'access_token_header'
             # when the yaml linter can deal with custom tags
             - ['authenticate', ['%env(GITHUB_OAUTH_TOKEN)%', null, 'access_token_header']]
-#            - ['addCache', ['@Cache\Adapter\Redis\RedisCachePool']]
+            - ['addCache', ['@Cache\Adapter\Redis\RedisCachePool']]
 
     Github\HttpClient\Builder:
         arguments:
