@@ -13,6 +13,10 @@ runtime:
 relationships:
     redis: "github:redis"
 
+variables:
+    php-ext:
+        redis:5.3.1
+
 build:
     flavor: none
 
