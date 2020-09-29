@@ -39,7 +39,7 @@ final class PullRequests
      */
     public function all(Repository $repository, array $params = []): array
     {
-        return array_map(function (array $listResponse) use ($repository): PullRequest {
+        return array_map(static function (array $listResponse) use ($repository): PullRequest {
 //            $issue = Issue::fromInt($listResponse['number']);
 //
 //            $response = $this->github->pullRequests()->show(
