@@ -17,15 +17,12 @@ use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Command\AbstractCommand;
 use App\Domain\Exception\NoBranchesAvailable;
-use App\Domain\Value\Branch;
 use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
-use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
-use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Search\Query;
 use App\Github\Exception\LatestReleaseNotFound;
 
@@ -70,10 +67,9 @@ final class DetermineNextRelease
             );
         }
 
-        $pullRequests = $this->findPullRequestsSince(
+        $pullRequests = $this->pullRequests->search(
             $repository,
-            $branch,
-            $currentRelease->publishedAt()
+            Query::pullRequestsSince($repository, $branch, $currentRelease->publishedAt(), AbstractCommand::SONATA_CI_BOT)
         );
 
         if ([] === $pullRequests) {
@@ -98,17 +94,6 @@ final class DetermineNextRelease
             $currentRelease->tag(),
             $combinedStatus,
             $pullRequests
-        );
-    }
-
-    /**
-     * @return PullRequest[]
-     */
-    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
-    {
-        return $this->pullRequests->search(
-            $repository,
-            Query::pullRequestsSince($repository, $branch, $date, AbstractCommand::SONATA_CI_BOT)
         );
     }
 }
