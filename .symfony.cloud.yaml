@@ -13,10 +13,6 @@ runtime:
 relationships:
     redis: "github:redis"
 
-variables:
-    php-ext:
-        - "redis:5.3.1"
-
 build:
     flavor: none
 
@@ -37,7 +33,10 @@ hooks:
         set -x -e
 
         curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
-        (>&2 symfony-build)
+        (>&2
+            php-ext-install redis 5.3.1
+            symfony-build
+        )
 
     deploy: |
         set -x -e
