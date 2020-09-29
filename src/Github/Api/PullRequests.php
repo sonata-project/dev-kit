@@ -97,7 +97,7 @@ final class PullRequests
      */
     public function search(Repository $repository, Query $query): array
     {
-        return array_map(function (array $searchResponse) use ($repository): PullRequest {
+        return array_map(static function (array $searchResponse) use ($repository): PullRequest {
 //            $issue = Issue::fromInt($searchResponse['number']);
 //
 //            $response = $this->github->pullRequests()->show(
