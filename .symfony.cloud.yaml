@@ -11,7 +11,7 @@ runtime:
         - json
 
 relationships:
-    redis: "github:redis"
+    gredis: "github:redis"
 
 build:
     flavor: none
