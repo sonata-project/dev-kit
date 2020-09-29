@@ -2,7 +2,7 @@ services:
     Redis:
         class: Redis
         calls:
-            - ['connect', ['%env(GREDIS_HOST)%', '%env(GREDIS_PORT)%']]
+            - ['connect', ['%env(REDIS_HOST)%', '%env(REDIS_PORT)%']]
 
     Cache\Adapter\Redis\RedisCachePool:
         arguments:
