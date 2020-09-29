@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block nav %}
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <button class="navbar-toggler navbar-toggler-right"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('default') }}"><i class="fa fa-code" aria-hidden="true"></i> Sonata-Project DevKit</a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'default' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('default') }}">
+                            <i class="fa fa-home"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3ASonataCI+archived%3Afalse" target="_blank">
+                            <i class="fa fa-external"></i>
+                            Open DevKit PR's
+                        </a>
+                    </li>
+                    <li class="nav-item {% if app.request.attributes.get('_route') in ['next_releases_overview', 'next_release_project'] %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('next_releases_overview') }}">
+                            <i class="fa fa-video-camera"></i>
+                            Next Releases
+                        </a>
+                    </li>
+                    {% if has_env('SYMFONY_BRANCH') and env('SYMFONY_BRANCH') != 'master' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fa fa-code-fork"></i>
+                                {{ env('SYMFONY_BRANCH') }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+
+    <div class="container-fluid">
+        <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+            <div class="card bg-faded">
+                <div class="card-block">
+                    <h4 class="text-uppercase text-center">
+                        {% block content_title %}{% endblock %}
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
