@@ -39,15 +39,15 @@ final class PullRequests
      */
     public function all(Repository $repository, array $params = []): array
     {
-        return array_map(static function (array $listResponse) use ($repository): PullRequest {
-//            $issue = Issue::fromInt($listResponse['number']);
-//
-//            $response = $this->github->pullRequests()->show(
-//                $repository->username(),
-//                $repository->name(),
-//                $issue->toInt()
-//            );
-//
+        return array_map(function (array $listResponse) use ($repository): PullRequest {
+            $issue = Issue::fromInt($listResponse['number']);
+
+            $response = $this->github->pullRequests()->show(
+                $repository->username(),
+                $repository->name(),
+                $issue->toInt()
+            );
+
             return PullRequest::fromResponse($listResponse);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
     }
@@ -98,13 +98,13 @@ final class PullRequests
     public function search(Repository $repository, Query $query): array
     {
         return array_map(function (array $searchResponse) use ($repository): PullRequest {
-            $issue = Issue::fromInt($searchResponse['number']);
-
-            $response = $this->github->pullRequests()->show(
-                $repository->username(),
-                $repository->name(),
-                $issue->toInt()
-            );
+//            $issue = Issue::fromInt($searchResponse['number']);
+//
+//            $response = $this->github->pullRequests()->show(
+//                $repository->username(),
+//                $repository->name(),
+//                $issue->toInt()
+//            );
 
             return PullRequest::fromResponse($response);
         }, $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]));
