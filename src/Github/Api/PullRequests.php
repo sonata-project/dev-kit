@@ -106,7 +106,7 @@ final class PullRequests
 //                $issue->toInt()
 //            );
 
-            return PullRequest::fromResponse($response);
+            return PullRequest::fromResponse($searchResponse);
         }, $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]));
     }
 }
