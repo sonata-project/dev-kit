@@ -48,7 +48,7 @@ final class PullRequests
                 $issue->toInt()
             );
 
-            return PullRequest::fromResponse($listResponse);
+            return PullRequest::fromResponse($response);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
     }
 
@@ -97,16 +97,16 @@ final class PullRequests
      */
     public function search(Repository $repository, Query $query): array
     {
-        return array_map(static function (array $searchResponse) use ($repository): PullRequest {
-//            $issue = Issue::fromInt($searchResponse['number']);
-//
-//            $response = $this->github->pullRequests()->show(
-//                $repository->username(),
-//                $repository->name(),
-//                $issue->toInt()
-//            );
+        return array_map(function (array $searchResponse) use ($repository): PullRequest {
+            $issue = Issue::fromInt($searchResponse['number']);
 
-            return PullRequest::fromResponse($searchResponse);
+            $response = $this->github->pullRequests()->show(
+                $repository->username(),
+                $repository->name(),
+                $issue->toInt()
+            );
+
+            return PullRequest::fromResponse($response);
         }, $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]));
     }
 }
