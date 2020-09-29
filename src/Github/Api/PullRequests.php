@@ -40,15 +40,15 @@ final class PullRequests
     public function all(Repository $repository, array $params = []): array
     {
         return array_map(function (array $listResponse) use ($repository): PullRequest {
-            $issue = Issue::fromInt($listResponse['number']);
-
-            $response = $this->github->pullRequests()->show(
-                $repository->username(),
-                $repository->name(),
-                $issue->toInt()
-            );
-
-            return PullRequest::fromResponse($response);
+//            $issue = Issue::fromInt($listResponse['number']);
+//
+//            $response = $this->github->pullRequests()->show(
+//                $repository->username(),
+//                $repository->name(),
+//                $issue->toInt()
+//            );
+//
+            return PullRequest::fromResponse($listResponse);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
     }
 
