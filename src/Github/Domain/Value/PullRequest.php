@@ -19,8 +19,8 @@ use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
 use App\Github\Domain\Value\PullRequest\User;
-use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -287,13 +287,13 @@ final class PullRequest
     public function createdAutomatically(): bool
     {
         if ('Applied fixes from FlintCI' === $this->title
-            && $this->user->login() === 'soullivaneuh'
+            && 'soullivaneuh' === $this->user->login()
         ) {
             return true;
         }
 
         if (u($this->title)->startsWith('DevKit updates for')
-            && $this->user->login() === AbstractCommand::SONATA_CI_BOT
+            && AbstractCommand::SONATA_CI_BOT === $this->user->login()
         ) {
             return true;
         }
