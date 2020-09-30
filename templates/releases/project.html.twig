@@ -11,7 +11,7 @@
             {% for pr in release.pullRequests %}
                 <li>
                     <a href="{{ pr.htmlUrl }}">
-                        [{{ pr.issue.toString }}] {{ pr.title }}
+                        [{{ pr.issue.toInt }}] {{ pr.title }}
                     </a>
                 </li>
             {% endfor %}
