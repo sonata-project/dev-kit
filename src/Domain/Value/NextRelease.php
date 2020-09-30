@@ -44,7 +44,7 @@ final class NextRelease
         $this->currentTag = $currentTag;
 
         $this->combinedStatus = $combinedStatus;
-        $this->pullRequests = array_reduce($this->pullRequests, static function (array $pullRequests, PullRequest $pullRequest): array {
+        $this->pullRequests = array_reduce($pullRequests, static function (array $pullRequests, PullRequest $pullRequest): array {
             if ($pullRequest->createdAutomatically()) {
                 return $pullRequests;
             }
