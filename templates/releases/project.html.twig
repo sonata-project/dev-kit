@@ -12,7 +12,7 @@
         <ul class="list-group list-group-flush">
             {% for pr in release.pullRequests %}
                 <li class="list-group-item">
-                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }}&nbsp;{{ macros.render_stability(pr.stability) }} {% if not pr.hasChangelog %}&nbsp;<span class="badge badge-pill badge-danger">No changelog</span>{% endif %}
+                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }}&nbsp;{{ macros.render_stability(pr.stability) }} {% if not pr.hasChangelog and pr.needsChangelog  %}&nbsp;<span class="badge badge-pill badge-danger">No changelog</span>{% endif %}
                 </li>
             {% endfor %}
         </ul>
