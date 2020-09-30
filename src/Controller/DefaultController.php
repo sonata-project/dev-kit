@@ -41,22 +41,23 @@ final class DefaultController extends AbstractController
      */
     public function checkHealth(Request $request, RedisCachePool $cache)
     {
-        $key = 'public-health-check'.$request->get('key', \time());
+        $key = 'public-health-check'.$request->get('key', time());
         $item = $cache->getItem($key);
         $value = '(none)';
 
         if ($item->isHit()) {
             $value = $item->get();
         } else {
-            $item->set(\date('Y-m-d H:i:s'));
+            $item->set(date('Y-m-d H:i:s'));
         }
 
         $cache->save($item);
 
-        return new Response(sprintf(
-                'Health check was successful: %s',
-                $value,
-            ),
+        return new Response(
+            sprintf(
+            'Health check was successful: %s',
+            $value,
+        ),
             200
         );
     }
