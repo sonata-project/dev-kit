@@ -10,9 +10,7 @@
         <ul class="list-group list-group-flush">
             {% for pr in release.pullRequests %}
                 <li class="list-group-item">
-                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>]
-                       {{ pr.title }}
-                    </a> {{ _self.render_stability(pr.stability) }}
+                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }} {{ _self.render_stability(pr.stability) }}
                 </li>
             {% endfor %}
         </ul>
