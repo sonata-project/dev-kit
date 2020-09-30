@@ -60,10 +60,6 @@ jobs:
         if: matrix.php-version != '8.0'
         run: make test
 
-      - name: Run Tests (PHP 8.0)
-        if: matrix.php-version == '8.0'
-        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
       - name: Send coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
