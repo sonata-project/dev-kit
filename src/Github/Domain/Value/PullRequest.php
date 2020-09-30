@@ -241,6 +241,11 @@ final class PullRequest
         return Stability::unknown();
     }
 
+    public function hasChangelog(): bool
+    {
+        return [] !== $this->changelog();
+    }
+
     public function changelog(): array
     {
         $changelog = [];

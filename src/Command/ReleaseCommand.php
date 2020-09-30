@@ -166,11 +166,11 @@ EOT;
             $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
         }
 
-        if (!$pr->changelog() && $pr->stability()->notEquals(Stability::pedantic())) {
+        if (!$pr->hasChangelog() && $pr->stability()->notEquals(Stability::pedantic())) {
             $this->io->write(' <error>[Changelog not found]</error>');
-        } elseif (!$pr->changelog()) {
+        } elseif (!$pr->hasChangelog()) {
             $this->io->write(' <fg=black;bg=green>[Changelog not found]</>');
-        } elseif ($pr->changelog() && $pr->stability()->equals(Stability::pedantic())) {
+        } elseif ($pr->hasChangelog() && $pr->stability()->equals(Stability::pedantic())) {
             $this->io->write(' <fg=black;bg=yellow>[Changelog found]</>');
         } else {
             $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
