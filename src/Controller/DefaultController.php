@@ -55,9 +55,9 @@ final class DefaultController extends AbstractController
 
         return new Response(
             sprintf(
-            'Health check was successful: %s',
-            $value,
-        ),
+                'Health check was successful: %s',
+                $value,
+            ),
             200
         );
     }
