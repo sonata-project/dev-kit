@@ -40,10 +40,10 @@
                         {{ release.pullRequests|length }}
                     </td>
                     <td>
-                        {{ release.pullRequestsWithoutStabilityLabel|length }}
+                        {{ release.pullRequestsWithoutStabilityLabel|length|replace({'0': ''}) }}
                     </td>
                     <td>
-                        {{ release.pullRequestsWithoutChangelog|length }}
+                        {{ release.pullRequestsWithoutChangelog|length|replace({'0': ''}) }}
                     </td>
                 </tr>
 

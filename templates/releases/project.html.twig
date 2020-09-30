@@ -5,6 +5,19 @@
 {% endblock %}
 
 {% block content %}
+    {% if release.pullRequests not empty %}
+        <h2>Pull requests</h2>
+        <ul>
+            {% for pr in release.pullRequests %}
+                <li>
+                    <a href="{{ pr.htmlUrl }}">
+                        [{{ pr.issue.toString }}] {{ pr.title }}
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
     {% if release.isNeeded %}
         <h2>Changelog</h2>
         <p>
