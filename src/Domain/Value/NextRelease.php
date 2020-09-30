@@ -97,6 +97,42 @@ final class NextRelease
         return $this->pullRequests;
     }
 
+    /**
+     * @return PullRequest[]
+     */
+    public function pullRequestsWithoutStabilityLabel(): array
+    {
+        return array_reduce($this->pullRequests, function (array $pullRequests, PullRequest $pullRequest): array {
+            if ($pullRequest->stability()->notEquals(Stability::unknown())) {
+                return $pullRequests;
+            }
+
+            $pullRequests[] = $pullRequest;
+
+            return $pullRequests;
+        }, []);
+    }
+
+    /**
+     * @return PullRequest[]
+     */
+    public function pullRequestsWithoutChangelog(): array
+    {
+        return array_reduce($this->pullRequests, function (array $pullRequests, PullRequest $pullRequest): array {
+            if ($pullRequest->hasChangelog()) {
+                return $pullRequests;
+            }
+
+            if ($pullRequest->stability()->equals(Stability::pedantic())) {
+                return $pullRequests;
+            }
+
+            $pullRequests[] = $pullRequest;
+
+            return $pullRequests;
+        }, []);
+    }
+
     public function changelog(): Changelog
     {
         return Changelog::fromPullRequests(
