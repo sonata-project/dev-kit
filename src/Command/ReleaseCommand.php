@@ -175,6 +175,7 @@ EOT;
         } else {
             $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
         }
+
         $this->io->newLine();
         $this->io->writeln($pr->htmlUrl());
         $this->io->newLine();
