@@ -7,18 +7,19 @@
 {% block content %}
     {% if release.pullRequests %}
         <h2>Pull requests</h2>
-        <ul>
+        <ul class="list-group list-group-flush">
             {% for pr in release.pullRequests %}
-                <li>
+                <li class="list-group-item">
                     [#{{ pr.issue.toInt }}] <a href="{{ pr.htmlUrl }}">
                        {{ pr.title }}
-                    </a>
+                    </a> {{ _self.render_stability(pr.stability) }}
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
 
     {% if release.isNeeded %}
+        <hr>
         <h2>Changelog</h2>
         <p>
             {{ release.changelog.asMarkdown|markdown_to_html }}
@@ -27,3 +28,17 @@
         <h1>No Release needed for {{ release.project.title }}</h1>
     {% endif %}
 {% endblock %}
+
+{% macro render_stability(stability) %}
+    {% if stability.toString == 'pedantic' %}
+        <span class="badge badge-info">pedantic</span>
+    {% endif %}
+
+    {% if stability.toString == 'patch' %}
+        <span class="badge badge-primary">patch</span>
+    {% endif %}
+
+    {% if stability.toString == 'minor' %}
+        <span class="badge badge-success">minor</span>
+    {% endif %}
+{% endmacro %}
