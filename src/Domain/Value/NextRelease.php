@@ -102,7 +102,7 @@ final class NextRelease
      */
     public function pullRequestsWithoutStabilityLabel(): array
     {
-        return array_reduce($this->pullRequests, function (array $pullRequests, PullRequest $pullRequest): array {
+        return array_reduce($this->pullRequests, static function (array $pullRequests, PullRequest $pullRequest): array {
             if ($pullRequest->stability()->notEquals(Stability::unknown())) {
                 return $pullRequests;
             }
@@ -118,7 +118,7 @@ final class NextRelease
      */
     public function pullRequestsWithoutChangelog(): array
     {
-        return array_reduce($this->pullRequests, function (array $pullRequests, PullRequest $pullRequest): array {
+        return array_reduce($this->pullRequests, static function (array $pullRequests, PullRequest $pullRequest): array {
             if ($pullRequest->hasChangelog()) {
                 return $pullRequests;
             }
