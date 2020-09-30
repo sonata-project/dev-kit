@@ -6,7 +6,7 @@
 
 {% block content %}
     {% if release.pullRequests %}
-        <h2>Pull requests</h2>
+        <h2>{{ release.pullRequests|length }} Pull requests</h2>
         <ul class="list-group list-group-flush">
             {% for pr in release.pullRequests %}
                 <li class="list-group-item">
