@@ -116,10 +116,10 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             $this->io->writeln(sprintf(
-                '%s: <comment>%s (#%d)</comment> by %s -> <comment>%s</comment>',
+                '%s: <comment>%s (%s)</comment> by %s -> <comment>%s</comment>',
                 $project->name(),
                 $pr->title(),
-                $pr->issue()->toInt(),
+                $pr->issue()->toString(),
                 $pr->user()->login(),
                 $pr->base()->ref()
             ));
@@ -172,7 +172,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $repository,
                         $pr,
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commits->firstMessage(), $pr->issue()->toInt()) : null
+                        $squash ? sprintf('%s (%s)', $commits->firstMessage(), $pr->issue()->toString()) : null
                     );
 
                     $repo = $pr->head()->repo();
@@ -183,8 +183,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                     }
 
                     $this->io->success(sprintf(
-                        'Merged PR #%d',
-                        $pr->issue()->toInt()
+                        'Merged PR %s',
+                        $pr->issue()->toString()
                     ));
                 } catch (ExceptionInterface $e) {
                     $this->io->error(sprintf(

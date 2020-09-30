@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Github\Domain\Value;
 
 use Webmozart\Assert\Assert;
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -32,6 +33,11 @@ final class Issue
     public static function fromInt(int $value): self
     {
         return new self($value);
+    }
+
+    public function toString(): string
+    {
+        return u('#')->append((string) $this->value)->toString();
     }
 
     public function toInt(): int
