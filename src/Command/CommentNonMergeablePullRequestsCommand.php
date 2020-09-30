@@ -96,8 +96,8 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
         foreach ($pullRequests as $pr) {
             $this->io->text(sprintf(
-                '#%d %s (%s)',
-                $pr->issue()->toInt(),
+                '%s %s (%s)',
+                $pr->issue()->toString(),
                 $pr->title(),
                 false === $pr->isMergeable() ? '<comment>not mergeable</comment>' : '<info>mergeable</info>',
             ));
