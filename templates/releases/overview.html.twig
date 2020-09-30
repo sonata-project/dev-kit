@@ -1,3 +1,5 @@
+{% from 'macros.html.twig' import macros as render_stability %}
+
 {% extends 'nav_and_content.html.twig' %}
 
 {% block content_title %}
@@ -34,7 +36,7 @@
                         {{ release.nextTag.toString }}
                     </td>
                     <td>
-                        {{ release.stability.toUppercaseString }}
+                        {{ render_stability(pr.stability) }}
                     </td>
                     <td>
                         {{ release.pullRequests|length }}

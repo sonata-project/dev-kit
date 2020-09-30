@@ -1,3 +1,5 @@
+{% from 'macros.html.twig' import macros as render_stability %}
+
 {% extends 'nav_and_content.html.twig' %}
 
 {% block content_title %}
@@ -10,7 +12,7 @@
         <ul class="list-group list-group-flush">
             {% for pr in release.pullRequests %}
                 <li class="list-group-item">
-                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }} {{ _self.render_stability(pr.stability) }}
+                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }}&nbsp;{{ render_stability(pr.stability) }}
                 </li>
             {% endfor %}
         </ul>
@@ -25,17 +27,3 @@
         <h1>No Release needed for {{ release.project.title }}</h1>
     {% endif %}
 {% endblock %}
-
-{% macro render_stability(stability) %}
-    {% if stability.toString == 'pedantic' %}
-        <span class="badge badge-info">pedantic</span>
-    {% endif %}
-
-    {% if stability.toString == 'patch' %}
-        <span class="badge badge-primary">patch</span>
-    {% endif %}
-
-    {% if stability.toString == 'minor' %}
-        <span class="badge badge-success">minor</span>
-    {% endif %}
-{% endmacro %}
