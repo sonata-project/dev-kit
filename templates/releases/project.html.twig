@@ -17,7 +17,6 @@
     {% endif %}
 
     {% if release.isNeeded %}
-        <hr>
         <h2>Changelog</h2>
         <p>
             {{ release.changelog.asMarkdown|markdown_to_html }}
