@@ -14,6 +14,7 @@
                 <th scope="col">Current</th>
                 <th scope="col">Next</th>
                 <th scope="col">Stability</th>
+                <th scope="col">Can be released?</th>
                 <th scope="col">PullRequests</th>
                 <th scope="col">without Stability label</th>
                 <th scope="col">without Changelog</th>
@@ -37,6 +38,13 @@
                     </td>
                     <td>
                         {{ macros.render_stability(release.stability) }}
+                    </td>
+                    <td>
+                        {% if release.canBeReleased %}
+                            <span class="badge badge-success">YES</span>
+                        {% else %}
+                            <span class="badge badge-danger">NO</span>
+                        {% endif %}
                     </td>
                     <td>
                         {{ release.pullRequests|length }}
