@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if release.pullRequests not empty %}
+    {% if release.pullRequests %}
         <h2>Pull requests</h2>
         <ul>
             {% for pr in release.pullRequests %}
