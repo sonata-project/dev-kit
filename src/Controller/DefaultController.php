@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cache\Adapter\Redis\RedisCachePool;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,6 +33,7 @@ final class DefaultController extends AbstractController
             ]
         );
     }
+<<<<<<< HEAD
 
     /**
      * @Route("/healt", name="health")
@@ -61,4 +60,6 @@ final class DefaultController extends AbstractController
             200
         );
     }
+=======
+>>>>>>> 67176a0... foo
 }
