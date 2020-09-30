@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cache\Adapter\Redis\RedisCachePool;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,6 +33,31 @@ final class DefaultController extends AbstractController
             [
                 'revision' => $revision,
             ]
+        );
+    }
+
+    /**
+     * @Route("/healt", name="health")
+     */
+    public function checkHealth(Request $request, RedisCachePool $cache)
+    {
+        $key = 'public-health-check'.$request->get('key', \time());
+        $item = $cache->getItem($key);
+        $value = '(none)';
+
+        if ($item->isHit()) {
+            $value = $item->get();
+        } else {
+            $item->set(\date('Y-m-d H:i:s'));
+        }
+
+        $cache->save($item);
+
+        return new Response(sprintf(
+                'Health check was successful: %s',
+                $value,
+            ),
+            200
         );
     }
 }
