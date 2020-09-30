@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Command\AbstractCommand;
 use App\Domain\Value\Stability;
 use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
 use App\Github\Domain\Value\PullRequest\User;
 use Webmozart\Assert\Assert;
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -280,5 +282,22 @@ final class PullRequest
         }
 
         return $changelog;
+    }
+
+    public function createdAutomatically(): bool
+    {
+        if ('Applied fixes from FlintCI' === $this->title
+            && $this->user->login() === 'soullivaneuh'
+        ) {
+            return true;
+        }
+
+        if (u($this->title)->startsWith('DevKit updates for')
+            && $this->user->login() === AbstractCommand::SONATA_CI_BOT
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

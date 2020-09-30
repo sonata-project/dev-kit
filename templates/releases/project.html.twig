@@ -10,8 +10,8 @@
         <ul>
             {% for pr in release.pullRequests %}
                 <li>
-                    <a href="{{ pr.htmlUrl }}">
-                        [{{ pr.issue.toInt }}] {{ pr.title }}
+                    [{{ pr.issue.toInt }}] <a href="{{ pr.htmlUrl }}">
+                       {{ pr.title }}
                     </a>
                 </li>
             {% endfor %}
