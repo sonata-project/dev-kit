@@ -1,0 +1,13 @@
+{% macro render_stability(stability) %}
+    {% if stability.toString == 'pedantic' %}
+        <span class="badge badge-info">pedantic</span>
+    {% endif %}
+
+    {% if stability.toString == 'patch' %}
+        <span class="badge badge-primary">patch</span>
+    {% endif %}
+
+    {% if stability.toString == 'minor' %}
+        <span class="badge badge-success">minor</span>
+    {% endif %}
+{% endmacro %}
