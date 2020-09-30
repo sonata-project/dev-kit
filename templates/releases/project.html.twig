@@ -1,4 +1,4 @@
-{% from 'macros.html.twig' import macros as render_stability %}
+{% import 'macros.html.twig' as macros %}
 
 {% extends 'nav_and_content.html.twig' %}
 
@@ -12,7 +12,7 @@
         <ul class="list-group list-group-flush">
             {% for pr in release.pullRequests %}
                 <li class="list-group-item">
-                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }}&nbsp;{{ render_stability(pr.stability) }}
+                    [<a href="{{ pr.htmlUrl }}">{{ pr.issue.toString }}</a>] {{ pr.title }}&nbsp;{{ macros.render_stability(pr.stability) }}
                 </li>
             {% endfor %}
         </ul>

@@ -1,4 +1,4 @@
-{% from 'macros.html.twig' import macros as render_stability %}
+{% import 'macros.html.twig' as macros %}
 
 {% extends 'nav_and_content.html.twig' %}
 
@@ -36,7 +36,7 @@
                         {{ release.nextTag.toString }}
                     </td>
                     <td>
-                        {{ render_stability(release.stability) }}
+                        {{ macros.render_stability(release.stability) }}
                     </td>
                     <td>
                         {{ release.pullRequests|length }}
