@@ -13,7 +13,7 @@
                 <th scope="col">Next</th>
                 <th scope="col">Stability</th>
                 <th scope="col">PullRequests</th>
-                <th scope="col">without Stability</th>
+                <th scope="col">without Stability label</th>
                 <th scope="col">without Changelog</th>
             </tr>
         </thead>
@@ -40,7 +40,7 @@
                         {{ release.pullRequests|length }}
                     </td>
                     <td>
-                        {{ release.pullRequestsWithoutStability|length }}
+                        {{ release.pullRequestsWithoutStabilityLabel|length }}
                     </td>
                     <td>
                         {{ release.pullRequestsWithoutChangelog|length }}
