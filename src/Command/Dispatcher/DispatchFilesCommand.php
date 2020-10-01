@@ -285,6 +285,20 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
             $this->filesystem->remove($documentationWorkflowFile);
         }
+
+        if (!$project->usesPHPStan() && !$project->usesPsalm()) {
+            $filepath = '.github/workflows/qa.yaml';
+            $qaWorkflowFile = u($distPath)
+                ->append('/')
+                ->append($filepath)
+                ->toString();
+
+            $this->io->writeln(sprintf(
+                'Delete <info>/%s</info> file!',
+                $filepath
+            ));
+            $this->filesystem->remove($qaWorkflowFile);
+        }
     }
 
     private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
