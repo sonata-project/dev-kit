@@ -247,7 +247,7 @@ CONFIG;
             'symfony-bundle',
         ];
 
-        if ('09' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
             $expected[] = 'hacktoberfest';
 
             sort($expected);
@@ -322,7 +322,7 @@ CONFIG;
             'symfony-bundle',
         ];
 
-        if ('09' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
             $expected[] = 'hacktoberfest';
 
             sort($expected);

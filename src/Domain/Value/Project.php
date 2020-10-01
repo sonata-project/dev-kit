@@ -224,7 +224,7 @@ final class Project
         /*
          * add "hacktoberfest" topic to repositories in october
          */
-        if ('09' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
             $default[] = 'Hacktoberfest';
         }
 
