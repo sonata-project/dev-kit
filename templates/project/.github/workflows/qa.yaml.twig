@@ -44,4 +44,6 @@ jobs:
 
       - name: Psalm
         uses: docker://vimeo/psalm-github-actions
+        with:
+          args: --shepherd
 {% endif %}
