@@ -22,6 +22,7 @@ use Webmozart\Assert\Assert;
 final class Status
 {
     private const ERROR = 'error';
+    private const FAILURE = 'failure';
     private const PENDING = 'pending';
     private const SUCCESS = 'success';
 
@@ -46,6 +47,7 @@ final class Status
             $response['state'],
             [
                 self::ERROR,
+                self::FAILURE,
                 self::PENDING,
                 self::SUCCESS,
             ]

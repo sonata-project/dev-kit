@@ -120,6 +120,7 @@ final class StatusTest extends TestCase
     public function stateProvider(): \Generator
     {
         yield 'error' => ['error'];
+        yield 'failure' => ['failure'];
         yield 'pending' => ['pending'];
         yield 'success' => ['success'];
     }
