@@ -41,6 +41,8 @@ final class Project
     private array $excludedFiles;
 
     private bool $docsTarget;
+    private bool $phpstan;
+    private bool $psalm;
     private ?string $customGitignorePart;
     private ?string $customDoctorRstWhitelistPart;
 
@@ -52,6 +54,8 @@ final class Project
         array $branches,
         array $excludedFiles,
         bool $docsTarget,
+        bool $phpstan,
+        bool $psalm,
         ?string $customGitignorePart,
         ?string $customDoctorRstWhitelistPart
     ) {
@@ -60,6 +64,8 @@ final class Project
         $this->package = $package;
         $this->branches = $branches;
         $this->docsTarget = $docsTarget;
+        $this->phpstan = $phpstan;
+        $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
@@ -85,6 +91,8 @@ final class Project
             $branches,
             $excludedFiles,
             $config['docs_target'],
+            $config['phpstan'],
+            $config['psalm'],
             $config['custom_gitignore_part'],
             $config['custom_doctor_rst_whitelist_part'],
         );
@@ -159,6 +167,16 @@ final class Project
     public function docsTarget(): bool
     {
         return $this->docsTarget;
+    }
+
+    public function usesPHPStan(): bool
+    {
+        return $this->phpstan;
+    }
+
+    public function usesPsalm(): bool
+    {
+        return $this->psalm;
     }
 
     public function customGitignorePart(): ?string

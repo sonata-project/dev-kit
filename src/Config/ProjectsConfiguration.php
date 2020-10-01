@@ -34,6 +34,8 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
+                            ->booleanNode('phpstan')->defaultFalse()->end()
+                            ->booleanNode('psalm')->defaultFalse()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->scalarNode('custom_gitignore_part')->defaultNull()->end()
                             ->scalarNode('custom_doctor_rst_whitelist_part')->defaultNull()->end()
