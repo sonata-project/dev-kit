@@ -37,6 +37,7 @@ final class Section
             [
                 'Added',
                 'Changed',
+                'Deprecated',
                 'Fixed',
                 'Removed',
             ]
