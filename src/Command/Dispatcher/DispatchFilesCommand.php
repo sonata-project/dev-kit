@@ -285,7 +285,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
             $this->filesystem->remove($documentationWorkflowFile);
         }
-
     }
 
     private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
