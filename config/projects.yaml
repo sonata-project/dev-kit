@@ -1,4 +1,6 @@
 admin-bundle:
+    phpstan: true
+    psalm: true
     custom_gitignore_part: |
         # clean up some non bower ready package
         src/Resources/public/vendor/admin-lte/bootstrap
@@ -182,6 +184,7 @@ doctrine-extensions:
             services: [mongodb]
 
 doctrine-mongodb-admin-bundle:
+    phpstan: true
     custom_gitignore_part: |
         /tests/App/public/bundles
     excluded_files:
@@ -202,6 +205,7 @@ doctrine-mongodb-admin-bundle:
                 sonata-project/admin-bundle: ['3']
 
 doctrine-orm-admin-bundle:
+    phpstan: true
     branches:
         master:
             php: ['7.3', '7.4']

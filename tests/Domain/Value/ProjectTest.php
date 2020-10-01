@@ -23,6 +23,8 @@ final class ProjectTest extends TestCase
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
     public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
+  phpstan: true
+  psalm: true
   excluded_files: []
   custom_gitignore_part: ~
   custom_doctor_rst_whitelist_part: ~
@@ -76,6 +78,8 @@ CONFIG;
         self::assertSame(['3.x', 'master'], $project->branchNamesReverse());
         self::assertSame('master', $project->unstableBranch()->name());
         self::assertSame('3.x', $project->stableBranch()->name());
+        self::assertTrue($project->usesPHPStan());
+        self::assertTrue($project->usesPsalm());
     }
 
     /**
@@ -247,7 +251,7 @@ CONFIG;
             'symfony-bundle',
         ];
 
-        if ('09' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
             $expected[] = 'hacktoberfest';
 
             sort($expected);
@@ -322,7 +326,7 @@ CONFIG;
             'symfony-bundle',
         ];
 
-        if ('09' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
             $expected[] = 'hacktoberfest';
 
             sort($expected);

@@ -67,3 +67,9 @@ docs:
 	cd {{ branch.docsPath.toString }} && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs
 {% endif %}
+{% if project.usesPHPStan %}
+
+phpstan:
+    docker run --env REQUIRE_DEV=true {% if project.repository.name == 'SonataDoctrineMongoDBAdminBundle' %}--env CHECK_PLATFORM_REQUIREMENTS=false {% endif %}--rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest -c .phpstan/phpstan.neon.dist
+.PHONY: phpstan
+{% endif %}

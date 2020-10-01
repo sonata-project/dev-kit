@@ -130,6 +130,14 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'DOCtor-RST';
         }
 
+        if ($project->usesPHPStan()) {
+            $requiredStatusChecks[] = 'PHPStan';
+        }
+
+        if ($project->usesPsalm()) {
+            $requiredStatusChecks[] = 'Psalm';
+        }
+
         /** @var PhpVersion $phpVersion */
         foreach ($branch->phpVersions() as $phpVersion) {
             $requiredStatusChecks[] = sprintf(
