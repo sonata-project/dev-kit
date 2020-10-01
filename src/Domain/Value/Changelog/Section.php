@@ -30,7 +30,19 @@ final class Section
 
     private function __construct(string $headline, array $lines)
     {
-        $this->headline = TrimmedNonEmptyString::fromString($headline)->toString();
+        $headline = TrimmedNonEmptyString::fromString($headline)->toString();
+
+        Assert::oneOf(
+            $headline,
+            [
+                'Added',
+                'Changed',
+                'Fixed',
+                'Removed',
+            ]
+        );
+
+        $this->headline = $headline;
 
         Assert::notEmpty($lines);
         $this->lines = $lines;
