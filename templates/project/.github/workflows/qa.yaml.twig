@@ -29,8 +29,6 @@ jobs:
 {% if project.repository.name == 'SonataDoctrineMongoDBAdminBundle' %}
           CHECK_PLATFORM_REQUIREMENTS: false
 {% endif %}
-        with:
-          args: analyse -c .phpstan/phpstan.neon.dist
 {% endif %}
 {% if project.usesPsalm %}
   psalm:
