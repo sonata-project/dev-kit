@@ -28,6 +28,8 @@ jobs:
           REQUIRE_DEV: true
 {% if project.repository.name == 'SonataDoctrineMongoDBAdminBundle' %}
           CHECK_PLATFORM_REQUIREMENTS: false
+        with:
+          args: analyse
 {% endif %}
 {% endif %}
 {% if project.usesPsalm %}
