@@ -20,7 +20,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: PHPStan
         uses: docker://oskarstark/phpstan-ga
@@ -30,7 +31,7 @@ jobs:
           CHECK_PLATFORM_REQUIREMENTS: false
 {% endif %}
         with:
-          args: analyse -c .phpstan/phpstan.neon.dist
+          args: analyse
 {% endif %}
 {% if project.usesPsalm %}
   psalm:
@@ -44,4 +45,6 @@ jobs:
 
       - name: Psalm
         uses: docker://vimeo/psalm-github-actions
+        with:
+          args: --shepherd
 {% endif %}

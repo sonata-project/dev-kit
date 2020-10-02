@@ -1,6 +1,9 @@
 admin-bundle:
     phpstan: true
     psalm: true
+    custom_gitattributes_part: |
+        .phpstan export-ignore
+
     custom_gitignore_part: |
         # clean up some non bower ready package
         src/Resources/public/vendor/admin-lte/bootstrap
@@ -174,7 +177,7 @@ datagrid-bundle:
 doctrine-extensions:
     excluded_files:
         - README.md.twig
-    docs_target: false
+    has_documentation: false
     branches:
         master:
             php: ['7.2', '7.3', '7.4']
@@ -294,7 +297,7 @@ form-extensions:
 google-authenticator:
     excluded_files:
         - README.md.twig
-    docs_target: false
+    has_documentation: false
     branches:
         master:
             php: ['7.2', '7.3', '7.4']

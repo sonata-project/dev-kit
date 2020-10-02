@@ -40,10 +40,11 @@ final class Project
      */
     private array $excludedFiles;
 
-    private bool $docsTarget;
+    private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
     private ?string $customGitignorePart;
+    private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
 
     private Repository $repository;
@@ -53,21 +54,23 @@ final class Project
         Package $package,
         array $branches,
         array $excludedFiles,
-        bool $docsTarget,
+        bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
         ?string $customGitignorePart,
+        ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
 
         $this->package = $package;
         $this->branches = $branches;
-        $this->docsTarget = $docsTarget;
+        $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
+        $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
 
         $this->repository = Repository::fromPackage($package);
@@ -90,10 +93,11 @@ final class Project
             $package,
             $branches,
             $excludedFiles,
-            $config['docs_target'],
+            $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
             $config['custom_gitignore_part'],
+            $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
         );
         $project->rawConfig = $config;
@@ -164,9 +168,9 @@ final class Project
         return $this->excludedFiles;
     }
 
-    public function docsTarget(): bool
+    public function hasDocumentation(): bool
     {
-        return $this->docsTarget;
+        return $this->hasDocumentation;
     }
 
     public function usesPHPStan(): bool
@@ -182,6 +186,11 @@ final class Project
     public function customGitignorePart(): ?string
     {
         return $this->customGitignorePart;
+    }
+
+    public function customGitattributesPart(): ?string
+    {
+        return $this->customGitattributesPart;
     }
 
     public function customDoctorRstWhitelistPart(): ?string

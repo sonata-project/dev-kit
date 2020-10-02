@@ -40,6 +40,7 @@ final class Section
                 'Deprecated',
                 'Fixed',
                 'Removed',
+                'Security',
             ]
         );
 

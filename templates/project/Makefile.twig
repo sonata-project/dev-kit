@@ -61,7 +61,7 @@ else
 	vendor/bin/simple-phpunit -c phpunit.xml.dist
 endif
 .PHONY: test
-{% if project.docsTarget %}
+{% if project.hasDocumentation %}
 
 docs:
 	cd {{ branch.docsPath.toString }} && sphinx-build -W -b html -d _build/doctrees . _build/html
@@ -70,6 +70,6 @@ docs:
 {% if project.usesPHPStan %}
 
 phpstan:
-	docker run --env REQUIRE_DEV=true {% if project.repository.name == 'SonataDoctrineMongoDBAdminBundle' %}--env CHECK_PLATFORM_REQUIREMENTS=false {% endif %}--rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest -c .phpstan/phpstan.neon.dist
+	docker run --env REQUIRE_DEV=true {% if project.repository.name == 'SonataDoctrineMongoDBAdminBundle' %}--env CHECK_PLATFORM_REQUIREMENTS=false {% endif %}--rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest analyse
 .PHONY: phpstan
 {% endif %}
