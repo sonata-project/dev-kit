@@ -18,3 +18,6 @@ phpstan-baseline.neon export-ignore
 psalm.xml export-ignore
 psalm-baseline.xml export-ignore
 {% endif %}
+{% if project.customGitattributesPart is not empty %}
+{{ project.customGitattributesPart }}
+{% endif %}

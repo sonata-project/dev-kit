@@ -27,6 +27,7 @@ admin-bundle:
   psalm: true
   excluded_files: []
   custom_gitignore_part: ~
+  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   docs_target: true
   branches:
@@ -80,6 +81,8 @@ CONFIG;
         self::assertSame('3.x', $project->stableBranch()->name());
         self::assertTrue($project->usesPHPStan());
         self::assertTrue($project->usesPsalm());
+        self::assertNull($project->customGitignorePart());
+        self::assertNull($project->customGitattributesPart());
     }
 
     /**

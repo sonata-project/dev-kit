@@ -44,6 +44,7 @@ final class Project
     private bool $phpstan;
     private bool $psalm;
     private ?string $customGitignorePart;
+    private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
 
     private Repository $repository;
@@ -57,6 +58,7 @@ final class Project
         bool $phpstan,
         bool $psalm,
         ?string $customGitignorePart,
+        ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
@@ -68,6 +70,7 @@ final class Project
         $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
+        $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
 
         $this->repository = Repository::fromPackage($package);
@@ -94,6 +97,7 @@ final class Project
             $config['phpstan'],
             $config['psalm'],
             $config['custom_gitignore_part'],
+            $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
         );
         $project->rawConfig = $config;
@@ -182,6 +186,11 @@ final class Project
     public function customGitignorePart(): ?string
     {
         return $this->customGitignorePart;
+    }
+
+    public function customGitattributesPart(): ?string
+    {
+        return $this->customGitattributesPart;
     }
 
     public function customDoctorRstWhitelistPart(): ?string
