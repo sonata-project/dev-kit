@@ -29,7 +29,7 @@ admin-bundle:
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
-  docs_target: true
+  has_documentation: true
   branches:
     master:
       php: ['7.3', '7.4']
@@ -83,6 +83,7 @@ CONFIG;
         self::assertTrue($project->usesPsalm());
         self::assertNull($project->customGitignorePart());
         self::assertNull($project->customGitattributesPart());
+        self::assertTrue($project->hasDocumentation());
     }
 
     /**

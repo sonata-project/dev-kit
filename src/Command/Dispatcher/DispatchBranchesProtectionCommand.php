@@ -125,7 +125,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             ),
         ];
 
-        if ($project->docsTarget()) {
+        if ($project->hasDocumentation()) {
             $requiredStatusChecks[] = 'Sphinx build';
             $requiredStatusChecks[] = 'DOCtor-RST';
         }

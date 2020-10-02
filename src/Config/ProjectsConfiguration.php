@@ -40,7 +40,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                             ->scalarNode('custom_gitignore_part')->defaultNull()->end()
                             ->scalarNode('custom_gitattributes_part')->defaultNull()->end()
                             ->scalarNode('custom_doctor_rst_whitelist_part')->defaultNull()->end()
-                            ->booleanNode('docs_target')->defaultTrue()->end()
+                            ->booleanNode('has_documentation')->defaultTrue()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
                                 ->defaultValue([])

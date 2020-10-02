@@ -259,7 +259,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        if (!$project->docsTarget()) {
+        if (!$project->hasDocumentation()) {
             $docsPath = $branch->docsPath()->toString();
 
             $docsDirectory = u($distPath)
