@@ -88,31 +88,6 @@ CONFIG;
 
     /**
      * @test
-     */
-    public function rawConfig(): void
-    {
-        $package = new Package();
-        $package->fromArray([
-            'name' => $packageName = 'sonata-project/admin-bundle',
-            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
-        ]);
-
-        $config = Yaml::parse(self::DEFAULT_CONFIG);
-
-        $project = Project::fromValues(
-            self::DEFAULT_CONFIG_NAME,
-            $config[self::DEFAULT_CONFIG_NAME],
-            $package
-        );
-
-        self::assertSame(
-            $config['admin-bundle'],
-            $project->rawConfig()
-        );
-    }
-
-    /**
-     * @test
      *
      * @dataProvider homepageProvider
      */
