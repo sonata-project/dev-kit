@@ -40,7 +40,7 @@ final class Project
      */
     private array $excludedFiles;
 
-    private bool $docsTarget;
+    private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
     private ?string $customGitignorePart;
@@ -54,7 +54,7 @@ final class Project
         Package $package,
         array $branches,
         array $excludedFiles,
-        bool $docsTarget,
+        bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
         ?string $customGitignorePart,
@@ -65,7 +65,7 @@ final class Project
 
         $this->package = $package;
         $this->branches = $branches;
-        $this->docsTarget = $docsTarget;
+        $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
@@ -93,7 +93,7 @@ final class Project
             $package,
             $branches,
             $excludedFiles,
-            $config['docs_target'],
+            $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
             $config['custom_gitignore_part'],
@@ -168,9 +168,9 @@ final class Project
         return $this->excludedFiles;
     }
 
-    public function docsTarget(): bool
+    public function hasDocumentation(): bool
     {
-        return $this->docsTarget;
+        return $this->hasDocumentation;
     }
 
     public function usesPHPStan(): bool

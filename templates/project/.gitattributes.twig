@@ -5,7 +5,7 @@
 .* export-ignore
 *.md export-ignore
 {{ branch.testsPath.toString }} export-ignore
-{% if project.docsTarget %}
+{% if project.hasDocumentation %}
 {{ branch.docsPath.toString }} export-ignore
 {% endif %}
 Makefile export-ignore
