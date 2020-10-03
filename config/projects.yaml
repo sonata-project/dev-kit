@@ -209,6 +209,7 @@ doctrine-mongodb-admin-bundle:
 
 doctrine-orm-admin-bundle:
     phpstan: true
+    psalm: true
     branches:
         master:
             php: ['7.3', '7.4']
