@@ -413,6 +413,7 @@ timeline-bundle:
                 sonata-project/block-bundle: ['3']
 
 translation-bundle:
+    phpstan: true
     branches:
         master:
             php: ['7.2', '7.3', '7.4']
