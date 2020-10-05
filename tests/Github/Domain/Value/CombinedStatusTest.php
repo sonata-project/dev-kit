@@ -185,5 +185,6 @@ final class CombinedStatusTest extends TestCase
         self::assertSame($expected->state(), $other->state());
         self::assertSame($expected->description(), $other->description());
         self::assertSame($expected->targetUrl(), $other->targetUrl());
+        self::assertSame($expected->isSuccessful(), $other->isSuccessful());
     }
 }
