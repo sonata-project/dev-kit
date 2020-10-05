@@ -16,7 +16,7 @@ namespace App\Tests\Action\Exception;
 use App\Action\Exception\CannotDetermineNextRelease;
 use App\Domain\Value\Project;
 use App\Tests\Domain\Value\ProjectTest;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;

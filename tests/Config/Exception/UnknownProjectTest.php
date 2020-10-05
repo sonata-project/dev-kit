@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Config\Exception;
 
 use App\Config\Exception\UnknownProject;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class UnknownProjectTest extends TestCase
