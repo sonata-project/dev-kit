@@ -60,34 +60,35 @@
         },
         {
             "name": "cpliakas/git-wrapper",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cpliakas/git-wrapper.git",
-                "reference": "d118ce6a31ff09ae830872ebe9f60eef79c770a3"
+                "reference": "da6bb720a2041ee82aa990f1b11b3106c06598f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cpliakas/git-wrapper/zipball/d118ce6a31ff09ae830872ebe9f60eef79c770a3",
-                "reference": "d118ce6a31ff09ae830872ebe9f60eef79c770a3",
+                "url": "https://api.github.com/repos/cpliakas/git-wrapper/zipball/da6bb720a2041ee82aa990f1b11b3106c06598f0",
+                "reference": "da6bb720a2041ee82aa990f1b11b3106c06598f0",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^3.0",
-                "php": "^7.2",
+                "php": ">=7.2",
                 "symfony/event-dispatcher": "^4.4|^5.0",
                 "symfony/process": "^4.4|^5.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.4",
+                "migrify/config-transformer": "^0.3.48",
+                "phpstan/phpstan": "^0.12.18",
                 "phpstan/phpstan-phpunit": "^0.12",
-                "phpunit/phpunit": "^8.5",
+                "phpunit/phpunit": "^8.5|^9.4",
                 "psr/log": "^1.1",
-                "rector/rector": "^0.6.7",
+                "rector/rector": "^0.8.10",
                 "symfony/filesystem": "^4.4|^5.0",
-                "symplify/changelog-linker": "^7.2",
-                "symplify/easy-coding-standard": "^7.2",
-                "symplify/phpstan-extensions": "^7.2",
+                "symplify/changelog-linker": "^8.3",
+                "symplify/easy-coding-standard": "^8.3",
+                "symplify/phpstan-extensions": "^8.3",
                 "tracy/tracy": "^2.7"
             },
             "suggest": {
@@ -119,7 +120,7 @@
                 "git",
                 "git wrapper"
             ],
-            "time": "2020-02-04T08:42:22+00:00"
+            "time": "2020-10-04T20:38:52+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -3905,16 +3906,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.1.5",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "1864216226af21eb76d9477f691e7cbf198e0402"
+                "reference": "d3a2e64866169586502f0cd9cab69135ad12cee9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/1864216226af21eb76d9477f691e7cbf198e0402",
-                "reference": "1864216226af21eb76d9477f691e7cbf198e0402",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d3a2e64866169586502f0cd9cab69135ad12cee9",
+                "reference": "d3a2e64866169586502f0cd9cab69135ad12cee9",
                 "shasum": ""
             },
             "require": {
@@ -3965,7 +3966,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-23T08:36:24+00:00"
+            "time": "2020-09-02T16:23:27+00:00"
         },
         {
             "name": "symfony/routing",
