@@ -16,7 +16,7 @@ namespace App\Tests\Github\Domain\Value\Search;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Search\Query;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;

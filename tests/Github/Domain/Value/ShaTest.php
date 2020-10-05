@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Sha;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class ShaTest extends TestCase
@@ -24,8 +24,8 @@ final class ShaTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionFor(string $value): void
     {

@@ -23,6 +23,12 @@
     "doctrine/lexer": {
         "version": "1.2.0"
     },
+    "ergebnis/classy": {
+        "version": "1.1.0"
+    },
+    "ergebnis/test-util": {
+        "version": "1.2.0"
+    },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },

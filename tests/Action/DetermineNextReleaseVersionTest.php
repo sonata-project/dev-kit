@@ -18,7 +18,7 @@ use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Tests\Util\Factory\Github;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class DetermineNextReleaseVersionTest extends TestCase

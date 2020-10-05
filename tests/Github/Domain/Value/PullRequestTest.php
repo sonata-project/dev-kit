@@ -16,7 +16,7 @@ namespace App\Tests\Github\Domain\Value;
 use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
 use App\Tests\Util\Factory\Github;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class PullRequestTest extends TestCase
@@ -118,8 +118,8 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionIfTitleIs(string $value)
     {
@@ -165,8 +165,8 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionIfUpdatedAtIs(string $value)
     {
@@ -228,8 +228,8 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionIfMergedAtIs(string $value)
     {

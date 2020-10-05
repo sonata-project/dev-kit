@@ -15,7 +15,7 @@ namespace App\Tests\Github\Exception;
 
 use App\Domain\Value\Repository;
 use App\Github\Exception\LatestReleaseNotFound;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 
