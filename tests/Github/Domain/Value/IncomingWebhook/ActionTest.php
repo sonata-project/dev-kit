@@ -21,8 +21,8 @@ final class ActionTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionFor(string $value): void
     {
@@ -34,12 +34,12 @@ final class ActionTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::arbitrary()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::untrimmed()
      */
     public function fromString(string $value): void
     {
         self::assertSame(
-            $value,
+            trim($value),
             Action::fromString($value)->toString()
         );
     }

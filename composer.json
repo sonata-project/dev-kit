@@ -52,7 +52,7 @@
         "symfony/symfony": "*"
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.9",
+        "ergebnis/test-util": "^1.2",
         "phpstan/phpstan": "0.12.45",
         "symfony/debug-bundle": "^5.1",
         "symfony/phpunit-bridge": "^5.1",

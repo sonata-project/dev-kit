@@ -23,10 +23,6 @@ use Webmozart\Assert\Assert;
  */
 final class Project
 {
-    /**
-     * @deprecated should be removed after using it no more!
-     */
-    private array $rawConfig;
     private string $name;
     private Package $package;
 
@@ -88,7 +84,7 @@ final class Project
             $excludedFiles[] = ExcludedFile::fromString($filename);
         }
 
-        $project = new self(
+        return new self(
             $name,
             $package,
             $branches,
@@ -100,9 +96,6 @@ final class Project
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
         );
-        $project->rawConfig = $config;
-
-        return $project;
     }
 
     public function name(): string
@@ -268,19 +261,6 @@ final class Project
         sort($keywords);
 
         return array_values(array_unique($keywords));
-    }
-
-    /**
-     * We keep this method to have a smooth transition and
-     * remove it when we did not use config arrays anymore. Oskar.
-     *
-     * @deprecated should be removed after using it no more!
-     *
-     * @return array<mixed>
-     */
-    public function rawConfig(): array
-    {
-        return $this->rawConfig;
     }
 
     public function unstableBranch(): Branch

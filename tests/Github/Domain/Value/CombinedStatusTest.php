@@ -16,7 +16,7 @@ namespace App\Tests\Github\Domain\Value;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Status;
 use App\Tests\Util\Factory\Github;
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class CombinedStatusTest extends TestCase
@@ -178,5 +178,13 @@ final class CombinedStatusTest extends TestCase
             Status::fromResponse($statusResponse2),
             $statuses[1]
         );
+    }
+
+    private static function assertStatusEqualsStatus(Status $expected, Status $other): void
+    {
+        self::assertSame($expected->state(), $other->state());
+        self::assertSame($expected->description(), $other->description());
+        self::assertSame($expected->targetUrl(), $other->targetUrl());
+        self::assertSame($expected->isSuccessful(), $other->isSuccessful());
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Util\Factory\Github\Response;
 
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 use function Symfony\Component\String\u;
 
 final class LabelFactory
