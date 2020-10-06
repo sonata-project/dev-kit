@@ -76,14 +76,14 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         $repositoryInfo = $this->repositories->show($repository);
 
         $infoToUpdate = [
-            'homepage' => $project->homepage(),
+            'allow_merge_commit' => false,
+            'allow_rebase_merge' => true,
+            'allow_squash_merge' => true,
             'description' => $project->description(),
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
-            'allow_squash_merge' => true,
-            'allow_merge_commit' => false,
-            'allow_rebase_merge' => true,
+            'homepage' => $project->homepage(),
         ];
 
         if ($project->hasBranches()) {
