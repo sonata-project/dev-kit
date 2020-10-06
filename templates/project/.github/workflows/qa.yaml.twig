@@ -7,7 +7,7 @@ name: Quality assurance
 on:
   push:
     branches:
-{% for branch in project.branches %}
+{% for branch in project.branchesReverse %}
       - {{ branch.name }}
 {% endfor %}
   pull_request:

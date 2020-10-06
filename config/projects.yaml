@@ -417,10 +417,10 @@ translation-bundle:
     phpstan: true
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
-                sonata-project/admin-bundle: ['3']
+                sonata-project/admin-bundle: ['dev-master']
         2.x:
             php: ['7.2', '7.3', '7.4']
             variants:
