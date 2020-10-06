@@ -84,6 +84,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             'has_projects' => true,
             'has_wiki' => false,
             'homepage' => $project->homepage(),
+            'delete_branch_on_merge' => true,
         ];
 
         if ($project->hasBranches()) {
