@@ -85,6 +85,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             'has_projects' => true,
             'has_wiki' => false,
             'homepage' => $project->homepage(),
+            'is_template' => false,
         ];
 
         if ($project->hasBranches()) {
