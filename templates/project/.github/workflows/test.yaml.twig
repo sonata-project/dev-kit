@@ -50,7 +50,7 @@ jobs:
           - php-version: '{{ branch.targetPhpVersion.toString }}'
             dependencies: highest
             allowed_to_fail: false
-            variant: '{{ variant.toString }}'
+            variant: '{{ variant.toString|raw }}'
 {% endfor %}
 
     steps:
