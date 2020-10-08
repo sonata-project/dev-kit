@@ -53,14 +53,14 @@ final class NextReleaseOverviewController
             return $releases;
         }, []);
 
-        $releasesSortedByNumberOfPullRequests = usort($releases, static function (NextRelease $a, NextRelease $b): int {
-            return \count($b->pullRequests()) <=> \count($a->pullRequests());
+        usort($releases, static function (NextRelease $a, NextRelease $b): int {
+            return \count($a->pullRequests()) <=> \count($b->pullRequests());
         });
 
         $content = $this->twig->render(
             'releases/overview.html.twig',
             [
-                'releases' => $releasesSortedByNumberOfPullRequests,
+                'releases' => $releases,
             ]
         );
 
