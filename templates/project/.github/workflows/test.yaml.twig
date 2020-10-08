@@ -63,10 +63,10 @@ jobs:
           {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
           coverage: pcov
 {% if 'mongodb' in services %}
-          tools: composer:v2, pecl
+          tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}, pecl
           extensions: mongodb
 {% else %}
-          tools: composer:v2
+          tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}
 {% endif %}
 
       - name: Add PHPUnit matcher
