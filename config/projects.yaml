@@ -102,6 +102,8 @@ article-bundle:
                 symfony/symfony: ['4.4']
 
 block-bundle:
+    phpstan: true
+    psalm: true
     branches:
         master:
             php: ['7.3', '7.4']
