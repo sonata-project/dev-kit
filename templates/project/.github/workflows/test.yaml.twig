@@ -65,10 +65,11 @@ jobs:
 {% if 'mongodb' in services %}
           tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}, pecl
           extensions: mongodb
+
 {% else %}
           tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}
-{% endif %}
 
+{% endif %}
       - name: Add PHPUnit matcher
         {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
