@@ -17,6 +17,7 @@ use App\Action\DetermineNextRelease;
 use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
+use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,10 +53,14 @@ final class NextReleaseOverviewController
             return $releases;
         }, []);
 
+        $releasesSortedByNumberOfPullRequests = usort($releases, static function (NextRelease $a, NextRelease $b): int {
+            return count($b->pullRequests()) <=> count($a->pullRequests());
+        });
+
         $content = $this->twig->render(
             'releases/overview.html.twig',
             [
-                'releases' => $releases,
+                'releases' => $releasesSortedByNumberOfPullRequests,
             ]
         );
 
