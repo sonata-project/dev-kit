@@ -23,13 +23,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3ASonataCI+archived%3Afalse" target="_blank">
-                            <i class="fa fa-external"></i>
                             Open DevKit PR's
                         </a>
                     </li>
                     <li class="nav-item {% if app.request.attributes.get('_route') in ['next_releases_overview', 'next_release_project'] %}active{% endif %}">
                         <a class="nav-link" href="{{ path('next_releases_overview') }}">
-                            <i class="fa fa-video-camera"></i>
                             Next Releases
                         </a>
                     </li>
