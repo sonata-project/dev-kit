@@ -27,7 +27,7 @@ jobs:
         uses: docker://oskarstark/phpstan-ga
         env:
           REQUIRE_DEV: true
-{% if project.repository.name == 'SonataDoctrineMongoDBAdminBundle' %}
+{% if project.repository.name in ['SonataDoctrineMongoDBAdminBundle', 'sandbox'] %}
           CHECK_PLATFORM_REQUIREMENTS: false
 {% endif %}
         with:
