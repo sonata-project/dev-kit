@@ -382,8 +382,16 @@ page-bundle:
                 sonata-project/block-bundle: ['3']
 
 sandbox:
+    has_documentation: false
+    phpstan: true
     excluded_files:
+        - .gitignore.twig
+        - Makefile.twig
         - phpunit.xml.dist.twig
+        - README.md.twig
+    branches:
+        master:
+            php: ['7.4']
 
 seo-bundle:
     branches:
