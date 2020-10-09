@@ -35,6 +35,7 @@ $rules = [
     'header_comment' => [
         'header' => $header,
     ],
+    'list_syntax' => ['syntax' => 'short'],
     'logical_operators' => true,
     'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
     'no_extra_blank_lines' => true,
