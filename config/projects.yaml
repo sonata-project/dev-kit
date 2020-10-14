@@ -190,6 +190,7 @@ doctrine-extensions:
 
 doctrine-mongodb-admin-bundle:
     phpstan: true
+    psalm: true
     custom_gitignore_part: |
         /tests/App/public/bundles
     excluded_files:
