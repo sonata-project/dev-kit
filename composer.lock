@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d3b051eb9bc2e1a545510724a278f75",
+    "content-hash": "722f02771529cb981e11f51c67eda958",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -342,20 +342,6 @@
                 "lexer",
                 "parser",
                 "php"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-05-25T17:44:05+00:00"
         },
@@ -906,17 +892,54 @@
                 "psr-17",
                 "psr-7"
             ],
-            "funding": [
+            "time": "2020-05-23T11:29:07+00:00"
+        },
+        {
+            "name": "oskarstark/env-var-extension",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OskarStark/env-var-extension.git",
+                "reference": "fd2be59d7e16fcedc4c3108bc59b4c7bdfe7fc63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/fd2be59d7e16fcedc4c3108bc59b4c7bdfe7fc63",
+                "reference": "fd2be59d7e16fcedc4c3108bc59b4c7bdfe7fc63",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "twig/twig": "^2.6 || ^3.0"
+            },
+            "require-dev": {
+                "ergebnis/test-util": "^1.3",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OskarStark\\Twig\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
                 {
-                    "url": "https://github.com/Zegnat",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nyholm",
-                    "type": "github"
+                    "name": "Oskar Stark",
+                    "email": "oskarstark@googlemail.com"
                 }
             ],
-            "time": "2020-06-13T15:59:10+00:00"
+            "description": "A Twig extension to access env variables",
+            "keywords": [
+                "environment-variables",
+                "twig",
+                "twig-extension"
+            ],
+            "time": "2020-10-14T08:49:11+00:00"
         },
         {
             "name": "php-http/cache-plugin",
@@ -1978,12 +2001,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "ae789a8a2ad189ce7e8216942cdb9b77319f5eb8"
+                "reference": "04c3a31fe8ea94b42c9e2d1acc93d19782133b00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/ae789a8a2ad189ce7e8216942cdb9b77319f5eb8",
-                "reference": "ae789a8a2ad189ce7e8216942cdb9b77319f5eb8",
+                "url": "https://api.github.com/repos/symfony/console/zipball/04c3a31fe8ea94b42c9e2d1acc93d19782133b00",
+                "reference": "04c3a31fe8ea94b42c9e2d1acc93d19782133b00",
                 "shasum": ""
             },
             "require": {
@@ -2063,7 +2086,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-07T15:23:00+00:00"
+            "time": "2020-09-18T14:27:32+00:00"
         },
         {
             "name": "symfony/dependency-injection",
