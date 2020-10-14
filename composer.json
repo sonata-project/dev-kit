@@ -23,6 +23,7 @@
         "knplabs/github-api": "^2.15",
         "knplabs/packagist-api": "^1.6.1",
         "nyholm/psr7": "^1.2",
+        "oskarstark/env-var-extension": "^1.0",
         "symfony/console": "^5.1",
         "symfony/dotenv": "^5.1",
         "symfony/flex": "^1.9",
