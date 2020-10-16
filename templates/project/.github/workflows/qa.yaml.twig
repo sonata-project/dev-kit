@@ -47,6 +47,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version:
+          - "7.4"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -59,8 +64,28 @@ jobs:
           branch: master
 
 {% endif %}
-      - name: Psalm
-        uses: docker://vimeo/psalm-github-actions
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
         with:
-          args: --shepherd
+            {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+            coverage: none
+{% if branch.hasService('mongodb') %}
+            tools: composer:v{{ project.composerVersion }}, pecl
+            extensions: mongodb
+{% else %}
+            tools: composer:v{{ project.composerVersion }}
+{% endif %}
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache
+          {% verbatim %}key: ${{ matrix.php-version }}-composer-{% endverbatim %}
+          restore-keys: |
+            {% verbatim %}${{ matrix.php-version }}-composer-{% endverbatim %}
+
+      - name: Install dependencies with composer
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: Run a static analysis with Psalm
+        run: "vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd"
 {% endif %}
