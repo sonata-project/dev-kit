@@ -119,10 +119,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                 ) {
                     $message = 'Could you please rebase your PR and fix merge conflicts?';
 
-                    $user = $lastComment->user();
-                    if (null !== $user
-                        && self::DEPENDABOT_BOT === $user
-                    ) {
+                    if (self::DEPENDABOT_BOT === $pr->user()->login()) {
                         $message = '@dependabot rebase';
                     }
 
