@@ -34,6 +34,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
+                            ->scalarNode('composer_version')->defaultValue('2')->end()
                             ->booleanNode('phpstan')->defaultFalse()->end()
                             ->booleanNode('psalm')->defaultFalse()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
