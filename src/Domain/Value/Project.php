@@ -36,6 +36,7 @@ final class Project
      */
     private array $excludedFiles;
 
+    private string $composerVersion;
     private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
@@ -50,6 +51,7 @@ final class Project
         Package $package,
         array $branches,
         array $excludedFiles,
+        string $composerVersion,
         bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
@@ -61,6 +63,7 @@ final class Project
 
         $this->package = $package;
         $this->branches = $branches;
+        $this->composerVersion = $composerVersion;
         $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
@@ -89,6 +92,7 @@ final class Project
             $package,
             $branches,
             $excludedFiles,
+            $config['composer_version'],
             $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
@@ -159,6 +163,11 @@ final class Project
     public function excludedFiles(): array
     {
         return $this->excludedFiles;
+    }
+
+    public function composerVersion(): string
+    {
+        return $this->composerVersion;
     }
 
     public function hasDocumentation(): bool

@@ -63,13 +63,12 @@ jobs:
           {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
           coverage: pcov
 {% if 'mongodb' in services %}
-          tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}, pecl
+          tools: composer:v{{ project.composerVersion }}, pecl
           extensions: mongodb
-
 {% else %}
-          tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}
-
+          tools: composer:v{{ project.composerVersion }}
 {% endif %}
+
       - name: Add PHPUnit matcher
         {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
