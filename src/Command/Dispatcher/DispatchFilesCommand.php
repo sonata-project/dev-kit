@@ -394,9 +394,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 [
                     'project' => $project,
                     'branch' => $branch,
-                    'services' => array_map(static function (Service $service): string {
-                        return $service->toString();
-                    }, $branch->services()),
                 ]
             );
         }

@@ -19,14 +19,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class BranchTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function valid(): void
-    {
-        $name = 'master';
-
-        $config = <<<CONFIG
+    public const DEFAULT_BRANCH_NAME = 'master';
+    public const DEFAULT_BRANCH_CONFIG = <<<CONFIG
 master:
   php: ['7.3', '7.4']
   target_php: ~
@@ -38,11 +32,18 @@ master:
   tests_path: tests
 CONFIG;
 
-        $config = Yaml::parse($config);
+    /**
+     * @test
+     */
+    public function valid(): void
+    {
+        $name = 'master';
+
+        $config = Yaml::parse(self::DEFAULT_BRANCH_CONFIG);
 
         $branch = Branch::fromValues(
             $name,
-            $config['master']
+            $config[self::DEFAULT_BRANCH_NAME]
         );
 
         self::assertSame($name, $branch->name());
@@ -53,5 +54,35 @@ CONFIG;
         self::assertEmpty($branch->services());
         self::assertSame('docs', $branch->docsPath()->toString());
         self::assertSame('tests', $branch->testsPath()->toString());
+        self::assertFalse($branch->hasService('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasService(): void
+    {
+        $name = 'master';
+
+        $config = <<<CONFIG
+master:
+  php: ['7.3', '7.4']
+  target_php: ~
+  variants:
+    symfony/symfony: ['4.4']
+    sonata-project/block-bundle: ['4']
+  services: ['mongodb']
+  docs_path: docs
+  tests_path: tests
+CONFIG;
+
+        $config = Yaml::parse($config);
+
+        $branch = Branch::fromValues(
+            $name,
+            $config[self::DEFAULT_BRANCH_NAME]
+        );
+
+        self::assertTrue($branch->hasService('mongodb'));
     }
 }
