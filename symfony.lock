@@ -89,6 +89,9 @@
             "config/packages/nyholm_psr7.yaml"
         ]
     },
+    "oskarstark/env-var-extension": {
+        "version": "1.0.2"
+    },
     "php": {
         "version": "7.4"
     },

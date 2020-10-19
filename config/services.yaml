@@ -34,4 +34,7 @@ services:
 
     GitWrapper\GitWrapper: ~
 
+    OskarStark\Twig\EnvVarExtension:
+        tags: ['twig.extension']
+
     Packagist\Api\Client: ~

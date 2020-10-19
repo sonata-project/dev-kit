@@ -25,6 +25,7 @@
         "knplabs/packagist-api": "^1.6.1",
         "league/commonmark": "^1.5",
         "nyholm/psr7": "^1.2",
+        "oskarstark/env-var-extension": "^1.0",
         "symfony/cache": "5.1.*",
         "symfony/console": "^5.1",
         "symfony/dotenv": "^5.1",

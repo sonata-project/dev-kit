@@ -71,7 +71,7 @@ final class Repository
         Assert::contains($url, '/');
         Assert::startsWith($url, 'https://github.com/');
 
-        list($username, $name) = u($url)
+        [$username, $name] = u($url)
             ->replace('https://github.com/', '')
             ->replace('.git', '')
             ->split('/');

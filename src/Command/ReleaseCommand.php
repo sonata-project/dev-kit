@@ -81,7 +81,7 @@ EOT;
     {
         $project = $this->selectProject($input, $output);
 
-        $this->io->title($project->name());
+        $this->io->getErrorStyle()->title($project->name());
 
         return $this->renderNextRelease($project);
     }
@@ -105,45 +105,47 @@ EOT;
 
     private function renderNextRelease(Project $project): int
     {
+        $notificationStyle = $this->io->getErrorStyle();
         try {
             $nextRelease = $this->determineNextRelease->__invoke($project);
         } catch (NoPullRequestsMergedSinceLastRelease $e) {
-            $this->io->warning($e->getMessage());
+            $notificationStyle->warning($e->getMessage());
 
             return 0;
         } catch (CannotDetermineNextRelease $e) {
-            $this->io->error($e->getMessage());
+            $notificationStyle->error($e->getMessage());
 
             return 1;
         }
 
         if (!$nextRelease->isNeeded()) {
-            $this->io->warning('Release is not needed');
+            $notificationStyle->warning('Release is not needed');
 
             return 0;
         }
 
-        $this->io->section('Checks');
+        $notificationStyle->section('Checks');
 
         array_map(function (Status $status): void {
             $this->renderStatus($status);
         }, $nextRelease->combinedStatus()->statuses());
 
-        $this->io->section('Pull Requests');
+        $notificationStyle->section('Pull Requests');
 
         array_map(function (PullRequest $pullRequest): void {
             $this->renderPullRequest($pullRequest);
         }, $nextRelease->pullRequests());
 
-        $this->io->section('Release');
+        $notificationStyle->section('Release');
 
-        $this->io->success(sprintf(
+        $notificationStyle->success(sprintf(
             'Next release will be: %s',
             $nextRelease->nextTag()->toString()
         ));
 
-        $this->io->section('Changelog');
+        $notificationStyle->section('Changelog');
 
+        // Send markdown to stdout and only that
         $this->io->writeln($nextRelease->changelog()->asMarkdown());
 
         return 0;
@@ -151,9 +153,11 @@ EOT;
 
     private function renderPullRequest(PullRequest $pr): void
     {
+        $notificationStyle = $this->io->getErrorStyle();
+
         $this->renderStability($pr->stability());
 
-        $this->io->write(sprintf(
+        $notificationStyle->write(sprintf(
             '<info>%s</info>',
             $pr->title()
         ));
@@ -163,22 +167,22 @@ EOT;
         }, $pr->labels());
 
         if (!$pr->hasLabels()) {
-            $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
+            $notificationStyle->write(' <fg=black;bg=yellow>[No labels]</>');
         }
 
         if (!$pr->hasChangelog() && $pr->stability()->notEquals(Stability::pedantic())) {
-            $this->io->write(' <error>[Changelog not found]</error>');
+            $notificationStyle->write(' <error>[Changelog not found]</error>');
         } elseif (!$pr->hasChangelog()) {
-            $this->io->write(' <fg=black;bg=green>[Changelog not found]</>');
+            $notificationStyle->write(' <fg=black;bg=green>[Changelog not found]</>');
         } elseif ($pr->hasChangelog() && $pr->stability()->equals(Stability::pedantic())) {
-            $this->io->write(' <fg=black;bg=yellow>[Changelog found]</>');
+            $notificationStyle->write(' <fg=black;bg=yellow>[Changelog found]</>');
         } else {
-            $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
+            $notificationStyle->write(' <fg=black;bg=green>[Changelog found]</>');
         }
 
-        $this->io->newLine();
-        $this->io->writeln($pr->htmlUrl());
-        $this->io->newLine();
+        $notificationStyle->newLine();
+        $notificationStyle->writeln($pr->htmlUrl());
+        $notificationStyle->newLine();
     }
 
     private function renderLabel(Label $label): void
@@ -196,7 +200,7 @@ EOT;
             $color = $colors[$label->name()];
         }
 
-        $this->io->write(sprintf(
+        $this->io->getErrorStyle()->write(sprintf(
             ' <fg=%s>[%s]</>',
             $color,
             $label->name()
@@ -205,6 +209,7 @@ EOT;
 
     private function renderStability(Stability $stability): void
     {
+        $notificationStyle = $this->io->getErrorStyle();
         $stabilities = [
             'patch' => 'blue',
             'minor' => 'green',
@@ -213,39 +218,40 @@ EOT;
         ];
 
         if (\array_key_exists($stability->toString(), $stabilities)) {
-            $this->io->write(sprintf(
+            $notificationStyle->write(sprintf(
                 '<fg=black;bg=%s>[%s]</> ',
                 $stabilities[$stability->toString()],
                 $stability->toUppercaseString()
             ));
         } else {
-            $this->io->write('<error>[NOT SET]</error> ');
+            $notificationStyle->write('<error>[NOT SET]</error> ');
         }
     }
 
     private function renderStatus(Status $status): void
     {
+        $notificationStyle = $this->io->getErrorStyle();
         if ('success' === $status->state()) {
-            $this->io->writeln(sprintf(
+            $notificationStyle->writeln(sprintf(
                 '    <info>%s</info>',
                 $status->description()
             ));
         } elseif ('pending' === $status->state()) {
-            $this->io->writeln(sprintf(
+            $notificationStyle->writeln(sprintf(
                 '    <comment>%s</comment>',
                 $status->description()
             ));
         } else {
-            $this->io->writeln(sprintf(
+            $notificationStyle->writeln(sprintf(
                 '    <error>%s</error>',
                 $status->description()
             ));
         }
 
-        $this->io->text(sprintf(
+        $notificationStyle->text(sprintf(
             '     %s',
             $status->targetUrl()
         ));
-        $this->io->newLine();
+        $notificationStyle->newLine();
     }
 }
