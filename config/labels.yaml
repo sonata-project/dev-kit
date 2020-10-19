@@ -45,3 +45,5 @@ labels:
       color: 'ff6600'
     - name: 'keep'
       color: '59b3c1'
+    - name: 'dependencies'
+      color: '0366d6'
