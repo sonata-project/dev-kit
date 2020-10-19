@@ -46,8 +46,10 @@ final class CombinedStatus
 
         Assert::keyExists($response, 'state');
         Assert::stringNotEmpty($response['state']);
+        $state = $response['state'];
+
         Assert::oneOf(
-            $response['state'],
+            $state,
             [
                 self::FAILURE,
                 self::PENDING,
@@ -56,7 +58,16 @@ final class CombinedStatus
         );
 
         Assert::keyExists($response, 'statuses');
-        Assert::notEmpty($response['statuses']);
+
+        if (self::PENDING !== $state) {
+            Assert::notEmpty(
+                $response['statuses'],
+                sprintf(
+                    'Status is "%s", no empty statuses array allowed for CominedStatus!',
+                    $state
+                )
+            );
+        }
 
         $statuses = [];
         foreach ($response['statuses'] as $status) {
@@ -64,7 +75,7 @@ final class CombinedStatus
         }
 
         return new self(
-            $response['state'],
+            $state,
             $statuses
         );
     }
