@@ -118,6 +118,11 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                     || $lastComment->before($lastCommit->date())
                 ) {
                     $message = 'Could you please rebase your PR and fix merge conflicts?';
+
+                    if (self::DEPENDABOT_BOT === $lastComment->user()) {
+                        $message = '@dependabot rebase';
+                    }
+
                     $label = Label::PendingAuthor();
 
                     if ($this->apply) {
