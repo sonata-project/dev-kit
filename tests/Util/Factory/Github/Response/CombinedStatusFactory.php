@@ -28,16 +28,22 @@ final class CombinedStatusFactory
     {
         $faker = self::faker();
 
+        $state = $faker->randomElement([
+            'failure',
+            'pending',
+            'success',
+        ]);
+
         $response = [
-            'state' => $faker->randomElement([
-                'failure',
-                'pending',
-                'success',
-            ]),
+            'state' => $state,
             'statuses' => array_map(static function (): array {
                 return StatusFactory::create();
-            }, range(0, $faker->numberBetween(0, 3))),
+            }, range('pending' === $state ? 0 : 1, $faker->numberBetween(2, 3))),
         ];
+
+        if (\array_key_exists('statuses', $parameters)) {
+            $response['statuses'] = $parameters['statuses'];
+        }
 
         return array_replace_recursive(
             $response,
