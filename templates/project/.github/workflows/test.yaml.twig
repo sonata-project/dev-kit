@@ -20,7 +20,7 @@ jobs:
 
     {% verbatim %}continue-on-error: ${{ matrix.allowed_to_fail }}{% endverbatim %}
 
-{% if 'mongodb' in services %}
+{% if branch.hasService('mongodb') %}
     services:
       mongo:
         image: mongo
@@ -62,7 +62,7 @@ jobs:
         with:
           {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
           coverage: pcov
-{% if 'mongodb' in services %}
+{% if branch.hasService('mongodb') %}
           tools: composer:v{{ project.composerVersion }}, pecl
           extensions: mongodb
 {% else %}

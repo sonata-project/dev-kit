@@ -118,6 +118,19 @@ final class Branch
         return $this->services;
     }
 
+    public function hasService(string $serviceName): bool
+    {
+        if ([] === $this->services) {
+            return false;
+        }
+
+        $serviceNames = array_map(static function (Service $service): string {
+            return $service->toString();
+        }, $this->services());
+
+        return \in_array($serviceName, $serviceNames, true);
+    }
+
     /**
      * @return Variant[]
      */
