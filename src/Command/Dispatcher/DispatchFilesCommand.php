@@ -19,7 +19,6 @@ use App\Domain\Value\Branch;
 use App\Domain\Value\ExcludedFile;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
-use App\Domain\Value\Service;
 use App\Github\Api\Branches;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;

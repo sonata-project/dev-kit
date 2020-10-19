@@ -128,7 +128,7 @@ final class Branch
             return $service->toString();
         }, $this->services());
 
-        return in_array($serviceName, $serviceNames, true);
+        return \in_array($serviceName, $serviceNames, true);
     }
 
     /**
