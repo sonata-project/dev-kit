@@ -27,12 +27,14 @@ final class Status
     private const SUCCESS = 'success';
 
     private string $state;
+    private string $context;
     private string $description;
     private string $targetUrl;
 
-    private function __construct(string $state, string $description, string $targetUrl)
+    private function __construct(string $state, string $context, string $description, string $targetUrl)
     {
         $this->state = $state;
+        $this->context = TrimmedNonEmptyString::fromString($context)->toString();
         $this->description = TrimmedNonEmptyString::fromString($description)->toString();
         $this->targetUrl = TrimmedNonEmptyString::fromString($targetUrl)->toString();
     }
@@ -53,6 +55,9 @@ final class Status
             ]
         );
 
+        Assert::keyExists($response, 'context');
+        Assert::stringNotEmpty($response['context']);
+
         Assert::keyExists($response, 'description');
         Assert::stringNotEmpty($response['description']);
 
@@ -61,6 +66,7 @@ final class Status
 
         return new self(
             $response['state'],
+            $response['context'],
             $response['description'],
             $response['target_url']
         );
@@ -74,6 +80,11 @@ final class Status
     public function state(): string
     {
         return $this->state;
+    }
+
+    public function context(): string
+    {
+        return $this->context;
     }
 
     public function description(): string
