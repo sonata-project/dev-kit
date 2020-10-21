@@ -142,10 +142,8 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 '    Combined status successful? %s',
                 $combinedStatus->isSuccessful() ? '<info>yes</info>' : '<error>no</error>'
             ));
-            $this->io->newLine();
-
             $this->io->writeln(sprintf(
-                '    Checks:          %s',
+                '    Checks successful?          %s',
                 $checkRuns->isSuccessful() ? '<info>yes</info>' : '<error>no</error>'
             ));
             $this->io->newLine();
