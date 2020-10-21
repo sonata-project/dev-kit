@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Domain\Value;
 
 use App\Action\DetermineNextReleaseVersion;
+use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
@@ -26,6 +27,7 @@ final class NextRelease
     private Project $project;
     private Tag $currentTag;
     private CombinedStatus $combinedStatus;
+    private CheckRuns $checkRuns;
 
     /**
      * @var PullRequest[]
@@ -38,12 +40,14 @@ final class NextRelease
         Project $project,
         Tag $currentTag,
         CombinedStatus $combinedStatus,
+        CheckRuns $checkRuns,
         array $pullRequests
     ) {
         $this->project = $project;
         $this->currentTag = $currentTag;
 
         $this->combinedStatus = $combinedStatus;
+        $this->checkRuns = $checkRuns;
         $this->pullRequests = array_reduce($pullRequests, static function (array $pullRequests, PullRequest $pullRequest): array {
             if ($pullRequest->createdAutomatically()) {
                 return $pullRequests;
@@ -67,12 +71,14 @@ final class NextRelease
         Project $project,
         Tag $currentTag,
         CombinedStatus $combinedStatus,
+        CheckRuns $checkRuns,
         array $pullRequests
     ): self {
         return new self(
             $project,
             $currentTag,
             $combinedStatus,
+            $checkRuns,
             $pullRequests
         );
     }
@@ -95,6 +101,11 @@ final class NextRelease
     public function combinedStatus(): CombinedStatus
     {
         return $this->combinedStatus;
+    }
+
+    public function checkRuns(): CheckRuns
+    {
+        return $this->checkRuns;
     }
 
     /**

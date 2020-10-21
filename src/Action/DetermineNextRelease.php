@@ -20,6 +20,7 @@ use App\Domain\Exception\NoBranchesAvailable;
 use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
 use App\Github\Api\Branches;
+use App\Github\Api\Checks;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
@@ -31,17 +32,20 @@ final class DetermineNextRelease
     private Releases $releases;
     private Branches $branches;
     private Statuses $statuses;
+    private Checks $checks;
     private PullRequests $pullRequests;
 
     public function __construct(
         Releases $releases,
         Branches $branches,
         Statuses $statuses,
+        Checks $checks,
         PullRequests $pullRequests
     ) {
         $this->releases = $releases;
         $this->branches = $branches;
         $this->statuses = $statuses;
+        $this->checks = $checks;
         $this->pullRequests = $pullRequests;
     }
 
@@ -89,10 +93,16 @@ final class DetermineNextRelease
             $branchToRelease->commit()->sha()
         );
 
+        $checkRuns = $this->checks->all(
+            $repository,
+            $branchToRelease->commit()->sha()
+        );
+
         return NextRelease::fromValues(
             $project,
             $currentRelease->tag(),
             $combinedStatus,
+            $checkRuns,
             $pullRequests
         );
     }

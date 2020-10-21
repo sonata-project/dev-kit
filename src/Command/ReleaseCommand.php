@@ -19,6 +19,7 @@ use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
+use App\Github\Domain\Value\CheckRun;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Status;
@@ -124,11 +125,17 @@ EOT;
             return 0;
         }
 
-        $notificationStyle->section('Checks');
+        $notificationStyle->section('Statuses');
 
         array_map(function (Status $status): void {
             $this->renderStatus($status);
         }, $nextRelease->combinedStatus()->statuses());
+
+        $notificationStyle->section('Checks');
+
+        array_map(function (CheckRun $checkRun): void {
+            $this->renderCheckRun($checkRun);
+        }, $nextRelease->checkRuns()->all());
 
         $notificationStyle->section('Pull Requests');
 
@@ -251,6 +258,33 @@ EOT;
         $notificationStyle->text(sprintf(
             '     %s',
             $status->targetUrl()
+        ));
+        $notificationStyle->newLine();
+    }
+
+    private function renderCheckRun(CheckRun $checkRun): void
+    {
+        $notificationStyle = $this->io->getErrorStyle();
+        if ('success' === $checkRun->conclusion()) {
+            $notificationStyle->writeln(sprintf(
+                '    <info>%s</info>',
+                $checkRun->name()
+            ));
+        } elseif ('in_progress' === $checkRun->conclusion()) {
+            $notificationStyle->writeln(sprintf(
+                '    <comment>%s</comment>',
+                $checkRun->name()
+            ));
+        } else {
+            $notificationStyle->writeln(sprintf(
+                '    <error>%s</error>',
+                $checkRun->name()
+            ));
+        }
+
+        $notificationStyle->text(sprintf(
+            '     %s',
+            $checkRun->detailsUrl()
         ));
         $notificationStyle->newLine();
     }
