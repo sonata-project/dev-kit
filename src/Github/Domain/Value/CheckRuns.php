@@ -52,6 +52,18 @@ final class CheckRuns
         return new self($checkRuns);
     }
 
+    public function isSuccessful(): bool
+    {
+        /** @var CheckRun $checkRun */
+        foreach ($this->checkRuns as $checkRun) {
+            if (!$checkRun->isSuccessful()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * @return array<string, CheckRun>
      */

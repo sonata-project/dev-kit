@@ -38,6 +38,41 @@ final class CheckRunsTest extends TestCase
 
     /**
      * @test
+     *
+     * @dataProvider isSuccessfulProvider
+     */
+    public function isSuccessful(bool $expected, string $conclusion): void
+    {
+        $response = Github\Response\CheckRunsFactory::create([
+            'check_runs' => [
+                Github\Response\CheckRunFactory::create([
+                    'conclusion' => $conclusion,
+                ]),
+            ],
+        ]);
+
+        self::assertSame(
+            $expected,
+            CheckRuns::fromResponse($response)->isSuccessful()
+        );
+    }
+
+    /**
+     * @return \Generator<string, array{0: bool, 1: string}>
+     */
+    public function isSuccessfulProvider(): \Generator
+    {
+        yield 'action_required' => [false, 'action_required'];
+        yield 'cancelled' => [false, 'cancelled'];
+        yield 'failure' => [false, 'failure'];
+        yield 'neutral' => [false, 'neutral'];
+        yield 'skipped' => [false, 'skipped'];
+        yield 'success' => [true, 'success'];
+        yield 'timed_out' => [false, 'timed_out'];
+    }
+
+    /**
+     * @test
      */
     public function usesCheckRunsFromResponse(): void
     {
