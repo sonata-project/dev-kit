@@ -110,6 +110,28 @@ final class CheckRun
         return $this->name;
     }
 
+    public function nameFormatted(): string
+    {
+        if (self::CONCLUSION_SUCCESS === $this->conclusion) {
+            return sprintf(
+                '<info>%s</info>',
+                $this->name
+            );
+        }
+
+        if (self::CONCLUSION_NEUTRAL === $this->conclusion) {
+            return sprintf(
+                '<comment>%s</comment>',
+                $this->name
+            );
+        }
+
+        return sprintf(
+            '<error>%s</error>',
+            $this->name
+        );
+    }
+
     public function detailsUrl(): string
     {
         return $this->detailsUrl;

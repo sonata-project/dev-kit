@@ -19,6 +19,7 @@ use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
+use App\Github\Domain\Value\CheckRun;
 use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
@@ -245,25 +246,8 @@ EOT;
         ]);
 
         foreach ($combinedStatus->statuses() as $status) {
-            if ('success' === $status->state()) {
-                $formattedStatus = sprintf(
-                    '<info>%s</info>',
-                    $status->context()
-                );
-            } elseif ('pending' === $status->state()) {
-                $formattedStatus = sprintf(
-                    '<comment>%s</comment>',
-                    $status->context()
-                );
-            } else {
-                $formattedStatus = sprintf(
-                    '<error>%s</error>',
-                    $status->context()
-                );
-            }
-
             $table->addRow([
-                $formattedStatus,
+                $status->contextFormatted(),
                 $status->description(),
                 $status->targetUrl(),
             ]);
@@ -288,27 +272,11 @@ EOT;
             'URL',
         ]);
 
-        foreach ($checkRuns->all() as $status) {
-            if ('success' === $status->conclusion()) {
-                $formattedStatus = sprintf(
-                    '<info>%s</info>',
-                    $status->name()
-                );
-            } elseif ('in_progress' === $status->conclusion()) {
-                $formattedStatus = sprintf(
-                    '<comment>%s</comment>',
-                    $status->name()
-                );
-            } else {
-                $formattedStatus = sprintf(
-                    '<error>%s</error>',
-                    $status->name()
-                );
-            }
-
+        /** @var CheckRun $checkRun */
+        foreach ($checkRuns->all() as $checkRun) {
             $table->addRow([
-                $formattedStatus,
-                $status->detailsUrl(),
+                $checkRun->nameFormatted(),
+                $checkRun->detailsUrl(),
             ]);
         }
 
