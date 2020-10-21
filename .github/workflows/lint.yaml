@@ -19,8 +19,6 @@ jobs:
         env:
           GIT_TRACE: 1
           GIT_CURL_VERBOSE: 1        
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Run PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga:2.16.4
