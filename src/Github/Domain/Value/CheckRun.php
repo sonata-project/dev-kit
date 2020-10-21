@@ -26,6 +26,7 @@ final class CheckRun
     private const CONCLUSION_FAILURE = 'failure';
     private const CONCLUSION_NEUTRAL = 'neutral';
     private const CONCLUSION_SKIPPED = 'skipped';
+    private const CONCLUSION_STALE = 'stale';
     private const CONCLUSION_SUCCESS = 'success';
     private const CONCLUSION_TIMED_OUT = 'timed_out';
 
@@ -71,6 +72,7 @@ final class CheckRun
                 self::CONCLUSION_FAILURE,
                 self::CONCLUSION_NEUTRAL,
                 self::CONCLUSION_SKIPPED,
+                self::CONCLUSION_STALE,
                 self::CONCLUSION_SUCCESS,
                 self::CONCLUSION_TIMED_OUT,
             ]
