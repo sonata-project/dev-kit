@@ -42,8 +42,12 @@ final class CheckRuns
 
         $checkRuns = [];
         foreach ($response['check_runs'] as $checkRun) {
-            $checkRuns[] = CheckRun::fromResponse($checkRun);
+            Assert::keyExists($checkRun, 'name');
+
+            $checkRuns[$checkRun['name']] = CheckRun::fromResponse($checkRun);
         }
+
+        ksort($checkRuns, SORT_NATURAL | SORT_FLAG_CASE);
 
         return new self(
             $checkRuns
