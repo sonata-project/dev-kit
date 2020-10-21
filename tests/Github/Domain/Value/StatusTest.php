@@ -73,6 +73,33 @@ final class StatusTest extends TestCase
     /**
      * @test
      */
+    public function throwsExceptionIfContextKeyDoesNotExist(): void
+    {
+        $response = Github\Response\StatusFactory::create();
+        unset($response['context']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        Status::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfContextKeyIsEmptyString(): void
+    {
+        $response = Github\Response\StatusFactory::create([
+            'context' => '',
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        Status::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
     public function throwsExceptionIfDescriptionKeyDoesNotExist(): void
     {
         $response = Github\Response\StatusFactory::create();

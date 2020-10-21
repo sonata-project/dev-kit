@@ -20,7 +20,7 @@ jobs:
 
     {% verbatim %}continue-on-error: ${{ matrix.allowed_to_fail }}{% endverbatim %}
 
-{% if 'mongodb' in services %}
+{% if branch.hasService('mongodb') %}
     services:
       mongo:
         image: mongo
@@ -62,14 +62,13 @@ jobs:
         with:
           {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
           coverage: pcov
-{% if 'mongodb' in services %}
-          tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}, pecl
+{% if branch.hasService('mongodb') %}
+          tools: composer:v{{ project.composerVersion }}, pecl
           extensions: mongodb
-
 {% else %}
-          tools: composer:{% if project.repository.name == 'sandbox' %}v1{% else %}v2{% endif %}
-
+          tools: composer:v{{ project.composerVersion }}
 {% endif %}
+
       - name: Add PHPUnit matcher
         {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
@@ -87,7 +86,12 @@ jobs:
 {% endverbatim %}
       - name: Configuration required for PHP 8.0
         if: matrix.php-version == '8.0'
-        run: composer config platform.php 7.4.99 && composer require phpunit/phpunit:"9.3.*" --no-update
+        run: composer config platform.php 7.4.99
+
+      - name: Sets phpunit 9 for PHP 8.0
+        if: matrix.php-version == '8.0'
+        run: |
+          echo 'SYMFONY_PHPUNIT_VERSION=9' >> $GITHUB_ENV
 
       - name: Install variant
         if: matrix.variant != 'normal'
@@ -108,12 +112,7 @@ jobs:
         run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
       - name: Run Tests
-        if: matrix.php-version != '8.0'
         run: make test
-
-      - name: Run Tests (PHP 8.0)
-        if: matrix.php-version == '8.0'
-        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
       - name: Send coverage to Codecov
         uses: codecov/codecov-action@v1

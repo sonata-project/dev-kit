@@ -34,6 +34,7 @@ final class StatusFactory
                 'pending',
                 'success',
             ]),
+            'context' => $faker->word,
             'description' => $faker->sentence(5),
             'target_url' => $faker->url,
         ];

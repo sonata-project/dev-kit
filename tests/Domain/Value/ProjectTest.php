@@ -23,6 +23,7 @@ final class ProjectTest extends TestCase
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
     public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
+  composer_version: '1'
   phpstan: true
   psalm: true
   excluded_files: []
@@ -84,6 +85,7 @@ CONFIG;
         self::assertNull($project->customGitignorePart());
         self::assertNull($project->customGitattributesPart());
         self::assertTrue($project->hasDocumentation());
+        self::assertSame('1', $project->composerVersion());
     }
 
     /**

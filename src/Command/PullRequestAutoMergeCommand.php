@@ -15,6 +15,7 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Api\Checks;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use App\Github\Api\References;
@@ -34,6 +35,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private Projects $projects;
     private PullRequests $pullRequests;
     private Statuses $statuses;
+    private Checks $checks;
     private Commits $commits;
     private References $references;
 
@@ -41,6 +43,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         Projects $projects,
         PullRequests $pullRequests,
         Statuses $statuses,
+        Checks $checks,
         Commits $commits,
         References $references
     ) {
@@ -49,6 +52,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $this->projects = $projects;
         $this->pullRequests = $pullRequests;
         $this->statuses = $statuses;
+        $this->checks = $checks;
         $this->commits = $commits;
         $this->references = $references;
     }
@@ -129,14 +133,27 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pr->head()->sha()
             );
 
+            $checkRuns = $this->checks->all(
+                $repository,
+                $pr->head()->sha()
+            );
+
             $this->io->writeln(sprintf(
-                '    Combined status: %s',
-                $combinedStatus->state()
+                '    Combined status successful? %s',
+                $combinedStatus->isSuccessful() ? '<info>yes</info>' : '<error>no</error>'
+            ));
+            $this->io->newLine();
+
+            $this->io->writeln(sprintf(
+                '    Checks:          %s',
+                $checkRuns->isSuccessful() ? '<info>yes</info>' : '<error>no</error>'
             ));
             $this->io->newLine();
 
             // Ignore the PR for now if status is not good.
-            if (!$combinedStatus->isSuccessful()) {
+            if (!$combinedStatus->isSuccessful()
+                || !$checkRuns->isSuccessful()
+            ) {
                 continue;
             }
 

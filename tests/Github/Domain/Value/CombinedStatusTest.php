@@ -90,14 +90,50 @@ final class CombinedStatusTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfStatusesKeyIsEmptyArray(): void
+    public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsSuccess(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create();
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'success',
+        ]);
+
         $response['statuses'] = [];
 
         $this->expectException(\InvalidArgumentException::class);
 
         CombinedStatus::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsFailure(): void
+    {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'failure',
+        ]);
+
+        $response['statuses'] = [];
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        CombinedStatus::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function allowStatusesKeyIsEmptyArrayAndStateIsPending(): void
+    {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'pending',
+        ]);
+
+        $response['statuses'] = [];
+
+        self::assertSame(
+            [],
+            CombinedStatus::fromResponse($response)->statuses()
+        );
     }
 
     /**

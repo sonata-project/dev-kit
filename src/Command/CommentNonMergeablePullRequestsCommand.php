@@ -65,7 +65,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->io->title('Comment non-mergable pull requests');
+        $this->io->title('Comment non-mergeable pull requests');
 
         /** @var Project $project */
         foreach ($this->projects->all() as $project) {
@@ -118,6 +118,11 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                     || $lastComment->before($lastCommit->date())
                 ) {
                     $message = 'Could you please rebase your PR and fix merge conflicts?';
+
+                    if (self::DEPENDABOT_BOT === $pr->user()->login()) {
+                        $message = '@dependabot rebase';
+                    }
+
                     $label = Label::PendingAuthor();
 
                     if ($this->apply) {

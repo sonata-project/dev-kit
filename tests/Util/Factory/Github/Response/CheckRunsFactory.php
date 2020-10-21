@@ -15,7 +15,7 @@ namespace App\Tests\Util\Factory\Github\Response;
 
 use Ergebnis\Test\Util\Helper;
 
-final class CombinedStatusFactory
+final class CheckRunsFactory
 {
     use Helper;
 
@@ -28,21 +28,14 @@ final class CombinedStatusFactory
     {
         $faker = self::faker();
 
-        $state = $faker->randomElement([
-            'failure',
-            'pending',
-            'success',
-        ]);
-
         $response = [
-            'state' => $state,
-            'statuses' => array_map(static function (): array {
-                return StatusFactory::create();
-            }, range('pending' === $state ? 0 : 1, $faker->numberBetween(2, 3))),
+            'check_runs' => array_map(static function (): array {
+                return CheckRunFactory::create();
+            }, range(0, $faker->numberBetween(2, 3))),
         ];
 
-        if (\array_key_exists('statuses', $parameters)) {
-            $response['statuses'] = $parameters['statuses'];
+        if (\array_key_exists('check_runs', $parameters)) {
+            $response['check_runs'] = $parameters['check_runs'];
         }
 
         return array_replace_recursive(
