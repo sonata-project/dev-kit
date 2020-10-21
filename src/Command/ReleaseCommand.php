@@ -19,10 +19,11 @@ use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
-use App\Github\Domain\Value\CheckRun;
+use App\Github\Domain\Value\CheckRuns;
+use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
-use App\Github\Domain\Value\Status;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -125,17 +126,8 @@ EOT;
             return 0;
         }
 
-        $notificationStyle->section('Statuses');
-
-        array_map(function (Status $status): void {
-            $this->renderStatus($status);
-        }, $nextRelease->combinedStatus()->statuses());
-
-        $notificationStyle->section('Checks');
-
-        array_map(function (CheckRun $checkRun): void {
-            $this->renderCheckRun($checkRun);
-        }, $nextRelease->checkRuns()->all());
+        $this->renderCombinedStatus($nextRelease->combinedStatus());
+        $this->renderCheckRuns($nextRelease->checkRuns());
 
         $notificationStyle->section('Pull Requests');
 
@@ -235,57 +227,91 @@ EOT;
         }
     }
 
-    private function renderStatus(Status $status): void
+    private function renderCombinedStatus(CombinedStatus $combinedStatus): void
     {
         $notificationStyle = $this->io->getErrorStyle();
-        if ('success' === $status->state()) {
-            $notificationStyle->writeln(sprintf(
-                '    <info>%s</info>',
-                $status->description()
-            ));
-        } elseif ('pending' === $status->state()) {
-            $notificationStyle->writeln(sprintf(
-                '    <comment>%s</comment>',
-                $status->description()
-            ));
-        } else {
-            $notificationStyle->writeln(sprintf(
-                '    <error>%s</error>',
-                $status->description()
-            ));
+
+        if ([] === $combinedStatus->statuses()) {
+            return;
         }
 
-        $notificationStyle->text(sprintf(
-            '     %s',
-            $status->targetUrl()
-        ));
-        $notificationStyle->newLine();
+        $table = new Table($notificationStyle);
+        $table->setStyle('box');
+        $table->setHeaderTitle('Statuses');
+        $table->setHeaders([
+            'Name',
+            'Description',
+            'URL',
+        ]);
+
+        foreach ($combinedStatus->statuses() as $status) {
+            if ('success' === $status->state()) {
+                $formattedStatus = sprintf(
+                    '<info>%s</info>',
+                    $status->context()
+                );
+            } elseif ('pending' === $status->state()) {
+                $formattedStatus = sprintf(
+                    '<comment>%s</comment>',
+                    $status->context()
+                );
+            } else {
+                $formattedStatus = sprintf(
+                    '<error>%s</error>',
+                    $status->context()
+                );
+            }
+
+            $table->addRow([
+                $formattedStatus,
+                $status->description(),
+                $status->targetUrl(),
+            ]);
+        }
+
+        $table->render();
     }
 
-    private function renderCheckRun(CheckRun $checkRun): void
+    private function renderCheckRuns(CheckRuns $checkRuns): void
     {
         $notificationStyle = $this->io->getErrorStyle();
-        if ('success' === $checkRun->conclusion()) {
-            $notificationStyle->writeln(sprintf(
-                '    <info>%s</info>',
-                $checkRun->name()
-            ));
-        } elseif ('in_progress' === $checkRun->conclusion()) {
-            $notificationStyle->writeln(sprintf(
-                '    <comment>%s</comment>',
-                $checkRun->name()
-            ));
-        } else {
-            $notificationStyle->writeln(sprintf(
-                '    <error>%s</error>',
-                $checkRun->name()
-            ));
+
+        if ([] === $checkRuns->all()) {
+            return;
         }
 
-        $notificationStyle->text(sprintf(
-            '     %s',
-            $checkRun->detailsUrl()
-        ));
-        $notificationStyle->newLine();
+        $table = new Table($notificationStyle);
+        $table->setStyle('box');
+        $table->setHeaderTitle('Checks');
+        $table->setHeaders([
+            'Name',
+            'URL',
+        ]);
+
+        foreach ($checkRuns->all() as $status) {
+            if ('success' === $status->conclusion()) {
+                $formattedStatus = sprintf(
+                    '<info>%s</info>',
+                    $status->name()
+                );
+            } elseif ('in_progress' === $status->conclusion()) {
+                $formattedStatus = sprintf(
+                    '<comment>%s</comment>',
+                    $status->name()
+                );
+            } else {
+                $formattedStatus = sprintf(
+                    '<error>%s</error>',
+                    $status->name()
+                );
+            }
+
+            $table->addRow([
+                $formattedStatus,
+                $status->detailsUrl(),
+            ]);
+        }
+
+        $table->render();
     }
 }

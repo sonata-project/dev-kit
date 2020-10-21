@@ -21,12 +21,12 @@ use Webmozart\Assert\Assert;
 final class CheckRuns
 {
     /**
-     * @var CheckRun[]
+     * @var array<string, CheckRun>
      */
     private array $checkRuns;
 
     /**
-     * @param CheckRun[] $checkRuns
+     * @param array<string, CheckRun> $checkRuns
      */
     private function __construct(array $checkRuns)
     {
@@ -49,13 +49,11 @@ final class CheckRuns
 
         ksort($checkRuns, SORT_NATURAL | SORT_FLAG_CASE);
 
-        return new self(
-            $checkRuns
-        );
+        return new self($checkRuns);
     }
 
     /**
-     * @return CheckRun[]
+     * @return array<string, CheckRun>
      */
     public function all(): array
     {
