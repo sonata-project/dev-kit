@@ -369,7 +369,7 @@ notification-bundle:
 page-bundle:
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-        "    use Sonata\PageBundle\Request\RequestFactory; // before: use Symfony\Component\HttpFoundation\Request;"
+        "    use Sonata\PageBundle\Request\RequestFactory; \/\/ before: use Symfony\Component\HttpFoundation\Request;"
     branches:
         master:
             php: ['7.2', '7.3', '7.4']
