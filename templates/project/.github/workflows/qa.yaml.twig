@@ -23,6 +23,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+{# Remove when removing 3.x for the managed branches of block-bundle #}
+{% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
+      - name: Set COMPOSER_ROOT_VERSION environment variable
+        uses: ergebnis/composer-root-version-action@0.2.0
+        with:
+          branch: master
+
+{% endif %}
       - name: PHPStan
         uses: docker://oskarstark/phpstan-ga
         env:
@@ -45,8 +53,10 @@ jobs:
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-      - name: Allow cyclic dependency between block-bundle and admin-bundle
-        run: sed --in-place "s/\"dev-master\":/\"dev-${GITHUB_SHA}\":/" composer.json
+      - name: Set COMPOSER_ROOT_VERSION environment variable
+        uses: ergebnis/composer-root-version-action@0.2.0
+        with:
+          branch: master
 
 {% endif %}
       - name: Psalm
