@@ -15,14 +15,70 @@ on:
 jobs:
 {% if project.usesPHPStan %}
     phpstan:
-        name: PHPStan
+        {% verbatim %}name: PHPStan ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
 
         runs-on: ubuntu-latest
+
+        continue-on-error: ${{ matrix.allowed_to_fail }}
+
+        strategy:
+            matrix:
+                php-version:
+{% for phpVersion in branch.phpVersions %}
+                    - '{{ phpVersion.toString }}'
+{% endfor %}
+                dependencies: [highest]
+                allowed_to_fail: [false]
+                variant: [normal]
+                include:
+                    - php-version: '{{ branch.lowestPhpVersion.toString }}'
+                      dependencies: lowest
+                      allowed_to_fail: false
+                      variant: normal
+                    - php-version: '8.0'
+                      dependencies: highest
+                      allowed_to_fail: true
+                      variant: normal
+{% for variant in branch.variants %}
+                    - php-version: '{{ branch.targetPhpVersion.toString }}'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: '{{ variant.toString|raw }}'
+{% endfor %}
 
         steps:
             - name: Checkout
               uses: actions/checkout@v2
 
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+                  coverage: none
+{% if branch.hasService('mongodb') %}
+                  tools: composer:v{{ project.composerVersion }}, pecl
+                  extensions: mongodb
+{% else %}
+                  tools: composer:v{{ project.composerVersion }}
+{% endif %}
+
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
+{%- verbatim %}
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
+{% endverbatim %}
+
+            - name: Install variant
+              if: matrix.variant != 'normal'
+              {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
+
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
             - name: Set COMPOSER_ROOT_VERSION environment variable
@@ -31,26 +87,84 @@ jobs:
                   branch: master
 
 {% endif %}
+            - name: Install Composer dependencies (lowest)
+              if: matrix.dependencies == 'lowest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
+
+            - name: Install Composer dependencies (highest)
+              if: matrix.dependencies == 'highest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+
             - name: PHPStan
-              uses: docker://oskarstark/phpstan-ga
-              env:
-                  REQUIRE_DEV: true
-{% if project.repository.name in ['SonataDoctrineMongoDBAdminBundle', 'sandbox'] %}
-                  CHECK_PLATFORM_REQUIREMENTS: false
-{% endif %}
-              with:
-                  args: analyse
+              run: vendor/bin/phpstan --memory-limit=1G analyse
+
 {% endif %}
 {% if project.usesPsalm %}
     psalm:
-        name: Psalm
+        {% verbatim %}name: Psalm ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
 
         runs-on: ubuntu-latest
+
+        continue-on-error: ${{ matrix.allowed_to_fail }}
+
+        strategy:
+            matrix:
+                php-version:
+{% for phpVersion in branch.phpVersions %}
+                    - '{{ phpVersion.toString }}'
+{% endfor %}
+                dependencies: [highest]
+                allowed_to_fail: [false]
+                variant: [normal]
+                include:
+                    - php-version: '{{ branch.lowestPhpVersion.toString }}'
+                      dependencies: lowest
+                      allowed_to_fail: false
+                      variant: normal
+                    - php-version: '8.0'
+                      dependencies: highest
+                      allowed_to_fail: true
+                      variant: normal
+{% for variant in branch.variants %}
+                    - php-version: '{{ branch.targetPhpVersion.toString }}'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: '{{ variant.toString|raw }}'
+{% endfor %}
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
 
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+                  coverage: none
+{% if branch.hasService('mongodb') %}
+                  tools: composer:v{{ project.composerVersion }}, pecl
+                  extensions: mongodb
+{% else %}
+                  tools: composer:v{{ project.composerVersion }}
+{% endif %}
+
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
+{%- verbatim %}
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
+{% endverbatim %}
+
+            - name: Install variant
+              if: matrix.variant != 'normal'
+              {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
+
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
             - name: Set COMPOSER_ROOT_VERSION environment variable
@@ -59,8 +173,15 @@ jobs:
                   branch: master
 
 {% endif %}
+            - name: Install Composer dependencies (lowest)
+              if: matrix.dependencies == 'lowest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
+
+            - name: Install Composer dependencies (highest)
+              if: matrix.dependencies == 'highest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+
             - name: Psalm
-              uses: docker://vimeo/psalm-github-actions
-              with:
-                  args: --shepherd
+              run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd
+
 {% endif %}
