@@ -70,6 +70,12 @@ docs:
 {% if project.usesPHPStan %}
 
 phpstan:
-	docker run --env REQUIRE_DEV=true {% if project.repository.name in ['SonataDoctrineMongoDBAdminBundle', 'sandbox'] %}--env CHECK_PLATFORM_REQUIREMENTS=false {% endif %}--rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest analyse
+	vendor/bin/phpstan --memory-limit=1G analyse
 .PHONY: phpstan
+{% endif %}
+{% if project.usesPsalm %}
+
+psalm:
+	vendor/bin/psalm
+.PHONY: psalm
 {% endif %}
