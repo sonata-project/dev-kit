@@ -5,62 +5,62 @@
 name: Quality assurance
 
 on:
-  push:
-    branches:
+    push:
+        branches:
 {% for branch in project.branchesReverse %}
-      - {{ branch.name }}
+            - {{ branch.name }}
 {% endfor %}
-  pull_request:
+    pull_request:
 
 jobs:
 {% if project.usesPHPStan %}
-  phpstan:
-    name: PHPStan
+    phpstan:
+        name: PHPStan
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-      - name: Set COMPOSER_ROOT_VERSION environment variable
-        uses: ergebnis/composer-root-version-action@0.2.0
-        with:
-          branch: master
+            - name: Set COMPOSER_ROOT_VERSION environment variable
+              uses: ergebnis/composer-root-version-action@0.2.0
+              with:
+                  branch: master
 
 {% endif %}
-      - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
-        env:
-          REQUIRE_DEV: true
+            - name: PHPStan
+              uses: docker://oskarstark/phpstan-ga
+              env:
+                  REQUIRE_DEV: true
 {% if project.repository.name in ['SonataDoctrineMongoDBAdminBundle', 'sandbox'] %}
-          CHECK_PLATFORM_REQUIREMENTS: false
+                  CHECK_PLATFORM_REQUIREMENTS: false
 {% endif %}
-        with:
-          args: analyse
+              with:
+                  args: analyse
 {% endif %}
 {% if project.usesPsalm %}
-  psalm:
-    name: Psalm
+    psalm:
+        name: Psalm
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-      - name: Set COMPOSER_ROOT_VERSION environment variable
-        uses: ergebnis/composer-root-version-action@0.2.0
-        with:
-          branch: master
+            - name: Set COMPOSER_ROOT_VERSION environment variable
+              uses: ergebnis/composer-root-version-action@0.2.0
+              with:
+                  branch: master
 
 {% endif %}
-      - name: Psalm
-        uses: docker://vimeo/psalm-github-actions
-        with:
-          args: --shepherd
+            - name: Psalm
+              uses: docker://vimeo/psalm-github-actions
+              with:
+                  args: --shepherd
 {% endif %}
