@@ -11,7 +11,7 @@ jobs:
   test:
     name: PHP ${{ matrix.php-version }}
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     continue-on-error: ${{ matrix.allowed_to_fail }}
 
@@ -67,7 +67,7 @@ jobs:
   auto-merge:
     name: Auto-Merge
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     needs:
       - test

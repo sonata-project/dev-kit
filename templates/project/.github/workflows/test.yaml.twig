@@ -16,7 +16,7 @@ jobs:
     test:
         {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
 
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
         {% verbatim %}continue-on-error: ${{ matrix.allowed_to_fail }}{% endverbatim %}
 
