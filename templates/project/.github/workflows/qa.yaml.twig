@@ -15,19 +15,9 @@ on:
 jobs:
 {% if project.usesPHPStan %}
     phpstan:
-        {% verbatim %}name: PHPStan ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
+        name: PHPStan
 
         runs-on: ubuntu-latest
-
-        continue-on-error: ${{ matrix.allowed_to_fail }}
-
-        strategy:
-            matrix:
-                php-version:
-                    - '{{ branch.targetPhpVersion.toString }}'
-                dependencies: [highest]
-                allowed_to_fail: [false]
-                variant: [normal]
 
         steps:
             - name: Checkout
@@ -36,7 +26,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+                  php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
 {% if branch.hasService('mongodb') %}
                   tools: composer:v{{ project.composerVersion }}, pecl
@@ -52,15 +42,9 @@ jobs:
             - name: Cache Composer
               uses: actions/cache@v2
               with:
-{%- verbatim %}
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
-                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
-{% endverbatim %}
-
-            - name: Install variant
-              if: matrix.variant != 'normal'
-              {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
+                  path: {% verbatim %}${{ steps.composer-cache.outputs.dir }}{% endverbatim %}
+                  key: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-highest-normal
+                  restore-keys: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
@@ -70,12 +54,7 @@ jobs:
                   branch: master
 
 {% endif %}
-            - name: Install Composer dependencies (lowest)
-              if: matrix.dependencies == 'lowest'
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
-
             - name: Install Composer dependencies (highest)
-              if: matrix.dependencies == 'highest'
               run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
             - name: PHPStan
@@ -84,19 +63,9 @@ jobs:
 {% endif %}
 {% if project.usesPsalm %}
     psalm:
-        {% verbatim %}name: Psalm ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
+        name: Psalm
 
         runs-on: ubuntu-latest
-
-        continue-on-error: ${{ matrix.allowed_to_fail }}
-
-        strategy:
-            matrix:
-                php-version:
-                    - '{{ branch.targetPhpVersion.toString }}'
-                dependencies: [highest]
-                allowed_to_fail: [false]
-                variant: [normal]
 
         steps:
             - name: Checkout code
@@ -105,7 +74,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+                  php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
 {% if branch.hasService('mongodb') %}
                   tools: composer:v{{ project.composerVersion }}, pecl
@@ -121,15 +90,9 @@ jobs:
             - name: Cache Composer
               uses: actions/cache@v2
               with:
-{%- verbatim %}
                   path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
-                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
-{% endverbatim %}
-
-            - name: Install variant
-              if: matrix.variant != 'normal'
-              {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
+                  key: ${{ runner.os }}-{{ branch.targetPhpVersion.toString }}-composer-highest-normal
+                  restore-keys: ${{ runner.os }}-{{ branch.targetPhpVersion.toString }}-composer-
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
@@ -139,12 +102,7 @@ jobs:
                   branch: master
 
 {% endif %}
-            - name: Install Composer dependencies (lowest)
-              if: matrix.dependencies == 'lowest'
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
-
             - name: Install Composer dependencies (highest)
-              if: matrix.dependencies == 'highest'
               run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
             - name: Psalm
