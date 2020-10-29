@@ -67,6 +67,7 @@ final class CheckRunsTest extends TestCase
         yield 'failure' => [false, 'failure'];
         yield 'neutral' => [false, 'neutral'];
         yield 'skipped' => [false, 'skipped'];
+        yield 'stale' => [false, 'stale'];
         yield 'success' => [true, 'success'];
         yield 'timed_out' => [false, 'timed_out'];
     }

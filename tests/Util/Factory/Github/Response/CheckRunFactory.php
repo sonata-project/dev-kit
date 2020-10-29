@@ -40,6 +40,7 @@ final class CheckRunFactory
                 'failure',
                 'neutral',
                 'skipped',
+                'stale',
                 'success',
                 'timed_out',
             ]),

@@ -5,116 +5,118 @@
 name: Test
 
 on:
-  push:
-    branches:
+    push:
+        branches:
 {% for branch in project.branchesReverse %}
-      - {{ branch.name }}
+            - {{ branch.name }}
 {% endfor %}
-  pull_request:
+    pull_request:
 
 jobs:
-  test:
-    {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
+    test:
+        {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
-    {% verbatim %}continue-on-error: ${{ matrix.allowed_to_fail }}{% endverbatim %}
+        {% verbatim %}continue-on-error: ${{ matrix.allowed_to_fail }}{% endverbatim %}
 
 {% if branch.hasService('mongodb') %}
-    services:
-      mongo:
-        image: mongo
-        ports:
-          - 27017:27017
+        services:
+            mongo:
+                image: mongo
+                ports:
+                    - 27017:27017
 
 {% endif %}
-    strategy:
-      matrix:
-        php-version:
+        strategy:
+            matrix:
+                php-version:
 {% for phpVersion in branch.phpVersions %}
-          - '{{ phpVersion.toString }}'
+                    - '{{ phpVersion.toString }}'
 {% endfor %}
-        dependencies: [highest]
-        allowed_to_fail: [false]
-        variant: [normal]
-        include:
-          - php-version: '{{ branch.lowestPhpVersion.toString }}'
-            dependencies: lowest
-            allowed_to_fail: false
-            variant: normal
-          - php-version: '8.0'
-            dependencies: highest
-            allowed_to_fail: true
-            variant: normal
+                dependencies: [highest]
+                allowed_to_fail: [false]
+                variant: [normal]
+                include:
+                    - php-version: '{{ branch.lowestPhpVersion.toString }}'
+                      dependencies: lowest
+                      allowed_to_fail: false
+                      variant: normal
+                    - php-version: '8.0'
+                      dependencies: highest
+                      allowed_to_fail: true
+                      variant: normal
 {% for variant in branch.variants %}
-          - php-version: '{{ branch.targetPhpVersion.toString }}'
-            dependencies: highest
-            allowed_to_fail: false
-            variant: '{{ variant.toString|raw }}'
+                    - php-version: '{{ branch.targetPhpVersion.toString }}'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: '{{ variant.toString|raw }}'
 {% endfor %}
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
-          coverage: pcov
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+                  coverage: pcov
 {% if branch.hasService('mongodb') %}
-          tools: composer:v{{ project.composerVersion }}, pecl
-          extensions: mongodb
+                  tools: composer:v{{ project.composerVersion }}, pecl
+                  extensions: mongodb
 {% else %}
-          tools: composer:v{{ project.composerVersion }}
+                  tools: composer:v{{ project.composerVersion }}
 {% endif %}
 
-      - name: Add PHPUnit matcher
-        {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
+            - name: Add PHPUnit matcher
+              {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
-      - name: Set Composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Cache Composer
-        uses: actions/cache@v2
-        with:
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
 {%- verbatim %}
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
 {% endverbatim %}
-      - name: Configuration required for PHP 8.0
-        if: matrix.php-version == '8.0'
-        run: composer config platform.php 7.4.99
+            - name: Configuration required for PHP 8.0
+              if: matrix.php-version == '8.0'
+              run: composer config platform.php 7.4.99
 
-      - name: Sets phpunit 9 for PHP 8.0
-        if: matrix.php-version == '8.0'
-        run: |
-          echo 'SYMFONY_PHPUNIT_VERSION=9' >> $GITHUB_ENV
+            - name: Sets PHPUnit 9 for PHP 8.0
+              if: matrix.php-version == '8.0'
+              run: |
+                  echo 'SYMFONY_PHPUNIT_VERSION=9' >> $GITHUB_ENV
 
-      - name: Install variant
-        if: matrix.variant != 'normal'
-        {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
+            - name: Install variant
+              if: matrix.variant != 'normal'
+              {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-      - name: Allow cyclic dependency between block-bundle and admin-bundle
-        run: sed --in-place "s/\"dev-master\":/\"dev-${GITHUB_SHA}\":/" composer.json
+            - name: Set COMPOSER_ROOT_VERSION environment variable
+              uses: ergebnis/composer-root-version-action@0.2.0
+              with:
+                  branch: master
 
 {% endif %}
-      - name: Install Composer dependencies (lowest)
-        if: matrix.dependencies == 'lowest'
-        run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
+            - name: Install Composer dependencies (lowest)
+              if: matrix.dependencies == 'lowest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
 
-      - name: Install Composer dependencies (highest)
-        if: matrix.dependencies == 'highest'
-        run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+            - name: Install Composer dependencies (highest)
+              if: matrix.dependencies == 'highest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
-      - name: Run Tests
-        run: make test
+            - name: Run Tests
+              run: make test
 
-      - name: Send coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          file: build/logs/clover.xml
+            - name: Send coverage to Codecov
+              uses: codecov/codecov-action@v1
+              with:
+                  file: build/logs/clover.xml

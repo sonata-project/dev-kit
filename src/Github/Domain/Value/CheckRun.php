@@ -26,6 +26,7 @@ final class CheckRun
     private const CONCLUSION_FAILURE = 'failure';
     private const CONCLUSION_NEUTRAL = 'neutral';
     private const CONCLUSION_SKIPPED = 'skipped';
+    private const CONCLUSION_STALE = 'stale';
     private const CONCLUSION_SUCCESS = 'success';
     private const CONCLUSION_TIMED_OUT = 'timed_out';
 
@@ -34,11 +35,11 @@ final class CheckRun
     private const STATUS_QUEUED = 'queued';
 
     private string $status;
-    private string $conclusion;
+    private ?string $conclusion;
     private string $name;
     private string $detailsUrl;
 
-    private function __construct(string $status, string $conclusion, string $name, string $detailsUrl)
+    private function __construct(string $status, ?string $conclusion, string $name, string $detailsUrl)
     {
         $this->status = $status;
         $this->conclusion = $conclusion;
@@ -62,19 +63,23 @@ final class CheckRun
         );
 
         Assert::keyExists($response, 'conclusion');
-        Assert::stringNotEmpty($response['conclusion']);
-        Assert::oneOf(
-            $response['conclusion'],
-            [
-                self::CONCLUSION_ACTION_REQUIRED,
-                self::CONCLUSION_CANCELLED,
-                self::CONCLUSION_FAILURE,
-                self::CONCLUSION_NEUTRAL,
-                self::CONCLUSION_SKIPPED,
-                self::CONCLUSION_SUCCESS,
-                self::CONCLUSION_TIMED_OUT,
-            ]
-        );
+
+        if (null !== $response['conclusion']) {
+            Assert::stringNotEmpty($response['conclusion']);
+            Assert::oneOf(
+                $response['conclusion'],
+                [
+                    self::CONCLUSION_ACTION_REQUIRED,
+                    self::CONCLUSION_CANCELLED,
+                    self::CONCLUSION_FAILURE,
+                    self::CONCLUSION_NEUTRAL,
+                    self::CONCLUSION_SKIPPED,
+                    self::CONCLUSION_STALE,
+                    self::CONCLUSION_SUCCESS,
+                    self::CONCLUSION_TIMED_OUT,
+                ]
+            );
+        }
 
         Assert::keyExists($response, 'name');
         Assert::stringNotEmpty($response['name']);
@@ -92,6 +97,14 @@ final class CheckRun
 
     public function isSuccessful(): bool
     {
+        if ('PHP 8.0 + highest + normal' === $this->name) {
+            return true;
+        }
+
+        if (null === $this->conclusion) {
+            return false;
+        }
+
         return self::CONCLUSION_SUCCESS === $this->conclusion;
     }
 
@@ -100,7 +113,7 @@ final class CheckRun
         return $this->status;
     }
 
-    public function conclusion(): string
+    public function conclusion(): ?string
     {
         return $this->conclusion;
     }
