@@ -24,27 +24,10 @@ jobs:
         strategy:
             matrix:
                 php-version:
-{% for phpVersion in branch.phpVersions %}
-                    - '{{ phpVersion.toString }}'
-{% endfor %}
+                    - '{{ branch.targetPhpVersion.toString }}'
                 dependencies: [highest]
                 allowed_to_fail: [false]
                 variant: [normal]
-                include:
-                    - php-version: '{{ branch.lowestPhpVersion.toString }}'
-                      dependencies: lowest
-                      allowed_to_fail: false
-                      variant: normal
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed_to_fail: true
-                      variant: normal
-{% for variant in branch.variants %}
-                    - php-version: '{{ branch.targetPhpVersion.toString }}'
-                      dependencies: highest
-                      allowed_to_fail: false
-                      variant: '{{ variant.toString|raw }}'
-{% endfor %}
 
         steps:
             - name: Checkout
@@ -110,27 +93,10 @@ jobs:
         strategy:
             matrix:
                 php-version:
-{% for phpVersion in branch.phpVersions %}
-                    - '{{ phpVersion.toString }}'
-{% endfor %}
+                    - '{{ branch.targetPhpVersion.toString }}'
                 dependencies: [highest]
                 allowed_to_fail: [false]
                 variant: [normal]
-                include:
-                    - php-version: '{{ branch.lowestPhpVersion.toString }}'
-                      dependencies: lowest
-                      allowed_to_fail: false
-                      variant: normal
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed_to_fail: true
-                      variant: normal
-{% for variant in branch.variants %}
-                    - php-version: '{{ branch.targetPhpVersion.toString }}'
-                      dependencies: highest
-                      allowed_to_fail: false
-                      variant: '{{ variant.toString|raw }}'
-{% endfor %}
 
         steps:
             - name: Checkout code
