@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Run PHP-CS-Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga:2.16.4
+        uses: docker://oskarstark/php-cs-fixer-ga:2.16.7
         with:
           args: --ansi --verbose --diff
 
