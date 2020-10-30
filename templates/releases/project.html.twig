@@ -24,6 +24,9 @@
         <p>
             {{ release.changelog.asMarkdown|markdown_to_html }}
         </p>
+
+        <h2>Changelog as Markdown</h2>
+        <textarea>{{ release.changelog.asMarkdown|markdown_to_html }}</textarea>
     {% else %}
         <h1>No Release needed for {{ release.project.title }}</h1>
     {% endif %}
