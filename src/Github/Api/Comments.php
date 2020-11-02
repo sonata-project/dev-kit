@@ -55,7 +55,7 @@ final class Comments
         return array_filter(
             $comments,
             static function (Comment $comment) use ($username) {
-                return $comment->user() === $username;
+                return $comment->user()->login() === $username;
             }
         );
     }

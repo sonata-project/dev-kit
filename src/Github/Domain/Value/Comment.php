@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Github\Domain\Value\PullRequest\User;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,9 +22,9 @@ use Webmozart\Assert\Assert;
 final class Comment
 {
     private \DateTimeImmutable $date;
-    private string $user;
+    private User $user;
 
-    private function __construct(\DateTimeImmutable $date, string $user)
+    private function __construct(\DateTimeImmutable $date, User $user)
     {
         Assert::stringNotEmpty($user);
 
@@ -37,12 +38,9 @@ final class Comment
 
         Assert::keyExists($response, 'created_at');
 
-        Assert::keyExists($response, 'user');
-        Assert::keyExists($response['user'], 'login');
-
         return new self(
             new \DateTimeImmutable($response['created_at']),
-            $response['user']['login']
+            User::fromResponse($response['user'])
         );
     }
 
@@ -51,7 +49,7 @@ final class Comment
         return $this->date;
     }
 
-    public function user(): string
+    public function user(): User
     {
         return $this->user;
     }
