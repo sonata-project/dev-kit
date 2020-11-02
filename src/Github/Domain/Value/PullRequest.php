@@ -243,6 +243,11 @@ final class PullRequest
         return Stability::unknown();
     }
 
+    public function needsChangelog(): bool
+    {
+        return $this->stability()->notEquals(Stability::pedantic());
+    }
+
     public function hasChangelog(): bool
     {
         return [] !== $this->changelog();
