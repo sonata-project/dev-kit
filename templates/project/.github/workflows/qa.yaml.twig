@@ -90,9 +90,9 @@ jobs:
             - name: Cache Composer
               uses: actions/cache@v2
               with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-{{ branch.targetPhpVersion.toString }}-composer-highest-normal
-                  restore-keys: ${{ runner.os }}-{{ branch.targetPhpVersion.toString }}-composer-
+                  path: {% verbatim %}${{ steps.composer-cache.outputs.dir }}{% endverbatim %}
+                  key: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-highest-normal
+                  restore-keys: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}

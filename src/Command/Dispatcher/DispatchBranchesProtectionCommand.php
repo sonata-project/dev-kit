@@ -82,7 +82,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             );
 
             if ($this->apply) {
-                $this->branchProtections->update($repository, $branch, [
+                $settings = [
                     'required_status_checks' => [
                         'strict' => false,
                         'contexts' => $requiredStatusChecks,
@@ -97,7 +97,13 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
                     ],
                     'restrictions' => null,
                     'enforce_admins' => false,
-                ]);
+                ];
+
+                $this->branchProtections->update(
+                    $repository,
+                    $branch,
+                    $settings
+                );
             }
         }
 
