@@ -22,8 +22,8 @@ use App\Github\Domain\Value\IncomingWebhook\Event;
 use App\Github\Domain\Value\IncomingWebhook\Payload;
 use App\Github\Domain\Value\Label;
 use Psr\Log\LoggerInterface;
-use Webmozart\Assert\Assert;
 use function Symfony\Component\String\u;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
