@@ -62,13 +62,13 @@ final class EventTest extends TestCase
         yield [
             true,
             Event::fromString('issue'),
-            Event::fromString('issue'),
+            Event::ISSUE(),
         ];
 
         yield [
             false,
             Event::fromString('issue'),
-            Event::fromString('issue_comment'),
+            Event::ISSUE_COMMENT(),
         ];
     }
 
@@ -89,35 +89,35 @@ final class EventTest extends TestCase
     {
         yield [
             true,
-            Event::fromString('synchronize'),
+            Event::fromString('issue'),
             [
-                Event::SYNCHRONIZE(),
+                Event::ISSUE(),
             ],
         ];
 
         yield [
             true,
-            Event::fromString('synchronize'),
+            Event::fromString('issue'),
             [
-                Event::SYNCHRONIZE(),
-                Event::CREATED(),
+                Event::ISSUE_COMMENT(),
+                Event::ISSUE(),
             ],
         ];
 
         yield [
             false,
-            Event::CREATED(),
+            Event::PULL_REQUEST(),
             [
-                Event::SYNCHRONIZE(),
+                Event::ISSUE(),
             ],
         ];
 
         yield [
             false,
-            Event::CREATED(),
+            Event::PULL_REQUEST(),
             [
-                Event::SYNCHRONIZE(),
-                Event::fromString('synchronize'),
+                Event::ISSUE(),
+                Event::fromString('issue_comment'),
             ],
         ];
     }
