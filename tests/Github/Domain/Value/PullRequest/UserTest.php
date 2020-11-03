@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\PullRequest;
 
 use App\Github\Domain\Value\PullRequest\User;
+use App\Tests\Util\Factory\Github;
 use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
-use App\Github\Domain\Value\PullRequest;
-use App\Tests\Util\Factory\Github;
 
 final class UserTest extends TestCase
 {
@@ -59,7 +58,7 @@ final class UserTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $response = Github\Response\PullRequest\UserFactory::create([
-            'id' => $value
+            'id' => $value,
         ]);
 
         User::fromResponse($response);
@@ -106,7 +105,7 @@ final class UserTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $response = Github\Response\PullRequest\UserFactory::create([
-            'login' => $value
+            'login' => $value,
         ]);
 
         User::fromResponse($response);
@@ -153,7 +152,7 @@ final class UserTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $response = Github\Response\PullRequest\UserFactory::create([
-            'html_url' => $value
+            'html_url' => $value,
         ]);
 
         User::fromResponse($response);

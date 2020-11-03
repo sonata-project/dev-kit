@@ -15,7 +15,6 @@ namespace App\Tests\Util\Factory\Github\Response\PullRequest;
 
 use Ergebnis\Test\Util\Helper;
 
-
 class UserFactory
 {
     use Helper;
