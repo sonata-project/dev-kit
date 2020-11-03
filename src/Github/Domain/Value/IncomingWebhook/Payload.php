@@ -127,7 +127,7 @@ final class Payload
             return false;
         }
 
-        return $this->issueAuthorId === $this->comment->user()->id();
+        return $this->issueAuthorId === $this->comment->author()->id();
     }
 
     public function repository(): Repository

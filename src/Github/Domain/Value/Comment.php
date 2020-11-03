@@ -24,14 +24,14 @@ final class Comment
     private int $id;
     private string $body;
     private \DateTimeImmutable $createdAt;
-    private User $user;
+    private User $author;
 
-    private function __construct(int $id, string $body, \DateTimeImmutable $createdAt, User $user)
+    private function __construct(int $id, string $body, \DateTimeImmutable $createdAt, User $author)
     {
         $this->id = $id;
         $this->body = $body;
         $this->createdAt = $createdAt;
-        $this->user = $user;
+        $this->author = $author;
     }
 
     public static function fromResponse(array $response): self
@@ -70,9 +70,9 @@ final class Comment
         return $this->createdAt;
     }
 
-    public function user(): User
+    public function author(): User
     {
-        return $this->user;
+        return $this->author;
     }
 
     public function before(\DateTimeImmutable $date): bool
