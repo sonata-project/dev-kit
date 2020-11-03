@@ -23,14 +23,14 @@ final class Comment
 {
     private int $id;
     private string $body;
-    private \DateTimeImmutable $date;
+    private \DateTimeImmutable $createdAt;
     private User $user;
 
-    private function __construct(int $id, string $body, \DateTimeImmutable $date, User $user)
+    private function __construct(int $id, string $body, \DateTimeImmutable $createdAt, User $user)
     {
         $this->id = $id;
         $this->body = $body;
-        $this->date = $date;
+        $this->createdAt = $createdAt;
         $this->user = $user;
     }
 
@@ -65,9 +65,9 @@ final class Comment
         return $this->body;
     }
 
-    public function date(): \DateTimeImmutable
+    public function createdAt(): \DateTimeImmutable
     {
-        return $this->date;
+        return $this->createdAt;
     }
 
     public function user(): User
@@ -77,6 +77,6 @@ final class Comment
 
     public function before(\DateTimeImmutable $date): bool
     {
-        return $this->date < $date;
+        return $this->createdAt < $date;
     }
 }
