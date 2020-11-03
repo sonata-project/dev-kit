@@ -27,6 +27,7 @@ use Webmozart\Assert\Assert;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @author Oskar Stark <oskarstark@googlemail.com>
  */
 final class HookProcessor
 {

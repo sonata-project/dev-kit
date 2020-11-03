@@ -43,6 +43,7 @@ final class Comment
         Assert::greaterThan($response['id'], 0);
 
         Assert::keyExists($response, 'body');
+        Assert::stringNotEmpty($response['body']);
 
         Assert::keyExists($response, 'created_at');
 
