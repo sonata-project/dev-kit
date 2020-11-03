@@ -15,6 +15,7 @@ namespace App\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\Comment;
 use App\Github\Domain\Value\Issue;
+use App\Github\Domain\Value\PullRequest\User;
 use App\Github\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
 
@@ -26,18 +27,16 @@ final class Payload
     private Action $action;
     private Event $event;
     private Issue $issue;
-    private int $issueAuthorId;
+    private User $issueAuthor;
     private ?Comment $comment;
     private Repository $repository;
 
-    private function __construct(Action $action, Event $event, Issue $issue, int $issueAuthorId, ?Comment $comment, Repository $repository)
+    private function __construct(Action $action, Event $event, Issue $issue, User $issueAuthor, ?Comment $comment, Repository $repository)
     {
-        Assert::greaterThan($issueAuthorId, 0);
-
         $this->action = $action;
         $this->event = $event;
         $this->issue = $issue;
-        $this->issueAuthorId = $issueAuthorId;
+        $this->issueAuthor = $issueAuthor;
         $this->comment = $comment;
         $this->repository = $repository;
     }
@@ -49,15 +48,14 @@ final class Payload
         Assert::keyExists($payload, 'action');
         $action = Action::fromString($payload['action']);
 
-        $issueKey = 'issue_comment' === $event->toString() ? 'issue' : 'pull_request';
+        $issueKey = $event->equals(Event::ISSUE_COMMENT()) ? 'issue' : 'pull_request';
 
         Assert::keyExists($payload, $issueKey);
         Assert::keyExists($payload[$issueKey], 'number');
         $issue = Issue::fromInt($payload[$issueKey]['number']);
 
         Assert::keyExists($payload[$issueKey], 'user');
-        Assert::keyExists($payload[$issueKey]['user'], 'id');
-        $issueAuthorId = $payload[$issueKey]['user']['id'];
+        $issueAuthor = User::fromResponse($payload[$issueKey]['user']);
 
         $comment = null;
 
@@ -72,7 +70,7 @@ final class Payload
             $action,
             $event,
             $issue,
-            $issueAuthorId,
+            $issueAuthor,
             $comment,
             Repository::fromString($payload['repository']['full_name'])
         );
@@ -101,9 +99,9 @@ final class Payload
         return $this->issue;
     }
 
-    public function issueAuthorId(): int
+    public function issueAuthor(): User
     {
-        return $this->issueAuthorId;
+        return $this->issueAuthor;
     }
 
     public function hasComment(): bool
@@ -127,7 +125,7 @@ final class Payload
             return false;
         }
 
-        return $this->issueAuthorId === $this->comment->author()->id();
+        return $this->issueAuthor->id() === $this->comment->author()->id();
     }
 
     public function repository(): Repository

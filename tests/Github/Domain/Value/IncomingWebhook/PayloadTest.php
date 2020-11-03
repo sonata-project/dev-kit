@@ -35,6 +35,8 @@ final class PayloadTest extends TestCase
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
+                    'login' => 'Baz',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'comment' => [
@@ -58,7 +60,7 @@ final class PayloadTest extends TestCase
 
         self::assertSame($action, $payload->action()->toString());
         self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthorId());
+        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }
@@ -76,6 +78,8 @@ final class PayloadTest extends TestCase
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
+                    'login' => 'FooBar',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'comment' => [
@@ -99,7 +103,7 @@ final class PayloadTest extends TestCase
 
         self::assertSame($action, $payload->action()->toString());
         self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthorId());
+        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }
@@ -117,6 +121,8 @@ final class PayloadTest extends TestCase
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
+                    'login' => 'FooBar',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'comment' => [
@@ -140,7 +146,7 @@ final class PayloadTest extends TestCase
 
         self::assertSame($action, $payload->action()->toString());
         self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthorId());
+        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }
@@ -158,6 +164,8 @@ final class PayloadTest extends TestCase
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
+                    'login' => 'Baz',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'repository' => [
@@ -171,7 +179,7 @@ final class PayloadTest extends TestCase
 
         self::assertSame($action, $payload->action()->toString());
         self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthorId());
+        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
         self::assertFalse($payload->isTheCommentFromTheAuthor());
         self::assertSame($repository, $payload->repository()->toString());
     }
