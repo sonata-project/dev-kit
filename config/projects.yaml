@@ -177,6 +177,8 @@ datagrid-bundle:
                 symfony/symfony: ['4.4']
 
 doctrine-extensions:
+    phpstan: true
+    psalm: true
     excluded_files:
         - README.md.twig
     has_documentation: false
