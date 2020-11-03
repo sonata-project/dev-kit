@@ -21,13 +21,15 @@ use Webmozart\Assert\Assert;
  */
 final class Comment
 {
+    private int $id;
+    private string $body;
     private \DateTimeImmutable $date;
     private User $user;
 
-    private function __construct(\DateTimeImmutable $date, User $user)
+    private function __construct(int $id, string $body, \DateTimeImmutable $date, User $user)
     {
-        Assert::stringNotEmpty($user);
-
+        $this->id = $id;
+        $this->body = $body;
         $this->date = $date;
         $this->user = $user;
     }
@@ -36,12 +38,31 @@ final class Comment
     {
         Assert::notEmpty($response);
 
+        Assert::keyExists($response, 'id');
+        Assert::integer($response['id']);
+        Assert::greaterThan($response['id'], 0);
+
+        Assert::keyExists($response, 'body');
+        Assert::stringNotEmpty($response['body']);
+
         Assert::keyExists($response, 'created_at');
 
         return new self(
+            $response['id'],
+            $response['body'],
             new \DateTimeImmutable($response['created_at']),
             User::fromResponse($response['user'])
         );
+    }
+
+    public function id(): int
+    {
+        return $this->id;
+    }
+
+    public function body(): string
+    {
+        return $this->body;
     }
 
     public function date(): \DateTimeImmutable

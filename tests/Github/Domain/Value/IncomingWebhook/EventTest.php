@@ -43,4 +43,82 @@ final class EventTest extends TestCase
             Event::fromString($value)->toString()
         );
     }
+
+    /**
+     * @test
+     *
+     * @dataProvider equalsProvider
+     */
+    public function equals(bool $expected, Event $event, Event $other): void
+    {
+        self::assertSame(
+            $expected,
+            $event->equals($other)
+        );
+    }
+
+    public function equalsProvider(): \Generator
+    {
+        yield [
+            true,
+            Event::fromString('issue'),
+            Event::ISSUE(),
+        ];
+
+        yield [
+            false,
+            Event::fromString('issue'),
+            Event::ISSUE_COMMENT(),
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider equalsOneOfProvider
+     */
+    public function equalsOneOf(bool $expected, Event $event, array $others): void
+    {
+        self::assertSame(
+            $expected,
+            $event->equalsOneOf($others)
+        );
+    }
+
+    public function equalsOneOfProvider(): \Generator
+    {
+        yield [
+            true,
+            Event::fromString('issue'),
+            [
+                Event::ISSUE(),
+            ],
+        ];
+
+        yield [
+            true,
+            Event::fromString('issue'),
+            [
+                Event::ISSUE_COMMENT(),
+                Event::ISSUE(),
+            ],
+        ];
+
+        yield [
+            false,
+            Event::PULL_REQUEST(),
+            [
+                Event::ISSUE(),
+            ],
+        ];
+
+        yield [
+            false,
+            Event::PULL_REQUEST(),
+            [
+                Event::ISSUE(),
+                Event::fromString('issue_comment'),
+            ],
+        ];
+    }
 }

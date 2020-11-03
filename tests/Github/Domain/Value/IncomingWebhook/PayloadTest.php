@@ -15,10 +15,13 @@ namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\IncomingWebhook\Event;
 use App\Github\Domain\Value\IncomingWebhook\Payload;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class PayloadTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -35,8 +38,13 @@ final class PayloadTest extends TestCase
                 ],
             ],
             'comment' => [
+                'id' => 123,
+                'body' => 'comment body',
+                'created_at' => self::faker()->date('Y-m-d\TH:i:s\Z'),
                 'user' => [
                     'id' => 567,
+                    'login' => 'FooBar',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'repository' => [
@@ -71,8 +79,13 @@ final class PayloadTest extends TestCase
                 ],
             ],
             'comment' => [
+                'id' => 123,
+                'body' => 'comment body',
+                'created_at' => self::faker()->date('Y-m-d\TH:i:s\Z'),
                 'user' => [
                     'id' => 456,
+                    'login' => 'FooBar',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'repository' => [
@@ -107,8 +120,13 @@ final class PayloadTest extends TestCase
                 ],
             ],
             'comment' => [
+                'id' => 123,
+                'body' => 'comment body',
+                'created_at' => self::faker()->date('Y-m-d\TH:i:s\Z'),
                 'user' => [
                     'id' => 789,
+                    'login' => 'Baz',
+                    'html_url' => 'http://example.com',
                 ],
             ],
             'repository' => [

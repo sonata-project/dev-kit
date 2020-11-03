@@ -51,6 +51,7 @@ class PullRequestFactory
                 'repo' => $repo,
             ],
             'user' => [
+                'id' => $faker->numberBetween(1, 999),
                 'login' => $faker->userName,
                 'html_url' => $faker->url,
             ],

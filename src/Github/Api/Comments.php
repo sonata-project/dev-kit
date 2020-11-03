@@ -86,4 +86,13 @@ final class Comments
             ]
         );
     }
+
+    public function remove(Repository $repository, Comment $comment): void
+    {
+        $this->github->issues()->comments()->remove(
+            $repository->username(),
+            $repository->name(),
+            $comment->id()
+        );
+    }
 }

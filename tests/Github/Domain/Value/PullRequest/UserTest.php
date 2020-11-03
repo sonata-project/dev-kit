@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\PullRequest;
 
 use App\Github\Domain\Value\PullRequest\User;
+use App\Tests\Util\Factory\Github;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class UserTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -31,14 +35,97 @@ final class UserTest extends TestCase
     /**
      * @test
      */
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyId(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $response = Github\Response\PullRequest\UserFactory::create();
+        unset($response['id']);
+
+        User::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::zero()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::lessThanZero()
+     */
+    public function throwsExceptionIfIdIs($value): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $response = Github\Response\PullRequest\UserFactory::create([
+            'id' => $value,
+        ]);
+
+        User::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function usesIdFromResponse()
+    {
+        $response = Github\Response\PullRequest\UserFactory::create([
+            'id' => $value = self::faker()->numberBetween(1, 999),
+        ]);
+
+        $user = User::fromResponse($response);
+
+        self::assertSame(
+            $value,
+            $user->id()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function throwsExceptionIfResponseArrayDoesNotContainKeyLogin(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        User::fromResponse([
-            'foo' => 'bar',
-            'html_url' => 'https://test.com',
+        $response = Github\Response\PullRequest\UserFactory::create();
+        unset($response['login']);
+
+        User::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfLoginIs(string $value): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $response = Github\Response\PullRequest\UserFactory::create([
+            'login' => $value,
         ]);
+
+        User::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function usesLoginFromResponse()
+    {
+        $response = Github\Response\PullRequest\UserFactory::create([
+            'login' => $value = self::faker()->word,
+        ]);
+
+        $user = User::fromResponse($response);
+
+        self::assertSame(
+            $value,
+            $user->login()
+        );
     }
 
     /**
@@ -48,56 +135,42 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        User::fromResponse([
-            'login' => 'bar',
-            'foo' => 'https://test.com',
-        ]);
+        $response = Github\Response\PullRequest\UserFactory::create();
+        unset($response['html_url']);
+
+        User::fromResponse($response);
     }
 
     /**
      * @test
+     *
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfLoginIsEmptyString(): void
+    public function throwsExceptionIfHtmlUrlIs(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        User::fromResponse([
-            'login' => '',
-            'html_url' => 'https://test.com',
+        $response = Github\Response\PullRequest\UserFactory::create([
+            'html_url' => $value,
         ]);
+
+        User::fromResponse($response);
     }
 
     /**
      * @test
      */
-    public function throwsExceptionIfHtmlUrlIsEmptyString(): void
+    public function usesHtmlurlFromResponse()
     {
-        $this->expectException(\InvalidArgumentException::class);
-
-        User::fromResponse([
-            'login' => 'foo',
-            'html_url' => '',
+        $response = Github\Response\PullRequest\UserFactory::create([
+            'html_url' => $value = self::faker()->url,
         ]);
-    }
-
-    /**
-     * @test
-     */
-    public function valid(): void
-    {
-        $response = [
-            'login' => $login = 'foo-bar',
-            'html_url' => $htmlUrl = 'https://test.com',
-        ];
 
         $user = User::fromResponse($response);
 
         self::assertSame(
-            $login,
-            $user->login()
-        );
-        self::assertSame(
-            $htmlUrl,
+            $value,
             $user->htmlUrl()
         );
     }

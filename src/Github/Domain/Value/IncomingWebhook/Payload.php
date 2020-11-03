@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\IncomingWebhook;
 
+use App\Github\Domain\Value\Comment;
 use App\Github\Domain\Value\Issue;
 use App\Github\Domain\Value\Repository;
 use Webmozart\Assert\Assert;
@@ -23,22 +24,21 @@ use Webmozart\Assert\Assert;
 final class Payload
 {
     private Action $action;
+    private Event $event;
     private Issue $issue;
     private int $issueAuthorId;
-    private ?int $commentAuthorId;
+    private ?Comment $comment;
     private Repository $repository;
 
-    private function __construct(Action $action, Issue $issue, int $issueAuthorId, ?int $commentAuthorId, Repository $repository)
+    private function __construct(Action $action, Event $event, Issue $issue, int $issueAuthorId, ?Comment $comment, Repository $repository)
     {
         Assert::greaterThan($issueAuthorId, 0);
-        if (null !== $commentAuthorId) {
-            Assert::greaterThan($commentAuthorId, 0);
-        }
 
         $this->action = $action;
+        $this->event = $event;
         $this->issue = $issue;
         $this->issueAuthorId = $issueAuthorId;
-        $this->commentAuthorId = $commentAuthorId;
+        $this->comment = $comment;
         $this->repository = $repository;
     }
 
@@ -59,11 +59,10 @@ final class Payload
         Assert::keyExists($payload[$issueKey]['user'], 'id');
         $issueAuthorId = $payload[$issueKey]['user']['id'];
 
-        $commentAuthorId = null;
+        $comment = null;
+
         if (\array_key_exists('comment', $payload)) {
-            Assert::keyExists($payload['comment'], 'user');
-            Assert::keyExists($payload['comment']['user'], 'id');
-            $commentAuthorId = $payload['comment']['user']['id'];
+            $comment = Comment::fromResponse($payload['comment']);
         }
 
         Assert::keyExists($payload, 'repository');
@@ -71,9 +70,10 @@ final class Payload
 
         return new self(
             $action,
+            $event,
             $issue,
             $issueAuthorId,
-            $commentAuthorId,
+            $comment,
             Repository::fromString($payload['repository']['full_name'])
         );
     }
@@ -91,6 +91,11 @@ final class Payload
         return $this->action;
     }
 
+    public function event(): Event
+    {
+        return $this->event;
+    }
+
     public function issue(): Issue
     {
         return $this->issue;
@@ -101,6 +106,16 @@ final class Payload
         return $this->issueAuthorId;
     }
 
+    public function hasComment(): bool
+    {
+        return $this->comment instanceof Comment;
+    }
+
+    public function comment(): ?Comment
+    {
+        return $this->comment;
+    }
+
     public function isTheCommentFromTheAuthor(): bool
     {
         // If it's a PR synchronization, it's obviously done from the author.
@@ -108,7 +123,11 @@ final class Payload
             return true;
         }
 
-        return $this->issueAuthorId === $this->commentAuthorId;
+        if (!$this->hasComment()) {
+            return false;
+        }
+
+        return $this->issueAuthorId === $this->comment->user()->id();
     }
 
     public function repository(): Repository
