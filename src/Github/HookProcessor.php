@@ -159,7 +159,7 @@ final class HookProcessor
 
             $contents = u($fileContent)
                 ->replace('#handle#', $comment->author()->login())
-                ->replace('#project#', $payload->repository()->username())
+                ->replace('#project#', $payload->repository()->name())
                 ->toString();
 
             $this->comments->create(
@@ -177,7 +177,7 @@ final class HookProcessor
                 $notification = (new Notification('Release requested'))
                     ->content(sprintf(
                         'For %s',
-                        $payload->repository()->username()
+                        $payload->repository()->name()
                     ))
                     ->channels([
                         'chat/slack',
