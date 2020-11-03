@@ -15,7 +15,7 @@ namespace App\Tests\Util\Factory\Github\Response;
 
 use Ergebnis\Test\Util\Helper;
 
-class PullRequestFactory
+final class PullRequestFactory
 {
     use Helper;
 

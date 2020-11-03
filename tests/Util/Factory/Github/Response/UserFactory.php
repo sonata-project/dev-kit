@@ -15,7 +15,7 @@ namespace App\Tests\Util\Factory\Github\Response;
 
 use Ergebnis\Test\Util\Helper;
 
-class UserFactory
+final class UserFactory
 {
     use Helper;
 
