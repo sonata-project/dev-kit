@@ -92,7 +92,7 @@ final class HookProcessor
     /**
      * Performs an action and reports back via comment:.
      *
-     * 1) "/request-release" - requests a release of a bundle in Slack 'releases channel
+     * 1) "/request-release" - requests a release of a bundle in Slack's #releases channel
      */
     public function magicAction(Payload $payload): void
     {
