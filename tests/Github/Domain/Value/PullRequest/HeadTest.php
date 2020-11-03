@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\PullRequest;
 
 use App\Github\Domain\Value\PullRequest\Head;
+use App\Tests\Util\Factory\Github\Response\UserFactory;
 use PHPUnit\Framework\TestCase;
 
 final class HeadTest extends TestCase
@@ -57,9 +58,7 @@ final class HeadTest extends TestCase
             'ref' => '',
             'sha' => 'sha',
             'repo' => [
-                'owner' => [
-                    'login' => 'repo',
-                ],
+                'owner' => UserFactory::create(),
             ],
         ]);
     }
@@ -75,9 +74,7 @@ final class HeadTest extends TestCase
             'ref' => 'ref',
             'foo' => 'bar',
             'repo' => [
-                'owner' => [
-                    'login' => 'repo',
-                ],
+                'owner' => UserFactory::create(),
             ],
         ]);
     }
@@ -93,9 +90,7 @@ final class HeadTest extends TestCase
             'ref' => 'ref',
             'sha' => '',
             'repo' => [
-                'owner' => [
-                    'login' => 'repo',
-                ],
+                'owner' => UserFactory::create(),
             ],
         ]);
     }
@@ -111,9 +106,7 @@ final class HeadTest extends TestCase
             'ref' => 'ref',
             'sha' => 'sha',
             'foo' => [
-                'owner' => [
-                    'login' => 'repo',
-                ],
+                'owner' => UserFactory::create(),
             ],
         ]);
     }
@@ -141,9 +134,7 @@ final class HeadTest extends TestCase
             'ref' => $ref = 'foo',
             'sha' => $sha = 'sha',
             'repo' => [
-                'owner' => [
-                    'login' => $ownerLogin = 'foo-bar',
-                ],
+                'owner' => UserFactory::create(),
             ],
         ];
 
@@ -151,6 +142,5 @@ final class HeadTest extends TestCase
 
         self::assertSame($ref, $head->ref());
         self::assertSame($sha, $head->sha()->toString());
-        self::assertSame($ownerLogin, $head->repo()->owner()->login());
     }
 }
