@@ -260,7 +260,9 @@ final class PullRequestTest extends TestCase
                 'sha' => $headSha = 'sha',
                 'repo' => [
                     'owner' => [
+                        'id' => $ownerId = 42,
                         'login' => $ownerLogin = 'ownerLogin',
+                        'html_url' => $ownerHtmlUrl = 'http://example.com',
                     ],
                 ],
             ],
@@ -285,7 +287,9 @@ final class PullRequestTest extends TestCase
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
         self::assertSame($headSha, $pr->head()->sha()->toString());
+        self::assertSame($ownerId, $pr->head()->repo()->owner()->id());
         self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
+        self::assertSame($ownerHtmlUrl, $pr->head()->repo()->owner()->htmlUrl());
         self::assertSame($userId, $pr->user()->id());
         self::assertSame($userLogin, $pr->user()->login());
         self::assertSame($userHtmlUrl, $pr->user()->htmlUrl());

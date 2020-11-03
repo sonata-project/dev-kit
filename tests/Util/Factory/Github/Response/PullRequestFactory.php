@@ -31,9 +31,7 @@ final class PullRequestFactory
         $repo = null;
         if ($faker->boolean) {
             $repo = [
-                'owner' => [
-                    'login' => $faker->userName,
-                ],
+                'owner' => UserFactory::create(),
             ];
         }
 
@@ -50,11 +48,7 @@ final class PullRequestFactory
                 'sha' => $faker->sha256,
                 'repo' => $repo,
             ],
-            'user' => [
-                'id' => $faker->numberBetween(1, 999),
-                'login' => $faker->userName,
-                'html_url' => $faker->url,
-            ],
+            'user' => UserFactory::create(),
             'mergeable' => $faker->optional()->boolean,
             'body' => sprintf(
                 <<<'BODY'
