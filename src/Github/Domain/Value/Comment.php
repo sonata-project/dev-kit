@@ -28,7 +28,7 @@ final class Comment
     private function __construct(int $id, string $body, \DateTimeImmutable $createdAt, User $author)
     {
         $this->id = $id;
-        $this->body = $body;
+        $this->body = trim($body);
         $this->createdAt = $createdAt;
         $this->author = $author;
     }

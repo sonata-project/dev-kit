@@ -50,6 +50,7 @@ final class GithubController
             case 'issue_comment':
                 $hookProcessor->processPendingAuthorLabel($payload);
                 $hookProcessor->magicComment($payload);
+                $hookProcessor->magicAction($payload);
 
                 return new Response();
             case 'pull_request':
