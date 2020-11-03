@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Github\Domain\Value\PullRequest;
+namespace App\Tests\Github\Domain\Value;
 
-use App\Github\Domain\Value\PullRequest\User;
+use App\Github\Domain\Value\User;
 use App\Tests\Util\Factory\Github;
 use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $response = Github\Response\PullRequest\UserFactory::create();
+        $response = Github\Response\UserFactory::create();
         unset($response['id']);
 
         User::fromResponse($response);
@@ -57,7 +57,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $response = Github\Response\PullRequest\UserFactory::create([
+        $response = Github\Response\UserFactory::create([
             'id' => $value,
         ]);
 
@@ -69,7 +69,7 @@ final class UserTest extends TestCase
      */
     public function usesIdFromResponse()
     {
-        $response = Github\Response\PullRequest\UserFactory::create([
+        $response = Github\Response\UserFactory::create([
             'id' => $value = self::faker()->numberBetween(1, 999),
         ]);
 
@@ -88,7 +88,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $response = Github\Response\PullRequest\UserFactory::create();
+        $response = Github\Response\UserFactory::create();
         unset($response['login']);
 
         User::fromResponse($response);
@@ -104,7 +104,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $response = Github\Response\PullRequest\UserFactory::create([
+        $response = Github\Response\UserFactory::create([
             'login' => $value,
         ]);
 
@@ -116,7 +116,7 @@ final class UserTest extends TestCase
      */
     public function usesLoginFromResponse()
     {
-        $response = Github\Response\PullRequest\UserFactory::create([
+        $response = Github\Response\UserFactory::create([
             'login' => $value = self::faker()->word,
         ]);
 
@@ -135,7 +135,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $response = Github\Response\PullRequest\UserFactory::create();
+        $response = Github\Response\UserFactory::create();
         unset($response['html_url']);
 
         User::fromResponse($response);
@@ -151,7 +151,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $response = Github\Response\PullRequest\UserFactory::create([
+        $response = Github\Response\UserFactory::create([
             'html_url' => $value,
         ]);
 
@@ -163,7 +163,7 @@ final class UserTest extends TestCase
      */
     public function usesHtmlurlFromResponse()
     {
-        $response = Github\Response\PullRequest\UserFactory::create([
+        $response = Github\Response\UserFactory::create([
             'html_url' => $value = self::faker()->url,
         ]);
 
