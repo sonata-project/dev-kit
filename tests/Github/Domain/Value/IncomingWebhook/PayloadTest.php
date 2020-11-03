@@ -27,7 +27,7 @@ final class PayloadTest extends TestCase
      */
     public function fromJsonString(): void
     {
-        $event = Event::fromString('issue_comment');
+        $event = Event::ISSUE_COMMENT();
 
         $array = [
             'action' => $action = 'synchronize',
@@ -70,7 +70,7 @@ final class PayloadTest extends TestCase
      */
     public function thatTheCommentIsFromTheAuthorBecauseOfSameUserIdsAndAnActionDifferentToSynchronize(): void
     {
-        $event = Event::fromString('issue_comment');
+        $event = Event::ISSUE_COMMENT();
 
         $array = [
             'action' => $action = 'foo',
@@ -113,7 +113,7 @@ final class PayloadTest extends TestCase
      */
     public function thatTheCommentIsNotFromTheAuthorBecauseOfDifferentUserIdsAndAnActionDifferentToSynchronize(): void
     {
-        $event = Event::fromString('issue_comment');
+        $event = Event::ISSUE_COMMENT();
 
         $array = [
             'action' => $action = 'foo',
@@ -156,7 +156,7 @@ final class PayloadTest extends TestCase
      */
     public function thatCommentDoesNotNeedToBeSetInPayload(): void
     {
-        $event = Event::fromString('issue_comment');
+        $event = Event::ISSUE_COMMENT();
 
         $array = [
             'action' => $action = 'foo',
