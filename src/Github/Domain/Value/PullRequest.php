@@ -18,7 +18,6 @@ use App\Domain\Value\Stability;
 use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
-use App\Github\Domain\Value\PullRequest\User;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Util\Factory\Github\Response\PullRequest;
+namespace App\Tests\Util\Factory\Github\Response;
 
 use Ergebnis\Test\Util\Helper;
 

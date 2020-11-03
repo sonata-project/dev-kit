@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
-use App\Github\Domain\Value\PullRequest\User;
 use Webmozart\Assert\Assert;
 
 /**

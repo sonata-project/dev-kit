@@ -15,8 +15,8 @@ namespace App\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\Comment;
 use App\Github\Domain\Value\Issue;
-use App\Github\Domain\Value\PullRequest\User;
 use App\Github\Domain\Value\Repository;
+use App\Github\Domain\Value\User;
 use Webmozart\Assert\Assert;
 
 /**
