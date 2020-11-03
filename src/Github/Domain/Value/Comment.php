@@ -40,6 +40,7 @@ final class Comment
 
         Assert::keyExists($response, 'id');
         Assert::integer($response['id']);
+        Assert::greaterThan($response['id'], 0);
 
         Assert::keyExists($response, 'body');
 

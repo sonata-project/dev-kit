@@ -38,6 +38,7 @@ final class User
 
         Assert::keyExists($response, 'id');
         Assert::integer($response['id']);
+        Assert::greaterThan($response['id'], 0);
 
         Assert::keyExists($response, 'login');
         Assert::stringNotEmpty($response['login']);

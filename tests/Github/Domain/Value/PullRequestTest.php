@@ -265,6 +265,7 @@ final class PullRequestTest extends TestCase
                 ],
             ],
             'user' => [
+                'id' => $userId = 42,
                 'login' => $userLogin = 'userLogin',
                 'html_url' => $userHtmlUrl = 'https://test.com',
             ],
@@ -285,6 +286,7 @@ final class PullRequestTest extends TestCase
         self::assertSame($headRef, $pr->head()->ref());
         self::assertSame($headSha, $pr->head()->sha()->toString());
         self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
+        self::assertSame($userId, $pr->user()->id());
         self::assertSame($userLogin, $pr->user()->login());
         self::assertSame($userHtmlUrl, $pr->user()->htmlUrl());
         self::assertTrue($pr->isMergeable());
