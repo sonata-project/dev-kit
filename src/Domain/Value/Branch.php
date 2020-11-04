@@ -154,6 +154,11 @@ final class Branch
         return reset($this->phpVersions);
     }
 
+    public function highestPhpVersion(): PhpVersion
+    {
+        return end($this->phpVersions);
+    }
+
     public function targetPhpVersion(): PhpVersion
     {
         return $this->targetPhpVersion;
