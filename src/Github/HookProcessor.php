@@ -180,7 +180,7 @@ final class HookProcessor
                         $payload->repository()->name()
                     ))
                     ->channels([
-                        'chat/slack',
+                        'chat/slack-releases',
                     ]);
 
                 $this->notifier->send($notification);
