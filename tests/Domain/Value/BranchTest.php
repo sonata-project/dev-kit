@@ -22,8 +22,8 @@ final class BranchTest extends TestCase
     public const DEFAULT_BRANCH_NAME = 'master';
     public const DEFAULT_BRANCH_CONFIG = <<<CONFIG
 master:
-  php: ['7.3', '7.4']
-  target_php: ~
+  php: ['7.3', '7.4', '8.0']
+  target_php: '7.4'
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
@@ -47,9 +47,10 @@ CONFIG;
         );
 
         self::assertSame($name, $branch->name());
-        self::assertCount(2, $branch->phpVersions());
+        self::assertCount(3, $branch->phpVersions());
         self::assertSame('7.4', $branch->targetPhpVersion()->toString());
         self::assertSame('7.3', $branch->lowestPhpVersion()->toString());
+        self::assertSame('8.0', $branch->highestPhpVersion()->toString());
         self::assertCount(2, $branch->variants());
         self::assertEmpty($branch->services());
         self::assertSame('docs', $branch->docsPath()->toString());
