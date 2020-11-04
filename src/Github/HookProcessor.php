@@ -177,7 +177,7 @@ final class HookProcessor
                 $notification = (new Notification())
                     ->content(sprintf(
                         <<<CONTENT
-`%s` requested a release for `%s` in %s
+%s requested a release for %s in %s
 CONTENT,
                         $comment->author()->handle(),
                         $payload->repository()->name(),
