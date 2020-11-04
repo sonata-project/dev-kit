@@ -174,18 +174,15 @@ final class HookProcessor
             );
 
             if ('/request-release' === $body) {
-                $notification = (new Notification())
-                    ->content(sprintf(
-                        <<<CONTENT
-%s requested a release for %s in %s
-CONTENT,
-                        $comment->author()->handle(),
-                        $payload->repository()->name(),
-                        $payload->url()
-                    ))
-                    ->channels([
-                        'chat/slack',
-                    ]);
+                $notification = new Notification(sprintf(
+                    '%s requested a release for %s in %s',
+                    $comment->author()->handle(),
+                    $payload->repository()->name(),
+                    $payload->url()
+                ));
+                $notification->channels([
+                    'chat/slack',
+                ]);
 
                 $this->notifier->send($notification);
             }
