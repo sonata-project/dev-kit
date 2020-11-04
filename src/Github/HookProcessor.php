@@ -22,7 +22,6 @@ use App\Github\Domain\Value\IncomingWebhook\Event;
 use App\Github\Domain\Value\IncomingWebhook\Payload;
 use App\Github\Domain\Value\Label;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use function Symfony\Component\String\u;
