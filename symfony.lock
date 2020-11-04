@@ -168,9 +168,6 @@
     "symfony/dependency-injection": {
         "version": "v4.4.3"
     },
-    "symfony/deprecation-contracts": {
-        "version": "v2.2.0"
-    },
     "symfony/dotenv": {
         "version": "v4.4.3"
     },
@@ -426,8 +423,5 @@
     },
     "twig/twig": {
         "version": "v3.0.1"
-    },
-    "webmozart/assert": {
-        "version": "1.9.1"
     }
 }
