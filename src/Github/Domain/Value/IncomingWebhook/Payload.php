@@ -75,6 +75,7 @@ final class Payload
             $action,
             $event,
             $issue,
+            $url,
             $issueAuthor,
             $comment,
             Repository::fromString($payload['repository']['full_name'])
