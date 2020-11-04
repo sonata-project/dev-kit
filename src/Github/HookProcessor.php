@@ -175,7 +175,8 @@ final class HookProcessor
 
             if ('/request-release' === $body) {
                 $notification = (new Notification('Release requested'))
-                    ->content(sprintf(<<<CONTENT
+                    ->content(sprintf(
+                        <<<CONTENT
 %s requested a release for *%s* in %s
 CONTENT,
                         $comment->author()->handle(),
