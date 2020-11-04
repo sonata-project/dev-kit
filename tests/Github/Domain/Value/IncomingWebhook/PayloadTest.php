@@ -60,7 +60,7 @@ final class PayloadTest extends TestCase
         $payload = Payload::fromJsonString($json, $event);
 
         self::assertSame($action, $payload->action()->toString());
-        self::assertSame($url, $payload->url());
+        self::assertSame($url, $payload->url()->toString());
         self::assertSame($issue, $payload->issue()->toInt());
         self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
         self::assertTrue($payload->isTheCommentFromTheAuthor());

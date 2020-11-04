@@ -118,7 +118,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         // First, check if the DevKit Hook exists.
         $devKitHook = null;
         foreach ($this->hooks->all($repository) as $hook) {
-            if (u($hook->config()->url())->startsWith($devKitHookBaseUrl)) {
+            if (u($hook->config()->url()->toString())->startsWith($devKitHookBaseUrl)) {
                 $devKitHook = $hook;
 
                 break;
@@ -184,11 +184,11 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         // Check if a Hook should be deleted.
         foreach ($this->hooks->all($repository) as $hook) {
             foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
-                if (u($hook->url())->startsWith($url)) {
+                if (u($hook->url()->toString())->startsWith($url)) {
                     $deleted = true;
                     $this->io->writeln(sprintf(
                         '        Hook "%s" will be deleted',
-                        $hook->url()
+                        $hook->url()->toString()
                     ));
 
                     if ($this->apply) {
@@ -196,7 +196,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
                         $this->io->writeln(sprintf(
                             '        <info>Hook "%s" with ID %s deleted.</info>',
-                            $hook->url(),
+                            $hook->url()->toString(),
                             $hook->id()
                         ));
                     }

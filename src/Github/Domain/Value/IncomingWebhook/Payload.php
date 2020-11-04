@@ -16,6 +16,7 @@ namespace App\Github\Domain\Value\IncomingWebhook;
 use App\Github\Domain\Value\Comment;
 use App\Github\Domain\Value\Issue;
 use App\Github\Domain\Value\Repository;
+use App\Github\Domain\Value\Url;
 use App\Github\Domain\Value\User;
 use Webmozart\Assert\Assert;
 
@@ -27,12 +28,12 @@ final class Payload
     private Action $action;
     private Event $event;
     private Issue $issue;
-    private string $url;
+    private Url $url;
     private User $issueAuthor;
     private ?Comment $comment;
     private Repository $repository;
 
-    private function __construct(Action $action, Event $event, Issue $issue, string $url, User $issueAuthor, ?Comment $comment, Repository $repository)
+    private function __construct(Action $action, Event $event, Issue $issue, Url $url, User $issueAuthor, ?Comment $comment, Repository $repository)
     {
         $this->action = $action;
         $this->event = $event;
@@ -57,7 +58,7 @@ final class Payload
         $issue = Issue::fromInt($payload[$issueKey]['number']);
 
         Assert::keyExists($payload[$issueKey], 'url');
-        $url = $payload[$issueKey]['url'];
+        $url = Url::fromString($payload[$issueKey]['url']);
 
         Assert::keyExists($payload[$issueKey], 'user');
         $issueAuthor = User::fromResponse($payload[$issueKey]['user']);
@@ -105,7 +106,7 @@ final class Payload
         return $this->issue;
     }
 
-    public function url(): string
+    public function url(): Url
     {
         return $this->url;
     }
