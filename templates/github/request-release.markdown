@@ -1,4 +1,4 @@
-Ok @#handle#,
+Ok #handle#,
 
 I requested a new release for **#project#** via Slack in `#releases` channel :+1:
 

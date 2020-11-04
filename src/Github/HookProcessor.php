@@ -158,7 +158,7 @@ final class HookProcessor
             Assert::string($fileContent);
 
             $contents = u($fileContent)
-                ->replace('#handle#', $comment->author()->login())
+                ->replace('#handle#', $comment->author()->handle())
                 ->replace('#project#', $payload->repository()->name())
                 ->toString();
 
@@ -176,10 +176,11 @@ final class HookProcessor
             if ('/request-release' === $body) {
                 $notification = (new Notification('Release requested'))
                     ->content(sprintf(<<<CONTENT
-*%s* requested a release for *%s* in %s
+%s requested a release for *%s* in %s
 CONTENT,
-                        $comment->author()->login()
-                        $payload->repository()->name()
+                        $comment->author()->handle(),
+                        $payload->repository()->name(),
+                        $payload->url()
                     ))
                     ->channels([
                         'chat/slack',
