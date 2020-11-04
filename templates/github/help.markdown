@@ -1,4 +1,4 @@
-Hi @#handle# :wave:
+Hi #handle# :wave:
 
 You can use the following commands:
 

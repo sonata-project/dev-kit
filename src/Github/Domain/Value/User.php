@@ -63,6 +63,17 @@ final class User
         return $this->login;
     }
 
+    /**
+     * The Github handle including '@'.
+     */
+    public function handle(): string
+    {
+        return sprintf(
+            '@%s',
+            $this->login
+        );
+    }
+
     public function htmlUrl(): string
     {
         return $this->htmlUrl;

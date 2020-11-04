@@ -27,15 +27,17 @@ final class Payload
     private Action $action;
     private Event $event;
     private Issue $issue;
+    private string $url;
     private User $issueAuthor;
     private ?Comment $comment;
     private Repository $repository;
 
-    private function __construct(Action $action, Event $event, Issue $issue, User $issueAuthor, ?Comment $comment, Repository $repository)
+    private function __construct(Action $action, Event $event, Issue $issue, string $url, User $issueAuthor, ?Comment $comment, Repository $repository)
     {
         $this->action = $action;
         $this->event = $event;
         $this->issue = $issue;
+        $this->url = $url;
         $this->issueAuthor = $issueAuthor;
         $this->comment = $comment;
         $this->repository = $repository;
@@ -54,6 +56,9 @@ final class Payload
         Assert::keyExists($payload[$issueKey], 'number');
         $issue = Issue::fromInt($payload[$issueKey]['number']);
 
+        Assert::keyExists($payload[$issueKey], 'url');
+        $url = $payload[$issueKey]['url'];
+
         Assert::keyExists($payload[$issueKey], 'user');
         $issueAuthor = User::fromResponse($payload[$issueKey]['user']);
 
@@ -70,6 +75,7 @@ final class Payload
             $action,
             $event,
             $issue,
+            $url,
             $issueAuthor,
             $comment,
             Repository::fromString($payload['repository']['full_name'])
@@ -97,6 +103,11 @@ final class Payload
     public function issue(): Issue
     {
         return $this->issue;
+    }
+
+    public function url(): string
+    {
+        return $this->url;
     }
 
     public function issueAuthor(): User
