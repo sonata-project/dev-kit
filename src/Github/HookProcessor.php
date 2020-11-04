@@ -157,7 +157,7 @@ final class HookProcessor
             Assert::string($fileContent);
 
             $contents = u($fileContent)
-                ->replace('#handle#', $comment->author()->login())
+                ->replace('#handle#', $comment->author()->handle())
                 ->toString();
 
             $this->comments->create(

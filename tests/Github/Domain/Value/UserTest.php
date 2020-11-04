@@ -131,6 +131,23 @@ final class UserTest extends TestCase
     /**
      * @test
      */
+    public function usesLoginForHandleFromResponse()
+    {
+        $response = Github\Response\UserFactory::create([
+            'login' => $value = self::faker()->word,
+        ]);
+
+        $user = User::fromResponse($response);
+
+        self::assertSame(
+            '@'.$value,
+            $user->handle()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function throwsExceptionIfResponseArrayDoesNotContainKeyHtmlUrl(): void
     {
         $this->expectException(\InvalidArgumentException::class);
