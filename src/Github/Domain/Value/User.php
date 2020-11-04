@@ -64,7 +64,7 @@ final class User
     }
 
     /**
-     * The Github handle including '@'
+     * The Github handle including '@'.
      */
     public function handle(): string
     {
