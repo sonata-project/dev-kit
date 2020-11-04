@@ -32,6 +32,7 @@ final class PayloadTest extends TestCase
         $array = [
             'action' => $action = 'synchronize',
             'issue' => [
+                'url' => $url = 'https://github.com/foo/bar/pull/123',
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
@@ -59,6 +60,7 @@ final class PayloadTest extends TestCase
         $payload = Payload::fromJsonString($json, $event);
 
         self::assertSame($action, $payload->action()->toString());
+        self::assertSame($url, $payload->url());
         self::assertSame($issue, $payload->issue()->toInt());
         self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
         self::assertTrue($payload->isTheCommentFromTheAuthor());
@@ -75,6 +77,7 @@ final class PayloadTest extends TestCase
         $array = [
             'action' => $action = 'foo',
             'issue' => [
+                'url' => $url = 'https://github.com/foo/bar/pull/123',
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
@@ -118,6 +121,7 @@ final class PayloadTest extends TestCase
         $array = [
             'action' => $action = 'foo',
             'issue' => [
+                'url' => $url = 'https://github.com/foo/bar/pull/123',
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
@@ -161,6 +165,7 @@ final class PayloadTest extends TestCase
         $array = [
             'action' => $action = 'foo',
             'issue' => [
+                'url' => $url = 'https://github.com/foo/bar/pull/123',
                 'number' => $issue = 123,
                 'user' => [
                     'id' => $issueAuthorId = 456,
