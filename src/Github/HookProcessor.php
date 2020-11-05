@@ -178,7 +178,7 @@ final class HookProcessor
                     '%s requested a release for %s in %s',
                     $comment->author()->handle(),
                     $payload->repository()->name(),
-                    $payload->url()->toString()
+                    $payload->htmlUrl()->toString()
                 ));
                 $notification->channels([
                     'chat/slack',
