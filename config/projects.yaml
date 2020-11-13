@@ -234,6 +234,7 @@ doctrine-phpcr-admin-bundle:
         "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
     excluded_files:
         - tests/bootstrap.php.twig
+        - phpunit.xml.dist.twig
     branches:
         master:
             php: ['7.3', '7.4']
