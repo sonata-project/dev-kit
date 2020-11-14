@@ -67,7 +67,8 @@ jobs:
                   coverage: pcov
 {% if branch.hasService('mongodb') %}
                   tools: composer:v{{ project.composerVersion }}, pecl
-                  extensions: mongodb-1.9.0rc1{# Change to stable version when available #}
+{# Change mondodb extension version to a stable one when available #}
+                  extensions: mongodb-1.9.0rc1
 {% else %}
                   tools: composer:v{{ project.composerVersion }}
 {% endif %}
