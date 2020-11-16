@@ -18,7 +18,7 @@ jobs:
 
         runs-on: ubuntu-18.04
 
-        {% verbatim %}continue-on-error: ${{ matrix.allowed_to_fail }}{% endverbatim %}
+        {% verbatim %}continue-on-error: ${{ matrix.allowed-to-fail }}{% endverbatim %}
 
 {% if branch.hasService('mongodb') %}
         services:
@@ -35,24 +35,24 @@ jobs:
                     - '{{ phpVersion.toString }}'
 {% endfor %}
                 dependencies: [highest]
-                allowed_to_fail: [false]
+                allowed-to-fail: [false]
                 variant: [normal]
                 include:
                     - php-version: '{{ branch.lowestPhpVersion.toString }}'
                       dependencies: lowest
-                      allowed_to_fail: false
+                      allowed-to-fail: false
                       variant: normal
 {# Remove when all branches supports php 8.0 #}
 {% if '8.0' != branch.highestPhpVersion.toString %}
                     - php-version: '8.0'
                       dependencies: highest
-                      allowed_to_fail: true
+                      allowed-to-fail: true
                       variant: normal
 {% endif %}
 {% for variant in branch.variants %}
                     - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
-                      allowed_to_fail: false
+                      allowed-to-fail: false
                       variant: '{{ variant.toString|raw }}'
 {% endfor %}
 

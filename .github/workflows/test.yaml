@@ -13,16 +13,16 @@ jobs:
 
     runs-on: ubuntu-18.04
 
-    continue-on-error: ${{ matrix.allowed_to_fail }}
+    continue-on-error: ${{ matrix.allowed-to-fail }}
 
     strategy:
       matrix:
         php-version:
           - '7.4'
-        allowed_to_fail: [false]
+        allowed-to-fail: [false]
         include:
           - php-version: '8.0'
-            allowed_to_fail: true
+            allowed-to-fail: true
 
     steps:
       - name: Checkout
