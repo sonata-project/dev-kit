@@ -35,17 +35,6 @@ jobs:
                   tools: composer:v{{ project.composerVersion }}
 {% endif %}
 
-            - name: Set Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache Composer
-              uses: actions/cache@v2
-              with:
-                  path: {% verbatim %}${{ steps.composer-cache.outputs.dir }}{% endverbatim %}
-                  key: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-highest-normal
-                  restore-keys: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-
-
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
             - name: Set COMPOSER_ROOT_VERSION environment variable
@@ -55,7 +44,10 @@ jobs:
 
 {% endif %}
             - name: Install Composer dependencies (highest)
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
             - name: PHPStan
               run: vendor/bin/phpstan --memory-limit=1G analyse
@@ -83,17 +75,6 @@ jobs:
                   tools: composer:v{{ project.composerVersion }}
 {% endif %}
 
-            - name: Set Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache Composer
-              uses: actions/cache@v2
-              with:
-                  path: {% verbatim %}${{ steps.composer-cache.outputs.dir }}{% endverbatim %}
-                  key: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-highest-normal
-                  restore-keys: {% verbatim %}${{ runner.os }}{% endverbatim %}-{{ branch.targetPhpVersion.toString }}-composer-
-
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
             - name: Set COMPOSER_ROOT_VERSION environment variable
@@ -103,7 +84,10 @@ jobs:
 
 {% endif %}
             - name: Install Composer dependencies (highest)
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
             - name: Psalm
               run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd
