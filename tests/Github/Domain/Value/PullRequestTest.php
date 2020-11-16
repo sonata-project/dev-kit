@@ -249,7 +249,7 @@ final class PullRequestTest extends TestCase
     {
         $response = [
             'number' => 123,
-            'title' => 'Update dependecy',
+            'title' => 'Update dependency',
             'updated_at' => '2020-01-01T19:00:00Z',
             'merged_at' => '2020-01-01T19:00:00Z',
             'base' => [
