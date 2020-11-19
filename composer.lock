@@ -931,26 +931,26 @@
         },
         {
             "name": "oskarstark/env-var-extension",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OskarStark/env-var-extension.git",
-                "reference": "fd2be59d7e16fcedc4c3108bc59b4c7bdfe7fc63"
+                "reference": "c444357017ab1d3c3f27b05d49020365a6490bf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/fd2be59d7e16fcedc4c3108bc59b4c7bdfe7fc63",
-                "reference": "fd2be59d7e16fcedc4c3108bc59b4c7bdfe7fc63",
+                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/c444357017ab1d3c3f27b05d49020365a6490bf5",
+                "reference": "c444357017ab1d3c3f27b05d49020365a6490bf5",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": ">=7.2",
                 "twig/twig": "^2.6 || ^3.0"
             },
             "require-dev": {
-                "ergebnis/test-util": "^1.3",
+                "ergebnis/test-util": "^1.4",
                 "friendsofphp/php-cs-fixer": "^2.16",
-                "phpunit/phpunit": "^8.5"
+                "phpunit/phpunit": "^8.5 || ^9.0"
             },
             "type": "library",
             "autoload": {
@@ -974,7 +974,7 @@
                 "twig",
                 "twig-extension"
             ],
-            "time": "2020-10-14T08:49:11+00:00"
+            "time": "2020-11-18T12:54:06+00:00"
         },
         {
             "name": "php-http/cache-plugin",
