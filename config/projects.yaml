@@ -204,7 +204,7 @@ doctrine-mongodb-admin-bundle:
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
-                sonata-project/admin-bundle: ['3']
+                sonata-project/admin-bundle: ['dev-master']
         3.x:
             php: ['7.3', '7.4']
             services: [mongodb]
