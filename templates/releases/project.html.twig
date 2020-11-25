@@ -26,9 +26,7 @@
         </p>
 
         <h2>Changelog as Markdown</h2>
-        <textarea cols="140" rows="60">
-            {{ release.changelog.asMarkdown }}
-        </textarea>
+        <textarea cols="140" rows="60">{{ release.changelog.asMarkdown }}</textarea>
     {% else %}
         <h1>No Release needed for {{ release.project.title }}</h1>
     {% endif %}
