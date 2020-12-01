@@ -171,6 +171,14 @@ final class NextRelease
         return $this->nextTag->toString() !== $this->currentTag->toString();
     }
 
+    public function canBeReleased(): bool
+    {
+        return [] !== $this->pullRequests()
+            && [] === $this->pullRequestsWithoutStabilityLabel()
+            && [] === $this->pullRequestsWithoutChangelog()
+            && $this->stability()->notEquals(Stability::pedantic());
+    }
+
     public function stability(): Stability
     {
         $stabilities = array_map(static function (PullRequest $pr): string {

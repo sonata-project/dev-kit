@@ -1,0 +1,62 @@
+{% import 'macros.html.twig' as macros %}
+
+{% extends 'nav_and_content.html.twig' %}
+
+{% block content_title %}
+    Next Releases
+{% endblock %}
+
+{% block content %}
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Project</th>
+                <th scope="col">Current</th>
+                <th scope="col">Next</th>
+                <th scope="col">Stability</th>
+                <th scope="col">Can be released?</th>
+                <th scope="col">PullRequests</th>
+                <th scope="col">without Stability label</th>
+                <th scope="col">without Changelog</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for release in releases %}
+                {% if release.isNeeded %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('next_release_project', {'projectName': release.project.name}) }}">
+                                {{ release.project.title }}
+                            </a>
+                        </th>
+                        <td>
+                            {{ release.currentTag.toString }}
+                        </td>
+                        <td>
+                            {{ release.nextTag.toString }}
+                        </td>
+                        <td>
+                            {{ macros.render_stability(release.stability) }}
+                        </td>
+                        <td>
+                            {% if release.canBeReleased %}
+                                <span class="badge badge-success">YES</span>
+                            {% else %}
+                                <span class="badge badge-danger">NO</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ release.pullRequests|length }}
+                        </td>
+                        <td>
+                            {{ release.pullRequestsWithoutStabilityLabel|length|replace({'0': ''}) }}
+                        </td>
+                        <td>
+                            {{ release.pullRequestsWithoutChangelog|length|replace({'0': ''}) }}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

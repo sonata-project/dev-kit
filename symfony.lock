@@ -1,4 +1,16 @@
 {
+    "cache/adapter-common": {
+        "version": "1.1.0"
+    },
+    "cache/hierarchical-cache": {
+        "version": "1.0.0"
+    },
+    "cache/redis-adapter": {
+        "version": "1.0.0"
+    },
+    "cache/tag-interop": {
+        "version": "1.0.0"
+    },
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
@@ -56,6 +68,9 @@
     "knplabs/packagist-api": {
         "version": "v1.5.1"
     },
+    "league/commonmark": {
+        "version": "1.5.5"
+    },
     "monolog/monolog": {
         "version": "1.25.3"
     },
@@ -107,6 +122,9 @@
     "phpstan/phpstan": {
         "version": "0.12.42"
     },
+    "predis/predis": {
+        "version": "v1.1.6"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -127,6 +145,9 @@
     },
     "psr/log": {
         "version": "1.1.2"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
@@ -420,6 +441,9 @@
     },
     "twig/extra-bundle": {
         "version": "v3.0.1"
+    },
+    "twig/markdown-extra": {
+        "version": "v3.0.5"
     },
     "twig/twig": {
         "version": "v3.0.1"
