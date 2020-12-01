@@ -24,7 +24,7 @@ use App\Github\Domain\Value\Label;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Notifier\Recipient\AdminRecipient;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
@@ -189,7 +189,7 @@ final class HookProcessor
                     ]
                 );
 
-                $this->notifier->send($notification, new AdminRecipient());
+                $this->notifier->send($notification, new Recipient());
             }
         }
     }
