@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
+use App\Command\AbstractCommand;
 use App\Domain\Value\Repository;
 use App\Github\Api\Comments;
 use App\Github\Api\Issues;
@@ -189,7 +190,9 @@ final class HookProcessor
                     ]
                 );
 
-                $this->notifier->send($notification, new Recipient());
+                $recipient = new Recipient(AbstractCommand::GITHUB_EMAIL);
+
+                $this->notifier->send($notification, $recipient);
             }
         }
     }
