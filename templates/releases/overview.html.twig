@@ -21,45 +21,42 @@
             </tr>
         </thead>
         <tbody>
-
-        {% for release in releases %}
-            {% if release.isNeeded %}
-                <tr>
-                    <th scope="row">
-                        <a href="{{ path('next_release_project', {'projectName': release.project.name}) }}">
-                            {{ release.project.title }}
-                        </a>
-                    </th>
-                    <td>
-                        {{ release.currentTag.toString }}
-                    </td>
-                    <td>
-                        {{ release.nextTag.toString }}
-                    </td>
-                    <td>
-                        {{ macros.render_stability(release.stability) }}
-                    </td>
-                    <td>
-                        {% if release.canBeReleased %}
-                            <span class="badge badge-success">YES</span>
-                        {% else %}
-                            <span class="badge badge-danger">NO</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {{ release.pullRequests|length }}
-                    </td>
-                    <td>
-                        {{ release.pullRequestsWithoutStabilityLabel|length|replace({'0': ''}) }}
-                    </td>
-                    <td>
-                        {{ release.pullRequestsWithoutChangelog|length|replace({'0': ''}) }}
-                    </td>
-                </tr>
-
-            {% endif %}
-        {% endfor %}
-
+            {% for release in releases %}
+                {% if release.isNeeded %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('next_release_project', {'projectName': release.project.name}) }}">
+                                {{ release.project.title }}
+                            </a>
+                        </th>
+                        <td>
+                            {{ release.currentTag.toString }}
+                        </td>
+                        <td>
+                            {{ release.nextTag.toString }}
+                        </td>
+                        <td>
+                            {{ macros.render_stability(release.stability) }}
+                        </td>
+                        <td>
+                            {% if release.canBeReleased %}
+                                <span class="badge badge-success">YES</span>
+                            {% else %}
+                                <span class="badge badge-danger">NO</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ release.pullRequests|length }}
+                        </td>
+                        <td>
+                            {{ release.pullRequestsWithoutStabilityLabel|length|replace({'0': ''}) }}
+                        </td>
+                        <td>
+                            {{ release.pullRequestsWithoutChangelog|length|replace({'0': ''}) }}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
