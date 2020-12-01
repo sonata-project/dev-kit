@@ -55,7 +55,7 @@ final class Comments
         return array_filter(
             $comments,
             static function (Comment $comment) use ($username) {
-                return $comment->user() === $username;
+                return $comment->author()->login() === $username;
             }
         );
     }
@@ -84,6 +84,15 @@ final class Comments
             [
                 'body' => $message,
             ]
+        );
+    }
+
+    public function remove(Repository $repository, Comment $comment): void
+    {
+        $this->github->issues()->comments()->remove(
+            $repository->username(),
+            $repository->name(),
+            $comment->id()
         );
     }
 }

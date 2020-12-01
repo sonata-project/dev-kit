@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\PullRequest\Head;
 
-use App\Github\Domain\Value\PullRequest\Head\Repo\Owner;
+use App\Github\Domain\Value\User;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,9 +21,9 @@ use Webmozart\Assert\Assert;
  */
 final class Repo
 {
-    private Owner $owner;
+    private User $owner;
 
-    private function __construct(Owner $owner)
+    private function __construct(User $owner)
     {
         $this->owner = $owner;
     }
@@ -33,14 +33,13 @@ final class Repo
         Assert::notEmpty($response);
 
         Assert::keyExists($response, 'owner');
-        Assert::notEmpty($response['owner']);
 
         return new self(
-            Owner::fromResponse($response['owner'])
+            User::fromResponse($response['owner'])
         );
     }
 
-    public function owner(): Owner
+    public function owner(): User
     {
         return $this->owner;
     }

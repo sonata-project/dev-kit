@@ -249,7 +249,7 @@ final class PullRequestTest extends TestCase
     {
         $response = [
             'number' => 123,
-            'title' => 'Update dependecy',
+            'title' => 'Update dependency',
             'updated_at' => '2020-01-01T19:00:00Z',
             'merged_at' => '2020-01-01T19:00:00Z',
             'base' => [
@@ -260,11 +260,14 @@ final class PullRequestTest extends TestCase
                 'sha' => $headSha = 'sha',
                 'repo' => [
                     'owner' => [
+                        'id' => $ownerId = 42,
                         'login' => $ownerLogin = 'ownerLogin',
+                        'html_url' => $ownerHtmlUrl = 'http://example.com',
                     ],
                 ],
             ],
             'user' => [
+                'id' => $userId = 42,
                 'login' => $userLogin = 'userLogin',
                 'html_url' => $userHtmlUrl = 'https://test.com',
             ],
@@ -284,7 +287,10 @@ final class PullRequestTest extends TestCase
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
         self::assertSame($headSha, $pr->head()->sha()->toString());
+        self::assertSame($ownerId, $pr->head()->repo()->owner()->id());
         self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
+        self::assertSame($ownerHtmlUrl, $pr->head()->repo()->owner()->htmlUrl());
+        self::assertSame($userId, $pr->user()->id());
         self::assertSame($userLogin, $pr->user()->login());
         self::assertSame($userHtmlUrl, $pr->user()->htmlUrl());
         self::assertTrue($pr->isMergeable());

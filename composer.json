@@ -26,18 +26,20 @@
         "league/commonmark": "^1.5",
         "nyholm/psr7": "^1.2",
         "oskarstark/env-var-extension": "^1.0",
-        "symfony/cache": "5.1.*",
-        "symfony/console": "^5.1",
-        "symfony/dotenv": "^5.1",
-        "symfony/flex": "^1.9",
-        "symfony/framework-bundle": "^5.1",
-        "symfony/http-client": "^5.1",
-        "symfony/monolog-bundle": "^3.5",
-        "symfony/string": "^5.1",
+        "symfony/cache": "^5.2",
+        "symfony/console": "^5.2",
+        "symfony/dotenv": "^5.2",
+        "symfony/flex": "^1.10",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/http-client": "^5.2",
+        "symfony/monolog-bundle": "^3.6",
+        "symfony/notifier": "^5.2",
+        "symfony/slack-notifier": "^5.2",
+        "symfony/string": "^5.2",
         "symfony/twig-pack": "^1.0",
-        "symfony/yaml": "^5.1",
-        "twig/extra-bundle": "^3.0",
-        "twig/markdown-extra": "^3.0",
+        "symfony/yaml": "^5.2",
+        "twig/extra-bundle": "^3.1",
+        "twig/markdown-extra": "^3.1",
         "webmozart/assert": "^1.9"
     },
     "replace": {
@@ -54,13 +56,13 @@
     },
     "require-dev": {
         "ergebnis/test-util": "^1.2",
-        "phpstan/phpstan": "^0.12.48",
-        "symfony/debug-bundle": "^5.1",
-        "symfony/phpunit-bridge": "^5.1",
-        "symfony/stopwatch": "^5.1",
-        "symfony/twig-bundle": "^5.1",
-        "symfony/var-dumper": "^5.1",
-        "symfony/web-profiler-bundle": "^5.1"
+        "phpstan/phpstan": "^0.12.53",
+        "symfony/debug-bundle": "^5.2",
+        "symfony/phpunit-bridge": "^5.2",
+        "symfony/stopwatch": "^5.2",
+        "symfony/twig-bundle": "^5.2",
+        "symfony/var-dumper": "^5.2",
+        "symfony/web-profiler-bundle": "^5.2"
     },
     "config": {
         "platform": {
@@ -74,7 +76,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.1.*"
+            "require": "5.2.*"
         }
     },
     "autoload": {

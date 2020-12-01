@@ -15,7 +15,7 @@ namespace App\Tests\Util\Factory\Github\Response;
 
 use Ergebnis\Test\Util\Helper;
 
-class PullRequestFactory
+final class PullRequestFactory
 {
     use Helper;
 
@@ -31,9 +31,7 @@ class PullRequestFactory
         $repo = null;
         if ($faker->boolean) {
             $repo = [
-                'owner' => [
-                    'login' => $faker->userName,
-                ],
+                'owner' => UserFactory::create(),
             ];
         }
 
@@ -50,10 +48,7 @@ class PullRequestFactory
                 'sha' => $faker->sha256,
                 'repo' => $repo,
             ],
-            'user' => [
-                'login' => $faker->userName,
-                'html_url' => $faker->url,
-            ],
+            'user' => UserFactory::create(),
             'mergeable' => $faker->optional()->boolean,
             'body' => sprintf(
                 <<<'BODY'

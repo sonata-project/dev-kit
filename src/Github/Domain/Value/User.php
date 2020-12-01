@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Github\Domain\Value\PullRequest;
+namespace App\Github\Domain\Value;
 
 use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
@@ -21,11 +21,13 @@ use Webmozart\Assert\Assert;
  */
 final class User
 {
+    private int $id;
     private string $login;
     private string $htmlUrl;
 
-    private function __construct(string $login, string $htmlUrl)
+    private function __construct(int $id, string $login, string $htmlUrl)
     {
+        $this->id = $id;
         $this->login = TrimmedNonEmptyString::fromString($login)->toString();
         $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
     }
@@ -34,6 +36,10 @@ final class User
     {
         Assert::notEmpty($response);
 
+        Assert::keyExists($response, 'id');
+        Assert::integer($response['id']);
+        Assert::greaterThan($response['id'], 0);
+
         Assert::keyExists($response, 'login');
         Assert::stringNotEmpty($response['login']);
 
@@ -41,14 +47,31 @@ final class User
         Assert::stringNotEmpty($response['html_url']);
 
         return new self(
+            $response['id'],
             $response['login'],
             $response['html_url']
         );
     }
 
+    public function id(): int
+    {
+        return $this->id;
+    }
+
     public function login(): string
     {
         return $this->login;
+    }
+
+    /**
+     * The Github handle including '@'.
+     */
+    public function handle(): string
+    {
+        return sprintf(
+            '@%s',
+            $this->login
+        );
     }
 
     public function htmlUrl(): string

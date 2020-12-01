@@ -10,6 +10,10 @@ runtime:
         - iconv
         - json
 
+variables:
+    php:
+        opcache.preload: /app/config/preload.php
+
 relationships:
     redis: "github:redis"
 
@@ -34,7 +38,7 @@ hooks:
 
         curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
         (>&2
-            php-ext-install redis 5.3.1
+            php-ext-install redis 5.3.2
             symfony-build
         )
 
