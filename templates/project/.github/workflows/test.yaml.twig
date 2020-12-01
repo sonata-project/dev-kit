@@ -68,7 +68,7 @@ jobs:
 {% if branch.hasService('mongodb') %}
                   tools: composer:v{{ project.composerVersion }}, pecl
 {# Change mongodb extension version to a stable one when available #}
-                  extensions: mongodb-1.9.0rc1
+                  extensions: mongodb-1.9.0
 {% else %}
                   tools: composer:v{{ project.composerVersion }}
 {% endif %}
