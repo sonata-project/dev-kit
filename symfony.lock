@@ -15,7 +15,16 @@
         "version": "v1.5.0"
     },
     "cpliakas/git-wrapper": {
-        "version": "v3.0.3"
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "c99fcfe7e2e637834e3136dfe8fd671dd5d9163a"
+        },
+        "files": [
+            "config/packages/cpliakas_git_wrapper.yaml"
+        ]
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -48,13 +57,13 @@
         "version": "v1.9.1"
     },
     "guzzlehttp/guzzle": {
-        "version": "6.5.5"
+        "version": "7.2.0"
     },
     "guzzlehttp/promises": {
-        "version": "v1.3.1"
+        "version": "1.4.0"
     },
     "guzzlehttp/psr7": {
-        "version": "1.6.1"
+        "version": "1.7.0"
     },
     "knplabs/github-api": {
         "version": "2.6",
@@ -69,7 +78,16 @@
         ]
     },
     "knplabs/packagist-api": {
-        "version": "v1.6.1"
+        "version": "1.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.6",
+            "ref": "6db69661915a16528535b90973e02593cc3b84e3"
+        },
+        "files": [
+            "config/packages/knp_packagist_api.yaml"
+        ]
     },
     "league/commonmark": {
         "version": "1.5.7"
@@ -330,9 +348,6 @@
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.20.0"
-    },
-    "symfony/polyfill-intl-idn": {
-        "version": "v1.13.1"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.20.0"
