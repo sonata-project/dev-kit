@@ -138,12 +138,22 @@ EOT;
 
         $notificationStyle->section('Release');
 
+        if (!$nextRelease->canBeReleased()) {
+            $notificationStyle->error(sprintf(
+                'Next release would be: %s, but cannot be released yet!',
+                $nextRelease->nextTag()->toString()
+            ));
+            $notificationStyle->warning('Please check labels and changelogs of the pull requests!');
+
+            return 1;
+        }
+
         $notificationStyle->success(sprintf(
             'Next release will be: %s',
             $nextRelease->nextTag()->toString()
         ));
 
-        $notificationStyle->section('Changelog');
+        $notificationStyle->section('Changelog as Markdown');
 
         // Send markdown to stdout and only that
         $this->io->writeln($nextRelease->changelog()->asMarkdown());
@@ -155,77 +165,49 @@ EOT;
     {
         $notificationStyle = $this->io->getErrorStyle();
 
-        $this->renderStability($pr->stability());
-
-        $notificationStyle->write(sprintf(
+        $notificationStyle->writeln(sprintf(
             '<info>%s</info>',
             $pr->title()
         ));
+        $notificationStyle->writeln($pr->htmlUrl());
 
-        array_map(function (Label $label): void {
-            $this->renderLabel($label);
+        $stability = $pr->stability();
+        $notificationStyle->writeln(sprintf(
+            '   Stability: %s',
+            $stability->equals(Stability::unknown()) ? sprintf('<error>%s</error>', $stability->toUppercaseString()) : $pr->stability()->toUppercaseString()
+        ));
+        $notificationStyle->writeln(sprintf(
+            '      Labels: %s',
+            $this->renderLabels($pr)
+        ));
+        $notificationStyle->writeln(sprintf(
+            '   Changelog: %s',
+            $pr->fulfilledChangelog() ? '<info>yes</info>' : '<error>no</error>'
+        ));
+
+        if ($pr->hasNotNeededChangelog()) {
+            $notificationStyle->writeln('<comment>It looks like a changelog is not needed!</comment>');
+        }
+
+        $notificationStyle->newLine();
+        $notificationStyle->newLine();
+    }
+
+    private function renderLabels(PullRequest $pr): string
+    {
+        if (!$pr->hasLabels()) {
+            return '<error>No labels set!</error>';
+        }
+
+        $renderedLabels = array_map(static function (Label $label): string {
+            return sprintf(
+                '<fg=black;bg=%s>%s</>',
+                $label->color()->asHexCode(),
+                $label->name()
+            );
         }, $pr->labels());
 
-        if (!$pr->hasLabels()) {
-            $notificationStyle->write(' <fg=black;bg=yellow>[No labels]</>');
-        }
-
-        if (!$pr->hasChangelog() && $pr->stability()->notEquals(Stability::pedantic())) {
-            $notificationStyle->write(' <error>[Changelog not found]</error>');
-        } elseif (!$pr->hasChangelog()) {
-            $notificationStyle->write(' <fg=black;bg=green>[Changelog not found]</>');
-        } elseif ($pr->hasChangelog() && $pr->stability()->equals(Stability::pedantic())) {
-            $notificationStyle->write(' <fg=black;bg=yellow>[Changelog found]</>');
-        } else {
-            $notificationStyle->write(' <fg=black;bg=green>[Changelog found]</>');
-        }
-
-        $notificationStyle->newLine();
-        $notificationStyle->writeln($pr->htmlUrl());
-        $notificationStyle->newLine();
-    }
-
-    private function renderLabel(Label $label): void
-    {
-        $colors = [
-            'patch' => 'blue',
-            'bug' => 'red',
-            'docs' => 'yellow',
-            'minor' => 'green',
-            'pedantic' => 'cyan',
-        ];
-
-        $color = 'default';
-        if (\array_key_exists($label->name(), $colors)) {
-            $color = $colors[$label->name()];
-        }
-
-        $this->io->getErrorStyle()->write(sprintf(
-            ' <fg=%s>[%s]</>',
-            $color,
-            $label->name()
-        ));
-    }
-
-    private function renderStability(Stability $stability): void
-    {
-        $notificationStyle = $this->io->getErrorStyle();
-        $stabilities = [
-            'patch' => 'blue',
-            'minor' => 'green',
-            'pedantic' => 'yellow',
-            'unknown' => 'red',
-        ];
-
-        if (\array_key_exists($stability->toString(), $stabilities)) {
-            $notificationStyle->write(sprintf(
-                '<fg=black;bg=%s>[%s]</> ',
-                $stabilities[$stability->toString()],
-                $stability->toUppercaseString()
-            ));
-        } else {
-            $notificationStyle->write('<error>[NOT SET]</error> ');
-        }
+        return implode(', ', $renderedLabels);
     }
 
     private function renderCombinedStatus(CombinedStatus $combinedStatus): void

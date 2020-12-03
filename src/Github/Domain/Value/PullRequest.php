@@ -252,6 +252,16 @@ final class PullRequest
         return [] !== $this->changelog();
     }
 
+    public function fulfilledChangelog(): bool
+    {
+        return !$this->needsChangelog() || ($this->needsChangelog() && $this->hasChangelog());
+    }
+
+    public function hasNotNeededChangelog(): bool
+    {
+        return !$this->needsChangelog() && $this->hasChangelog();
+    }
+
     public function changelog(): array
     {
         $changelog = [];
