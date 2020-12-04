@@ -12,6 +12,9 @@ on:
 {% endfor %}
     pull_request:
 
+env:
+    ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
 jobs:
     test:
         {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
