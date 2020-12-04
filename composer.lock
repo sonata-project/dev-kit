@@ -917,16 +917,16 @@
         },
         {
             "name": "knplabs/packagist-api",
-            "version": "v1.7.0",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/packagist-api.git",
-                "reference": "d1fa623c7c781a7fcc6013c5e022e21e0aebef71"
+                "reference": "be6295ec879cc1e822af4adf07a74f0c361888a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/packagist-api/zipball/d1fa623c7c781a7fcc6013c5e022e21e0aebef71",
-                "reference": "d1fa623c7c781a7fcc6013c5e022e21e0aebef71",
+                "url": "https://api.github.com/repos/KnpLabs/packagist-api/zipball/be6295ec879cc1e822af4adf07a74f0c361888a0",
+                "reference": "be6295ec879cc1e822af4adf07a74f0c361888a0",
                 "shasum": ""
             },
             "require": {
@@ -966,7 +966,7 @@
                 "composer",
                 "packagist"
             ],
-            "time": "2020-11-28T23:48:58+00:00"
+            "time": "2020-12-03T18:20:13+00:00"
         },
         {
             "name": "league/commonmark",
