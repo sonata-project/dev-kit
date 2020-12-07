@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\Hook;
 
+use App\Github\Domain\Value\Url;
 use Webmozart\Assert\Assert;
 
 /**
@@ -25,7 +26,7 @@ final class Config
      */
     private array $config;
 
-    private string $url;
+    private Url $url;
 
     /**
      * @param array<string, string> $config
@@ -35,7 +36,7 @@ final class Config
         Assert::notEmpty($config);
 
         $this->config = $config;
-        $this->url = $config['url'];
+        $this->url = Url::fromString($config['url']);
     }
 
     /**
@@ -48,7 +49,7 @@ final class Config
         return new self($config);
     }
 
-    public function url(): string
+    public function url(): Url
     {
         return $this->url;
     }

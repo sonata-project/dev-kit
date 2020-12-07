@@ -82,7 +82,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             );
 
             if ($this->apply) {
-                $this->branchProtections->update($repository, $branch, [
+                $settings = [
                     'required_status_checks' => [
                         'strict' => false,
                         'contexts' => $requiredStatusChecks,
@@ -97,7 +97,13 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
                     ],
                     'restrictions' => null,
                     'enforce_admins' => false,
-                ]);
+                ];
+
+                $this->branchProtections->update(
+                    $repository,
+                    $branch,
+                    $settings
+                );
             }
         }
 
@@ -108,6 +114,9 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         }
     }
 
+    /**
+     * @return string[]
+     */
     private function buildRequiredStatusChecks(Project $project, Branch $branch): array
     {
         $lowestPhpVersion = $branch->lowestPhpVersion();
@@ -122,9 +131,17 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             ),
         ];
 
-        if ($project->docsTarget()) {
+        if ($project->hasDocumentation()) {
             $requiredStatusChecks[] = 'Sphinx build';
             $requiredStatusChecks[] = 'DOCtor-RST';
+        }
+
+        if ($project->usesPHPStan()) {
+            $requiredStatusChecks[] = 'PHPStan';
+        }
+
+        if ($project->usesPsalm()) {
+            $requiredStatusChecks[] = 'Psalm';
         }
 
         /** @var PhpVersion $phpVersion */

@@ -21,8 +21,8 @@ final class TagTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionFor(string $value): void
     {

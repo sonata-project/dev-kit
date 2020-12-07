@@ -15,10 +15,13 @@ namespace App\Command\Dispatcher;
 
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
+use App\Domain\Value\Branch;
+use App\Domain\Value\ExcludedFile;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Github\Api\Branches;
+use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
-use Github\Client as GithubClient;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,8 +41,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private string $appDir;
     private string $githubToken;
     private Projects $projects;
-    private GithubClient $github;
     private PullRequests $pullRequests;
+    private Branches $branches;
+    private Commits $commits;
     private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
@@ -48,8 +52,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         string $appDir,
         string $githubToken,
         Projects $projects,
-        GithubClient $github,
         PullRequests $pullRequests,
+        Branches $branches,
+        Commits $commits,
         GitWrapper $git,
         Filesystem $filesystem,
         Environment $twig
@@ -59,8 +64,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->appDir = $appDir;
         $this->githubToken = $githubToken;
         $this->projects = $projects;
-        $this->github = $github;
         $this->pullRequests = $pullRequests;
+        $this->branches = $branches;
+        $this->commits = $commits;
         $this->git = $git;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
@@ -111,8 +117,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private function dispatchFiles(Project $project): void
     {
-        $projectConfig = $project->rawConfig();
-
         $repository = $project->repository();
 
         // No branch to manage, continue to next project.
@@ -145,68 +149,66 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $git->config('user.name', static::GITHUB_USER);
         $git->config('user.email', static::GITHUB_EMAIL);
 
-        $branches = array_reverse($projectConfig['branches']);
-
         $previousBranch = null;
-        $previousDevKit = null;
-        while (($branchConfig = current($branches))) {
+        $previousDevKitBranchName = null;
+        foreach ($project->branchesReverse() as $branch) {
             // We have to fetch all branches on each step in case a PR is submitted.
-            $remoteBranches = array_map(static function ($branch) {
-                return $branch['name'];
-            }, $this->github->repos()->branches($repository->username(), $repository->name()));
+            $remoteBranchNames = array_map(static function (\App\Github\Domain\Value\Branch $branch) {
+                return $branch->name();
+            }, $this->branches->all($repository));
 
-            $currentBranch = key($branches);
-            $currentDevKit = u($currentBranch)->append('-dev-kit')->toString();
-            next($branches);
+            $devKitBranchName = u($branch->name())->append('-dev-kit')->toString();
 
             // A PR is already here for previous branch, do nothing on the current one.
-            if (\in_array($previousDevKit, $remoteBranches, true)) {
+            if (\in_array($previousDevKitBranchName, $remoteBranchNames, true)) {
                 continue;
             }
 
             // Diff application
             $this->io->section(sprintf(
                 'Files for %s',
-                $currentBranch
+                $branch->name()
             ));
 
             // If the previous branch is not merged into the current one, do nothing.
-            if ($previousBranch && $this->github->repos()->commits()->compare(
-                $repository->username(),
-                $repository->name(),
-                $currentBranch,
-                $previousBranch
-            )['ahead_by']) {
-                $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
+            if ($previousBranch instanceof Branch) {
+                if ($this->commits->compare(
+                    $repository,
+                    $branch,
+                    $previousBranch
+                )['ahead_by']) {
+                    $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
 
-                continue;
+                    continue;
+                }
             }
 
             $git->reset(['hard' => true]);
 
             // Checkout the targeted branch
-            if (\in_array($currentBranch, $git->getBranches()->all(), true)) {
-                $git->checkout($currentBranch);
+            if (\in_array($branch->name(), $git->getBranches()->all(), true)) {
+                $git->checkout($branch->name());
             } else {
-                $git->checkout('-b', $currentBranch, '--track', 'origin/'.$currentBranch);
+                $git->checkout('-b', $branch->name(), '--track', 'origin/'.$branch->name());
             }
+
             // Checkout the dev-kit branch
-            if (\in_array('remotes/origin/'.$currentDevKit, $git->getBranches()->all(), true)) {
-                $git->checkout('-b', $currentDevKit, '--track', 'origin/'.$currentDevKit);
+            if (\in_array('remotes/origin/'.$devKitBranchName, $git->getBranches()->all(), true)) {
+                $git->checkout('-b', $devKitBranchName, '--track', 'origin/'.$devKitBranchName);
             } else {
-                $git->checkout('-b', $currentDevKit);
+                $git->checkout('-b', $devKitBranchName);
             }
 
             $this->renderFile(
                 $project,
                 $repository,
-                $currentBranch,
+                $branch,
                 $clonePath
             );
 
             $this->deleteNotNeededFilesAndDirs(
                 $project,
-                $currentBranch,
+                $branch,
                 $clonePath
             );
 
@@ -217,9 +219,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $this->io->writeln($diff);
                 if ($this->apply) {
                     $git->commit('DevKit updates');
-                    $git->push('-u', 'origin', $currentDevKit);
+                    $git->push('-u', 'origin', $devKitBranchName);
 
-                    $currentHead = u('sonata-project:')->append($currentDevKit)->toString();
+                    $currentHead = u('sonata-project:')->append($devKitBranchName)->toString();
 
                     // If the Pull Request does not exists yet, create it.
                     if (!$this->pullRequests->hasOpenPullRequest($repository, $currentHead)) {
@@ -227,10 +229,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                             $repository,
                             sprintf(
                                 'DevKit updates for %s branch',
-                                $currentBranch
+                                $branch->name()
                             ),
                             $currentHead,
-                            $currentBranch
+                            $branch->name()
                         );
                     }
 
@@ -242,12 +244,12 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
 
             // Save the current branch to the previous and go to next step
-            $previousBranch = $currentBranch;
-            $previousDevKit = $currentDevKit;
+            $previousBranch = $branch;
+            $previousDevKitBranchName = $devKitBranchName;
         }
     }
 
-    private function deleteNotNeededFilesAndDirs(Project $project, string $branchName, string $distPath, string $localPath = self::FILES_DIR): void
+    private function deleteNotNeededFilesAndDirs(Project $project, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
@@ -256,39 +258,49 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        if ($project->docsTarget()) {
-            return;
+        if (!$project->hasDocumentation()) {
+            $docsPath = $branch->docsPath()->toString();
+
+            $docsDirectory = u($distPath)
+                ->append('/')
+                ->append($docsPath)
+                ->toString();
+
+            $this->io->writeln(sprintf(
+                'Delete <info>/%s</info> directory!',
+                $docsPath
+            ));
+            $this->filesystem->remove($docsDirectory);
+
+            $filepath = '.github/workflows/documentation.yaml';
+            $documentationWorkflowFile = u($distPath)
+                ->append('/')
+                ->append($filepath)
+                ->toString();
+
+            $this->io->writeln(sprintf(
+                'Delete <info>/%s</info> file!',
+                $filepath
+            ));
+            $this->filesystem->remove($documentationWorkflowFile);
         }
 
-        $projectConfig = $project->rawConfig();
+        if (!$project->usesPHPStan() && !$project->usesPsalm()) {
+            $filepath = '.github/workflows/qa.yaml';
+            $qaWorkflowFile = u($distPath)
+                ->append('/')
+                ->append($filepath)
+                ->toString();
 
-        $docsPath = $projectConfig['branches'][$branchName]['docs_path'];
-
-        $docsDirectory = u($distPath)
-            ->append('/')
-            ->append($docsPath)
-            ->toString();
-
-        $this->io->writeln(sprintf(
-            'Delete <info>/%s</info> directory!',
-            $docsPath
-        ));
-        $this->filesystem->remove($docsDirectory);
-
-        $filepath = '.github/workflows/documentation.yaml';
-        $documentationWorkflowFile = u($distPath)
-            ->append('/')
-            ->append($filepath)
-            ->toString();
-
-        $this->io->writeln(sprintf(
-            'Delete <info>/%s</info> file!',
-            $filepath
-        ));
-        $this->filesystem->remove($documentationWorkflowFile);
+            $this->io->writeln(sprintf(
+                'Delete <info>/%s</info> file!',
+                $filepath
+            ));
+            $this->filesystem->remove($qaWorkflowFile);
+        }
     }
 
-    private function renderFile(Project $project, Repository $repository, string $branchName, string $distPath, string $localPath = self::FILES_DIR): void
+    private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
@@ -297,9 +309,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        $projectConfig = $project->rawConfig();
+        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string {
+            return $excludedFile->filename();
+        }, $project->excludedFiles());
 
-        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $projectConfig['excluded_files'], true)) {
+        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $excludedFiles, true)) {
             return;
         }
 
@@ -333,7 +347,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $this->renderFile(
                         $project,
                         $repository,
-                        $branchName,
+                        $branch,
                         $distPath.'/'.$entry,
                         $localPath.'/'.$entry,
                     );
@@ -355,7 +369,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $this->filesystem->mkdir(\dirname($distPath));
         }
 
-        $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localFullPath);
 
         if (u($localPathInfo['basename'])->startsWith('DELETE_')) {
@@ -369,25 +382,22 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
 
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
-            $distPath = \dirname($distPath).'/'.basename($distPath, '.twig');
+            $distPath = sprintf(
+                '%s/%s',
+                \dirname($distPath),
+                basename($distPath, '.twig')
+            );
 
-            reset($projectConfig['branches']);
-            $unstableBranch = key($projectConfig['branches']);
-            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-
-            $res = file_put_contents($distPath, $this->twig->render($localPath, array_merge(
-                $projectConfig,
-                $branchConfig,
+            $localContent = $this->twig->render(
+                $localPath,
                 [
                     'project' => $project,
-                    'current_branch' => $branchName,
-                    'unstable_branch' => $unstableBranch,
-                    'stable_branch' => $stableBranch,
+                    'branch' => $branch,
                 ]
-            )));
-        } else {
-            $res = file_put_contents($distPath, $localContent);
+            );
         }
+
+        $res = file_put_contents($distPath, $localContent);
 
         if (false === $res) {
             throw new \RuntimeException(sprintf(

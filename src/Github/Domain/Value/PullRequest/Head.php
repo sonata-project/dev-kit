@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\PullRequest;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Head\Repo;
 use App\Github\Domain\Value\Sha;
 use Webmozart\Assert\Assert;
@@ -24,13 +25,11 @@ final class Head
 {
     private string $ref;
     private Sha $sha;
-    private Repo $repo;
+    private ?Repo $repo;
 
-    private function __construct(string $ref, Sha $sha, Repo $repo)
+    private function __construct(string $ref, Sha $sha, ?Repo $repo)
     {
-        Assert::stringNotEmpty($ref);
-
-        $this->ref = $ref;
+        $this->ref = TrimmedNonEmptyString::fromString($ref)->toString();
         $this->sha = $sha;
         $this->repo = $repo;
     }
@@ -46,12 +45,20 @@ final class Head
         Assert::stringNotEmpty($config['sha']);
 
         Assert::keyExists($config, 'repo');
-        Assert::notEmpty($config['repo']);
+        if (\is_array($config['repo'])) {
+            Assert::notEmpty($config['repo']);
+        }
+
+        if (null === $config['repo']) {
+            $repo = null;
+        } else {
+            $repo = Repo::fromResponse($config['repo']);
+        }
 
         return new self(
             $config['ref'],
             Sha::fromString($config['sha']),
-            Repo::fromResponse($config['repo'])
+            $repo
         );
     }
 
@@ -65,7 +72,7 @@ final class Head
         return $this->sha;
     }
 
-    public function repo(): Repo
+    public function repo(): ?Repo
     {
         return $this->repo;
     }

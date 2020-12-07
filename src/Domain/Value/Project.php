@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
@@ -22,10 +23,6 @@ use Webmozart\Assert\Assert;
  */
 final class Project
 {
-    /**
-     * @deprecated should be removed after using it no more!
-     */
-    private array $rawConfig;
     private string $name;
     private Package $package;
 
@@ -39,8 +36,12 @@ final class Project
      */
     private array $excludedFiles;
 
-    private bool $docsTarget;
+    private string $composerVersion;
+    private bool $hasDocumentation;
+    private bool $phpstan;
+    private bool $psalm;
     private ?string $customGitignorePart;
+    private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
 
     private Repository $repository;
@@ -50,18 +51,25 @@ final class Project
         Package $package,
         array $branches,
         array $excludedFiles,
-        bool $docsTarget,
+        string $composerVersion,
+        bool $hasDocumentation,
+        bool $phpstan,
+        bool $psalm,
         ?string $customGitignorePart,
+        ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart
     ) {
-        Assert::stringNotEmpty($name);
-        $this->name = $name;
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
 
         $this->package = $package;
         $this->branches = $branches;
-        $this->docsTarget = $docsTarget;
+        $this->composerVersion = $composerVersion;
+        $this->hasDocumentation = $hasDocumentation;
+        $this->phpstan = $phpstan;
+        $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
+        $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
 
         $this->repository = Repository::fromPackage($package);
@@ -79,18 +87,19 @@ final class Project
             $excludedFiles[] = ExcludedFile::fromString($filename);
         }
 
-        $project = new self(
+        return new self(
             $name,
             $package,
             $branches,
             $excludedFiles,
-            $config['docs_target'],
+            $config['composer_version'],
+            $config['has_documentation'],
+            $config['phpstan'],
+            $config['psalm'],
             $config['custom_gitignore_part'],
+            $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
         );
-        $project->rawConfig = $config;
-
-        return $project;
     }
 
     public function name(): string
@@ -156,14 +165,34 @@ final class Project
         return $this->excludedFiles;
     }
 
-    public function docsTarget(): bool
+    public function composerVersion(): string
     {
-        return $this->docsTarget;
+        return $this->composerVersion;
+    }
+
+    public function hasDocumentation(): bool
+    {
+        return $this->hasDocumentation;
+    }
+
+    public function usesPHPStan(): bool
+    {
+        return $this->phpstan;
+    }
+
+    public function usesPsalm(): bool
+    {
+        return $this->psalm;
     }
 
     public function customGitignorePart(): ?string
     {
         return $this->customGitignorePart;
+    }
+
+    public function customGitattributesPart(): ?string
+    {
+        return $this->customGitattributesPart;
     }
 
     public function customDoctorRstWhitelistPart(): ?string
@@ -221,6 +250,13 @@ final class Project
             $default[] = 'Symfony-Bundle';
         }
 
+        /*
+         * add "hacktoberfest" topic to repositories in october
+         */
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
+            $default[] = 'Hacktoberfest';
+        }
+
         $latestVersion = $this->getLatestPackagistVersion();
 
         $keywords = array_map(static function (string $keyword): string {
@@ -236,17 +272,28 @@ final class Project
         return array_values(array_unique($keywords));
     }
 
-    /**
-     * We keep this method to have a smooth transition and
-     * remove it when we did not use config arrays anymore. Oskar.
-     *
-     * @deprecated should be removed after using it no more!
-     *
-     * @return array<mixed>
-     */
-    public function rawConfig(): array
+    public function unstableBranch(): Branch
     {
-        return $this->rawConfig;
+        if (!$this->hasBranches()) {
+            throw NoBranchesAvailable::forProject($this);
+        }
+
+        return $this->branches[0];
+    }
+
+    public function stableBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw NoBranchesAvailable::forProject($this);
+        }
+
+        try {
+            Assert::keyExists($this->branches, 1);
+
+            return $this->branches[1];
+        } catch (\InvalidArgumentException $e) {
+            return $this->unstableBranch();
+        }
     }
 
     private function getLatestPackagistVersion(): Package\Version

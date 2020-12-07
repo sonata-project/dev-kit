@@ -23,16 +23,14 @@ use Webmozart\Assert\Assert;
 final class Hook
 {
     private int $id;
-    private string $url;
+    private Url $url;
     private bool $active;
     private Config $config;
     private Events $events;
 
-    private function __construct(int $id, string $url, bool $active, Config $config, Events $events)
+    private function __construct(int $id, Url $url, bool $active, Config $config, Events $events)
     {
         Assert::greaterThan($id, 0);
-        Assert::stringNotEmpty($url);
-        Assert::notEmpty($config);
 
         $this->id = $id;
         $this->url = $url;
@@ -48,7 +46,6 @@ final class Hook
         Assert::keyExists($response, 'id');
 
         Assert::keyExists($response, 'url');
-        Assert::stringNotEmpty($response['url']);
 
         Assert::keyExists($response, 'active');
         Assert::boolean($response['active']);
@@ -59,7 +56,7 @@ final class Hook
 
         return new self(
             $response['id'],
-            $response['url'],
+            Url::fromString($response['url']),
             $response['active'],
             Config::fromArray($response['config']),
             Events::fromArray($response['events'])
@@ -71,7 +68,7 @@ final class Hook
         return $this->id;
     }
 
-    public function url(): string
+    public function url(): Url
     {
         return $this->url;
     }

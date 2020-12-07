@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
@@ -26,16 +27,14 @@ final class Repository
 
     private function __construct(string $username, string $name)
     {
-        Assert::stringNotEmpty($username);
-        Assert::stringNotEmpty($name);
-
-        $this->username = $username;
-        $this->name = $name;
+        $this->username = TrimmedNonEmptyString::fromString($username)->toString();
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
     }
 
     public static function fromString(string $repository): self
     {
-        Assert::stringNotEmpty($repository);
+        $repository = TrimmedNonEmptyString::fromString($repository)->toString();
+
         Assert::contains($repository, '/');
         Assert::notEndsWith($repository, '/');
 

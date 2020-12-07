@@ -1,0 +1,14 @@
+{% extends 'nav_and_content.html.twig' %}
+
+{% block content %}
+    <p>
+        Revision:
+        {% if revision %}
+            <a href="https://github.com/sonata-project/dev-kit/commit/{{ revision }}">
+                {{ revision }}
+            </a>
+        {% else %}
+            N/A
+        {% endif %}
+    </p>
+{% endblock %}

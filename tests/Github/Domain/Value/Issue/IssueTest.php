@@ -49,5 +49,13 @@ final class IssueTest extends TestCase
             $value,
             Issue::fromInt($value)->toInt()
         );
+
+        self::assertSame(
+            sprintf(
+                '#%s',
+                $value
+            ),
+            Issue::fromInt($value)->toString()
+        );
     }
 }

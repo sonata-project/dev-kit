@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
@@ -55,9 +53,7 @@ final class Branch
         Path $testsPath,
         ?PhpVersion $targetPhpVersion
     ) {
-        Assert::stringNotEmpty($name);
-        $this->name = $name;
-
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;
         $this->services = $services;
         $this->variants = $variants;
@@ -122,6 +118,19 @@ final class Branch
         return $this->services;
     }
 
+    public function hasService(string $serviceName): bool
+    {
+        if ([] === $this->services) {
+            return false;
+        }
+
+        $serviceNames = array_map(static function (Service $service): string {
+            return $service->toString();
+        }, $this->services());
+
+        return \in_array($serviceName, $serviceNames, true);
+    }
+
     /**
      * @return Variant[]
      */
@@ -138,6 +147,11 @@ final class Branch
     public function testsPath(): Path
     {
         return $this->testsPath;
+    }
+
+    public function highestPhpVersion(): PhpVersion
+    {
+        return end($this->phpVersions);
     }
 
     public function lowestPhpVersion(): PhpVersion

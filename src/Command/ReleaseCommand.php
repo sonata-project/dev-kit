@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Action\DetermineNextRelease;
+use App\Action\Exception\CannotDetermineNextRelease;
+use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
-use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
-use App\Domain\Value\Repository;
-use App\Github\Api\Branches;
-use App\Github\Api\PullRequests;
-use App\Github\Api\Releases;
-use App\Github\Api\Statuses;
+use App\Domain\Value\Stability;
+use App\Github\Domain\Value\CheckRun;
+use App\Github\Domain\Value\CheckRuns;
+use App\Github\Domain\Value\CombinedStatus;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
-use App\Github\Domain\Value\Release\Tag;
-use App\Github\Domain\Value\Search\Query;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -33,47 +34,17 @@ use Symfony\Component\Console\Question\Question;
  */
 final class ReleaseCommand extends AbstractCommand
 {
-    /**
-     * @var array<string, string>
-     */
-    private static $labels = [
-        'patch' => 'blue',
-        'bug' => 'red',
-        'docs' => 'yellow',
-        'minor' => 'green',
-        'pedantic' => 'cyan',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    private static $stabilities = [
-        'patch' => 'blue',
-        'minor' => 'green',
-        'pedantic' => 'yellow',
-        'unknown' => 'red',
-    ];
-
     private Projects $projects;
-    private Releases $releases;
-    private Branches $branches;
-    private Statuses $statuses;
-    private PullRequests $pullRequests;
+    private DetermineNextRelease $determineNextRelease;
 
     public function __construct(
         Projects $projects,
-        Releases $releases,
-        Branches $branches,
-        Statuses $statuses,
-        PullRequests $pullRequests
+        DetermineNextRelease $determineNextRelease
     ) {
         parent::__construct();
 
         $this->projects = $projects;
-        $this->releases = $releases;
-        $this->branches = $branches;
-        $this->statuses = $statuses;
-        $this->pullRequests = $pullRequests;
+        $this->determineNextRelease = $determineNextRelease;
     }
 
     protected function configure(): void
@@ -89,12 +60,16 @@ Usage:
 <info>php dev-kit release</info>
 
 First, a question about what bundle to release will be shown, this will be autocompleted will
-the projects configured on <info>projects.yaml</info>
+the projects configured on <info>projects.yaml</info>.
 
 The command will show what is the status of the project, then a list of pull requests
-made against selected branch (default: stable branch) with the following information:
+made against the stable branch with the following information:
 
-stability, name, labels, changelog, url.
+ * stability
+ * name
+ * labels
+ * changelog
+ * url
 
 After that, it will show what is the next version to release and the changelog for that release.
 EOT;
@@ -109,14 +84,9 @@ EOT;
     {
         $project = $this->selectProject($input, $output);
 
-        $this->io->title($project->name());
+        $this->io->getErrorStyle()->title($project->name());
 
-        $branches = $project->branches();
-        $branch = \count($branches) > 1 ? next($branches) : current($branches);
-
-        $this->prepareRelease($project, $branch);
-
-        return 0;
+        return $this->renderNextRelease($project);
     }
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
@@ -136,206 +106,162 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function prepareRelease(Project $project, Branch $branch): void
+    private function renderNextRelease(Project $project): int
     {
-        $repository = $project->repository();
+        $notificationStyle = $this->io->getErrorStyle();
+        try {
+            $nextRelease = $this->determineNextRelease->__invoke($project);
+        } catch (NoPullRequestsMergedSinceLastRelease $e) {
+            $notificationStyle->warning($e->getMessage());
 
-        $currentRelease = $this->releases->latest($repository);
+            return 0;
+        } catch (CannotDetermineNextRelease $e) {
+            $notificationStyle->error($e->getMessage());
 
-        $branchToRelease = $this->branches->get(
-            $repository,
-            $branch->name()
-        );
+            return 1;
+        }
 
-        $combined = $this->statuses->combined(
-            $repository,
-            $branchToRelease->commit()->sha()
-        );
+        if (!$nextRelease->isNeeded()) {
+            $notificationStyle->warning('Release is not needed');
 
-        $pulls = $this->findPullRequestsSince(
-            $repository,
-            $branch,
-            $currentRelease->publishedAt()
-        );
+            return 0;
+        }
 
-        $next = $this->determineNextVersion($currentRelease->tag(), $pulls);
+        $this->renderCombinedStatus($nextRelease->combinedStatus());
+        $this->renderCheckRuns($nextRelease->checkRuns());
 
-        $this->io->section('Checks');
+        $notificationStyle->section('Pull Requests');
 
-        foreach ($combined->statuses() as $status) {
-            if ('success' === $status->state()) {
-                $this->io->writeln(sprintf(
-                    '    <info>%s</info>',
-                    $status->description()
-                ));
-            } elseif ('pending' === $status->state()) {
-                $this->io->writeln(sprintf(
-                    '    <comment>%s</comment>',
-                    $status->description()
-                ));
-            } else {
-                $this->io->writeln(sprintf(
-                    '    <error>%s</error>',
-                    $status->description()
-                ));
-            }
+        array_map(function (PullRequest $pullRequest): void {
+            $this->renderPullRequest($pullRequest);
+        }, $nextRelease->pullRequests());
 
-            $this->io->text(sprintf(
-                '     %s',
-                $status->targetUrl()
+        $notificationStyle->section('Release');
+
+        if (!$nextRelease->canBeReleased()) {
+            $notificationStyle->error(sprintf(
+                'Next release would be: %s, but cannot be released yet!',
+                $nextRelease->nextTag()->toString()
             ));
-            $this->io->newLine();
+            $notificationStyle->warning('Please check labels and changelogs of the pull requests!');
+
+            return 1;
         }
 
-        $this->io->section('Pull requests');
+        $notificationStyle->success(sprintf(
+            'Next release will be: %s',
+            $nextRelease->nextTag()->toString()
+        ));
 
-        foreach ($pulls as $pull) {
-            $this->printPullRequest($pull);
-        }
+        $notificationStyle->section('Changelog as Markdown');
 
-        $this->io->section('Release');
+        // Send markdown to stdout and only that
+        $this->io->writeln($nextRelease->changelog()->asMarkdown());
 
-        if ($next->toString() === $currentRelease->tag()->toString()) {
-            $this->io->warning('Release is not needed');
-        } else {
-            $this->io->success(sprintf(
-                'Next release will be: %s',
-                $next->toString()
-            ));
-
-            $this->io->section('Changelog');
-
-            $this->printRelease(
-                $repository,
-                $currentRelease->tag(),
-                $next
-            );
-
-            $changelogs = array_map(static function (PullRequest $pr): array {
-                return $pr->changelog();
-            }, $pulls);
-
-            $changelog = array_reduce(
-                $changelogs,
-                'array_merge_recursive',
-                []
-            );
-
-            $this->printChangelog($changelog);
-        }
+        return 0;
     }
 
-    private function printPullRequest(PullRequest $pr): void
+    private function renderPullRequest(PullRequest $pr): void
     {
-        if (\array_key_exists($pr->stability(), static::$stabilities)) {
-            $this->io->write(sprintf(
-                '<fg=black;bg=%s>[%s]</> ',
-                static::$stabilities[$pr->stability()],
-                strtoupper($pr->stability())
-            ));
-        } else {
-            $this->io->write('<error>[NOT SET]</error> ');
-        }
-        $this->io->write(sprintf(
+        $notificationStyle = $this->io->getErrorStyle();
+
+        $notificationStyle->writeln(sprintf(
             '<info>%s</info>',
             $pr->title()
         ));
+        $notificationStyle->writeln($pr->htmlUrl());
 
-        foreach ($pr->labels() as $label) {
-            if (!\array_key_exists($label->name(), static::$labels)) {
-                $this->io->write(sprintf(
-                    ' <error>[%s]</error>',
-                    $label->name()
-                ));
-            } else {
-                $this->io->write(sprintf(
-                    ' <fg=%s>[%s]</>',
-                    static::$labels[$label->name()],
-                    $label->name()
-                ));
-            }
-        }
-
-        if (!$pr->hasLabels()) {
-            $this->io->write(' <fg=black;bg=yellow>[No labels]</>');
-        }
-
-        if (!$pr->changelog() && 'pedantic' !== $pr->stability()) {
-            $this->io->write(' <error>[Changelog not found]</error>');
-        } elseif (!$pr->changelog()) {
-            $this->io->write(' <fg=black;bg=green>[Changelog not found]</>');
-        } elseif ($pr->changelog() && 'pedantic' === $pr->stability()) {
-            $this->io->write(' <fg=black;bg=yellow>[Changelog found]</>');
-        } else {
-            $this->io->write(' <fg=black;bg=green>[Changelog found]</>');
-        }
-        $this->io->newLine();
-        $this->io->writeln($pr->htmlUrl());
-        $this->io->newLine();
-    }
-
-    private function printRelease(Repository $repository, Tag $current, Tag $next): void
-    {
-        $this->io->writeln(sprintf(
-            '## [%s](%s/compare/%s...%s) - %s',
-            $next->toString(),
-            $repository->toString(),
-            $current->toString(),
-            $next->toString(),
-            date('Y-m-d')
+        $stability = $pr->stability();
+        $notificationStyle->writeln(sprintf(
+            '   Stability: %s',
+            $stability->equals(Stability::unknown()) ? sprintf('<error>%s</error>', $stability->toUppercaseString()) : $pr->stability()->toUppercaseString()
         ));
-    }
+        $notificationStyle->writeln(sprintf(
+            '      Labels: %s',
+            $this->renderLabels($pr)
+        ));
+        $notificationStyle->writeln(sprintf(
+            '   Changelog: %s',
+            $pr->fulfilledChangelog() ? '<info>yes</info>' : '<error>no</error>'
+        ));
 
-    private function printChangelog(array $changelog): void
-    {
-        ksort($changelog);
-        foreach ($changelog as $type => $changes) {
-            if (0 === \count($changes)) {
-                continue;
-            }
-
-            $this->io->writeln(sprintf(
-                '### %s',
-                $type
-            ));
-
-            foreach ($changes as $change) {
-                $this->io->writeln($change);
-            }
-            $this->io->newLine();
-        }
-    }
-
-    /**
-     * @param PullRequest[] $pullRequests
-     */
-    private function determineNextVersion(Tag $currentVersion, array $pullRequests): Tag
-    {
-        $stabilities = array_map(static function (PullRequest $pr): string {
-            return $pr->stability();
-        }, $pullRequests);
-
-        $parts = explode('.', $currentVersion->toString());
-
-        if (\in_array('minor', $stabilities, true)) {
-            return Tag::fromString(implode('.', [$parts[0], (int) $parts[1] + 1, 0]));
+        if ($pr->hasNotNeededChangelog()) {
+            $notificationStyle->writeln('<comment>It looks like a changelog is not needed!</comment>');
         }
 
-        if (\in_array('patch', $stabilities, true)) {
-            return Tag::fromString(implode('.', [$parts[0], $parts[1], (int) $parts[2] + 1]));
-        }
-
-        return $currentVersion;
+        $notificationStyle->newLine();
+        $notificationStyle->newLine();
     }
 
-    /**
-     * @return PullRequest[]
-     */
-    private function findPullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date): array
+    private function renderLabels(PullRequest $pr): string
     {
-        return $this->pullRequests->search(
-            $repository,
-            Query::pullRequestsSince($repository, $branch, $date, self::BOT_NAME)
-        );
+        if (!$pr->hasLabels()) {
+            return '<error>No labels set!</error>';
+        }
+
+        $renderedLabels = array_map(static function (Label $label): string {
+            return sprintf(
+                '<fg=black;bg=%s>%s</>',
+                $label->color()->asHexCode(),
+                $label->name()
+            );
+        }, $pr->labels());
+
+        return implode(', ', $renderedLabels);
+    }
+
+    private function renderCombinedStatus(CombinedStatus $combinedStatus): void
+    {
+        $notificationStyle = $this->io->getErrorStyle();
+
+        if ([] === $combinedStatus->statuses()) {
+            return;
+        }
+
+        $table = new Table($notificationStyle);
+        $table->setStyle('box');
+        $table->setHeaderTitle('Statuses');
+        $table->setHeaders([
+            'Name',
+            'Description',
+            'URL',
+        ]);
+
+        foreach ($combinedStatus->statuses() as $status) {
+            $table->addRow([
+                $status->contextFormatted(),
+                $status->description(),
+                $status->targetUrl(),
+            ]);
+        }
+
+        $table->render();
+    }
+
+    private function renderCheckRuns(CheckRuns $checkRuns): void
+    {
+        $notificationStyle = $this->io->getErrorStyle();
+
+        if ([] === $checkRuns->all()) {
+            return;
+        }
+
+        $table = new Table($notificationStyle);
+        $table->setStyle('box');
+        $table->setHeaderTitle('Checks');
+        $table->setHeaders([
+            'Name',
+            'URL',
+        ]);
+
+        /** @var CheckRun $checkRun */
+        foreach ($checkRuns->all() as $checkRun) {
+            $table->addRow([
+                $checkRun->nameFormatted(),
+                $checkRun->detailsUrl(),
+            ]);
+        }
+
+        $table->render();
     }
 }

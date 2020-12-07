@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\Label;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
@@ -25,12 +26,12 @@ final class Color
 
     private function __construct(string $color)
     {
+        $color = TrimmedNonEmptyString::fromString($color)->toString();
+
         $color = u($color)
-            ->trim()
             ->lower()
             ->toString();
 
-        Assert::stringNotEmpty($color);
         Assert::notStartsWith($color, '#');
         Assert::length($color, 6);
 

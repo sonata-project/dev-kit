@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\Release;
 
-use Webmozart\Assert\Assert;
+use App\Domain\Value\TrimmedNonEmptyString;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -24,17 +24,11 @@ final class Tag
 
     private function __construct(string $value)
     {
-        $value = trim($value);
-
-        Assert::stringNotEmpty($value);
-
-        $this->value = $value;
+        $this->value = TrimmedNonEmptyString::fromString($value)->toString();
     }
 
     public static function fromString(string $value): self
     {
-        Assert::stringNotEmpty($value);
-
         return new self($value);
     }
 

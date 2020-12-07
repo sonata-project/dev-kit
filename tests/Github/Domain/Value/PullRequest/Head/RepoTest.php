@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\PullRequest\Head;
 
 use App\Github\Domain\Value\PullRequest\Head\Repo;
+use App\Tests\Util\Factory\Github\Response\UserFactory;
 use PHPUnit\Framework\TestCase;
 
 final class RepoTest extends TestCase
@@ -21,7 +22,7 @@ final class RepoTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,7 +32,7 @@ final class RepoTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyOwner(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyOwner(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -58,13 +59,11 @@ final class RepoTest extends TestCase
     public function owner(): void
     {
         $response = [
-            'owner' => [
-                'login' => $value = 'foo-bar',
-            ],
+            'owner' => UserFactory::create(),
         ];
 
         self::assertSame(
-            $value,
+            $response['owner']['login'],
             Repo::fromResponse($response)->owner()->login()
         );
     }

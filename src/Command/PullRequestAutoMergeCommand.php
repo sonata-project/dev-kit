@@ -15,11 +15,13 @@ namespace App\Command;
 
 use App\Config\Projects;
 use App\Domain\Value\Project;
+use App\Github\Api\Checks;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use App\Github\Api\References;
 use App\Github\Api\Statuses;
 use App\Github\Domain\Value\Commit\CommitCollection;
+use App\Github\Domain\Value\PullRequest\Head\Repo;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,6 +35,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     private Projects $projects;
     private PullRequests $pullRequests;
     private Statuses $statuses;
+    private Checks $checks;
     private Commits $commits;
     private References $references;
 
@@ -40,6 +43,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         Projects $projects,
         PullRequests $pullRequests,
         Statuses $statuses,
+        Checks $checks,
         Commits $commits,
         References $references
     ) {
@@ -48,6 +52,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
         $this->projects = $projects;
         $this->pullRequests = $pullRequests;
         $this->statuses = $statuses;
+        $this->checks = $checks;
         $this->commits = $commits;
         $this->references = $references;
     }
@@ -60,7 +65,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             ->setName('pull-request-auto-merge')
             ->setDescription(sprintf(
                 'Merge RTM pull requests. Only active for pull requests by %s.',
-                self::BOT_NAME
+                self::SONATA_CI_BOT
             ))
         ;
     }
@@ -69,7 +74,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
     {
         $this->io->title(sprintf(
             'Merge RTM pull requests (by %s)',
-            self::BOT_NAME
+            self::SONATA_CI_BOT
         ));
 
         /** @var Project $project */
@@ -110,15 +115,15 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             // Proceed only bot PR for now.
-            if (self::BOT_NAME !== $pr->user()->login()) {
+            if (self::SONATA_CI_BOT !== $pr->user()->login()) {
                 continue;
             }
 
             $this->io->writeln(sprintf(
-                '%s: <comment>%s (#%d)</comment> by %s -> <comment>%s</comment>',
+                '%s: <comment>%s (%s)</comment> by %s -> <comment>%s</comment>',
                 $project->name(),
                 $pr->title(),
-                $pr->issue()->toInt(),
+                $pr->issue()->toString(),
                 $pr->user()->login(),
                 $pr->base()->ref()
             ));
@@ -128,14 +133,25 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                 $pr->head()->sha()
             );
 
+            $checkRuns = $this->checks->all(
+                $repository,
+                $pr->head()->sha()
+            );
+
             $this->io->writeln(sprintf(
-                '    Combined status: %s',
-                $combinedStatus->state()
+                '    Combined status successful? %s',
+                $combinedStatus->isSuccessful() ? '<info>yes</info>' : '<error>no</error>'
+            ));
+            $this->io->writeln(sprintf(
+                '    Checks successful?          %s',
+                $checkRuns->isSuccessful() ? '<info>yes</info>' : '<error>no</error>'
             ));
             $this->io->newLine();
 
             // Ignore the PR for now if status is not good.
-            if (!$combinedStatus->isSuccessful()) {
+            if (!$combinedStatus->isSuccessful()
+                || !$checkRuns->isSuccessful()
+            ) {
                 continue;
             }
 
@@ -171,16 +187,19 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
                         $repository,
                         $pr,
                         $squash,
-                        $squash ? sprintf('%s (#%d)', $commits->firstMessage(), $pr->issue()->toInt()) : null
+                        $squash ? sprintf('%s (%s)', $commits->firstMessage(), $pr->issue()->toString()) : null
                     );
 
-                    if ('sonata-project' === $pr->head()->repo()->owner()->login()) {
+                    $repo = $pr->head()->repo();
+                    if ($repo instanceof Repo
+                        && 'sonata-project' === $repo->owner()->login()
+                    ) {
                         $this->references->remove($repository, $pr);
                     }
 
                     $this->io->success(sprintf(
-                        'Merged PR #%d',
-                        $pr->issue()->toInt()
+                        'Merged PR %s',
+                        $pr->issue()->toString()
                     ));
                 } catch (ExceptionInterface $e) {
                     $this->io->error(sprintf(

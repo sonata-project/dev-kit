@@ -15,7 +15,9 @@ namespace App\Github\Api;
 
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Release;
+use App\Github\Exception\LatestReleaseNotFound;
 use Github\Client as GithubClient;
+use Github\Exception\RuntimeException;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -31,10 +33,17 @@ final class Releases
 
     public function latest(Repository $repository): Release
     {
-        $response = $this->github->repo()->releases()->latest(
-            $repository->username(),
-            $repository->name()
-        );
+        try {
+            $response = $this->github->repo()->releases()->latest(
+                $repository->username(),
+                $repository->name()
+            );
+        } catch (RuntimeException $e) {
+            throw LatestReleaseNotFound::forRepository(
+                $repository,
+                $e
+            );
+        }
 
         return Release::fromResponse($response);
     }

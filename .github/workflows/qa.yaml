@@ -10,13 +10,13 @@ jobs:
   phpstan:
     name: PHPStan
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Run PHPStan
-        uses: docker://oskarstark/phpstan-ga:0.12.43
+        uses: docker://oskarstark/phpstan-ga:0.12.53
         with:
           args: analyse

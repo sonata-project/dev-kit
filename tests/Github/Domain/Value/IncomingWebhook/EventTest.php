@@ -21,8 +21,8 @@ final class EventTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionFor(string $value): void
     {
@@ -34,13 +34,91 @@ final class EventTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::arbitrary()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::untrimmed()
      */
     public function fromString(string $value): void
     {
         self::assertSame(
-            $value,
+            trim($value),
             Event::fromString($value)->toString()
         );
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider equalsProvider
+     */
+    public function equals(bool $expected, Event $event, Event $other): void
+    {
+        self::assertSame(
+            $expected,
+            $event->equals($other)
+        );
+    }
+
+    public function equalsProvider(): \Generator
+    {
+        yield [
+            true,
+            Event::fromString('issue'),
+            Event::ISSUE(),
+        ];
+
+        yield [
+            false,
+            Event::fromString('issue'),
+            Event::ISSUE_COMMENT(),
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider equalsOneOfProvider
+     */
+    public function equalsOneOf(bool $expected, Event $event, array $others): void
+    {
+        self::assertSame(
+            $expected,
+            $event->equalsOneOf($others)
+        );
+    }
+
+    public function equalsOneOfProvider(): \Generator
+    {
+        yield [
+            true,
+            Event::fromString('issue'),
+            [
+                Event::ISSUE(),
+            ],
+        ];
+
+        yield [
+            true,
+            Event::fromString('issue'),
+            [
+                Event::ISSUE_COMMENT(),
+                Event::ISSUE(),
+            ],
+        ];
+
+        yield [
+            false,
+            Event::PULL_REQUEST(),
+            [
+                Event::ISSUE(),
+            ],
+        ];
+
+        yield [
+            false,
+            Event::PULL_REQUEST(),
+            [
+                Event::ISSUE(),
+                Event::fromString('issue_comment'),
+            ],
+        ];
     }
 }

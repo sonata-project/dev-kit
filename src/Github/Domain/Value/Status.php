@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,18 +22,21 @@ use Webmozart\Assert\Assert;
 final class Status
 {
     private const ERROR = 'error';
+    private const FAILURE = 'failure';
     private const PENDING = 'pending';
     private const SUCCESS = 'success';
 
     private string $state;
+    private string $context;
     private string $description;
     private string $targetUrl;
 
-    private function __construct(string $state, string $description, string $targetUrl)
+    private function __construct(string $state, string $context, string $description, string $targetUrl)
     {
         $this->state = $state;
-        $this->description = $description;
-        $this->targetUrl = $targetUrl;
+        $this->context = TrimmedNonEmptyString::fromString($context)->toString();
+        $this->description = TrimmedNonEmptyString::fromString($description)->toString();
+        $this->targetUrl = TrimmedNonEmptyString::fromString($targetUrl)->toString();
     }
 
     public static function fromResponse(array $response): self
@@ -45,10 +49,14 @@ final class Status
             $response['state'],
             [
                 self::ERROR,
+                self::FAILURE,
                 self::PENDING,
                 self::SUCCESS,
             ]
         );
+
+        Assert::keyExists($response, 'context');
+        Assert::stringNotEmpty($response['context']);
 
         Assert::keyExists($response, 'description');
         Assert::stringNotEmpty($response['description']);
@@ -58,6 +66,7 @@ final class Status
 
         return new self(
             $response['state'],
+            $response['context'],
             $response['description'],
             $response['target_url']
         );
@@ -71,6 +80,33 @@ final class Status
     public function state(): string
     {
         return $this->state;
+    }
+
+    public function context(): string
+    {
+        return $this->context;
+    }
+
+    public function contextFormatted(): string
+    {
+        if (self::SUCCESS === $this->state) {
+            return sprintf(
+                '<info>%s</info>',
+                $this->context
+            );
+        }
+
+        if (self::PENDING === $this->state) {
+            return sprintf(
+                '<comment>%s</comment>',
+                $this->context
+            );
+        }
+
+        return sprintf(
+            '<error>%s</error>',
+            $this->context
+        );
     }
 
     public function description(): string

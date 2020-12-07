@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
@@ -24,8 +22,7 @@ final class ExcludedFile
 
     private function __construct(string $filename)
     {
-        Assert::stringNotEmpty($filename);
-        $this->filename = $filename;
+        $this->filename = TrimmedNonEmptyString::fromString($filename)->toString();
     }
 
     public static function fromString(string $filename): self

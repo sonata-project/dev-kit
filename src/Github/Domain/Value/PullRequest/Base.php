@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value\PullRequest;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use Webmozart\Assert\Assert;
 
 /**
@@ -24,9 +25,7 @@ final class Base
 
     private function __construct(string $ref)
     {
-        Assert::stringNotEmpty($ref);
-
-        $this->ref = $ref;
+        $this->ref = TrimmedNonEmptyString::fromString($ref)->toString();
     }
 
     public static function fromResponse(array $response): self

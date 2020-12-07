@@ -28,11 +28,8 @@ final class Repository
 
     private function __construct(string $username, string $name)
     {
-        Assert::stringNotEmpty($username);
-        Assert::stringNotEmpty($name);
-
-        $this->username = $username;
-        $this->name = $name;
+        $this->username = TrimmedNonEmptyString::fromString($username)->toString();
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
     }
 
     public static function fromPackage(Package $package): self
@@ -74,7 +71,7 @@ final class Repository
         Assert::contains($url, '/');
         Assert::startsWith($url, 'https://github.com/');
 
-        list($username, $name) = u($url)
+        [$username, $name] = u($url)
             ->replace('https://github.com/', '')
             ->replace('.git', '')
             ->split('/');

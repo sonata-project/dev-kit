@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\Label\Color;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
@@ -27,10 +28,7 @@ final class Label
 
     private function __construct(string $name, Color $color)
     {
-        $name = trim($name);
-        Assert::stringNotEmpty($name);
-
-        $this->name = $name;
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->color = $color;
     }
 

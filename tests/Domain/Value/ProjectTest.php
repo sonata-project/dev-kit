@@ -20,13 +20,17 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ProjectTest extends TestCase
 {
-    private const DEFAULT_CONFIG_NAME = 'admin-bundle';
-    private const DEFAULT_CONFIG = <<<CONFIG
+    public const DEFAULT_CONFIG_NAME = 'admin-bundle';
+    public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
   excluded_files: []
   custom_gitignore_part: ~
+  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
-  docs_target: true
+  has_documentation: true
   branches:
     master:
       php: ['7.3', '7.4']
@@ -74,31 +78,14 @@ CONFIG;
         self::assertCount(2, $project->branches());
         self::assertSame(['master', '3.x'], $project->branchNames());
         self::assertSame(['3.x', 'master'], $project->branchNamesReverse());
-    }
-
-    /**
-     * @test
-     */
-    public function rawConfig(): void
-    {
-        $package = new Package();
-        $package->fromArray([
-            'name' => $packageName = 'sonata-project/admin-bundle',
-            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
-        ]);
-
-        $config = Yaml::parse(self::DEFAULT_CONFIG);
-
-        $project = Project::fromValues(
-            self::DEFAULT_CONFIG_NAME,
-            $config[self::DEFAULT_CONFIG_NAME],
-            $package
-        );
-
-        self::assertSame(
-            $config['admin-bundle'],
-            $project->rawConfig()
-        );
+        self::assertSame('master', $project->unstableBranch()->name());
+        self::assertSame('3.x', $project->stableBranch()->name());
+        self::assertTrue($project->usesPHPStan());
+        self::assertTrue($project->usesPsalm());
+        self::assertNull($project->customGitignorePart());
+        self::assertNull($project->customGitattributesPart());
+        self::assertTrue($project->hasDocumentation());
+        self::assertSame('1', $project->composerVersion());
     }
 
     /**
@@ -245,6 +232,12 @@ CONFIG;
             'symfony-bundle',
         ];
 
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
+            $expected[] = 'hacktoberfest';
+
+            sort($expected);
+        }
+
         self::assertSame(
             $expected,
             $project->topics()
@@ -313,6 +306,12 @@ CONFIG;
             'symfony',
             'symfony-bundle',
         ];
+
+        if ('10' === (new \DateTimeImmutable())->format('m')) {
+            $expected[] = 'hacktoberfest';
+
+            sort($expected);
+        }
 
         self::assertSame(
             $expected,

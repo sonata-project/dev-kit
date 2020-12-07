@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace App\Github\Domain\Value;
 
+use App\Command\AbstractCommand;
+use App\Domain\Value\Stability;
+use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
-use App\Github\Domain\Value\PullRequest\User;
+use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
 /**
@@ -26,6 +29,7 @@ final class PullRequest
     private Issue $issue;
     private string $title;
     private \DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $mergedAt;
     private Base $base;
     private Head $head;
     private User $user;
@@ -45,6 +49,7 @@ final class PullRequest
         Issue $issue,
         string $title,
         string $updatedAt,
+        ?string $mergedAt,
         Base $base,
         Head $head,
         User $user,
@@ -53,27 +58,27 @@ final class PullRequest
         string $htmlUrl,
         array $labels
     ) {
-        $title = trim($title);
-        Assert::stringNotEmpty($title);
-
-        $updatedAt = trim($updatedAt);
-        Assert::stringNotEmpty($updatedAt);
-
-        $htmlUrl = trim($htmlUrl);
-        Assert::stringNotEmpty($htmlUrl);
-
         $this->issue = $issue;
-        $this->title = $title;
+        $this->title = TrimmedNonEmptyString::fromString($title)->toString();
         $this->updatedAt = new \DateTimeImmutable(
-            $updatedAt,
+            TrimmedNonEmptyString::fromString($updatedAt)->toString(),
             new \DateTimeZone('UTC')
         );
+
+        $this->mergedAt = null;
+        if (null !== $mergedAt) {
+            $this->mergedAt = new \DateTimeImmutable(
+                TrimmedNonEmptyString::fromString($mergedAt)->toString(),
+                new \DateTimeZone('UTC')
+            );
+        }
+
         $this->base = $base;
         $this->head = $head;
         $this->user = $user;
         $this->mergeable = $mergeable;
         $this->body = $body;
-        $this->htmlUrl = $htmlUrl;
+        $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
         $this->labels = $labels;
     }
 
@@ -88,6 +93,9 @@ final class PullRequest
 
         Assert::keyExists($response, 'updated_at');
         Assert::stringNotEmpty($response['updated_at']);
+
+        Assert::keyExists($response, 'merged_at');
+        Assert::nullOrStringNotEmpty($response['merged_at']);
 
         Assert::keyExists($response, 'base');
         Assert::notEmpty($response['base']);
@@ -116,6 +124,7 @@ final class PullRequest
             Issue::fromInt($response['number']),
             $response['title'],
             $response['updated_at'],
+            $response['merged_at'],
             Base::fromResponse($response['base']),
             Head::fromResponse($response['head']),
             User::fromResponse($response['user']),
@@ -139,6 +148,16 @@ final class PullRequest
     public function updatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function mergedAt(): ?\DateTimeImmutable
+    {
+        return $this->mergedAt;
+    }
+
+    public function isMerged(): bool
+    {
+        return $this->mergedAt instanceof \DateTimeImmutable;
     }
 
     public function base(): Base
@@ -198,25 +217,49 @@ final class PullRequest
         return  $diff < 60;
     }
 
-    public function stability(): string
+    public function stability(): Stability
     {
+        if ([] === $this->labels) {
+            return Stability::unknown();
+        }
+
         $labels = array_map(static function (Label $label): string {
             return $label->name();
         }, $this->labels);
 
         if (\in_array('minor', $labels, true)) {
-            return 'minor';
+            return Stability::minor();
         }
 
         if (\in_array('patch', $labels, true)) {
-            return 'patch';
+            return Stability::patch();
         }
 
         if (array_intersect(['docs', 'pedantic'], $labels)) {
-            return 'pedantic';
+            return Stability::pedantic();
         }
 
-        return 'unknown';
+        return Stability::unknown();
+    }
+
+    public function needsChangelog(): bool
+    {
+        return $this->stability()->notEquals(Stability::pedantic());
+    }
+
+    public function hasChangelog(): bool
+    {
+        return [] !== $this->changelog();
+    }
+
+    public function fulfilledChangelog(): bool
+    {
+        return !$this->needsChangelog() || ($this->needsChangelog() && $this->hasChangelog());
+    }
+
+    public function hasNotNeededChangelog(): bool
+    {
+        return !$this->needsChangelog() && $this->hasChangelog();
     }
 
     public function changelog(): array
@@ -253,5 +296,22 @@ final class PullRequest
         }
 
         return $changelog;
+    }
+
+    public function createdAutomatically(): bool
+    {
+        if ('Applied fixes from FlintCI' === $this->title
+            && 'soullivaneuh' === $this->user->login()
+        ) {
+            return true;
+        }
+
+        if (u($this->title)->startsWith('DevKit updates for')
+            && AbstractCommand::SONATA_CI_BOT === $this->user->login()
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

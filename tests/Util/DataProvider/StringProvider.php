@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Util\DataProvider;
 
-use App\Tests\Util\Helper;
+use Ergebnis\Test\Util\Helper;
 
 final class StringProvider
 {
@@ -22,54 +22,23 @@ final class StringProvider
     /**
      * @return \Generator<string, array{0: string}>
      */
-    public static function arbitrary(): \Generator
+    public static function lengthGreaterThan256Characters(): \Generator
     {
-        yield 'string-arbitrary' => [self::faker()->sentence];
+        yield 'string-longer-than-256-characters' => [self::stringWithLength(257)];
     }
 
-    /**
-     * @return \Generator<string, array{0: string}>
-     */
-    public static function blank(): \Generator
-    {
-        yield 'string-blank' => [' '];
-    }
-
-    /**
-     * @return \Generator<string, array{0: string}>
-     */
-    public static function empty(): \Generator
-    {
-        yield 'string-empty' => [''];
-    }
-
-    /**
-     * @return \Generator<string, array<string>>
-     */
-    public static function untrimmed(): \Generator
+    private static function stringWithLength(int $length): string
     {
         $faker = self::faker();
 
-        $characters = [
-            'newline' => PHP_EOL,
-            'space' => ' ',
-            'tab' => "\t",
-        ];
-
-        foreach ($characters as $name => $character) {
-            $key = sprintf(
-                'string-untrimmed-%s',
-                $name
-            );
-
-            yield $key => [
-                sprintf(
-                    '%s%s%s',
-                    str_repeat($character, 3),
-                    $faker->sentence(3),
-                    str_repeat($character, 3),
-                ),
-            ];
-        }
+        return str_pad(
+            substr(
+                $faker->sentence,
+                0,
+                $length
+            ),
+            $length,
+            $faker->randomLetter
+        );
     }
 }

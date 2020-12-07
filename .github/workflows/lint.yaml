@@ -11,7 +11,7 @@ jobs:
   php-cs-fixer:
     name: PHP-CS-Fixer
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
@@ -21,12 +21,12 @@ jobs:
           GIT_CURL_VERBOSE: 1        
 
       - name: Run PHP-CS-Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga:2.16.4
+        uses: docker://oskarstark/php-cs-fixer-ga:2.16.7
         with:
           args: --ansi --verbose --diff
 
       - name: "Commit files fixed with PHP-CS-Fixer"
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v4.7.2
         with:
           checkout_options: '-b'
           commit_author: "SonataCI <thomas+ci@sonata-project.org>"
@@ -37,7 +37,7 @@ jobs:
   composer-normalize:
     name: composer-normalize
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
@@ -51,14 +51,14 @@ jobs:
   yaml-files:
     name: YAML files
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Install Ruby 2.6
-        uses: actions/setup-ruby@v1.1.1
+        uses: actions/setup-ruby@v1.1.2
         with:
           ruby-version: '2.6'
 
@@ -71,7 +71,7 @@ jobs:
   xml-files:
     name: XML files
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout

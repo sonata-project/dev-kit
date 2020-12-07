@@ -14,14 +14,19 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\CombinedStatus;
+use App\Github\Domain\Value\Status;
+use App\Tests\Util\Factory\Github;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class CombinedStatusTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -31,58 +36,42 @@ final class CombinedStatusTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseArrayDoesNotContainKeyState(): void
+    public function throwsExceptionIfResponseArrayDoesNotContainKeyState(): void
     {
+        $response = Github\Response\CombinedStatusFactory::create();
+        unset($response['state']);
+
         $this->expectException(\InvalidArgumentException::class);
 
-        CombinedStatus::fromResponse([
-            'foo' => 'bar',
-            'statuses' => [
-                [
-                    'state' => 'success',
-                    'description' => 'foo',
-                    'target_url' => 'https://test.de',
-                ],
-            ],
-        ]);
+        CombinedStatus::fromResponse($response);
     }
 
     /**
      * @test
      */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function throwsExceptionIfStateIsEmptyString(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-
-        CombinedStatus::fromResponse([
+        $response = Github\Response\CombinedStatusFactory::create([
             'state' => '',
-            'statuses' => [
-                [
-                    'state' => 'success',
-                    'description' => 'foo',
-                    'target_url' => 'https://test.de',
-                ],
-            ],
         ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        CombinedStatus::fromResponse($response);
     }
 
     /**
      * @test
      */
-    public function throwsExceptionIfValueIsUnknown(): void
+    public function throwsExceptionIfStateIsUnknown(): void
     {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'foo',
+        ]);
+
         $this->expectException(\InvalidArgumentException::class);
 
-        CombinedStatus::fromResponse([
-            'state' => 'foo',
-            'statuses' => [
-                [
-                    'state' => 'success',
-                    'description' => 'foo',
-                    'target_url' => 'https://test.de',
-                ],
-            ],
-        ]);
+        CombinedStatus::fromResponse($response);
     }
 
     /**
@@ -90,61 +79,88 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStatusesKeyDoesNotExist(): void
     {
+        $response = Github\Response\CombinedStatusFactory::create();
+        unset($response['statuses']);
+
         $this->expectException(\InvalidArgumentException::class);
 
-        CombinedStatus::fromResponse([
-            'state' => 'success',
-            'foo' => [],
-        ]);
+        CombinedStatus::fromResponse($response);
     }
 
     /**
      * @test
      */
-    public function throwsExceptionIfStatusesKeyIsEmptyArray(): void
+    public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsSuccess(): void
     {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'success',
+        ]);
+
+        $response['statuses'] = [];
+
         $this->expectException(\InvalidArgumentException::class);
 
-        CombinedStatus::fromResponse([
-            'state' => 'success',
-            'statuses' => [],
+        CombinedStatus::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsFailure(): void
+    {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'failure',
         ]);
+
+        $response['statuses'] = [];
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        CombinedStatus::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function allowStatusesKeyIsEmptyArrayAndStateIsPending(): void
+    {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => 'pending',
+        ]);
+
+        $response['statuses'] = [];
+
+        self::assertSame(
+            [],
+            CombinedStatus::fromResponse($response)->statuses()
+        );
     }
 
     /**
      * @test
      *
-     * @dataProvider validProvider
+     * @dataProvider stateProvider
      */
-    public function valid(string $value): void
+    public function usesStateFromResponse(string $state): void
     {
-        $response = [
-            'state' => $value,
-            'statuses' => [
-                [
-                    'state' => 'success',
-                    'description' => 'foo',
-                    'target_url' => 'https://test.de',
-                ],
-            ],
-        ];
-
-        $combined = CombinedStatus::fromResponse($response);
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => $state,
+        ]);
 
         self::assertSame(
-            $value,
-            $combined->state()
+            $state,
+            CombinedStatus::fromResponse($response)->state()
         );
     }
 
     /**
      * @return \Generator<string, array{0: string}>
      */
-    public function validProvider(): \Generator
+    public function stateProvider(): \Generator
     {
-        yield 'success' => ['success'];
-        yield 'pending' => ['pending'];
         yield 'failure' => ['failure'];
+        yield 'pending' => ['pending'];
+        yield 'success' => ['success'];
     }
 
     /**
@@ -152,18 +168,11 @@ final class CombinedStatusTest extends TestCase
      *
      * @dataProvider isSuccessfulProvider
      */
-    public function isSuccessful(bool $expected, string $value): void
+    public function isSuccessful(bool $expected, string $state): void
     {
-        $response = [
-            'state' => $value,
-            'statuses' => [
-                [
-                    'state' => 'success',
-                    'description' => 'foo',
-                    'target_url' => 'https://test.de',
-                ],
-            ],
-        ];
+        $response = Github\Response\CombinedStatusFactory::create([
+            'state' => $state,
+        ]);
 
         self::assertSame(
             $expected,
@@ -176,8 +185,42 @@ final class CombinedStatusTest extends TestCase
      */
     public function isSuccessfulProvider(): \Generator
     {
-        yield 'success' => [true, 'success'];
-        yield 'pending' => [false, 'pending'];
         yield 'failure' => [false, 'failure'];
+        yield 'pending' => [false, 'pending'];
+        yield 'success' => [true, 'success'];
+    }
+
+    /**
+     * @test
+     */
+    public function usesStatusesFromResponse(): void
+    {
+        $response = Github\Response\CombinedStatusFactory::create([
+            'statuses' => [
+                $statusResponse1 = Github\Response\StatusFactory::create(),
+                $statusResponse2 = Github\Response\StatusFactory::create(),
+            ],
+        ]);
+
+        $combined = CombinedStatus::fromResponse($response);
+        $statuses = $combined->statuses();
+
+        self::assertCount(2, $statuses);
+        self::assertStatusEqualsStatus(
+            Status::fromResponse($statusResponse1),
+            $statuses[0]
+        );
+        self::assertStatusEqualsStatus(
+            Status::fromResponse($statusResponse2),
+            $statuses[1]
+        );
+    }
+
+    private static function assertStatusEqualsStatus(Status $expected, Status $other): void
+    {
+        self::assertSame($expected->state(), $other->state());
+        self::assertSame($expected->description(), $other->description());
+        self::assertSame($expected->targetUrl(), $other->targetUrl());
+        self::assertSame($expected->isSuccessful(), $other->isSuccessful());
     }
 }

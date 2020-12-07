@@ -1,10 +1,15 @@
 admin-bundle:
+    phpstan: true
+    psalm: true
+    custom_gitattributes_part: |
+        .phpstan export-ignore
+
     custom_gitignore_part: |
         # clean up some non bower ready package
         src/Resources/public/vendor/admin-lte/bootstrap
         src/Resources/public/vendor/admin-lte/build
         src/Resources/public/vendor/admin-lte/dist/img
-        !src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTe.css
+        !src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTE.css
         src/Resources/public/vendor/admin-lte/dist/js/app.js
         src/Resources/public/vendor/admin-lte/dist/js/demo.js
         src/Resources/public/vendor/admin-lte/dist/js/pages
@@ -65,7 +70,7 @@ admin-bundle:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['4']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
@@ -73,13 +78,13 @@ admin-bundle:
 admin-search-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 ruflin/elastica: ['5', '6']
         1.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -88,15 +93,17 @@ admin-search-bundle:
 article-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
         1.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
 block-bundle:
+    phpstan: true
+    psalm: true
     branches:
         master:
             php: ['7.3', '7.4']
@@ -107,7 +114,7 @@ block-bundle:
             variants:
                 symfony/symfony: ['4.4', '5.1']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -116,13 +123,13 @@ classification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
             services: [mongodb]
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -131,18 +138,18 @@ classification-bundle:
 classification-media-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
 comment-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -152,7 +159,7 @@ dashboard-bundle:
         /node_modules
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -161,27 +168,31 @@ dashboard-bundle:
 datagrid-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
 doctrine-extensions:
+    phpstan: true
+    psalm: true
     excluded_files:
         - README.md.twig
-    docs_target: false
+    has_documentation: false
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             services: [mongodb]
         1.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             services: [mongodb]
 
 doctrine-mongodb-admin-bundle:
+    phpstan: true
+    psalm: true
     custom_gitignore_part: |
         /tests/App/public/bundles
     excluded_files:
@@ -189,19 +200,21 @@ doctrine-mongodb-admin-bundle:
         - tests/bootstrap.php.twig
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
-                sonata-project/admin-bundle: ['3']
+                sonata-project/admin-bundle: ['dev-master']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
 
 doctrine-orm-admin-bundle:
+    phpstan: true
+    psalm: true
     branches:
         master:
             php: ['7.3', '7.4']
@@ -209,7 +222,7 @@ doctrine-orm-admin-bundle:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -220,16 +233,17 @@ doctrine-phpcr-admin-bundle:
     custom_doctor_rst_whitelist_part:
         "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
     excluded_files:
+        - tests/bootstrap.php.twig
         - phpunit.xml.dist.twig
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 sonata-project/block-bundle: ['3']
         2.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -240,11 +254,11 @@ ecommerce:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -253,12 +267,12 @@ exporter:
         - README.md.twig
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
             services: [mongodb]
         2.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
             services: [mongodb]
@@ -266,12 +280,12 @@ exporter:
 formatter-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
         4.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
@@ -279,32 +293,34 @@ formatter-bundle:
 form-extensions:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4', '5.1']
         1.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4', '5.1']
 
 google-authenticator:
     excluded_files:
         - README.md.twig
-    docs_target: false
+    has_documentation: false
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
         2.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
 
 intl-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
+            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4', '5.1']
         2.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
+            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4', '5.1']
                 sonata-project/user-bundle: ['4']
@@ -314,14 +330,14 @@ media-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 imagine/imagine: ['0.7', '1']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
@@ -333,12 +349,12 @@ news-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -348,11 +364,11 @@ notification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -361,21 +377,30 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 sonata-project/block-bundle: ['3']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 sonata-project/block-bundle: ['3']
 
 sandbox:
+    composer_version: '1'
+    has_documentation: false
+    phpstan: true
     excluded_files:
+        - .gitignore.twig
+        - Makefile.twig
         - phpunit.xml.dist.twig
+        - README.md.twig
+    branches:
+        master:
+            php: ['7.4']
 
 seo-bundle:
     branches:
@@ -384,7 +409,7 @@ seo-bundle:
             variants:
                 symfony/symfony: ['4.4', '5.1']
         2.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
@@ -393,27 +418,29 @@ seo-bundle:
 timeline-bundle:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 sonata-project/block-bundle: ['3']
         3.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 sonata-project/block-bundle: ['3']
 
 translation-bundle:
+    phpstan: true
+    psalm: true
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
-                sonata-project/admin-bundle: ['3']
+                sonata-project/admin-bundle: ['dev-master']
         2.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -421,11 +448,11 @@ translation-bundle:
 twig-extensions:
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4', '5.1']
         1.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4', '5.1']
 
@@ -434,13 +461,13 @@ user-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 friendsofsymfony/user-bundle: ['2']
                 sonata-project/admin-bundle: ['3']
         4.x:
-            php: ['7.2', '7.3', '7.4']
+            php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
                 friendsofsymfony/user-bundle: ['2']

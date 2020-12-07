@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value;
 
+use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
-use App\Tests\Util\Factory\PullRequestResponseFactory;
-use App\Tests\Util\Helper;
+use App\Tests\Util\Factory\Github;
+use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class PullRequestTest extends TestCase
@@ -25,7 +26,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfRepsonseIsEmpty(): void
+    public function throwsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -37,7 +38,7 @@ final class PullRequestTest extends TestCase
      */
     public function usesNumberFromResponse()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
 
         $pullRequest = PullRequest::fromResponse($response);
 
@@ -49,7 +50,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfNumberIsNotSet()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
         unset($response['number']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -62,7 +63,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfNumberIsZero()
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'number' => 0,
         ]);
 
@@ -76,7 +77,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfNumberIsNgeative()
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'number' => -1,
         ]);
 
@@ -92,7 +93,7 @@ final class PullRequestTest extends TestCase
     {
         $value = self::faker()->sentence;
 
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
         ]);
 
@@ -106,7 +107,7 @@ final class PullRequestTest extends TestCase
      */
     public function throwsExceptionIfTitleIsNotSet()
     {
-        $response = PullRequestResponseFactory::create();
+        $response = Github\Response\PullRequestFactory::create();
         unset($response['title']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -117,13 +118,123 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::empty()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
     public function throwsExceptionIfTitleIs(string $value)
     {
-        $response = PullRequestResponseFactory::create([
+        $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function usesUpdatedAtFromResponse()
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'updated_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $value,
+            $pullRequest->updatedAt()->format('Y-m-d\TH:i:s\Z')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfUpdatedAtIsNotSet()
+    {
+        $response = Github\Response\PullRequestFactory::create();
+        unset($response['updated_at']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfUpdatedAtIs(string $value)
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'updated_at' => $value,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     */
+    public function usesMergedAtFromResponse()
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'merged_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $value,
+            $pullRequest->mergedAt()->format('Y-m-d\TH:i:s\Z')
+        );
+        self::assertTrue($pullRequest->isMerged());
+    }
+
+    /**
+     * @test
+     */
+    public function mergedAtCanBeNull()
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'merged_at' => null,
+        ]);
+
+        $pullRequest = PullRequest::fromResponse($response);
+
+        self::assertNull($pullRequest->mergedAt());
+        self::assertFalse($pullRequest->isMerged());
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfMergedAtIsNotSet()
+    {
+        $response = Github\Response\PullRequestFactory::create();
+        unset($response['merged_at']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        PullRequest::fromResponse($response);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
+     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
+     */
+    public function throwsExceptionIfMergedAtIs(string $value)
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'merged_at' => $value,
         ]);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -138,8 +249,9 @@ final class PullRequestTest extends TestCase
     {
         $response = [
             'number' => 123,
-            'title' => 'Update dependecy',
-            'updated_at' => $updatedAt = '2020-01-01 19:00:00',
+            'title' => 'Update dependency',
+            'updated_at' => '2020-01-01T19:00:00Z',
+            'merged_at' => '2020-01-01T19:00:00Z',
             'base' => [
                 'ref' => $baseRef = 'baseRef',
             ],
@@ -148,11 +260,14 @@ final class PullRequestTest extends TestCase
                 'sha' => $headSha = 'sha',
                 'repo' => [
                     'owner' => [
+                        'id' => $ownerId = 42,
                         'login' => $ownerLogin = 'ownerLogin',
+                        'html_url' => $ownerHtmlUrl = 'http://example.com',
                     ],
                 ],
             ],
             'user' => [
+                'id' => $userId = 42,
                 'login' => $userLogin = 'userLogin',
                 'html_url' => $userHtmlUrl = 'https://test.com',
             ],
@@ -169,11 +284,13 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertSame($updatedAt, $pr->updatedAt()->format('Y-m-d H:i:s'));
         self::assertSame($baseRef, $pr->base()->ref());
         self::assertSame($headRef, $pr->head()->ref());
         self::assertSame($headSha, $pr->head()->sha()->toString());
+        self::assertSame($ownerId, $pr->head()->repo()->owner()->id());
         self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
+        self::assertSame($ownerHtmlUrl, $pr->head()->repo()->owner()->htmlUrl());
+        self::assertSame($userId, $pr->user()->id());
         self::assertSame($userLogin, $pr->user()->login());
         self::assertSame($userHtmlUrl, $pr->user()->htmlUrl());
         self::assertTrue($pr->isMergeable());
@@ -196,31 +313,9 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
-            'updated_at' => $now->format('Y-m-d H:i:s'),
-            'base' => [
-                'ref' => $baseRef = 'baseRef',
-            ],
-            'head' => [
-                'ref' => $headRef = 'headRef',
-                'sha' => $headSha = 'sha',
-                'repo' => [
-                    'owner' => [
-                        'login' => $ownerLogin = 'ownerLogin',
-                    ],
-                ],
-            ],
-            'user' => [
-                'login' => $userLogin = 'userLogin',
-                'html_url' => $userHtmlUrl = 'https://test.com',
-            ],
-            'mergeable' => true,
-            'body' => '',
-            'html_url' => $htmlUrl = 'https://test.com',
-            'labels' => [],
-        ];
+        $response = Github\Response\PullRequestFactory::create([
+            'updated_at' => $now->format('Y-m-d\TH:i:s\Z'),
+        ]);
 
         $pr = PullRequest::fromResponse($response);
 
@@ -237,34 +332,128 @@ final class PullRequestTest extends TestCase
             new \DateTimeZone('UTC')
         );
 
-        $response = [
-            'number' => $issue = 123,
-            'title' => $title = 'Update dependecy',
-            'updated_at' => $now->format('Y-m-d H:i:s'),
-            'base' => [
-                'ref' => $baseRef = 'baseRef',
-            ],
-            'head' => [
-                'ref' => $headRef = 'headRef',
-                'sha' => $headSha = 'sha',
-                'repo' => [
-                    'owner' => [
-                        'login' => $ownerLogin = 'ownerLogin',
-                    ],
-                ],
-            ],
-            'user' => [
-                'login' => $userLogin = 'userLogin',
-                'html_url' => $userHtmlUrl = 'https://test.com',
-            ],
-            'mergeable' => true,
-            'body' => '',
-            'html_url' => $htmlUrl = 'https://test.com',
-            'labels' => [],
-        ];
+        $response = Github\Response\PullRequestFactory::create([
+            'updated_at' => $now->format('Y-m-d\TH:i:s\Z'),
+        ]);
 
         $pr = PullRequest::fromResponse($response);
 
         self::assertFalse($pr->updatedWithinTheLast60Seconds());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider stabilityProvider
+     */
+    public function stability(Stability $expected, array $labels): void
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'labels' => $labels,
+        ]);
+
+        $pr = PullRequest::fromResponse($response);
+
+        self::assertSame(
+            $expected->toString(),
+            $pr->stability()->toString()
+        );
+    }
+
+    /**
+     * @return \Generator<array{0: Stability, 1: array<mixed>}>
+     */
+    public function stabilityProvider(): \Generator
+    {
+        yield [
+            Stability::unknown(),
+            [],
+        ];
+
+        yield [
+            Stability::unknown(),
+            [
+                Github\Response\LabelFactory::create([
+                    'name' => 'foo',
+                ]),
+            ],
+        ];
+
+        yield [
+            Stability::patch(),
+            [
+                Github\Response\LabelFactory::create([
+                    'name' => 'patch',
+                ]),
+            ],
+        ];
+
+        yield [
+            Stability::minor(),
+            [
+                Github\Response\LabelFactory::create([
+                    'name' => 'minor',
+                ]),
+            ],
+        ];
+
+        yield [
+            Stability::pedantic(),
+            [
+                Github\Response\LabelFactory::create([
+                    'name' => 'pedantic',
+                ]),
+            ],
+        ];
+
+        yield [
+            Stability::pedantic(),
+            [
+                Github\Response\LabelFactory::create([
+                    'name' => 'docs',
+                ]),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function body(): void
+    {
+        $response = Github\Response\PullRequestFactory::create([
+            'body' => sprintf(
+                <<<BODY
+<!-- %s -->
+
+## Subject
+
+%s
+
+## Changelog
+
+```markdown
+### Changed
+- %s
+```
+BODY,
+                self::faker()->text,
+                self::faker()->text,
+                $message = 'The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.'
+            ),
+        ]);
+
+        $pr = PullRequest::fromResponse($response);
+
+        $changelog = $pr->changelog();
+
+        self::assertArrayHasKey(
+            'Changed',
+            $changelog
+        );
+        self::assertStringContainsString(
+            $message,
+            $changelog['Changed'][0]
+        );
     }
 }

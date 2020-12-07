@@ -20,44 +20,62 @@ use Webmozart\Assert\Assert;
  */
 final class Comment
 {
-    private \DateTimeImmutable $date;
-    private string $user;
+    private int $id;
+    private string $body;
+    private \DateTimeImmutable $createdAt;
+    private User $author;
 
-    private function __construct(\DateTimeImmutable $date, string $user)
+    private function __construct(int $id, string $body, \DateTimeImmutable $createdAt, User $author)
     {
-        Assert::stringNotEmpty($user);
-
-        $this->date = $date;
-        $this->user = $user;
+        $this->id = $id;
+        $this->body = trim($body);
+        $this->createdAt = $createdAt;
+        $this->author = $author;
     }
 
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);
 
+        Assert::keyExists($response, 'id');
+        Assert::integer($response['id']);
+        Assert::greaterThan($response['id'], 0);
+
+        Assert::keyExists($response, 'body');
+        Assert::stringNotEmpty($response['body']);
+
         Assert::keyExists($response, 'created_at');
 
-        Assert::keyExists($response, 'user');
-        Assert::keyExists($response['user'], 'login');
-
         return new self(
+            $response['id'],
+            $response['body'],
             new \DateTimeImmutable($response['created_at']),
-            $response['user']['login']
+            User::fromResponse($response['user'])
         );
     }
 
-    public function date(): \DateTimeImmutable
+    public function id(): int
     {
-        return $this->date;
+        return $this->id;
     }
 
-    public function user(): string
+    public function body(): string
     {
-        return $this->user;
+        return $this->body;
+    }
+
+    public function createdAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function author(): User
+    {
+        return $this->author;
     }
 
     public function before(\DateTimeImmutable $date): bool
     {
-        return $this->date < $date;
+        return $this->createdAt < $date;
     }
 }

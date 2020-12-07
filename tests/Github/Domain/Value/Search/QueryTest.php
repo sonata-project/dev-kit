@@ -16,12 +16,15 @@ namespace App\Tests\Github\Domain\Value\Search;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Search\Query;
+use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
 final class QueryTest extends TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -30,6 +33,18 @@ final class QueryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         Query::fromString('');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::lengthGreaterThan256Characters()
+     */
+    public function throwsExceptionIfValueIsGreaterThan256Characters(string $value): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Query::fromString($value);
     }
 
     /**
