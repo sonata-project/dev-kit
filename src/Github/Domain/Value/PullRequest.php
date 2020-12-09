@@ -214,7 +214,7 @@ final class PullRequest
         $diff = (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
             - $this->updatedAt->getTimestamp();
 
-        return  $diff < 60;
+        return $diff < 60;
     }
 
     public function stability(): Stability
