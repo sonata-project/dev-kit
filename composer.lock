@@ -842,16 +842,16 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "v2.17.0",
+            "version": "v2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "26dafcddb9739c0afc16dc74ae6e0ca2f4d0fe38"
+                "reference": "60d0d5fd450aae8fa147eea53f1fee4b0f59a57f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/26dafcddb9739c0afc16dc74ae6e0ca2f4d0fe38",
-                "reference": "26dafcddb9739c0afc16dc74ae6e0ca2f4d0fe38",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/60d0d5fd450aae8fa147eea53f1fee4b0f59a57f",
+                "reference": "60d0d5fd450aae8fa147eea53f1fee4b0f59a57f",
                 "shasum": ""
             },
             "require": {
@@ -875,7 +875,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.16.x-dev",
+                    "dev-2.x": "2.18.x-dev",
                     "dev-master": "3.0.x-dev"
                 }
             },
@@ -913,7 +913,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-14T17:07:32+00:00"
+            "time": "2020-12-11T19:39:25+00:00"
         },
         {
             "name": "knplabs/packagist-api",
@@ -1480,16 +1480,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.12.0",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "4366bf1bc39b663aa87459bd725501d2f1988b6c"
+                "reference": "788f72d64c43dc361e7fcc7464c3d947c64984a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/4366bf1bc39b663aa87459bd725501d2f1988b6c",
-                "reference": "4366bf1bc39b663aa87459bd725501d2f1988b6c",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/788f72d64c43dc361e7fcc7464c3d947c64984a7",
+                "reference": "788f72d64c43dc361e7fcc7464c3d947c64984a7",
                 "shasum": ""
             },
             "require": {
@@ -1541,7 +1541,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2020-09-22T13:31:04+00:00"
+            "time": "2020-11-27T14:49:42+00:00"
         },
         {
             "name": "php-http/httplug",
