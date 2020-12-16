@@ -21,7 +21,7 @@ jobs:
         run: echo $(git rev-parse HEAD) > REVISION
 
       - name: Commit REVISION file
-        uses: stefanzweifel/git-auto-commit-action@v4.7.2
+        uses: stefanzweifel/git-auto-commit-action@v4.8.0
         with:
           branch: master
           commit_message: Update REVISION file

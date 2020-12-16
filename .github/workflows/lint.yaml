@@ -25,7 +25,7 @@ jobs:
           args: --ansi --verbose --diff
 
       - name: "Commit files fixed with PHP-CS-Fixer"
-        uses: stefanzweifel/git-auto-commit-action@v4.7.2
+        uses: stefanzweifel/git-auto-commit-action@v4.8.0
         with:
           commit_author: "SonataCI <thomas+ci@sonata-project.org>"
           commit_message: "Fix: Run 'php-cs-fixer fix'"
