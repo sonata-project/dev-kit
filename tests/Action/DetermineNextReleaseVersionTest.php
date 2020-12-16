@@ -60,11 +60,11 @@ final class DetermineNextReleaseVersionTest extends TestCase
      *
      * @dataProvider determineProvider
      */
-    public function determine(string $expected, string $current, array $pullRequets)
+    public function determine(string $expected, string $current, array $pullRequests)
     {
         $tag = Tag::fromString($current);
 
-        $nextVersion = DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequets)->toString();
+        $nextVersion = DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequests)->toString();
 
         self::assertSame(
             $expected,
