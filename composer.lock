@@ -843,16 +843,16 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "v2.18.0",
+            "version": "v2.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "60d0d5fd450aae8fa147eea53f1fee4b0f59a57f"
+                "reference": "271b3ca6f7b315c3dae1fcf2be8bb2912a93587d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/60d0d5fd450aae8fa147eea53f1fee4b0f59a57f",
-                "reference": "60d0d5fd450aae8fa147eea53f1fee4b0f59a57f",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/271b3ca6f7b315c3dae1fcf2be8bb2912a93587d",
+                "reference": "271b3ca6f7b315c3dae1fcf2be8bb2912a93587d",
                 "shasum": ""
             },
             "require": {
@@ -876,7 +876,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.18.x-dev",
+                    "dev-2.x": "2.19.x-dev",
                     "dev-master": "3.0.x-dev"
                 }
             },
@@ -914,7 +914,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-11T19:39:25+00:00"
+            "time": "2020-12-21T18:32:50+00:00"
         },
         {
             "name": "knplabs/packagist-api",
@@ -3880,7 +3880,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v5.2.0",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
