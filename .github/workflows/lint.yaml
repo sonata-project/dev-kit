@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Run PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga:2.17.2
@@ -25,7 +27,6 @@ jobs:
       - name: "Commit files fixed with PHP-CS-Fixer"
         uses: stefanzweifel/git-auto-commit-action@v4.8.0
         with:
-          checkout_options: '-b'
           commit_author: "SonataCI <thomas+ci@sonata-project.org>"
           commit_message: "Fix: Run 'php-cs-fixer fix'"
           commit_user_email: "thomas+ci@sonata-project.org"
