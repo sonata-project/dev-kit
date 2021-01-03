@@ -40,6 +40,7 @@ final class Project
     private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
+    private bool $panther;
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
@@ -55,6 +56,7 @@ final class Project
         bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
+        bool $panther,
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart
@@ -67,6 +69,7 @@ final class Project
         $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
+        $this->panther = $panther;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
         $this->customGitattributesPart = $customGitattributesPart;
@@ -96,6 +99,7 @@ final class Project
             $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
+            $config['panther'],
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
@@ -183,6 +187,11 @@ final class Project
     public function usesPsalm(): bool
     {
         return $this->psalm;
+    }
+
+    public function usesPanther(): bool
+    {
+        return $this->panther;
     }
 
     public function customGitignorePart(): ?string

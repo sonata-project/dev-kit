@@ -26,6 +26,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
+  panther: true
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -82,6 +83,7 @@ CONFIG;
         self::assertSame('3.x', $project->stableBranch()->name());
         self::assertTrue($project->usesPHPStan());
         self::assertTrue($project->usesPsalm());
+        self::assertTrue($project->usesPanther());
         self::assertNull($project->customGitignorePart());
         self::assertNull($project->customGitattributesPart());
         self::assertTrue($project->hasDocumentation());

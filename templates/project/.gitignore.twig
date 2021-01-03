@@ -13,6 +13,9 @@ phpstan.neon
 {% if project.hasDocumentation %}
 /docs/_build/
 {% endif %}
+{% if project.usesPanther %}
+/tests/App/public/bundles
+{% endif %}
 {% if project.customGitignorePart is not empty %}
 
 {{ project.customGitignorePart }}
