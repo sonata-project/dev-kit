@@ -25,6 +25,7 @@ jobs:
       - name: "Commit files fixed with PHP-CS-Fixer"
         uses: stefanzweifel/git-auto-commit-action@v4.8.0
         with:
+          checkout_options: '-b'
           commit_author: "SonataCI <thomas+ci@sonata-project.org>"
           commit_message: "Fix: Run 'php-cs-fixer fix'"
           commit_user_email: "thomas+ci@sonata-project.org"
