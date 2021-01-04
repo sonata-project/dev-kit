@@ -67,12 +67,12 @@ admin-bundle:
         master:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4']
+                symfony/symfony: ['4.4', '5.2']
                 sonata-project/block-bundle: ['4']
         3.x:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4']
+                symfony/symfony: ['4.4', '5.2']
                 sonata-project/block-bundle: ['3']
 
 admin-search-bundle:
@@ -108,11 +108,11 @@ block-bundle:
         master:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
         4.x:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
         3.x:
             php: ['7.3', '7.4']
             variants:
@@ -287,12 +287,12 @@ exporter:
         master:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4']
+                symfony/symfony: ['4.4', '5.2']
             services: [mongodb]
         2.x:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4']
+                symfony/symfony: ['4.4', '5.2']
             services: [mongodb]
 
 formatter-bundle:
@@ -313,11 +313,11 @@ form-extensions:
         master:
             php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
         1.x:
             php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
 
 google-authenticator:
     excluded_files:
@@ -335,12 +335,12 @@ intl-bundle:
             php: ['7.3', '7.4', '8.0']
             target_php: '7.4'
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
         2.x:
             php: ['7.3', '7.4', '8.0']
             target_php: '7.4'
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
                 sonata-project/user-bundle: ['4']
 
 media-bundle:
@@ -425,7 +425,7 @@ seo-bundle:
         master:
             php: ['7.3', '7.4']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
         2.x:
             php: ['7.3', '7.4']
             variants:
@@ -468,11 +468,11 @@ twig-extensions:
         master:
             php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
         1.x:
             php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4', '5.1']
+                symfony/symfony: ['4.4', '5.2']
 
 user-bundle:
     custom_doctor_rst_whitelist_part:
