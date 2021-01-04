@@ -37,6 +37,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                             ->scalarNode('composer_version')->defaultValue('2')->end()
                             ->booleanNode('phpstan')->defaultFalse()->end()
                             ->booleanNode('psalm')->defaultFalse()->end()
+                            ->booleanNode('panther')->defaultFalse()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->scalarNode('custom_gitignore_part')->defaultNull()->end()
                             ->scalarNode('custom_gitattributes_part')->defaultNull()->end()
