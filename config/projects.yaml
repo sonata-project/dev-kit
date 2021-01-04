@@ -193,11 +193,7 @@ doctrine-extensions:
 doctrine-mongodb-admin-bundle:
     phpstan: true
     psalm: true
-    custom_gitignore_part: |
-        /tests/App/public/bundles
-    excluded_files:
-        - phpunit.xml.dist.twig
-        - tests/bootstrap.php.twig
+    panther: true
     branches:
         master:
             php: ['7.3', '7.4']
@@ -215,6 +211,7 @@ doctrine-mongodb-admin-bundle:
 doctrine-orm-admin-bundle:
     phpstan: true
     psalm: true
+    panther: true
     branches:
         master:
             php: ['7.3', '7.4']
