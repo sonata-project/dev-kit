@@ -313,7 +313,8 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $excludedFiles = array_map(
                 static function (ExcludedFile $excludedFile): string {
                     return $excludedFile->filename();
-                }, $project->excludedFiles()
+                },
+                $project->excludedFiles()
             );
 
             $file = substr($localPath, \strlen(static::FILES_DIR.'/'));
