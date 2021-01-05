@@ -131,13 +131,11 @@ cache:
 cache-bundle:
   branches:
     master:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
+      php: ['7.3', '7.4']
       versions:
         symfony: ['4.4']
     3.x:
-      php: ['7.2', '7.3', '7.4']
-      target_php: '7.3'
+      php: ['7.3', '7.4']
       versions:
         symfony: ['4.4']
 
