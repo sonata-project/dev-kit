@@ -302,24 +302,28 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
-        if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
-            throw new \LogicException(sprintf(
-                'This method only supports files inside the "%s" directory',
-                static::FILES_DIR
-            ));
-        }
+        if (static::FILES_DIR !== $localPath) {
+            if (0 !== strpos($localPath, static::FILES_DIR.'/')) {
+                throw new \LogicException(sprintf(
+                    'This method only supports files inside the "%s" directory',
+                    static::FILES_DIR
+                ));
+            }
 
-        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string {
-            return $excludedFile->filename();
-        }, $project->excludedFiles());
+            $excludedFiles = array_map(
+                static function (ExcludedFile $excludedFile): string {
+                    return $excludedFile->filename();
+                }, $project->excludedFiles()
+            );
 
-        $file = substr($localPath, \strlen(static::FILES_DIR.'/'));
-        if ('.twig' === substr($file, -5)) {
-            $file = substr($file, 0, -5);
-        }
+            $file = substr($localPath, \strlen(static::FILES_DIR.'/'));
+            if ('.twig' === substr($file, -5)) {
+                $file = substr($file, 0, -5);
+            }
 
-        if (\in_array($file, $excludedFiles, true)) {
-            return;
+            if (\in_array($file, $excludedFiles, true)) {
+                return;
+            }
         }
 
         $localFullPath = sprintf(
