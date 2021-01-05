@@ -68,10 +68,9 @@ jobs:
               with:
                   {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
-{% if branch.hasService('mongodb') %}
+{% if branch.services|length > 0 %}
                   tools: composer:v{{ project.composerVersion }}, pecl
-{# Change mongodb extension version to a stable one when available #}
-                  extensions: mongodb-1.9.0
+                  extensions: {{ branch.services|split(', ') }}
 {% else %}
                   tools: composer:v{{ project.composerVersion }}
 {% endif %}
