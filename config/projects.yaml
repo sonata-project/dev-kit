@@ -120,7 +120,7 @@ block-bundle:
 
 cache:
   excluded_files:
-    - README.md
+    - README.md.twig
   has_documentation: false
   branches:
     master:
