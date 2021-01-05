@@ -124,9 +124,9 @@ cache:
   has_documentation: false
   branches:
     master:
-      php: ['7.3', '7.4', '8.0']
+      php: ['7.3', '7.4']
     2.x:
-      php: ['7.3', '7.4', '8.0']
+      php: ['7.3', '7.4']
 
 classification-bundle:
     custom_doctor_rst_whitelist_part:
@@ -190,7 +190,7 @@ doctrine-extensions:
     phpstan: true
     psalm: true
     excluded_files:
-        - README.md.twig
+        - README.md
     has_documentation: false
     branches:
         master:
@@ -240,8 +240,8 @@ doctrine-phpcr-admin-bundle:
     custom_doctor_rst_whitelist_part:
         "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
     excluded_files:
-        - tests/bootstrap.php.twig
-        - phpunit.xml.dist.twig
+        - tests/bootstrap.php
+        - phpunit.xml.dist
     branches:
         master:
             php: ['7.3', '7.4']
@@ -271,7 +271,7 @@ ecommerce:
 
 exporter:
     excluded_files:
-        - README.md.twig
+        - README.md
     branches:
         master:
             php: ['7.3', '7.4']
@@ -310,7 +310,7 @@ form-extensions:
 
 google-authenticator:
     excluded_files:
-        - README.md.twig
+        - README.md
     has_documentation: false
     branches:
         master:
@@ -401,10 +401,10 @@ sandbox:
     has_documentation: false
     phpstan: true
     excluded_files:
-        - .gitignore.twig
-        - Makefile.twig
-        - phpunit.xml.dist.twig
-        - README.md.twig
+        - .gitignore
+        - Makefile
+        - phpunit.xml.dist
+        - README.md
     branches:
         master:
             php: ['7.4']
