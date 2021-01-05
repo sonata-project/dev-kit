@@ -71,6 +71,8 @@ jobs:
 {% if branch.services|length > 0 %}
                   tools: composer:v{{ project.composerVersion }}, pecl
                   extensions: {{ branch.services|split(', ') }}
+              env:
+                  fail-fast: true
 {% else %}
                   tools: composer:v{{ project.composerVersion }}
 {% endif %}
