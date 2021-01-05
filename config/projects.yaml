@@ -129,15 +129,15 @@ cache:
             php: ['7.3', '7.4']
 
 cache-bundle:
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      variants:
-        symfony/symfony: ['4.4']
-    3.x:
-      php: ['7.3', '7.4']
-      variants:
-          symfony/symfony: ['4.4']
+    branches:
+        master:
+            php: ['7.3', '7.4']
+            variants:
+                symfony/symfony: ['4.4']
+        3.x:
+            php: ['7.3', '7.4']
+            variants:
+                symfony/symfony: ['4.4']
 
 classification-bundle:
     custom_doctor_rst_whitelist_part:
