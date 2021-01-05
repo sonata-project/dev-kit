@@ -121,7 +121,7 @@ block-bundle:
 cache:
   excluded_files:
     - README.md
-  docs_target: false
+  has_documentation: false
   branches:
     master:
       php: ['7.3', '7.4', '8.0']
