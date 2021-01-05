@@ -313,7 +313,12 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             return $excludedFile->filename();
         }, $project->excludedFiles());
 
-        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $excludedFiles, true)) {
+        $file = substr($localPath, \strlen(static::FILES_DIR.'/'));
+        if ('.twig' === substr($file, -5)) {
+            $file = substr($file, 0, -5);
+        }
+
+        if (\in_array($file, $excludedFiles, true)) {
             return;
         }
 
