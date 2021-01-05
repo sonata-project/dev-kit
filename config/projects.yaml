@@ -118,6 +118,16 @@ block-bundle:
             variants:
                 symfony/symfony: ['4.4']
 
+cache:
+  excluded_files:
+    - README.md
+  docs_target: false
+  branches:
+    master:
+      php: ['7.3', '7.4', '8.0']
+    2.x:
+      php: ['7.3', '7.4', '8.0']
+
 classification-bundle:
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
