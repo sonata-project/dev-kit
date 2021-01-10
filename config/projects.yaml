@@ -106,11 +106,11 @@ block-bundle:
     psalm: true
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4', '5.2']
         4.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4', '5.2']
         3.x:
