@@ -98,12 +98,22 @@ jobs:
                   branch: master
 
 {% endif %}
+{% if project.usesPanther %}
+            - name: Install browser drivers
+              run: composer require dbrekelmans/bdi:^0.3 --no-update --dev
+
+{% endif %}
             - name: "Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})"
               uses: "ramsey/composer-install@v1"
               with:
                   dependency-versions: "{% verbatim %}${{ matrix.dependencies }}{% endverbatim %}"
                   composer-options: "--prefer-dist --prefer-stable"
 
+{% if project.usesPanther %}
+            - name: Download WebDriver drivers
+              run: vendor/bin/bdi detect drivers
+
+{% endif %}
             - name: Run Tests
               run: make test
 
