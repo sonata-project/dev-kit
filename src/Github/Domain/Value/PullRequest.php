@@ -269,7 +269,7 @@ final class PullRequest
         preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
 
         if (2 === \count($matches)) {
-            $lines = explode(PHP_EOL, $matches[1]);
+            $lines = explode(\PHP_EOL, $matches[1]);
 
             $section = '';
             foreach ($lines as $line) {

@@ -103,6 +103,6 @@ final class Changelog
             $markdown[] = '';
         }
 
-        return implode(PHP_EOL, $markdown);
+        return implode(\PHP_EOL, $markdown);
     }
 }
