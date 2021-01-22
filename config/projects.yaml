@@ -205,11 +205,13 @@ doctrine-extensions:
     has_documentation: false
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             services: [mongodb]
+            target_php: '7.4'
         1.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             services: [mongodb]
+            target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
     phpstan: true
