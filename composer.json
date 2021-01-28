@@ -33,7 +33,8 @@
         "symfony/framework-bundle": "^5.2",
         "symfony/http-client": "^5.2",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/slack-notifier": "5.1.11",
+        "symfony/notifier": "^5.2",
+        "symfony/slack-notifier": "^5.2",
         "symfony/string": "^5.2",
         "symfony/twig-pack": "^1.0",
         "symfony/yaml": "^5.2",
@@ -75,7 +76,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.1.*"
+            "require": "5.2.*"
         }
     },
     "autoload": {
