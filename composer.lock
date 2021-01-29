@@ -1312,16 +1312,16 @@
         },
         {
             "name": "oskarstark/env-var-extension",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OskarStark/env-var-extension.git",
-                "reference": "c444357017ab1d3c3f27b05d49020365a6490bf5"
+                "reference": "7e1a4f803e934bfe02bdc315a8641968c6be0678"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/c444357017ab1d3c3f27b05d49020365a6490bf5",
-                "reference": "c444357017ab1d3c3f27b05d49020365a6490bf5",
+                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/7e1a4f803e934bfe02bdc315a8641968c6be0678",
+                "reference": "7e1a4f803e934bfe02bdc315a8641968c6be0678",
                 "shasum": ""
             },
             "require": {
@@ -1330,7 +1330,7 @@
             },
             "require-dev": {
                 "ergebnis/test-util": "^1.4",
-                "friendsofphp/php-cs-fixer": "^2.16",
+                "friendsofphp/php-cs-fixer": "^2.18.2",
                 "phpunit/phpunit": "^8.5 || ^9.0"
             },
             "type": "library",
@@ -1355,7 +1355,11 @@
                 "twig",
                 "twig-extension"
             ],
-            "time": "2020-11-18T12:54:06+00:00"
+            "support": {
+                "issues": "https://github.com/OskarStark/env-var-extension/issues",
+                "source": "https://github.com/OskarStark/env-var-extension/tree/1.1.1"
+            },
+            "time": "2021-01-28T08:40:43+00:00"
         },
         {
             "name": "php-http/cache-plugin",
@@ -4169,6 +4173,9 @@
                 "portable",
                 "shim"
             ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.22.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5462,6 +5469,10 @@
             "keywords": [
                 "templating"
             ],
+            "support": {
+                "issues": "https://github.com/twigphp/Twig/issues",
+                "source": "https://github.com/twigphp/Twig/tree/v3.2.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/fabpot",
