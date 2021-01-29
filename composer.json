@@ -34,7 +34,7 @@
         "symfony/http-client": "^5.2",
         "symfony/monolog-bundle": "^3.6",
         "symfony/notifier": "^5.2",
-        "symfony/slack-notifier": "^5.2",
+        "symfony/slack-notifier": "^5.2.2",
         "symfony/string": "^5.2",
         "symfony/twig-pack": "^1.0",
         "symfony/yaml": "^5.2",
