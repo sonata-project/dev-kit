@@ -5455,7 +5455,7 @@
         },
         {
             "name": "twig/markdown-extra",
-            "version": "v3.2.1",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/markdown-extra.git",
@@ -5511,6 +5511,9 @@
                 "markdown",
                 "twig"
             ],
+            "support": {
+                "source": "https://github.com/twigphp/markdown-extra/tree/v3.3.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/fabpot",
