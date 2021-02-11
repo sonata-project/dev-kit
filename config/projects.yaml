@@ -412,7 +412,7 @@ page-bundle:
                 sonata-project/block-bundle: ['3']
 
 sandbox:
-    composer_version: '1'
+    composer_version: '2'
     has_documentation: false
     phpstan: true
     excluded_files:
