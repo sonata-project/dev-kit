@@ -284,6 +284,17 @@ ecommerce:
             variants:
                 symfony/symfony: ['4.4']
 
+entity-audit-bundle:
+    excluded_files:
+        - LICENSE
+        - README.md
+    has_documentation: false
+    branches:
+        master:
+            php: ['7.3', '7.4', '8.0']
+        1.x:
+            php: ['7.3', '7.4', '8.0']
+
 exporter:
     excluded_files:
         - README.md
