@@ -18,5 +18,7 @@ jobs:
 
       - name: Run PHPStan
         uses: docker://oskarstark/phpstan-ga:0.12.53
+        env:
+            CHECK_PLATFORM_REQUIREMENTS: false
         with:
           args: analyse
