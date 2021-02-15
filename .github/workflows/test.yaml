@@ -12,8 +12,6 @@ jobs:
 
         runs-on: ubuntu-latest
 
-        continue-on-error: ${{ matrix.allowed-to-fail }}
-
         strategy:
             matrix:
                 php-version:
