@@ -285,6 +285,7 @@ ecommerce:
                 symfony/symfony: ['4.4']
 
 entity-audit-bundle:
+    vendor_name: simplethings
     excluded_files:
         - LICENSE
         - README.md

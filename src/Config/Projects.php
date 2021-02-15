@@ -43,7 +43,8 @@ final class Projects
 
         foreach ($projectsConfigs['projects'] as $name => $config) {
             $package = $this->packagist->get(sprintf(
-                'sonata-project/%s',
+                '%s/%s',
+                $config['vendor_name'],
                 $name
             ));
 
