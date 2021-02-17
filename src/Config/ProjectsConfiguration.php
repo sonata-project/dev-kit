@@ -34,7 +34,6 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('vendor_name')->defaultValue('sonata-project')->end()
                             ->scalarNode('composer_version')->defaultValue('2')->end()
                             ->booleanNode('panther')->defaultFalse()->end()
                             ->booleanNode('phpstan')->defaultFalse()->end()
