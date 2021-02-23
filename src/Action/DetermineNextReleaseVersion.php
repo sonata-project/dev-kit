@@ -24,7 +24,7 @@ final class DetermineNextReleaseVersion
      */
     public static function forTagAndPullRequests(Tag $current, array $pullRequests): Tag
     {
-        if ([] === $pullRequests) {
+        if ($pullRequests === []) {
             return $current;
         }
 

@@ -76,7 +76,7 @@ final class DetermineNextRelease
             Query::pullRequestsSince($repository, $branch, $currentRelease->publishedAt(), AbstractCommand::SONATA_CI_BOT)
         );
 
-        if ([] === $pullRequests) {
+        if ($pullRequests === []) {
             throw NoPullRequestsMergedSinceLastRelease::forProject(
                 $project,
                 $currentRelease->publishedAt()

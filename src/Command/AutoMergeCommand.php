@@ -60,7 +60,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         $projects = $this->projects->all();
 
         $title = 'Merge branches of repositories if there is no conflict';
-        if ([] !== $input->getArgument('projects')) {
+        if ($input->getArgument('projects') !== []) {
             $projects = $this->projects->byNames($input->getArgument('projects'));
             $title = sprintf(
                 '%s for: %s',
@@ -100,7 +100,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         // Merge the oldest branch into the next newest, and so on.
         while (($head = current($branchNames))) {
             $base = next($branchNames);
-            if (false === $base) {
+            if ($base === false) {
                 break;
             }
 
@@ -124,7 +124,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                     ));
                 }
             } catch (RuntimeException $e) {
-                if (409 === $e->getCode()) {
+                if ($e->getCode() === 409) {
                     $message = sprintf(
                         '%s: Merging of %s into %s contains conflicts. Skipped.',
                         $repository->name(),

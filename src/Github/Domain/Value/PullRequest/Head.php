@@ -49,7 +49,7 @@ final class Head
             Assert::notEmpty($config['repo']);
         }
 
-        if (null === $config['repo']) {
+        if ($config['repo'] === null) {
             $repo = null;
         } else {
             $repo = Repo::fromResponse($config['repo']);

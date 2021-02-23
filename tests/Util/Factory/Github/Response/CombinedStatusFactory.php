@@ -38,7 +38,7 @@ final class CombinedStatusFactory
             'state' => $state,
             'statuses' => array_map(static function (): array {
                 return StatusFactory::create();
-            }, range('pending' === $state ? 0 : 1, $faker->numberBetween(2, 3))),
+            }, range($state === 'pending' ? 0 : 1, $faker->numberBetween(2, 3))),
         ];
 
         if (\array_key_exists('statuses', $parameters)) {

@@ -216,7 +216,7 @@ final class Project
 
     public function hasBranches(): bool
     {
-        return [] !== $this->branches;
+        return $this->branches !== [];
     }
 
     public function websitePath(): string
@@ -262,7 +262,7 @@ final class Project
         /*
          * add "hacktoberfest" topic to repositories in october
          */
-        if ('10' === (new \DateTimeImmutable())->format('m')) {
+        if ((new \DateTimeImmutable())->format('m') === '10') {
             $default[] = 'Hacktoberfest';
         }
 
@@ -310,7 +310,7 @@ final class Project
         $versions = $this->package->getVersions();
         $latest = reset($versions);
 
-        if (false === $latest) {
+        if ($latest === false) {
             return new Package\Version();
         }
 

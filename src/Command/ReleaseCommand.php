@@ -214,7 +214,7 @@ EOT;
     {
         $notificationStyle = $this->io->getErrorStyle();
 
-        if ([] === $combinedStatus->statuses()) {
+        if ($combinedStatus->statuses() === []) {
             return;
         }
 
@@ -242,7 +242,7 @@ EOT;
     {
         $notificationStyle = $this->io->getErrorStyle();
 
-        if ([] === $checkRuns->all()) {
+        if ($checkRuns->all() === []) {
             return;
         }
 

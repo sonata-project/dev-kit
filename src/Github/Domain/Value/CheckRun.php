@@ -64,7 +64,7 @@ final class CheckRun
 
         Assert::keyExists($response, 'conclusion');
 
-        if (null !== $response['conclusion']) {
+        if ($response['conclusion'] !== null) {
             Assert::stringNotEmpty($response['conclusion']);
             Assert::oneOf(
                 $response['conclusion'],
@@ -97,11 +97,11 @@ final class CheckRun
 
     public function isSuccessful(): bool
     {
-        if (null === $this->conclusion) {
+        if ($this->conclusion === null) {
             return false;
         }
 
-        return self::CONCLUSION_SUCCESS === $this->conclusion;
+        return $this->conclusion === self::CONCLUSION_SUCCESS;
     }
 
     public function status(): string
@@ -121,14 +121,14 @@ final class CheckRun
 
     public function nameFormatted(): string
     {
-        if (self::CONCLUSION_SUCCESS === $this->conclusion) {
+        if ($this->conclusion === self::CONCLUSION_SUCCESS) {
             return sprintf(
                 '<info>%s</info>',
                 $this->name
             );
         }
 
-        if (self::CONCLUSION_NEUTRAL === $this->conclusion) {
+        if ($this->conclusion === self::CONCLUSION_NEUTRAL) {
             return sprintf(
                 '<comment>%s</comment>',
                 $this->name

@@ -82,7 +82,7 @@ final class Branch
         }
 
         $targetPhpVersion = $config['target_php'];
-        if (null !== $targetPhpVersion) {
+        if ($targetPhpVersion !== null) {
             $targetPhpVersion = PhpVersion::fromString($targetPhpVersion);
         }
 
@@ -120,7 +120,7 @@ final class Branch
 
     public function hasService(string $serviceName): bool
     {
-        if ([] === $this->services) {
+        if ($this->services === []) {
             return false;
         }
 

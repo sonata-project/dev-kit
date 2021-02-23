@@ -173,9 +173,9 @@ final class NextRelease
 
     public function canBeReleased(): bool
     {
-        return [] !== $this->pullRequests()
-            && [] === $this->pullRequestsWithoutStabilityLabel()
-            && [] === $this->pullRequestsWithoutChangelog()
+        return $this->pullRequests() !== []
+            && $this->pullRequestsWithoutStabilityLabel() === []
+            && $this->pullRequestsWithoutChangelog() === []
             && $this->stability()->notEquals(Stability::pedantic());
     }
 

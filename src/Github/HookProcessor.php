@@ -175,7 +175,7 @@ final class HookProcessor
                 $comment
             );
 
-            if ('/request-release' === $body) {
+            if ($body === '/request-release') {
                 $message = sprintf(
                     '%s requested a release for %s in %s',
                     $comment->author()->handle(),

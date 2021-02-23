@@ -69,7 +69,7 @@ final class Changelog
 
         $sections = [];
         foreach ($changelog as $section => $changes) {
-            if (0 === \count($changes)) {
+            if (\count($changes) === 0) {
                 continue;
             }
 

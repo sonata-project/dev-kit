@@ -115,7 +115,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             }
 
             // Proceed only bot PR for now.
-            if (self::SONATA_CI_BOT !== $pr->user()->login()) {
+            if ($pr->user()->login() !== self::SONATA_CI_BOT) {
                 continue;
             }
 
@@ -168,13 +168,13 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
             // Some commit have the same message, but this cannot be squashed.
             if ($commits->count() !== $uniqueCommitsCount
-                && 1 !== $uniqueCommitsCount
+                && $uniqueCommitsCount !== 1
             ) {
                 $this->io->caution('This PR need a manual rebase.');
 
                 continue;
             }
-            $squash = 1 === $uniqueCommitsCount;
+            $squash = $uniqueCommitsCount === 1;
 
             $this->io->comment(sprintf(
                 'Squash: %s',
@@ -192,7 +192,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
 
                     $repo = $pr->head()->repo();
                     if ($repo instanceof Repo
-                        && 'sonata-project' === $repo->owner()->login()
+                        && $repo->owner()->login() === 'sonata-project'
                     ) {
                         $this->references->remove($repository, $pr);
                     }

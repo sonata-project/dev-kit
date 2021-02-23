@@ -59,6 +59,6 @@ final class Config
      */
     public function equals(array $config): bool
     {
-        return 0 === \count(array_diff_assoc($this->config, $config));
+        return \count(array_diff_assoc($this->config, $config)) === 0;
     }
 }

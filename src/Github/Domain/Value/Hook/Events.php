@@ -50,6 +50,6 @@ final class Events
      */
     public function equals(array $events): bool
     {
-        return 0 === \count(array_diff_assoc($this->events, $events));
+        return \count(array_diff_assoc($this->events, $events)) === 0;
     }
 }

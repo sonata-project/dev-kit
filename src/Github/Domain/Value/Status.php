@@ -74,7 +74,7 @@ final class Status
 
     public function isSuccessful(): bool
     {
-        return self::SUCCESS === $this->state;
+        return $this->state === self::SUCCESS;
     }
 
     public function state(): string
@@ -89,14 +89,14 @@ final class Status
 
     public function contextFormatted(): string
     {
-        if (self::SUCCESS === $this->state) {
+        if ($this->state === self::SUCCESS) {
             return sprintf(
                 '<info>%s</info>',
                 $this->context
             );
         }
 
-        if (self::PENDING === $this->state) {
+        if ($this->state === self::PENDING) {
             return sprintf(
                 '<comment>%s</comment>',
                 $this->context

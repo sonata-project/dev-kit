@@ -48,7 +48,7 @@ final class Comments
             $pullRequest->issue()->toInt(),
         ]));
 
-        if (null === $username) {
+        if ($username === null) {
             return $comments;
         }
 

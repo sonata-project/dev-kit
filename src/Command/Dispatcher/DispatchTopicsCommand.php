@@ -74,7 +74,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 
         $topics = $this->topics->get($repository);
 
-        if ([] === $topics && [] === $project->topics()) {
+        if ($topics === [] && $project->topics() === []) {
             $this->io->writeln(sprintf(
                 '    <comment>%s</comment>',
                 'No topics are currently set on the repository, nor new ones are configured!'
@@ -87,11 +87,11 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
             $this->io->writeln('    Topics would be changed...');
             $this->io->writeln(sprintf(
                 '        from <comment>%s</comment>',
-                [] === $topics ? '[]' : implode(', ', $topics),
+                $topics === [] ? '[]' : implode(', ', $topics),
             ));
             $this->io->writeln(sprintf(
                 '        to   <info>%s</info>',
-                [] === $project->topics() ? '[]' : implode(', ', $project->topics()),
+                $project->topics() === [] ? '[]' : implode(', ', $project->topics()),
             ));
 
             if ($this->apply) {

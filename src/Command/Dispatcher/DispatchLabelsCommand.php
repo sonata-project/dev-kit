@@ -146,7 +146,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             ];
         }
 
-        if ([] === $rows) {
+        if ($rows === []) {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
         } else {
             usort($rows, static function ($row1, $row2): int {

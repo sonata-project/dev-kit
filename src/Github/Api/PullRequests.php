@@ -89,7 +89,7 @@ final class PullRequests
             ]
         );
 
-        return 0 < \count($pullRequests);
+        return \count($pullRequests) > 0;
     }
 
     /**

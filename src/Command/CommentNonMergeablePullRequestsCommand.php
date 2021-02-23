@@ -90,7 +90,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
         $pullRequests = $this->pullRequests->all($repository);
 
-        if ([] === $pullRequests) {
+        if ($pullRequests === []) {
             $this->io->text('No pull requests available!');
         }
 
@@ -99,10 +99,10 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                 '%s %s (%s)',
                 $pr->issue()->toString(),
                 $pr->title(),
-                false === $pr->isMergeable() ? '<comment>not mergeable</comment>' : '<info>mergeable</info>',
+                $pr->isMergeable() === false ? '<comment>not mergeable</comment>' : '<info>mergeable</info>',
             ));
 
-            if (false === $pr->isMergeable()) {
+            if ($pr->isMergeable() === false) {
                 $lastComment = $this->comments->lastComment(
                     $repository,
                     $pr,
@@ -119,7 +119,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                 ) {
                     $message = 'Could you please rebase your PR and fix merge conflicts?';
 
-                    if (self::DEPENDABOT_BOT === $pr->user()->login()) {
+                    if ($pr->user()->login() === self::DEPENDABOT_BOT) {
                         $message = '@dependabot rebase';
                     }
 

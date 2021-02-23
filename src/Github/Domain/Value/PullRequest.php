@@ -66,7 +66,7 @@ final class PullRequest
         );
 
         $this->mergedAt = null;
-        if (null !== $mergedAt) {
+        if ($mergedAt !== null) {
             $this->mergedAt = new \DateTimeImmutable(
                 TrimmedNonEmptyString::fromString($mergedAt)->toString(),
                 new \DateTimeZone('UTC')
@@ -206,7 +206,7 @@ final class PullRequest
 
     public function hasLabels(): bool
     {
-        return [] !== $this->labels;
+        return $this->labels !== [];
     }
 
     public function updatedWithinTheLast60Seconds(): bool
@@ -219,7 +219,7 @@ final class PullRequest
 
     public function stability(): Stability
     {
-        if ([] === $this->labels) {
+        if ($this->labels === []) {
             return Stability::unknown();
         }
 
@@ -249,7 +249,7 @@ final class PullRequest
 
     public function hasChangelog(): bool
     {
-        return [] !== $this->changelog();
+        return $this->changelog() !== [];
     }
 
     public function fulfilledChangelog(): bool
@@ -268,7 +268,7 @@ final class PullRequest
         $body = preg_replace('/<!--(.*)-->/Uis', '', $this->body);
         preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
 
-        if (2 === \count($matches)) {
+        if (\count($matches) === 2) {
             $lines = explode(\PHP_EOL, $matches[1]);
 
             $section = '';
@@ -279,7 +279,7 @@ final class PullRequest
                     continue;
                 }
 
-                if (0 === strpos($line, '#')) {
+                if (strpos($line, '#') === 0) {
                     $section = preg_replace('/^#* /i', '', $line);
                 } elseif (!empty($section)) {
                     $line = preg_replace('/^- /i', '', $line);
@@ -300,14 +300,14 @@ final class PullRequest
 
     public function createdAutomatically(): bool
     {
-        if ('Applied fixes from FlintCI' === $this->title
-            && 'soullivaneuh' === $this->user->login()
+        if ($this->title === 'Applied fixes from FlintCI'
+            && $this->user->login() === 'soullivaneuh'
         ) {
             return true;
         }
 
         if (u($this->title)->startsWith('DevKit updates for')
-            && AbstractCommand::SONATA_CI_BOT === $this->user->login()
+            && $this->user->login() === AbstractCommand::SONATA_CI_BOT
         ) {
             return true;
         }

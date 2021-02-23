@@ -59,7 +59,7 @@ final class CombinedStatus
 
         Assert::keyExists($response, 'statuses');
 
-        if (self::PENDING !== $state) {
+        if ($state !== self::PENDING) {
             Assert::notEmpty(
                 $response['statuses'],
                 sprintf(
@@ -82,7 +82,7 @@ final class CombinedStatus
 
     public function isSuccessful(): bool
     {
-        return self::SUCCESS === $this->state;
+        return $this->state === self::SUCCESS;
     }
 
     public function state(): string

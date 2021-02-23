@@ -51,7 +51,7 @@ final class Issues
                 $label->name()
             );
         } catch (RuntimeException $e) {
-            if (404 !== $e->getCode()) {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }
