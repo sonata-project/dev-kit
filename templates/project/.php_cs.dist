@@ -57,6 +57,11 @@ $rules = [
     'strict_comparison' => true,
     'strict_param' => true,
     'void_return' => null,
+    'yoda_style' => [
+        'equal' => false,
+        'identical' => false,
+        'less_and_greater' => false,
+    ],
 ];
 
 
