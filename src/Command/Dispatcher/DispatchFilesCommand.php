@@ -266,11 +266,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->append($docsPath)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> directory!',
-                $docsPath
-            ));
-            $this->filesystem->remove($docsDirectory);
+            if ($this->filesystem->exists($docsDirectory)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> directory!', $docsPath));
+                $this->filesystem->remove($docsDirectory);
+            }
 
             $filepath = '.github/workflows/documentation.yaml';
             $documentationWorkflowFile = u($distPath)
@@ -278,11 +277,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->append($filepath)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> file!',
-                $filepath
-            ));
-            $this->filesystem->remove($documentationWorkflowFile);
+            if ($this->filesystem->exists($documentationWorkflowFile)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
+                $this->filesystem->remove($documentationWorkflowFile);
+            }
         }
 
         if (!$project->usesPHPStan() && !$project->usesPsalm()) {
@@ -292,11 +290,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->append($filepath)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> file!',
-                $filepath
-            ));
-            $this->filesystem->remove($qaWorkflowFile);
+            if ($this->filesystem->exists($qaWorkflowFile)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
+                $this->filesystem->remove($qaWorkflowFile);
+            }
         }
     }
 

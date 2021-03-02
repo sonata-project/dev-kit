@@ -131,11 +131,11 @@ cache:
 cache-bundle:
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -219,14 +219,16 @@ doctrine-mongodb-admin-bundle:
     panther: true
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             services: [mongodb]
+            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             services: [mongodb]
+            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -237,12 +239,12 @@ doctrine-orm-admin-bundle:
     panther: true
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -281,6 +283,17 @@ ecommerce:
             php: ['7.3', '7.4']
             variants:
                 symfony/symfony: ['4.4']
+
+entity-audit-bundle:
+    excluded_files:
+        - LICENSE
+        - README.md
+    has_documentation: false
+    branches:
+        master:
+            php: ['7.3', '7.4', '8.0']
+        1.x:
+            php: ['7.3', '7.4', '8.0']
 
 exporter:
     excluded_files:
@@ -384,11 +397,11 @@ notification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4']
+                symfony/symfony: ['4.4', '5.2']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -410,7 +423,6 @@ page-bundle:
                 sonata-project/block-bundle: ['3']
 
 sandbox:
-    composer_version: '1'
     has_documentation: false
     phpstan: true
     excluded_files:
@@ -425,11 +437,11 @@ sandbox:
 seo-bundle:
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4', '5.2']
         2.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']

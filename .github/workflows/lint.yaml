@@ -1,82 +1,71 @@
 name: Lint
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-  pull_request_target:
+    push:
+        branches:
+            - master
+    pull_request:
 
 jobs:
-  php-cs-fixer:
-    name: PHP-CS-Fixer
+    php-cs-fixer:
+        name: PHP-CS-Fixer
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: Run PHP-CS-Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga:2.18.1
-        with:
-          args: --ansi --verbose --diff
+            - name: Run PHP-CS-Fixer
+              uses: docker://oskarstark/php-cs-fixer-ga:2.18.1
+              with:
+                  args: --ansi --verbose --diff --dry-run
 
-      - name: "Commit files fixed with PHP-CS-Fixer"
-        uses: stefanzweifel/git-auto-commit-action@v4.8.0
-        with:
-          commit_author: "SonataCI <thomas+ci@sonata-project.org>"
-          commit_message: "Fix: Run 'php-cs-fixer fix'"
-          commit_user_email: "thomas+ci@sonata-project.org"
-          commit_user_name: "SonataCI"
+    composer-normalize:
+        name: composer-normalize
 
-  composer-normalize:
-    name: composer-normalize
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+            - name: Run composer-normalize
+              uses: docker://ergebnis/composer-normalize-action:0.8.0
+              with:
+                  args: --dry-run
 
-      - name: Run composer-normalize
-        uses: docker://ergebnis/composer-normalize-action:0.8.0
-        with:
-          args: --dry-run
+    yaml-files:
+        name: YAML files
 
-  yaml-files:
-    name: YAML files
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+            - name: Install Ruby 2.6
+              uses: actions/setup-ruby@v1.1.3
+              with:
+                  ruby-version: '2.6'
 
-      - name: Install Ruby 2.6
-        uses: actions/setup-ruby@v1.1.2
-        with:
-          ruby-version: '2.6'
+            - name: Install required gem
+              run: gem install yaml-lint
 
-      - name: Install required gem
-        run: gem install yaml-lint
+            - name: Lint files
+              run: make lint-yaml
 
-      - name: Lint files
-        run: make lint-yaml
+    xml-files:
+        name: XML files
 
-  xml-files:
-    name: XML files
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+            - name: Install required dependencies
+              run: sudo apt-get update && sudo apt-get install libxml2-utils
 
-      - name: Install required dependencies
-        run: sudo apt-get update && sudo apt-get install libxml2-utils
-
-      - name: Lint files
-        run: make lint-xml
+            - name: Lint files
+              run: make lint-xml
