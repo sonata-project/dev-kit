@@ -6,6 +6,9 @@ on:
             - master
     pull_request:
 
+env:
+    REQUIRED_PHP_EXTENSIONS: "redis"
+
 jobs:
     test:
         name: PHP ${{ matrix.php-version }}
@@ -26,6 +29,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
+                  extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
                   coverage: pcov
                   tools: composer:v2
 
