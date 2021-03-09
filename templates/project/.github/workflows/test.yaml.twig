@@ -71,9 +71,10 @@ jobs:
 {% if branch.hasService('mongodb') %}
                   tools: composer:v{{ project.composerVersion }}, pecl
 {# Change mongodb extension version to a stable one when available #}
-                  extensions: mongodb-1.9.0
+                  extensions: mongodb-1.9.0, {{ branch.phpExtensions|join(, ) }}
 {% else %}
                   tools: composer:v{{ project.composerVersion }}
+                  extensions: {{ branch.phpExtensions|join(, ) }}
 {% endif %}
 
             - name: Add PHPUnit matcher

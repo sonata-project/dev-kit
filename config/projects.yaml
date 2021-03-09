@@ -364,6 +364,7 @@ media-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: [soap, gd]
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
@@ -371,6 +372,7 @@ media-bundle:
                 imagine/imagine: ['0.7', '1']
         3.x:
             php: ['7.3', '7.4']
+            php_extensions: [soap, gd]
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']

@@ -26,6 +26,11 @@ final class Branch
     private array $phpVersions;
 
     /**
+     * @var array<string>
+     */
+    private array $phpExtensions;
+
+    /**
      * @var Service[]
      */
     private array $services;
@@ -48,6 +53,7 @@ final class Branch
         string $name,
         array $phpVersions,
         array $services,
+        array $phpExtensions,
         array $variants,
         Path $docsPath,
         Path $testsPath,
@@ -56,6 +62,7 @@ final class Branch
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;
         $this->services = $services;
+        $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
@@ -89,6 +96,7 @@ final class Branch
         return new self(
             $name,
             $phpVersions,
+            $config['php_extensions'],
             $services,
             $variants,
             Path::fromString($config['docs_path']),
@@ -116,6 +124,14 @@ final class Branch
     public function services(): array
     {
         return $this->services;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function phpExtensions(): array
+    {
+        return $this->phpExtensions;
     }
 
     public function hasService(string $serviceName): bool
