@@ -77,7 +77,7 @@ final class Branch
             $phpVersions[$version] = PhpVersion::fromString($version);
         }
 
-        $tools = array_map(static function (string $toolName): string {
+        $tools = array_map(static function (string $toolName): Tool {
             return Tool::fromString($toolName);
         }, $config['tools']);
 
