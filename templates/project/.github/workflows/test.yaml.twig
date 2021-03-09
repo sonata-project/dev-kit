@@ -68,14 +68,10 @@ jobs:
               with:
                   {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
-{% if branch.hasService('mongodb') %}
-                  tools: composer:v{{ project.composerVersion }}, pecl
-{# Change mongodb extension version to a stable one when available #}
-                  extensions: mongodb-1.9.0, {{ branch.phpExtensions|join(, ) }}
-{% else %}
-                  tools: composer:v{{ project.composerVersion }}
+
+                  tools: composer:v{{ project.composerVersion }}{% if branch.hasService('mongodb') %}, pecl{% endif %}
                   extensions: {{ branch.phpExtensions|join(, ) }}
-{% endif %}
+
 
             - name: Add PHPUnit matcher
               {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}

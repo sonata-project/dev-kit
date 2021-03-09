@@ -145,12 +145,14 @@ classification-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
             services: [mongodb]
         3.x:
             php: ['7.3', '7.4']
+            php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -206,10 +208,12 @@ doctrine-extensions:
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: [mongodb-1.9.0]
             services: [mongodb]
             target_php: '7.4'
         1.x:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: [mongodb-1.9.0]
             services: [mongodb]
             target_php: '7.4'
 
@@ -220,6 +224,7 @@ doctrine-mongodb-admin-bundle:
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: [mongodb-1.9.0]
             services: [mongodb]
             target_php: '7.4'
             variants:
@@ -227,6 +232,7 @@ doctrine-mongodb-admin-bundle:
                 sonata-project/admin-bundle: ['dev-master']
         3.x:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: [mongodb-1.9.0]
             services: [mongodb]
             target_php: '7.4'
             variants:
@@ -301,11 +307,13 @@ exporter:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4', '5.2']
             services: [mongodb]
         2.x:
             php: ['7.3', '7.4']
+            php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4', '5.2']
             services: [mongodb]
@@ -364,7 +372,7 @@ media-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
-            php_extensions: [soap, gd]
+            php_extensions: [mangodb-1.9.0, soap, gd]
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
@@ -372,7 +380,7 @@ media-bundle:
                 imagine/imagine: ['0.7', '1']
         3.x:
             php: ['7.3', '7.4']
-            php_extensions: [soap, gd]
+            php_extensions: [mango-1.9.0, soap, gd]
             services: [mongodb]
             variants:
                 symfony/symfony: ['4.4']
