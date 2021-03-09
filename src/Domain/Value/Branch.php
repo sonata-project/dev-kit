@@ -96,8 +96,8 @@ final class Branch
         return new self(
             $name,
             $phpVersions,
-            $config['php_extensions'],
             $services,
+            $config['php_extensions'] ?? [],
             $variants,
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
