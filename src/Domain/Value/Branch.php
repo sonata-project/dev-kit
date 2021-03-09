@@ -126,6 +126,17 @@ final class Branch
         return $this->tools;
     }
 
+    public function hasTool(string $toolName): bool
+    {
+        foreach ($this->tools() as $tool) {
+            if ($tool->toString() === $toolName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @return string[]
      */
@@ -134,10 +145,10 @@ final class Branch
         return $this->phpExtensions;
     }
 
-    public function hasTool(string $toolName): bool
+    public function hasPhpExtensions(string $phpExtensionName): bool
     {
-        foreach ($this->tools() as $tool) {
-            if ($tool->toString() === $toolName) {
+        foreach ($this->phpExtensions() as $phpExtension) {
+            if ($phpExtension === $phpExtensionName || explode('-', $phpExtension)[0] === $phpExtensionName) {
                 return true;
             }
         }
