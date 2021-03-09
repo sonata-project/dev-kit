@@ -49,7 +49,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                 ->prototype('array')
                                     ->children()
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
-                                        ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->arrayNode('tools')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->arrayNode('variants')
                                             ->normalizeKeys(false)
