@@ -136,15 +136,13 @@ final class Branch
 
     public function hasTool(string $toolName): bool
     {
-        if ([] === $this->tools) {
-            return false;
+        foreach ($this->tools() as $tool) {
+            if ($tool->toString() === $toolName) {
+                return true;
+            }
         }
 
-        $toolNames = array_map(static function (Tool $tool): string {
-            return $tool->toString();
-        }, $this->tools());
-
-        return \in_array($toolName, $toolNames, true);
+        return false;
     }
 
     /**
