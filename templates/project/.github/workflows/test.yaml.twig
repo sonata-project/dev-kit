@@ -23,7 +23,7 @@ jobs:
 
         {% verbatim %}continue-on-error: ${{ matrix.allowed-to-fail }}{% endverbatim %}
 
-{% if branch.hasService('mongodb') %}
+{% if branch.hasTool('mongodb') %}
         services:
             mongo:
                 image: mongo
