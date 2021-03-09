@@ -31,12 +31,8 @@ jobs:
               with:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
-{% if branch.hasService('mongodb') %}
-                  tools: composer:v{{ project.composerVersion }}, pecl
-                  extensions: mongodb
-{% else %}
-                  tools: composer:v{{ project.composerVersion }}
-{% endif %}
+                  tools: {{ ['composer:v' ~ {{ project.composerVersion }}]|merge(branch.tools)|join(', ') }}
+                  extensions: {{ branch.phpExtensions|join(', ') }}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}

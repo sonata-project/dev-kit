@@ -149,14 +149,14 @@ classification-bundle:
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
         3.x:
             php: ['7.3', '7.4']
             php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
 
 classification-media-bundle:
     branches:
@@ -209,12 +209,12 @@ doctrine-extensions:
         master:
             php: ['7.3', '7.4', '8.0']
             php_extensions: [mongodb-1.9.0]
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
             target_php: '7.4'
         1.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: [mongodb-1.9.0]
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
             target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
@@ -225,7 +225,7 @@ doctrine-mongodb-admin-bundle:
         master:
             php: ['7.3', '7.4', '8.0']
             php_extensions: [mongodb-1.9.0]
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
             target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4']
@@ -233,7 +233,7 @@ doctrine-mongodb-admin-bundle:
         3.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: [mongodb-1.9.0]
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
             target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4']
@@ -310,13 +310,13 @@ exporter:
             php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4', '5.2']
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
         2.x:
             php: ['7.3', '7.4']
             php_extensions: [mongodb-1.9.0]
             variants:
                 symfony/symfony: ['4.4', '5.2']
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
 
 formatter-bundle:
     branches:
@@ -373,7 +373,7 @@ media-bundle:
         master:
             php: ['7.3', '7.4']
             php_extensions: [mangodb-1.9.0, soap, gd]
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -381,7 +381,7 @@ media-bundle:
         3.x:
             php: ['7.3', '7.4']
             php_extensions: [mango-1.9.0, soap, gd]
-            services: [mongodb, pecl]
+            tools: [mongodb, pecl]
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']

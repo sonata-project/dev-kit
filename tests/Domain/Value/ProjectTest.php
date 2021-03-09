@@ -39,7 +39,7 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      services: []
+      tools: []
       docs_path: docs
       tests_path: tests
     3.x:
@@ -48,7 +48,7 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['3']
-      services: []
+      tools: []
       docs_path: docs
       tests_path: tests
 CONFIG;

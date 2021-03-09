@@ -31,9 +31,9 @@ final class Branch
     private array $phpExtensions;
 
     /**
-     * @var Service[]
+     * @var Tool[]
      */
-    private array $services;
+    private array $tools;
 
     /**
      * @var Variant[]
@@ -46,13 +46,14 @@ final class Branch
 
     /**
      * @param array<string, PhpVersion> $phpVersions
-     * @param Service[]                 $services
+     * @param Tool[]                    $tools
+     * @param string[]                  $phpExtensions
      * @param Variant[]                 $variants
      */
     private function __construct(
         string $name,
         array $phpVersions,
-        array $services,
+        array $tools,
         array $phpExtensions,
         array $variants,
         Path $docsPath,
@@ -61,7 +62,7 @@ final class Branch
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;
-        $this->services = $services;
+        $this->tools = $tools;
         $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
         $this->docsPath = $docsPath;
@@ -76,9 +77,9 @@ final class Branch
             $phpVersions[$version] = PhpVersion::fromString($version);
         }
 
-        $services = [];
-        foreach ($config['services'] as $serviceName) {
-            $services[] = Service::fromString($serviceName);
+        $tools = [];
+        foreach ($config['tools'] as $toolName) {
+            $tools[] = Tool::fromString($toolName);
         }
 
         $variants = [];
@@ -96,7 +97,7 @@ final class Branch
         return new self(
             $name,
             $phpVersions,
-            $services,
+            $tools,
             $config['php_extensions'] ?? [],
             $variants,
             Path::fromString($config['docs_path']),
@@ -119,11 +120,11 @@ final class Branch
     }
 
     /**
-     * @return Service[]
+     * @return Tool[]
      */
-    public function services(): array
+    public function tools(): array
     {
-        return $this->services;
+        return $this->tools;
     }
 
     /**
@@ -134,17 +135,17 @@ final class Branch
         return $this->phpExtensions;
     }
 
-    public function hasService(string $serviceName): bool
+    public function hasTool(string $toolName): bool
     {
-        if ([] === $this->services) {
+        if ([] === $this->tools) {
             return false;
         }
 
-        $serviceNames = array_map(static function (Service $service): string {
-            return $service->toString();
-        }, $this->services());
+        $toolNames = array_map(static function (Tool $tool): string {
+            return $tool->toString();
+        }, $this->tools());
 
-        return \in_array($serviceName, $serviceNames, true);
+        return \in_array($toolName, $toolNames, true);
     }
 
     /**

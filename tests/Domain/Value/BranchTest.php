@@ -27,7 +27,7 @@ master:
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
-  services: []
+  tools: []
   docs_path: docs
   tests_path: tests
 CONFIG;
@@ -52,16 +52,16 @@ CONFIG;
         self::assertSame('7.3', $branch->lowestPhpVersion()->toString());
         self::assertSame('8.0', $branch->highestPhpVersion()->toString());
         self::assertCount(2, $branch->variants());
-        self::assertEmpty($branch->services());
+        self::assertEmpty($branch->tools());
         self::assertSame('docs', $branch->docsPath()->toString());
         self::assertSame('tests', $branch->testsPath()->toString());
-        self::assertFalse($branch->hasService('foo'));
+        self::assertFalse($branch->hasTool('foo'));
     }
 
     /**
      * @test
      */
-    public function hasService(): void
+    public function hasTool(): void
     {
         $name = 'master';
 
@@ -72,7 +72,7 @@ master:
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
-  services: ['mongodb']
+  tools: ['mongodb']
   docs_path: docs
   tests_path: tests
 CONFIG;
@@ -84,6 +84,6 @@ CONFIG;
             $config[self::DEFAULT_BRANCH_NAME]
         );
 
-        self::assertTrue($branch->hasService('mongodb'));
+        self::assertTrue($branch->hasTool('mongodb'));
     }
 }
