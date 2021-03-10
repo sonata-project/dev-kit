@@ -23,7 +23,7 @@ jobs:
 
         {% verbatim %}continue-on-error: ${{ matrix.allowed-to-fail }}{% endverbatim %}
 
-{% if branch.hasPhpExtensions('mongodb') %}
+{% if branch.hasPhpExtension('mongodb') %}
         services:
             mongo:
                 image: mongo

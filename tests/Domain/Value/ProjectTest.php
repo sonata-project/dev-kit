@@ -40,6 +40,7 @@ admin-bundle:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
       tools: []
+      php_extensions: []
       docs_path: docs
       tests_path: tests
     3.x:
@@ -49,6 +50,7 @@ admin-bundle:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['3']
       tools: []
+      php_extensions: []
       docs_path: docs
       tests_path: tests
 CONFIG;
