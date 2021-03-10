@@ -149,14 +149,12 @@ classification-bundle:
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-            tools: [pecl]
         3.x:
             php: ['7.3', '7.4']
             php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-            tools: [pecl]
 
 classification-media-bundle:
     branches:
@@ -209,12 +207,10 @@ doctrine-extensions:
         master:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0']
-            tools: [pecl]
             target_php: '7.4'
         1.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0']
-            tools: [pecl]
             target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
