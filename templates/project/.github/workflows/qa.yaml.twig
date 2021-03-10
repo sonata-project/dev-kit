@@ -31,9 +31,9 @@ jobs:
               with:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
-                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools)|join(', ') }}
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
 {% if branch.phpExtensions is not empty %}
-                  extensions: {{ branch.phpExtensions|join(', ') }}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
@@ -68,9 +68,9 @@ jobs:
               with:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
-                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools)|join(', ') }}
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
 {% if branch.phpExtensions is not empty %}
-                  extensions: {{ branch.phpExtensions|join(', ') }}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
