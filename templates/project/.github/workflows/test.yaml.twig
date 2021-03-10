@@ -70,7 +70,7 @@ jobs:
                   coverage: pcov
                   tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
 {% if branch.phpExtensions is not empty %}
-                  extensions: {{ branch.phpExtensions|join(', ') }}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
             - name: Add PHPUnit matcher
