@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-/**
- * @author Oskar Stark <oskarstark@googlemail.com>
- */
 final class PhpExtension
 {
     private string $name;

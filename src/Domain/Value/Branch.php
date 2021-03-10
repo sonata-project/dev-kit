@@ -45,10 +45,10 @@ final class Branch
     private PhpVersion $targetPhpVersion;
 
     /**
-     * @param PhpVersion[]   $phpVersions
-     * @param Tool[]         $tools
-     * @param PhpExtension[] $phpExtensions
-     * @param Variant[]      $variants
+     * @param array<string, PhpVersion> $phpVersions
+     * @param Tool[]                    $tools
+     * @param PhpExtension[]            $phpExtensions
+     * @param Variant[]                 $variants
      */
     private function __construct(
         string $name,
@@ -154,7 +154,7 @@ final class Branch
         foreach ($this->phpExtensions() as $phpExtension) {
             if (
                 $phpExtension->toString() === $phpExtensionName
-                || explode('-', $phpExtension->toString())[0] === $phpExtensionName
+                || strstr($phpExtension->toString(), '-', true) === $phpExtensionName
             ) {
                 return true;
             }
