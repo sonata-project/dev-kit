@@ -279,10 +279,12 @@ ecommerce:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -316,11 +318,13 @@ formatter-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
         4.x:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
@@ -385,11 +389,13 @@ news-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
         3.x:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
