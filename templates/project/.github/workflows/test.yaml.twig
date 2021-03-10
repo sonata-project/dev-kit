@@ -73,7 +73,6 @@ jobs:
                   extensions: {{ branch.phpExtensions|join(', ') }}
 {% endif %}
 
-
             - name: Add PHPUnit matcher
               {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
