@@ -50,6 +50,33 @@ jobs:
               with:
                   file: build/logs/clover.xml
 
+
+    twig:
+        name: Check Twig syntax
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '7.4'
+                  extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                  coverage: pcov
+                  tools: composer:v2
+
+            - name: Install Composer dependencies (highest)
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
+
+            - name: Validate Twig syntax
+              run: bin/console lint:twig templates/
+
     auto-merge:
         name: Auto-Merge
 
@@ -57,6 +84,7 @@ jobs:
 
         needs:
             - test
+            - twig
 
         if: >
             github.event_name == 'pull_request' &&
