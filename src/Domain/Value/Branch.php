@@ -26,7 +26,7 @@ final class Branch
     private array $phpVersions;
 
     /**
-     * @var array<string>
+     * @var PhpExtension[]
      */
     private array $phpExtensions;
 
@@ -45,10 +45,10 @@ final class Branch
     private PhpVersion $targetPhpVersion;
 
     /**
-     * @param array<string, PhpVersion> $phpVersions
-     * @param Tool[]                    $tools
-     * @param string[]                  $phpExtensions
-     * @param Variant[]                 $variants
+     * @param PhpVersion[]   $phpVersions
+     * @param Tool[]         $tools
+     * @param PhpExtension[] $phpExtensions
+     * @param Variant[]      $variants
      */
     private function __construct(
         string $name,
@@ -81,6 +81,10 @@ final class Branch
             return Tool::fromString($toolName);
         }, $config['tools']);
 
+        $phpExtensions = array_map(static function (string $phpExtension): PhpExtension {
+            return PhpExtension::fromString($phpExtension);
+        }, $config['php_extensions']);
+
         $variants = [];
         foreach ($config['variants'] as $variant => $versions) {
             foreach ($versions as $version) {
@@ -97,7 +101,7 @@ final class Branch
             $name,
             $phpVersions,
             $tools,
-            $config['php_extensions'] ?? [],
+            $phpExtensions,
             $variants,
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
@@ -138,17 +142,20 @@ final class Branch
     }
 
     /**
-     * @return string[]
+     * @return PhpExtension[]
      */
     public function phpExtensions(): array
     {
         return $this->phpExtensions;
     }
 
-    public function hasPhpExtensions(string $phpExtensionName): bool
+    public function hasPhpExtension(string $phpExtensionName): bool
     {
         foreach ($this->phpExtensions() as $phpExtension) {
-            if ($phpExtension === $phpExtensionName || explode('-', $phpExtension)[0] === $phpExtensionName) {
+            if (
+                $phpExtension->toString() === $phpExtensionName
+                || explode('-', $phpExtension->toString())[0] === $phpExtensionName
+            ) {
                 return true;
             }
         }

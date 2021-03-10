@@ -372,7 +372,7 @@ media-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
-            php_extensions: [mangodb-1.9.0, soap, gd]
+            php_extensions: [mongodb-1.9.0, soap, gd]
             tools: [pecl]
             variants:
                 symfony/symfony: ['4.4']
@@ -380,7 +380,7 @@ media-bundle:
                 imagine/imagine: ['0.7', '1']
         3.x:
             php: ['7.3', '7.4']
-            php_extensions: [mango-1.9.0, soap, gd]
+            php_extensions: [mongodb-1.9.0, soap, gd]
             tools: [pecl]
             variants:
                 symfony/symfony: ['4.4']

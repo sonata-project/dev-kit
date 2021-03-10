@@ -27,7 +27,8 @@ master:
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
-  tools: []
+  tools: ['foo']
+  php_extensions: ['bar']
   docs_path: docs
   tests_path: tests
 CONFIG;
@@ -52,38 +53,9 @@ CONFIG;
         self::assertSame('7.3', $branch->lowestPhpVersion()->toString());
         self::assertSame('8.0', $branch->highestPhpVersion()->toString());
         self::assertCount(2, $branch->variants());
-        self::assertEmpty($branch->tools());
         self::assertSame('docs', $branch->docsPath()->toString());
         self::assertSame('tests', $branch->testsPath()->toString());
-        self::assertFalse($branch->hasTool('foo'));
-    }
-
-    /**
-     * @test
-     */
-    public function hasTool(): void
-    {
-        $name = 'master';
-
-        $config = <<<CONFIG
-master:
-  php: ['7.3', '7.4']
-  target_php: ~
-  variants:
-    symfony/symfony: ['4.4']
-    sonata-project/block-bundle: ['4']
-  tools: ['mongodb']
-  docs_path: docs
-  tests_path: tests
-CONFIG;
-
-        $config = Yaml::parse($config);
-
-        $branch = Branch::fromValues(
-            $name,
-            $config[self::DEFAULT_BRANCH_NAME]
-        );
-
-        self::assertTrue($branch->hasTool('mongodb'));
+        self::assertTrue($branch->hasTool('foo'));
+        self::assertTrue($branch->hasPhpExtension('bar'));
     }
 }
