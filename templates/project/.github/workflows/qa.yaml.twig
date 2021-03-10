@@ -32,7 +32,9 @@ jobs:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
                   tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools)|join(', ') }}
+{% if branch.phpExtensions is not empty %}
                   extensions: {{ branch.phpExtensions|join(', ') }}
+{% endif %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
@@ -67,7 +69,9 @@ jobs:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
                   tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools)|join(', ') }}
+{% if branch.phpExtensions is not empty %}
                   extensions: {{ branch.phpExtensions|join(', ') }}
+{% endif %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}

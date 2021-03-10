@@ -69,7 +69,9 @@ jobs:
                   {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
                   tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools)|join(', ') }}
+{% if branch.phpExtensions is not empty %}
                   extensions: {{ branch.phpExtensions|join(', ') }}
+{% endif %}
 
 
             - name: Add PHPUnit matcher
