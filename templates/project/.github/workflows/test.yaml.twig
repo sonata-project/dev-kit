@@ -68,7 +68,7 @@ jobs:
               with:
                   {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
-                  tools: {{ ['composer:v' ~ {{ project.composerVersion }}]|merge(branch.tools)|join(', ') }}
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools)|join(', ') }}
                   extensions: {{ branch.phpExtensions|join(', ') }}
 
 
