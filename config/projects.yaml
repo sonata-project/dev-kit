@@ -476,11 +476,13 @@ translation-bundle:
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         2.x:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
