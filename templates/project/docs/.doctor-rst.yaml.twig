@@ -39,7 +39,7 @@ rules:
     versionadded_directive_should_have_version: ~
     yaml_instead_of_yml_suffix: ~
     yarn_dev_option_at_the_end: ~
-{% if project.stableBranch.name ends with '.x' %}
+{% if project.stableBranch is not null and project.stableBranch.name ends with '.x' %}
 
 whitelist:
     lines:

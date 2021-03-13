@@ -204,6 +204,7 @@ Your note can be put on one of these sections:
 * `Security` to invite users to upgrade in case of vulnerabilities.
 
 More information about the followed changelog format: [keepachangelog.com](http://keepachangelog.com/)
+{% if project.stableBranch is not null %}
 
 #### Base branch
 
@@ -348,6 +349,7 @@ Be aware that pull requests with BC breaks could be rejected
 or postponed to next major release **only** if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
+{% endif %}
 
 ##### Dependency changes
 
