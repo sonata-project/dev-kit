@@ -16,7 +16,6 @@ namespace App\Domain\Value;
 use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -290,19 +289,13 @@ final class Project
         return $this->branches[0];
     }
 
-    public function stableBranch(): Branch
+    public function stableBranch(): ?Branch
     {
         if (!$this->hasBranches()) {
             throw NoBranchesAvailable::forProject($this);
         }
 
-        try {
-            Assert::keyExists($this->branches, 1);
-
-            return $this->branches[1];
-        } catch (\InvalidArgumentException $e) {
-            return $this->unstableBranch();
-        }
+        return $this->branches[1] ?? null;
     }
 
     private function getLatestPackagistVersion(): Package\Version

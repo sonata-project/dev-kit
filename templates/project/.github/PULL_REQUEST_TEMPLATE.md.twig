@@ -2,6 +2,7 @@
 ## Subject
 
 <!-- Describe your Pull Request content here -->
+{% if project.stableBranch is not null %}
 
 <!--
     Show us you choose the right branch.
@@ -11,6 +12,7 @@
     More details here: https://github.com/sonata-project/{{ project.repository.name }}/blob/{{ project.stableBranch.name }}/CONTRIBUTING.md#base-branch
 -->
 I am targeting this branch, because {reason}.
+{% endif %}
 
 <!--
     Specify which issues will be fixed/closed.

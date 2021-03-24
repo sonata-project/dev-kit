@@ -24,13 +24,6 @@ final class DefaultController extends AbstractController
      */
     public function index(): Response
     {
-        $revision = file_exists(__DIR__.'/../../REVISION') ? trim(file_get_contents(__DIR__.'/../../REVISION')) : null;
-
-        return $this->render(
-            'default/index.html.twig',
-            [
-                'revision' => $revision,
-            ]
-        );
+        return $this->render('default/index.html.twig');
     }
 }

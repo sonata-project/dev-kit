@@ -54,7 +54,7 @@ final class DetermineNextRelease
         $repository = $project->repository();
 
         try {
-            $branch = $project->stableBranch();
+            $branch = $project->stableBranch() ?? $project->unstableBranch();
         } catch (NoBranchesAvailable $e) {
             throw CannotDetermineNextRelease::forProject(
                 $project,

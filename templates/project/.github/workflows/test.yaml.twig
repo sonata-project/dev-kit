@@ -23,7 +23,7 @@ jobs:
 
         {% verbatim %}continue-on-error: ${{ matrix.allowed-to-fail }}{% endverbatim %}
 
-{% if branch.hasService('mongodb') %}
+{% if branch.hasPhpExtension('mongodb') %}
         services:
             mongo:
                 image: mongo
@@ -68,12 +68,9 @@ jobs:
               with:
                   {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
-{% if branch.hasService('mongodb') %}
-                  tools: composer:v{{ project.composerVersion }}, pecl
-{# Change mongodb extension version to a stable one when available #}
-                  extensions: mongodb-1.9.0
-{% else %}
-                  tools: composer:v{{ project.composerVersion }}
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+{% if branch.phpExtensions is not empty %}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
             - name: Add PHPUnit matcher
