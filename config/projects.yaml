@@ -1,8 +1,6 @@
 admin-bundle:
     phpstan: true
     psalm: true
-    custom_gitattributes_part: |
-        .phpstan export-ignore
 
     custom_gitignore_part: |
         # clean up some non bower ready package
