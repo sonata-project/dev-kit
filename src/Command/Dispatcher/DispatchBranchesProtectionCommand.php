@@ -46,8 +46,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:branches-protection')
-            ->setDescription('Dispatches branches protection for all sonata projects.')
-        ;
+            ->setDescription('Dispatches branches protection for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

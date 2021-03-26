@@ -44,8 +44,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:settings')
-            ->setDescription('Dispatches repository information and general settings for all sonata projects.')
-        ;
+            ->setDescription('Dispatches repository information and general settings for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

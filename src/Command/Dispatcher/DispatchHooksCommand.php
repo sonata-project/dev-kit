@@ -63,8 +63,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:hooks')
-            ->setDescription('Dispatches hooks for all sonata projects.')
-        ;
+            ->setDescription('Dispatches hooks for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
