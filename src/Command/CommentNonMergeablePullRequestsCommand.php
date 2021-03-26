@@ -59,8 +59,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
         $this
             ->setName('comment-non-mergeable-pull-requests')
-            ->setDescription('Comments non-mergeable pull requests, asking the author to solve conflicts.')
-        ;
+            ->setDescription('Comments non-mergeable pull requests, asking the author to solve conflicts.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

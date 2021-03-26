@@ -79,8 +79,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this
             ->setName('dispatch:files')
             ->setDescription('Dispatches files for all sonata projects.')
-            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
-        ;
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
