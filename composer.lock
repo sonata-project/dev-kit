@@ -885,16 +885,16 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "v2.19.1",
+            "version": "v2.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "90e695e8978d510a83cc23065c3c566e39c1421a"
+                "reference": "ad3b8e6084729adff5c804bc7058afc57ba04224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/90e695e8978d510a83cc23065c3c566e39c1421a",
-                "reference": "90e695e8978d510a83cc23065c3c566e39c1421a",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/ad3b8e6084729adff5c804bc7058afc57ba04224",
+                "reference": "ad3b8e6084729adff5c804bc7058afc57ba04224",
                 "shasum": ""
             },
             "require": {
@@ -919,7 +919,7 @@
             "extra": {
                 "branch-alias": {
                     "dev-2.x": "2.19.x-dev",
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.2.x-dev"
                 }
             },
             "autoload": {
@@ -952,7 +952,7 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/php-github-api/issues",
-                "source": "https://github.com/KnpLabs/php-github-api/tree/v2.19.1"
+                "source": "https://github.com/KnpLabs/php-github-api/tree/v2.19.2"
             },
             "funding": [
                 {
@@ -960,7 +960,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-11T20:11:17+00:00"
+            "time": "2021-03-28T13:11:08+00:00"
         },
         {
             "name": "knplabs/packagist-api",
