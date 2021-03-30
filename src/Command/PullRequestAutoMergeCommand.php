@@ -66,8 +66,7 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             ->setDescription(sprintf(
                 'Merge RTM pull requests. Only active for pull requests by %s.',
                 self::SONATA_CI_BOT
-            ))
-        ;
+            ));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

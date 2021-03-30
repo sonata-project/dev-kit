@@ -9,7 +9,8 @@ updates:
         directory: "/"
         labels:
             - "dependencies"
-        open-pull-requests-limit: 99
+            - "automerge"
+        open-pull-requests-limit: 5
         package-ecosystem: composer
         schedule:
             interval: daily
@@ -18,6 +19,9 @@ updates:
     # Maintain dependencies for GitHub Actions
     -
         package-ecosystem: "github-actions"
+        labels:
+            - "dependencies"
+            - "automerge"
         directory: "/"
         schedule:
             interval: "daily"

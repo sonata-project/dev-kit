@@ -13,25 +13,22 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
-/**
- * @author Oskar Stark <oskarstark@googlemail.com>
- */
-final class PhpVersion
+final class PhpExtension
 {
-    private string $version;
+    private string $name;
 
-    private function __construct(string $version)
+    private function __construct(string $name)
     {
-        $this->version = TrimmedNonEmptyString::fromString($version)->toString();
+        $this->name = TrimmedNonEmptyString::fromString($name)->toString();
     }
 
-    public static function fromString(string $version): self
+    public static function fromString(string $name): self
     {
-        return new self($version);
+        return new self($name);
     }
 
     public function toString(): string
     {
-        return $this->version;
+        return $this->name;
     }
 }

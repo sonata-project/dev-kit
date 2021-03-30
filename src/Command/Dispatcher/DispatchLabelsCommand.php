@@ -51,8 +51,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:labels')
-            ->setDescription('Dispatches labels for all sonata projects.')
-        ;
+            ->setDescription('Dispatches labels for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

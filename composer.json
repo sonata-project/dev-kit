@@ -18,6 +18,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-redis": "*",
         "cache/redis-adapter": "^1.0",
         "cpliakas/git-wrapper": "^3.0",
         "doctrine/annotations": "^1.10",

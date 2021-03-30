@@ -31,11 +31,9 @@ jobs:
               with:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
-{% if branch.hasService('mongodb') %}
-                  tools: composer:v{{ project.composerVersion }}, pecl
-                  extensions: mongodb
-{% else %}
-                  tools: composer:v{{ project.composerVersion }}
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+{% if branch.phpExtensions is not empty %}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
@@ -70,11 +68,9 @@ jobs:
               with:
                   php-version: {{ branch.targetPhpVersion.toString }}
                   coverage: none
-{% if branch.hasService('mongodb') %}
-                  tools: composer:v{{ project.composerVersion }}, pecl
-                  extensions: mongodb
-{% else %}
-                  tools: composer:v{{ project.composerVersion }}
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+{% if branch.phpExtensions is not empty %}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}

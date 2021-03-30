@@ -1,8 +1,6 @@
 admin-bundle:
     phpstan: true
     psalm: true
-    custom_gitattributes_part: |
-        .phpstan export-ignore
 
     custom_gitignore_part: |
         # clean up some non bower ready package
@@ -145,16 +143,16 @@ classification-bundle:
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-            services: [mongodb]
         3.x:
             php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-            services: [mongodb]
 
 classification-media-bundle:
     branches:
@@ -206,11 +204,11 @@ doctrine-extensions:
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
-            services: [mongodb]
+            php_extensions: ['mongodb-1.9.0']
             target_php: '7.4'
         1.x:
             php: ['7.3', '7.4', '8.0']
-            services: [mongodb]
+            php_extensions: ['mongodb-1.9.0']
             target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
@@ -219,14 +217,16 @@ doctrine-mongodb-admin-bundle:
     panther: true
     branches:
         master:
-            php: ['7.3', '7.4']
-            services: [mongodb]
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'zip']
+            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         3.x:
-            php: ['7.3', '7.4']
-            services: [mongodb]
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'zip']
+            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -237,12 +237,14 @@ doctrine-orm-admin-bundle:
     panther: true
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -252,9 +254,6 @@ doctrine-phpcr-admin-bundle:
         tests/Fixtures/App/app.sqlite
     custom_doctor_rst_whitelist_part:
         "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
-    excluded_files:
-        - tests/bootstrap.php
-        - phpunit.xml.dist
     branches:
         master:
             php: ['7.3', '7.4']
@@ -275,12 +274,25 @@ ecommerce:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
         3.x:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
+
+entity-audit-bundle:
+    excluded_files:
+        - LICENSE
+        - README.md
+    has_documentation: false
+    branches:
+        master:
+            php: ['7.3', '7.4', '8.0']
+        1.x:
+            php: ['7.3', '7.4', '8.0']
 
 exporter:
     excluded_files:
@@ -288,24 +300,26 @@ exporter:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4', '5.2']
-            services: [mongodb]
         2.x:
             php: ['7.3', '7.4']
+            php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4', '5.2']
-            services: [mongodb]
 
 formatter-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
         4.x:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
@@ -350,19 +364,19 @@ media-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.3', '7.4']
-            services: [mongodb]
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-                imagine/imagine: ['0.7', '1']
+                imagine/imagine: ['1']
         3.x:
-            php: ['7.3', '7.4']
-            services: [mongodb]
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
-                imagine/imagine: ['0.7', '1']
+                imagine/imagine: ['1']
 
 news-bundle:
     custom_doctor_rst_whitelist_part:
@@ -370,11 +384,13 @@ news-bundle:
     branches:
         master:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
         3.x:
             php: ['7.3', '7.4']
+            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
@@ -384,11 +400,11 @@ notification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4']
+                symfony/symfony: ['4.4', '5.2']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
 
@@ -410,7 +426,6 @@ page-bundle:
                 sonata-project/block-bundle: ['3']
 
 sandbox:
-    composer_version: '1'
     has_documentation: false
     phpstan: true
     excluded_files:
@@ -455,12 +470,14 @@ translation-bundle:
     psalm: true
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
         2.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']

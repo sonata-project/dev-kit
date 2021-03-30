@@ -1,91 +1,77 @@
 name: Test
 
 on:
-  push:
-    branches:
-      - master
+    push:
+        branches:
+            - master
+    pull_request:
 
-  pull_request:
+env:
+    REQUIRED_PHP_EXTENSIONS: "redis"
 
 jobs:
-  test:
-    name: PHP ${{ matrix.php-version }}
+    test:
+        name: PHP ${{ matrix.php-version }}
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    continue-on-error: ${{ matrix.allowed-to-fail }}
+        strategy:
+            matrix:
+                php-version:
+                    - '7.4'
+                    - '8.0'
 
-    strategy:
-      matrix:
-        php-version:
-          - '7.4'
-        allowed-to-fail: [false]
-        include:
-          - php-version: '8.0'
-            allowed-to-fail: true
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                  coverage: pcov
+                  tools: composer:v2
 
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          coverage: pcov
-          tools: composer:v2
+            - name: Add PHPUnit matcher
+              run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Add PHPUnit matcher
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            - name: Install Composer dependencies (highest)
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
-      - name: Configuration required for PHP 8.0
-        if: matrix.php-version == '8.0'
-        run: composer config platform.php 7.4.99
+            - name: Run Tests
+              run: make test
 
-      - name: Install Composer dependencies (highest)
-        uses: "ramsey/composer-install@v1"
-        with:
-            dependency-versions: "highest"
-            composer-options: "--prefer-dist --prefer-stable"
+            - name: Send coverage to Codecov
+              uses: codecov/codecov-action@v1
+              with:
+                  file: build/logs/clover.xml
 
-      - name: Run Tests
-        run: make test
+    twig:
+        name: Check Twig syntax
 
-      - name: Send coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          file: build/logs/clover.xml
+        runs-on: ubuntu-latest
 
-  auto-merge:
-    name: Auto-Merge
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-    runs-on: ubuntu-latest
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '7.4'
+                  extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                  coverage: pcov
+                  tools: composer:v2
 
-    needs:
-      - test
+            - name: Install Composer dependencies (highest)
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
-    if: >
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.draft == false && (
-        github.event.action == 'opened' ||
-        github.event.action == 'reopened' ||
-        github.event.action == 'synchronize'
-      ) && (
-        github.actor == 'dependabot[bot]'
-      )
-
-    steps:
-      - name: Merge pull request
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const pullRequest = context.payload.pull_request
-            const repository = context.repo
-
-            await github.pulls.merge({
-              merge_method: "squash",
-              owner: repository.owner,
-              pull_number: pullRequest.number,
-              repo: repository.repo,
-            })
+            - name: Validate Twig syntax
+              run: bin/console lint:twig templates/

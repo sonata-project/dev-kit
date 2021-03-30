@@ -79,8 +79,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this
             ->setName('dispatch:files')
             ->setDescription('Dispatches files for all sonata projects.')
-            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
-        ;
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -266,11 +265,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->append($docsPath)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> directory!',
-                $docsPath
-            ));
-            $this->filesystem->remove($docsDirectory);
+            if ($this->filesystem->exists($docsDirectory)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> directory!', $docsPath));
+                $this->filesystem->remove($docsDirectory);
+            }
 
             $filepath = '.github/workflows/documentation.yaml';
             $documentationWorkflowFile = u($distPath)
@@ -278,11 +276,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->append($filepath)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> file!',
-                $filepath
-            ));
-            $this->filesystem->remove($documentationWorkflowFile);
+            if ($this->filesystem->exists($documentationWorkflowFile)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
+                $this->filesystem->remove($documentationWorkflowFile);
+            }
         }
 
         if (!$project->usesPHPStan() && !$project->usesPsalm()) {
@@ -292,11 +289,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->append($filepath)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> file!',
-                $filepath
-            ));
-            $this->filesystem->remove($qaWorkflowFile);
+            if ($this->filesystem->exists($qaWorkflowFile)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
+                $this->filesystem->remove($qaWorkflowFile);
+            }
         }
     }
 
