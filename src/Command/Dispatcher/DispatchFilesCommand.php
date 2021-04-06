@@ -294,6 +294,19 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $this->filesystem->remove($qaWorkflowFile);
             }
         }
+
+        if (!$project->isBundle()) {
+            $filepath = '.symfony.bundle.yaml ';
+            $symfonyBundleFile = u($distPath)
+                ->append('/')
+                ->append($filepath)
+                ->toString();
+
+            if ($this->filesystem->exists($symfonyBundleFile)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
+                $this->filesystem->remove($symfonyBundleFile);
+            }
+        }
     }
 
     private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
