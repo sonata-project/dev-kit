@@ -23,6 +23,7 @@ use function Symfony\Component\String\u;
 final class Project
 {
     private string $name;
+    private bool $bundle;
     private Package $package;
 
     /**
@@ -61,6 +62,7 @@ final class Project
         ?string $customDoctorRstWhitelistPart
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
+        $this->bundle = u($this->name)->endsWith('bundle') ? true : false;
 
         $this->package = $package;
         $this->branches = $branches;
@@ -108,6 +110,11 @@ final class Project
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function isBundle(): bool
+    {
+        return $this->bundle;
     }
 
     public function title(): string

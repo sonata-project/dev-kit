@@ -90,6 +90,7 @@ CONFIG;
         self::assertNull($project->customGitattributesPart());
         self::assertTrue($project->hasDocumentation());
         self::assertSame('1', $project->composerVersion());
+        self::assertTrue($project->isBundle());
     }
 
     /**
