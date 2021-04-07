@@ -96,6 +96,92 @@ CONFIG;
     /**
      * @test
      *
+     * @dataProvider isBundleProvider
+     */
+    public function isBundle(bool $expected, string $yamlConfig, string $name): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => $packageName = 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $config = Yaml::parse($yamlConfig);
+
+        $project = Project::fromValues(
+            $name,
+            $config[$name],
+            $package
+        );
+
+        self::assertSame($expected, $project->isBundle());
+    }
+
+    /**
+     * @return \Generator<string, array<0: bool, 1: string, 2: string>>
+     */
+    public function isBundleProvider(): \Generator
+    {
+        yield 'true - admin-bundle' => [
+            true,
+$config = <<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        'admin-bundle',
+        ];
+
+        yield 'false - twig-extensions' => [
+            false,
+$config = <<<CONFIG
+twig-extensions:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+            'twig-extensions',
+        ];
+    }
+
+    /**
+     * @test
+     *
      * @dataProvider homepageProvider
      */
     public function homepage(string $expected, string $value): void

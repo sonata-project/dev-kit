@@ -296,7 +296,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
 
         if (!$project->isBundle()) {
-            $filepath = '.symfony.bundle.yaml ';
+            $filepath = '.symfony.bundle.yaml';
             $symfonyBundleFile = u($distPath)
                 ->append('/')
                 ->append($filepath)
