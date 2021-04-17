@@ -396,6 +396,8 @@ news-bundle:
                 sonata-project/admin-bundle: ['3']
 
 notification-bundle:
+    phpstan: true
+    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
