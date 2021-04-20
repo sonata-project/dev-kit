@@ -413,13 +413,13 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         master:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
                 sonata-project/block-bundle: ['3']
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['3']
