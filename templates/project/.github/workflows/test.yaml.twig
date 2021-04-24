@@ -20,6 +20,9 @@ jobs:
 
         {% verbatim %}continue-on-error: ${{ matrix.allowed-to-fail }}{% endverbatim %}
 
+        env:
+            {% verbatim %}SYMFONY_REQUIRE: ${{matrix.symfony-require}}{% endverbatim %}
+
 {% if branch.hasPhpExtension('mongodb') %}
         services:
             mongo:
@@ -36,6 +39,7 @@ jobs:
 {% endfor %}
                 dependencies: [highest]
                 allowed-to-fail: [false]
+                symfony-require: [""]
                 variant: [normal]
                 include:
                     - php-version: '{{ branch.lowestPhpVersion.toString }}'
@@ -49,10 +53,17 @@ jobs:
                       allowed-to-fail: true
                       variant: normal
 {% endif %}
-{% for variant in branch.variants %}
+{% for variant in branch.variants|filter(v => v.package != 'symfony/symfony') %}
                     - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
                       allowed-to-fail: false
+                      variant: '{{ variant.toString|raw }}'
+{% endfor %}
+{% for variant in branch.variants|filter(v => v.package == 'symfony/symfony') %}
+                    - php-version: '{{ branch.targetPhpVersion.toString }}'
+                      dependencies: highest
+                      allowed-to-fail: false
+                      symfony-require: {{ variant.version }}.*
                       variant: '{{ variant.toString|raw }}'
 {% endfor %}
 
@@ -80,8 +91,12 @@ jobs:
               run: composer config platform.php 7.4.99
 
 {% endif %}
+            - name: "Globally install symfony/flex"
+              if: matrix.symfony-require != ''
+              run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex"
+
             - name: Install variant
-              if: matrix.variant != 'normal'
+              if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
               {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
