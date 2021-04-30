@@ -24,7 +24,7 @@ final class BranchTest extends TestCase
 master:
   php: ['7.3', '7.4', '8.0']
   target_php: '7.4'
-  assets: true
+  frontend: true
   custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
@@ -57,7 +57,7 @@ CONFIG;
         self::assertCount(2, $branch->variants());
         self::assertSame('docs', $branch->docsPath()->toString());
         self::assertSame('tests', $branch->testsPath()->toString());
-        self::assertTrue($branch->usesAssets());
+        self::assertTrue($branch->hasFrontend());
         self::assertNull($branch->customGitignorePart());
         self::assertTrue($branch->hasTool('foo'));
         self::assertTrue($branch->hasPhpExtension('bar'));

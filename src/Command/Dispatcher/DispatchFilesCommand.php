@@ -295,7 +295,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
         }
 
-        if (!$branch->usesAssets()) {
+        if (!$branch->hasFrontend()) {
             $filepaths = [
                 '.babelrc.json',
                 '.eslintrc.json',

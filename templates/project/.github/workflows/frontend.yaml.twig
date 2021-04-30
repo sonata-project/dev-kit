@@ -7,7 +7,7 @@ name: Frontend
 on:
     push:
         branches:
-{% for branch in project.branchesReverse|filter(branch => branch.usesAssets) %}
+{% for branch in project.branchesReverse|filter(branch => branch.hasFrontend) %}
             - {{ branch.name }}
 {% endfor %}
         paths:

@@ -4,7 +4,7 @@ admin-bundle:
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
-            assets: true
+            frontend: true
             variants:
                 symfony/symfony: ['4.4', '5.2']
                 sonata-project/block-bundle: ['4']

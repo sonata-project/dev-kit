@@ -36,7 +36,7 @@ admin-bundle:
     master:
       php: ['7.3', '7.4']
       target_php: ~
-      assets: true
+      frontend: true
       custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
@@ -48,7 +48,7 @@ admin-bundle:
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: ~
-      assets: false
+      frontend: false
       custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
@@ -143,7 +143,7 @@ admin-bundle:
     master:
       php: ['7.3', '7.4']
       target_php: ~
-      assets: true
+      frontend: true
       custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
@@ -173,7 +173,7 @@ twig-extensions:
     master:
       php: ['7.3', '7.4']
       target_php: ~
-      assets: true
+      frontend: true
       custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']

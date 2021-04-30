@@ -53,7 +53,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->arrayNode('php_extensions')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->scalarNode('custom_gitignore_part')->defaultNull()->end()
-                                        ->scalarNode('assets')->defaultFalse()->end()
+                                        ->scalarNode('frontend')->defaultFalse()->end()
                                         ->arrayNode('variants')
                                             ->normalizeKeys(false)
                                             ->useAttributeAsKey('name')

@@ -143,7 +143,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'Psalm';
         }
 
-        if ($branch->usesAssets()) {
+        if ($branch->hasFrontend()) {
             $requiredStatusChecks[] = 'Webpack Encore';
         }
 

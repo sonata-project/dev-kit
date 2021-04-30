@@ -110,7 +110,7 @@ final class Branch
             $phpExtensions,
             $variants,
             $config['custom_gitignore_part'],
-            $config['assets'],
+            $config['frontend'],
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
             $targetPhpVersion
@@ -179,7 +179,7 @@ final class Branch
         return $this->variants;
     }
 
-    public function usesAssets(): bool
+    public function hasFrontend(): bool
     {
         return $this->assets;
     }
