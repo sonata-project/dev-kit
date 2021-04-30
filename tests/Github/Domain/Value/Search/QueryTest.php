@@ -74,6 +74,8 @@ final class QueryTest extends TestCase
 master:
   php: ['7.3', '7.4']
   target_php: ~
+  assets: true
+  custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']

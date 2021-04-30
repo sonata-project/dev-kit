@@ -295,6 +295,27 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
         }
 
+        if (!$branch->usesAssets()) {
+            $filepaths = [
+                '.babelrc.json',
+                '.eslintrc.json',
+                '.stylelintrc.json',
+                '.github/workflows/frontend.yaml',
+            ];
+
+            foreach ($filepaths as $filepath) {
+                $file = u($distPath)
+                    ->append('/')
+                    ->append($filepath)
+                    ->toString();
+
+                if ($this->filesystem->exists($file)) {
+                    $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
+                    $this->filesystem->remove($file);
+                }
+            }
+        }
+
         if (!$project->isBundle()) {
             $filepath = '.symfony.bundle.yaml';
             $symfonyBundleFile = u($distPath)

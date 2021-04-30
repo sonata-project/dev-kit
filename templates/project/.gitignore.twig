@@ -17,7 +17,10 @@ phpstan.neon
 /drivers
 /tests/App/public/bundles
 {% endif %}
-{% if project.customGitignorePart is not empty %}
+{% if branch.customGitignorePart is not empty %}
+
+{{ branch.customGitignorePart }}
+{%- elseif project.customGitignorePart is not empty -%}
 
 {{ project.customGitignorePart }}
 {% endif %}
