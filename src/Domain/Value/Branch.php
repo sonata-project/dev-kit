@@ -40,7 +40,7 @@ final class Branch
      */
     private array $variants;
 
-    private bool $assets;
+    private bool $frontend;
     private ?string $customGitignorePart;
     private Path $docsPath;
     private Path $testsPath;
@@ -59,7 +59,7 @@ final class Branch
         array $phpExtensions,
         array $variants,
         ?string $customGitignorePart,
-        bool $assets,
+        bool $frontend,
         Path $docsPath,
         Path $testsPath,
         ?PhpVersion $targetPhpVersion
@@ -70,7 +70,7 @@ final class Branch
         $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
         $this->customGitignorePart = $customGitignorePart;
-        $this->assets = $assets;
+        $this->frontend = $frontend;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
         $this->targetPhpVersion = $targetPhpVersion ?? end($this->phpVersions);
@@ -181,7 +181,7 @@ final class Branch
 
     public function hasFrontend(): bool
     {
-        return $this->assets;
+        return $this->frontend;
     }
 
     public function customGitignorePart(): ?string
