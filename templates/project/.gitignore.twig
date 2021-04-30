@@ -17,6 +17,9 @@ phpstan.neon
 /drivers
 /tests/App/public/bundles
 {% endif %}
+{% if branch.hasFrontend %}
+yarn-error.log
+{% endif %}
 {% if branch.customGitignorePart is not empty %}
 
 {{ branch.customGitignorePart }}

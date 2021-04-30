@@ -297,9 +297,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         if (!$branch->hasFrontend()) {
             $filepaths = [
-                '.babelrc.json',
-                '.eslintrc.json',
-                '.stylelintrc.json',
+                '.babelrc.js',
+                '.eslintrc.js',
+                '.stylelintrc.js',
                 '.github/workflows/frontend.yaml',
             ];
 
