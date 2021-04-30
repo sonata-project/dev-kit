@@ -300,6 +300,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 '.babelrc.js',
                 '.eslintrc.js',
                 '.stylelintrc.js',
+                'postcss.config.js',
                 '.github/workflows/frontend.yaml',
             ];
 
