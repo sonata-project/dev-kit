@@ -1,4 +1,10 @@
 services:
+    _defaults:
+        # The Github\Client is only calling authenticate/addCache when public (but I don't know why)
+        public: true
+        autowire: true
+        autoconfigure: true
+
     Redis:
         class: Redis
         calls:
