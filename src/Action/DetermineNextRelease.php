@@ -49,10 +49,9 @@ final class DetermineNextRelease
         $this->pullRequests = $pullRequests;
     }
 
-    public function __invoke(Project $project, ?Branch $branch = null): NextRelease
+    public function __invoke(Project $project, Branch $branch): NextRelease
     {
         $repository = $project->repository();
-        $branch = $branch ?? $project->stableBranch() ?? $project->unstableBranch();
 
         try {
             $currentRelease = $this->releases->branchLatest($repository, $branch);
@@ -92,6 +91,7 @@ final class DetermineNextRelease
 
         return NextRelease::fromValues(
             $project,
+            $branch,
             $currentRelease->tag(),
             $combinedStatus,
             $checkRuns,

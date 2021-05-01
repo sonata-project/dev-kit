@@ -3,7 +3,7 @@
 {% extends 'nav_and_content.html.twig' %}
 
 {% block content_title %}
-    Next Release for {{ release.project.title }}
+    Next Release for {{ release.project.title }} {{ release.branch.name }}
 {% endblock %}
 
 {% block content %}

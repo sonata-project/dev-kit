@@ -42,13 +42,19 @@ final class NextReleaseOverviewController
     public function __invoke(): Response
     {
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
-            try {
-                $release = $this->determineNextRelease->__invoke($project);
-            } catch (CannotDetermineNextRelease | NoPullRequestsMergedSinceLastRelease $e) {
-                return $releases;
-            }
+            foreach ($project->branches() as $branch) {
+                if ('master' === $branch->name() && $project->isStable()) {
+                    continue;
+                }
 
-            $releases[] = $release;
+                try {
+                    $release = $this->determineNextRelease->__invoke($project, $branch);
+                } catch (CannotDetermineNextRelease | NoPullRequestsMergedSinceLastRelease $e) {
+                    continue;
+                }
+
+                $releases[] = $release;
+            }
 
             return $releases;
         }, []);

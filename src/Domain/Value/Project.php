@@ -317,6 +317,11 @@ final class Project
         return $this->branches[1] ?? null;
     }
 
+    public function isStable(): bool
+    {
+        return null !== $this->stableBranch();
+    }
+
     private function getLatestPackagistVersion(): Package\Version
     {
         $versions = $this->package->getVersions();

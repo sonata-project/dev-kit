@@ -36,17 +36,18 @@ final class NextReleaseForProjectController
     }
 
     /**
-     * @Route("/next-release/{projectName}", name="next_release_project")
+     * @Route("/next-release/{projectName}/{branchName}", name="next_release_project")
      */
-    public function __invoke(string $projectName): Response
+    public function __invoke(string $projectName, string $branchName): Response
     {
         try {
             $project = $this->projects->byName($projectName);
+            $branch = $project->branch($branchName);
         } catch (UnknownProject $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $release = $this->determineNextRelease->__invoke($project);
+        $release = $this->determineNextRelease->__invoke($project, $branch);
 
         $content = $this->twig->render(
             'releases/project.html.twig',
