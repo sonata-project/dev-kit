@@ -41,7 +41,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @test
      */
-    public function returnsCurrentIfNoMinorOrPatchStabilityIsFound()
+    public function returnsCurrentIfNoMajorOrMinorOrPatchStabilityIsFound()
     {
         $tag = Tag::fromString('1.1.0');
 
@@ -77,6 +77,50 @@ final class DetermineNextReleaseVersionTest extends TestCase
      */
     public function determineProvider(): \Generator
     {
+        yield [
+            '2.0.0',
+            '1.1.0',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '2.0.0-alpha-1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '2.0.0.alpha.1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '1.1.0',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
         yield [
             '1.2.0',
             '1.1.0',
