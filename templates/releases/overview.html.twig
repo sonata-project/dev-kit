@@ -11,6 +11,7 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Project</th>
+                <th scope="col">Branch</th>
                 <th scope="col">Current</th>
                 <th scope="col">Next</th>
                 <th scope="col">Stability</th>
@@ -25,10 +26,13 @@
                 {% if release.isNeeded %}
                     <tr>
                         <th scope="row">
-                            <a href="{{ path('next_release_project', {'projectName': release.project.name}) }}">
+                            <a href="{{ path('next_release_project', {'projectName': release.project.name, 'branchName': release.branch.name}) }}">
                                 {{ release.project.title }}
                             </a>
                         </th>
+                        <td>
+                            {{ release.branch.name }}
+                        </td>
                         <td>
                             {{ release.currentTag.toString }}
                         </td>

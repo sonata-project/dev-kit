@@ -25,6 +25,7 @@ use App\Github\Domain\Value\Release\Tag;
 final class NextRelease
 {
     private Project $project;
+    private Branch $branch;
     private Tag $currentTag;
     private CombinedStatus $combinedStatus;
     private CheckRuns $checkRuns;
@@ -38,12 +39,14 @@ final class NextRelease
 
     private function __construct(
         Project $project,
+        Branch $branch,
         Tag $currentTag,
         CombinedStatus $combinedStatus,
         CheckRuns $checkRuns,
         array $pullRequests
     ) {
         $this->project = $project;
+        $this->branch = $branch;
         $this->currentTag = $currentTag;
 
         $this->combinedStatus = $combinedStatus;
@@ -69,6 +72,7 @@ final class NextRelease
      */
     public static function fromValues(
         Project $project,
+        Branch $branch,
         Tag $currentTag,
         CombinedStatus $combinedStatus,
         CheckRuns $checkRuns,
@@ -76,6 +80,7 @@ final class NextRelease
     ): self {
         return new self(
             $project,
+            $branch,
             $currentTag,
             $combinedStatus,
             $checkRuns,
@@ -86,6 +91,11 @@ final class NextRelease
     public function project(): Project
     {
         return $this->project;
+    }
+
+    public function branch(): Branch
+    {
+        return $this->branch;
     }
 
     public function currentTag(): Tag
