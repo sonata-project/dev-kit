@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Action\Exception;
 
+use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 
 /**
@@ -20,11 +21,12 @@ use App\Domain\Value\Project;
  */
 final class CannotDetermineNextRelease extends \RuntimeException
 {
-    public static function forProject(Project $project, ?\Throwable $previous = null): self
+    public static function forBranch(Project $project, Branch $branch, ?\Throwable $previous = null): self
     {
         return new self(
             sprintf(
-                'Cannot determine next release for Project "%s".',
+                'Cannot determine next release for branch "%s" of project "%s".',
+                $branch->name(),
                 $project->name()
             ),
             0,

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Action\Exception;
 
+use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 
 /**
@@ -20,12 +21,13 @@ use App\Domain\Value\Project;
  */
 final class NoPullRequestsMergedSinceLastRelease extends \RuntimeException
 {
-    public static function forProject(Project $project, \DateTimeImmutable $lastRelease, ?\Throwable $previous = null): self
+    public static function forBranch(Project $project, Branch $branch, \DateTimeImmutable $lastRelease, ?\Throwable $previous = null): self
     {
         return new self(
             sprintf(
-                'No pull requests merged since last release "%s" for Project "%s".',
+                'No pull requests merged since last release "%s" for branch "%s" of project "%s".',
                 $lastRelease->format('Y-m-d H:i:s'),
+                $branch->name(),
                 $project->name()
             ),
             0,

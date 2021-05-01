@@ -56,8 +56,9 @@ final class DetermineNextRelease
         try {
             $currentRelease = $this->releases->branchLatest($repository, $branch);
         } catch (LatestReleaseNotFound $e) {
-            throw CannotDetermineNextRelease::forProject(
+            throw CannotDetermineNextRelease::forBranch(
                 $project,
+                $branch,
                 $e
             );
         }
@@ -68,8 +69,9 @@ final class DetermineNextRelease
         );
 
         if ([] === $pullRequests) {
-            throw NoPullRequestsMergedSinceLastRelease::forProject(
+            throw NoPullRequestsMergedSinceLastRelease::forBranch(
                 $project,
+                $branch,
                 $currentRelease->publishedAt()
             );
         }
