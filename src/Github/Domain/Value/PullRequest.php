@@ -227,6 +227,10 @@ final class PullRequest
             return $label->name();
         }, $this->labels);
 
+        if (\in_array('major', $labels, true)) {
+            return Stability::major();
+        }
+
         if (\in_array('minor', $labels, true)) {
             return Stability::minor();
         }

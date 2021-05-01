@@ -32,6 +32,7 @@ final class Stability
         Assert::oneOf(
             $value,
             [
+                'major',
                 'minor',
                 'patch',
                 'pedantic',
@@ -45,6 +46,11 @@ final class Stability
     public static function fromString(string $value): self
     {
         return new self($value);
+    }
+
+    public static function major(): self
+    {
+        return new self('major');
     }
 
     public static function minor(): self
