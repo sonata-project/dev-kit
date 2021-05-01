@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Api;
 
+use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Release;
 use App\Github\Exception\LatestReleaseNotFound;
@@ -46,5 +47,29 @@ final class Releases
         }
 
         return Release::fromResponse($response);
+    }
+
+    public function branchLatest(Repository $repository, Branch $branch): Release
+    {
+        try {
+            $response = $this->github->repo()->releases()->all(
+                $repository->username(),
+                $repository->name()
+            );
+        } catch (RuntimeException $e) {
+            throw LatestReleaseNotFound::forRepositoryAndBranch(
+                $repository,
+                $branch,
+                $e
+            );
+        }
+
+        foreach ($response as $release) {
+            if ($branch->name() === $release['target_commitish']) {
+                return Release::fromResponse($release);
+            }
+        }
+
+        throw LatestReleaseNotFound::forRepositoryAndBranch($repository, $branch);
     }
 }

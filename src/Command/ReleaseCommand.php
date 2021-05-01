@@ -17,6 +17,7 @@ use App\Action\DetermineNextRelease;
 use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
+use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
 use App\Github\Domain\Value\CheckRun;
@@ -27,6 +28,7 @@ use App\Github\Domain\Value\PullRequest;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -83,10 +85,11 @@ EOT;
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $project = $this->selectProject($input, $output);
+        $branch = $this->selectBranch($input, $output, $project);
 
         $this->io->getErrorStyle()->title($project->name());
 
-        return $this->renderNextRelease($project);
+        return $this->renderNextRelease($project, $branch);
     }
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
@@ -95,9 +98,7 @@ EOT;
 
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
         $question->setAutocompleterValues(array_keys($this->projects->all()));
-        $question->setNormalizer(static function ($answer) {
-            return $answer ? trim($answer) : '';
-        });
+        $question->setTrimmable(true);
         $question->setValidator(function ($answer): Project {
             return $this->projects->byName($answer);
         });
@@ -106,11 +107,31 @@ EOT;
         return $helper->ask($input, $output, $question);
     }
 
-    private function renderNextRelease(Project $project): int
+    private function selectBranch(InputInterface $input, OutputInterface $output, Project $project): Branch
+    {
+        $helper = $this->getHelper('question');
+
+        $default = ($project->stableBranch() ?? $project->unstableBranch())->name();
+
+        $question = new ChoiceQuestion(
+            sprintf('<info>Please select the branch of the project to release:</info> (Default: "%s")', $default),
+            $project->branchNamesReverse(),
+            $default
+        );
+        $question->setTrimmable(true);
+        $question->setValidator(static function ($answer) use ($project): Branch {
+            return $project->branch($answer);
+        });
+        $question->setMaxAttempts(3);
+
+        return $helper->ask($input, $output, $question);
+    }
+
+    private function renderNextRelease(Project $project, Branch $branch): int
     {
         $notificationStyle = $this->io->getErrorStyle();
         try {
-            $nextRelease = $this->determineNextRelease->__invoke($project);
+            $nextRelease = $this->determineNextRelease->__invoke($project, $branch);
         } catch (NoPullRequestsMergedSinceLastRelease $e) {
             $notificationStyle->warning($e->getMessage());
 
