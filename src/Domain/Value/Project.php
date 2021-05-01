@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use App\Config\Exception\UnknownBranch;
 use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
@@ -131,6 +132,17 @@ final class Project
     public function package(): Package
     {
         return $this->package;
+    }
+
+    public function branch(string $name): Branch
+    {
+        foreach ($this->branches as $branch) {
+            if ($branch->name() === $name) {
+                return $branch;
+            }
+        }
+
+        throw UnknownBranch::forName($this, $name);
     }
 
     /**
