@@ -29,7 +29,7 @@ final class PullRequestFactory
         $faker = self::faker();
 
         $repo = null;
-        if ($faker->boolean) {
+        if ($faker->boolean()) {
             $repo = [
                 'owner' => UserFactory::create(),
             ];
@@ -37,7 +37,7 @@ final class PullRequestFactory
 
         $response = [
             'number' => $faker->numberBetween(1, 99999),
-            'title' => $faker->sentence,
+            'title' => $faker->sentence(),
             'updated_at' => $faker->date('Y-m-d\TH:i:s\Z'),
             'merged_at' => $faker->date('Y-m-d\TH:i:s\Z'),
             'base' => [
@@ -45,11 +45,11 @@ final class PullRequestFactory
             ],
             'head' => [
                 'ref' => $faker->sentence(1),
-                'sha' => $faker->sha256,
+                'sha' => $faker->sha256(),
                 'repo' => $repo,
             ],
             'user' => UserFactory::create(),
-            'mergeable' => $faker->optional()->boolean,
+            'mergeable' => $faker->optional()->boolean(),
             'body' => sprintf(
                 <<<'BODY'
 <!-- %s -->
@@ -65,10 +65,10 @@ final class PullRequestFactory
 - The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
 ```
 BODY,
-                $faker->text,
-                $faker->text
+                $faker->text(),
+                $faker->text()
             ),
-            'html_url' => $faker->url,
+            'html_url' => $faker->url(),
             'labels' => array_map(static function (): array {
                 return LabelFactory::create();
             }, range(0, $faker->numberBetween(0, 5))),

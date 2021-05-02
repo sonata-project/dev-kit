@@ -34,9 +34,9 @@ final class StatusFactory
                 'pending',
                 'success',
             ]),
-            'context' => $faker->word,
+            'context' => $faker->word(),
             'description' => $faker->sentence(5),
-            'target_url' => $faker->url,
+            'target_url' => $faker->url(),
         ];
 
         return array_replace_recursive(

@@ -30,8 +30,8 @@ final class UserFactory
 
         $response = [
             'id' => $faker->numberBetween(1, 999),
-            'login' => $faker->userName,
-            'html_url' => $faker->url,
+            'login' => $faker->userName(),
+            'html_url' => $faker->url(),
         ];
 
         return array_replace_recursive(

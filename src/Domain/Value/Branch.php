@@ -40,6 +40,8 @@ final class Branch
      */
     private array $variants;
 
+    private bool $frontend;
+    private ?string $customGitignorePart;
     private Path $docsPath;
     private Path $testsPath;
     private PhpVersion $targetPhpVersion;
@@ -56,6 +58,8 @@ final class Branch
         array $tools,
         array $phpExtensions,
         array $variants,
+        ?string $customGitignorePart,
+        bool $frontend,
         Path $docsPath,
         Path $testsPath,
         ?PhpVersion $targetPhpVersion
@@ -65,6 +69,8 @@ final class Branch
         $this->tools = $tools;
         $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
+        $this->customGitignorePart = $customGitignorePart;
+        $this->frontend = $frontend;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
         $this->targetPhpVersion = $targetPhpVersion ?? end($this->phpVersions);
@@ -103,6 +109,8 @@ final class Branch
             $tools,
             $phpExtensions,
             $variants,
+            $config['custom_gitignore_part'],
+            $config['frontend'],
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
             $targetPhpVersion
@@ -169,6 +177,16 @@ final class Branch
     public function variants(): array
     {
         return $this->variants;
+    }
+
+    public function hasFrontend(): bool
+    {
+        return $this->frontend;
+    }
+
+    public function customGitignorePart(): ?string
+    {
+        return $this->customGitignorePart;
     }
 
     public function docsPath(): Path

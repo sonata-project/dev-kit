@@ -91,7 +91,7 @@ final class PullRequestTest extends TestCase
      */
     public function usesTitleFromResponse()
     {
-        $value = self::faker()->sentence;
+        $value = self::faker()->sentence();
 
         $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
@@ -437,8 +437,8 @@ final class PullRequestTest extends TestCase
 - %s
 ```
 BODY,
-                self::faker()->text,
-                self::faker()->text,
+                self::faker()->text(),
+                self::faker()->text(),
                 $message = 'The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.'
             ),
         ]);

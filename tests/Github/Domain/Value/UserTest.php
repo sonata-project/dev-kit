@@ -117,7 +117,7 @@ final class UserTest extends TestCase
     public function usesLoginFromResponse()
     {
         $response = Github\Response\UserFactory::create([
-            'login' => $value = self::faker()->word,
+            'login' => $value = self::faker()->word(),
         ]);
 
         $user = User::fromResponse($response);
@@ -134,7 +134,7 @@ final class UserTest extends TestCase
     public function usesLoginForHandleFromResponse()
     {
         $response = Github\Response\UserFactory::create([
-            'login' => $value = self::faker()->word,
+            'login' => $value = self::faker()->word(),
         ]);
 
         $user = User::fromResponse($response);
@@ -181,7 +181,7 @@ final class UserTest extends TestCase
     public function usesHtmlurlFromResponse()
     {
         $response = Github\Response\UserFactory::create([
-            'html_url' => $value = self::faker()->url,
+            'html_url' => $value = self::faker()->url(),
         ]);
 
         $user = User::fromResponse($response);

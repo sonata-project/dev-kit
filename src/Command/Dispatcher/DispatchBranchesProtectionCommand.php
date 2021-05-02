@@ -143,6 +143,10 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'Psalm';
         }
 
+        if ($branch->hasFrontend()) {
+            $requiredStatusChecks[] = 'Webpack Encore';
+        }
+
         /** @var PhpVersion $phpVersion */
         foreach ($branch->phpVersions() as $phpVersion) {
             $requiredStatusChecks[] = sprintf(

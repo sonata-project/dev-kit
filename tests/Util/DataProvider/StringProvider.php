@@ -33,12 +33,12 @@ final class StringProvider
 
         return str_pad(
             substr(
-                $faker->sentence,
+                $faker->sentence(),
                 0,
                 $length
             ),
             $length,
-            $faker->randomLetter
+            $faker->randomLetter()
         );
     }
 }

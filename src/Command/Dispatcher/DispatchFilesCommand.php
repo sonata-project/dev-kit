@@ -257,54 +257,38 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
+        $filesToRemove = [];
+
         if (!$project->hasDocumentation()) {
-            $docsPath = $branch->docsPath()->toString();
-
-            $docsDirectory = u($distPath)
-                ->append('/')
-                ->append($docsPath)
-                ->toString();
-
-            if ($this->filesystem->exists($docsDirectory)) {
-                $this->io->writeln(sprintf('Delete <info>/%s</info> directory!', $docsPath));
-                $this->filesystem->remove($docsDirectory);
-            }
-
-            $filepath = '.github/workflows/documentation.yaml';
-            $documentationWorkflowFile = u($distPath)
-                ->append('/')
-                ->append($filepath)
-                ->toString();
-
-            if ($this->filesystem->exists($documentationWorkflowFile)) {
-                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
-                $this->filesystem->remove($documentationWorkflowFile);
-            }
+            $filesToRemove[] = $branch->docsPath()->toString();
+            $filesToRemove[] = '.github/workflows/documentation.yaml';
         }
 
         if (!$project->usesPHPStan() && !$project->usesPsalm()) {
-            $filepath = '.github/workflows/qa.yaml';
-            $qaWorkflowFile = u($distPath)
-                ->append('/')
-                ->append($filepath)
-                ->toString();
+            $filesToRemove[] = '.github/workflows/qa.yaml';
+        }
 
-            if ($this->filesystem->exists($qaWorkflowFile)) {
-                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
-                $this->filesystem->remove($qaWorkflowFile);
-            }
+        if (!$branch->hasFrontend()) {
+            $filesToRemove[] = '.babelrc.js';
+            $filesToRemove[] = '.eslintrc.js';
+            $filesToRemove[] = '.stylelintrc.js';
+            $filesToRemove[] = 'postcss.config.js';
+            $filesToRemove[] = '.github/workflows/frontend.yaml';
         }
 
         if (!$project->isBundle()) {
-            $filepath = '.symfony.bundle.yaml';
-            $symfonyBundleFile = u($distPath)
+            $filesToRemove[] = '.symfony.bundle.yaml';
+        }
+
+        foreach ($filesToRemove as $fileToRemove) {
+            $file = u($distPath)
                 ->append('/')
-                ->append($filepath)
+                ->append($fileToRemove)
                 ->toString();
 
-            if ($this->filesystem->exists($symfonyBundleFile)) {
-                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $filepath));
-                $this->filesystem->remove($symfonyBundleFile);
+            if ($this->filesystem->exists($file)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $fileToRemove));
+                $this->filesystem->remove($file);
             }
         }
     }

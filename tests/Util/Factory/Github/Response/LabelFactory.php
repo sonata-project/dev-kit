@@ -30,8 +30,8 @@ final class LabelFactory
         $faker = self::faker();
 
         $response = [
-            'name' => $faker->word,
-            'color' => u($faker->hexColor)->replace('#', '')->toString(),
+            'name' => $faker->word(),
+            'color' => u($faker->hexColor())->replace('#', '')->toString(),
         ];
 
         return array_replace_recursive(
