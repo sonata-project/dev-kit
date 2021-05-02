@@ -195,6 +195,10 @@ final class NextRelease
             return $pr->stability()->toString();
         }, $this->pullRequests);
 
+        if (\in_array(Stability::major()->toString(), $stabilities, true)) {
+            return Stability::major();
+        }
+
         if (\in_array(Stability::minor()->toString(), $stabilities, true)) {
             return Stability::minor();
         }
