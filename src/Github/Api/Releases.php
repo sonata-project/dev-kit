@@ -49,7 +49,7 @@ final class Releases
         return Release::fromResponse($response);
     }
 
-    public function branchLatest(Repository $repository, Branch $branch): Release
+    public function latestForBranch(Repository $repository, Branch $branch): Release
     {
         try {
             $response = $this->github->repo()->releases()->all(

@@ -54,7 +54,7 @@ final class DetermineNextRelease
         $repository = $project->repository();
 
         try {
-            $currentRelease = $this->releases->branchLatest($repository, $branch);
+            $currentRelease = $this->releases->latestForBranch($repository, $branch);
         } catch (LatestReleaseNotFound $e) {
             throw CannotDetermineNextRelease::forBranch(
                 $project,
