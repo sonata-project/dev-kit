@@ -14,7 +14,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v2.3.4
 
             - name: Run PHPStan
               uses: docker://oskarstark/phpstan-ga:0.12.53
