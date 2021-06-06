@@ -359,6 +359,8 @@ intl-bundle:
                 sonata-project/user-bundle: ['4']
 
 media-bundle:
+    phpstan: true
+    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
