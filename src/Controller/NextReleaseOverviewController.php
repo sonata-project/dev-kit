@@ -42,6 +42,10 @@ final class NextReleaseOverviewController
     public function __invoke(): Response
     {
         $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
+            if ($project->package()->isAbandoned()) {
+                return $releases;
+            }
+
             foreach ($project->branches() as $branch) {
                 if ('master' === $branch->name() && $project->isStable()) {
                     continue;
