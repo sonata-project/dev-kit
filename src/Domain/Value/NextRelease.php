@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Domain\Value;
 
 use App\Action\DetermineNextReleaseVersion;
+use App\Domain\Exception\CannotGenerateChangelog;
 use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\PullRequest;
@@ -164,6 +165,10 @@ final class NextRelease
 
     public function changelog(): Changelog
     {
+        if (!$this->canBeReleased()) {
+            throw CannotGenerateChangelog::forRelease($this);
+        }
+
         return Changelog::fromPullRequests(
             $this->pullRequests,
             $this->nextTag,
@@ -183,7 +188,8 @@ final class NextRelease
 
     public function canBeReleased(): bool
     {
-        return [] !== $this->pullRequests()
+        return $this->isNeeded()
+            && [] !== $this->pullRequests()
             && [] === $this->pullRequestsWithoutStabilityLabel()
             && [] === $this->pullRequestsWithoutChangelog()
             && $this->stability()->notEquals(Stability::pedantic());

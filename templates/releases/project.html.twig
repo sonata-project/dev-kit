@@ -20,14 +20,21 @@
     {% endif %}
 
     {% if release.isNeeded %}
-        <h2>Changelog</h2>
-        <p>
-            {{ release.changelog.asMarkdown|markdown_to_html }}
-        </p>
+        {% if release.canBeReleased %}
+            <h2>Changelog</h2>
+            <p>
+                {{ release.changelog.asMarkdown|markdown_to_html }}
+            </p>
 
-        <h2>Changelog as Markdown</h2>
-        <textarea cols="140" rows="60">{{ release.changelog.asMarkdown }}</textarea>
+            <h2>Changelog as Markdown</h2>
+            <textarea cols="140" rows="60">{{ release.changelog.asMarkdown }}</textarea>
+        {% else %}
+            <h2>Next release would be: {{ release.nextTag.toString }}, but cannot be released yet</h2>
+            <p>
+                Please check labels and changelogs of the pull requests
+            </p>
+        {% endif %}
     {% else %}
-        <h1>No Release needed for {{ release.project.title }}</h1>
+        <h2>No Release needed for {{ release.project.title }}</h2>
     {% endif %}
 {% endblock %}
