@@ -311,6 +311,7 @@ exporter:
                 symfony/symfony: ['4.4', '5.3']
 
 formatter-bundle:
+    phpstan: true
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
