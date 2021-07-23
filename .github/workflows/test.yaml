@@ -46,7 +46,7 @@ jobs:
               run: make test
 
             - name: Send coverage to Codecov
-              uses: codecov/codecov-action@v2.0.1
+              uses: codecov/codecov-action@v2.0.2
               with:
                   file: build/logs/clover.xml
 
