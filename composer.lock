@@ -5116,21 +5116,21 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v5.3.0",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
-                "reference": "cbd8f87a3d2445e566db3fe75e34a0bcad70c222"
+                "reference": "587c45ef49256279502b4a29146b9e87ad23426f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/cbd8f87a3d2445e566db3fe75e34a0bcad70c222",
-                "reference": "cbd8f87a3d2445e566db3fe75e34a0bcad70c222",
+                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/587c45ef49256279502b4a29146b9e87ad23426f",
+                "reference": "587c45ef49256279502b4a29146b9e87ad23426f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.15",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/translation-contracts": "^1.1|^2",
                 "twig/twig": "^2.13|^3.0.4"
             },
@@ -5217,7 +5217,7 @@
             "description": "Provides integration for Twig with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bridge/tree/v5.3.0"
+                "source": "https://github.com/symfony/twig-bridge/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -5233,20 +5233,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-07-26T16:33:26+00:00"
         },
         {
             "name": "symfony/twig-bundle",
-            "version": "v5.3.0",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bundle.git",
-                "reference": "d386aaa46d1afe5afb51b39675fc2ab206159206"
+                "reference": "345965b40c1847ebdbb2ab0eb98c71a98a5e167b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bundle/zipball/d386aaa46d1afe5afb51b39675fc2ab206159206",
-                "reference": "d386aaa46d1afe5afb51b39675fc2ab206159206",
+                "url": "https://api.github.com/repos/symfony/twig-bundle/zipball/345965b40c1847ebdbb2ab0eb98c71a98a5e167b",
+                "reference": "345965b40c1847ebdbb2ab0eb98c71a98a5e167b",
                 "shasum": ""
             },
             "require": {
@@ -5255,6 +5255,7 @@
                 "symfony/http-foundation": "^4.4|^5.0",
                 "symfony/http-kernel": "^5.0",
                 "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/twig-bridge": "^5.3",
                 "twig/twig": "^2.13|^3.0.4"
             },
@@ -5304,7 +5305,7 @@
             "description": "Provides a tight integration of Twig into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bundle/tree/v5.3.0"
+                "source": "https://github.com/symfony/twig-bundle/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -5320,7 +5321,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-07-21T12:40:44+00:00"
         },
         {
             "name": "symfony/twig-pack",
@@ -6397,16 +6398,16 @@
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v5.3.2",
+            "version": "v5.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "8feb731cfc248cce5c0ac6eeba63ec4923c6a264"
+                "reference": "95fb24b09551688a09cffac95a2ddbb907833f07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/8feb731cfc248cce5c0ac6eeba63ec4923c6a264",
-                "reference": "8feb731cfc248cce5c0ac6eeba63ec4923c6a264",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/95fb24b09551688a09cffac95a2ddbb907833f07",
+                "reference": "95fb24b09551688a09cffac95a2ddbb907833f07",
                 "shasum": ""
             },
             "require": {
@@ -6414,6 +6415,7 @@
                 "symfony/config": "^4.4|^5.0",
                 "symfony/framework-bundle": "^5.3",
                 "symfony/http-kernel": "^5.3",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/routing": "^4.4|^5.0",
                 "symfony/twig-bundle": "^4.4|^5.0",
                 "twig/twig": "^2.13|^3.0.4"
@@ -6455,7 +6457,7 @@
             "description": "Provides a development tool that gives detailed information about the execution of any request",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v5.3.2"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v5.3.5"
             },
             "funding": [
                 {
@@ -6471,7 +6473,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-07T14:51:59+00:00"
+            "time": "2021-07-27T04:28:53+00:00"
         }
     ],
     "aliases": [],
