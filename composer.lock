@@ -3490,25 +3490,25 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v5.3.3",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "fde4bdb10bf197f932ebccfcb9982881d296fc4c"
+                "reference": "67c177d4df8601d9a71f9d615c52171c98d22d74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/fde4bdb10bf197f932ebccfcb9982881d296fc4c",
-                "reference": "fde4bdb10bf197f932ebccfcb9982881d296fc4c",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/67c177d4df8601d9a71f9d615c52171c98d22d74",
+                "reference": "67c177d4df8601d9a71f9d615c52171c98d22d74",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "psr/log": "^1.0",
+                "psr/log": "^1|^2|^3",
                 "symfony/deprecation-contracts": "^2.1",
                 "symfony/http-client-contracts": "^2.4",
                 "symfony/polyfill-php73": "^1.11",
-                "symfony/polyfill-php80": "^1.15",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/service-contracts": "^1.0|^2"
             },
             "provide": {
@@ -3557,7 +3557,7 @@
             "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v5.3.3"
+                "source": "https://github.com/symfony/http-client/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -3573,7 +3573,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-24T08:13:00+00:00"
+            "time": "2021-07-23T15:55:36+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -4004,21 +4004,21 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v5.3.3",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "5306fd5b2c27f8417ff3b9c5cade8e45683768e6"
+                "reference": "71d3d7f35a7d5706a200a6b9516c7c2922ee4dd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/5306fd5b2c27f8417ff3b9c5cade8e45683768e6",
-                "reference": "5306fd5b2c27f8417ff3b9c5cade8e45683768e6",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/71d3d7f35a7d5706a200a6b9516c7c2922ee4dd7",
+                "reference": "71d3d7f35a7d5706a200a6b9516c7c2922ee4dd7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "psr/log": "~1.0",
+                "psr/log": "^1|^2|^3",
                 "symfony/polyfill-php80": "^1.15"
             },
             "conflict": {
@@ -4078,7 +4078,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v5.3.3"
+                "source": "https://github.com/symfony/notifier/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -4094,7 +4094,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-21T21:40:30+00:00"
+            "time": "2021-07-19T06:02:01+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -4884,16 +4884,16 @@
         },
         {
             "name": "symfony/slack-notifier",
-            "version": "v5.3.0",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/slack-notifier.git",
-                "reference": "c0b2f1e16db2b7bdaa2d52d938809f9ed58bdd6a"
+                "reference": "d37232b352bdff8a1d2971a285ebd4387c504983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/c0b2f1e16db2b7bdaa2d52d938809f9ed58bdd6a",
-                "reference": "c0b2f1e16db2b7bdaa2d52d938809f9ed58bdd6a",
+                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/d37232b352bdff8a1d2971a285ebd4387c504983",
+                "reference": "d37232b352bdff8a1d2971a285ebd4387c504983",
                 "shasum": ""
             },
             "require": {
@@ -4935,7 +4935,7 @@
                 "slack"
             ],
             "support": {
-                "source": "https://github.com/symfony/slack-notifier/tree/v5.3.0"
+                "source": "https://github.com/symfony/slack-notifier/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -4951,7 +4951,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-07-19T05:56:13+00:00"
         },
         {
             "name": "symfony/string",
@@ -5116,21 +5116,21 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v5.3.0",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
-                "reference": "cbd8f87a3d2445e566db3fe75e34a0bcad70c222"
+                "reference": "587c45ef49256279502b4a29146b9e87ad23426f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/cbd8f87a3d2445e566db3fe75e34a0bcad70c222",
-                "reference": "cbd8f87a3d2445e566db3fe75e34a0bcad70c222",
+                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/587c45ef49256279502b4a29146b9e87ad23426f",
+                "reference": "587c45ef49256279502b4a29146b9e87ad23426f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.15",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/translation-contracts": "^1.1|^2",
                 "twig/twig": "^2.13|^3.0.4"
             },
@@ -5217,7 +5217,7 @@
             "description": "Provides integration for Twig with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bridge/tree/v5.3.0"
+                "source": "https://github.com/symfony/twig-bridge/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -5233,20 +5233,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-07-26T16:33:26+00:00"
         },
         {
             "name": "symfony/twig-bundle",
-            "version": "v5.3.0",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bundle.git",
-                "reference": "d386aaa46d1afe5afb51b39675fc2ab206159206"
+                "reference": "345965b40c1847ebdbb2ab0eb98c71a98a5e167b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bundle/zipball/d386aaa46d1afe5afb51b39675fc2ab206159206",
-                "reference": "d386aaa46d1afe5afb51b39675fc2ab206159206",
+                "url": "https://api.github.com/repos/symfony/twig-bundle/zipball/345965b40c1847ebdbb2ab0eb98c71a98a5e167b",
+                "reference": "345965b40c1847ebdbb2ab0eb98c71a98a5e167b",
                 "shasum": ""
             },
             "require": {
@@ -5255,6 +5255,7 @@
                 "symfony/http-foundation": "^4.4|^5.0",
                 "symfony/http-kernel": "^5.0",
                 "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/twig-bridge": "^5.3",
                 "twig/twig": "^2.13|^3.0.4"
             },
@@ -5304,7 +5305,7 @@
             "description": "Provides a tight integration of Twig into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bundle/tree/v5.3.0"
+                "source": "https://github.com/symfony/twig-bundle/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -5320,7 +5321,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-07-21T12:40:44+00:00"
         },
         {
             "name": "symfony/twig-pack",
@@ -6335,16 +6336,16 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v5.3.0",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "313d02f59d6543311865007e5ff4ace05b35ee65"
+                "reference": "b24c6a92c6db316fee69e38c80591e080e41536c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/313d02f59d6543311865007e5ff4ace05b35ee65",
-                "reference": "313d02f59d6543311865007e5ff4ace05b35ee65",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/b24c6a92c6db316fee69e38c80591e080e41536c",
+                "reference": "b24c6a92c6db316fee69e38c80591e080e41536c",
                 "shasum": ""
             },
             "require": {
@@ -6377,7 +6378,7 @@
             "description": "Provides a way to profile code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/stopwatch/tree/v5.3.0"
+                "source": "https://github.com/symfony/stopwatch/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -6393,20 +6394,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-07-10T08:58:57+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v5.3.2",
+            "version": "v5.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "8feb731cfc248cce5c0ac6eeba63ec4923c6a264"
+                "reference": "95fb24b09551688a09cffac95a2ddbb907833f07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/8feb731cfc248cce5c0ac6eeba63ec4923c6a264",
-                "reference": "8feb731cfc248cce5c0ac6eeba63ec4923c6a264",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/95fb24b09551688a09cffac95a2ddbb907833f07",
+                "reference": "95fb24b09551688a09cffac95a2ddbb907833f07",
                 "shasum": ""
             },
             "require": {
@@ -6414,6 +6415,7 @@
                 "symfony/config": "^4.4|^5.0",
                 "symfony/framework-bundle": "^5.3",
                 "symfony/http-kernel": "^5.3",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/routing": "^4.4|^5.0",
                 "symfony/twig-bundle": "^4.4|^5.0",
                 "twig/twig": "^2.13|^3.0.4"
@@ -6455,7 +6457,7 @@
             "description": "Provides a development tool that gives detailed information about the execution of any request",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v5.3.2"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v5.3.5"
             },
             "funding": [
                 {
@@ -6471,7 +6473,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-07T14:51:59+00:00"
+            "time": "2021-07-27T04:28:53+00:00"
         }
     ],
     "aliases": [],
