@@ -98,6 +98,13 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
                     'enforce_admins' => false,
                 ];
 
+                if ('sandbox' === $project->name()) {
+                    /*
+                     * Otherwise automerge for dependabot PRs will not work.
+                     */
+                    unset($settings['required_pull_request_reviews']);
+                }
+
                 $this->branchProtections->update(
                     $repository,
                     $branch,
