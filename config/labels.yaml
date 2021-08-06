@@ -47,3 +47,5 @@ labels:
       color: '59b3c1'
     - name: 'dependencies'
       color: '0366d6'
+    - name: 'automerge'
+      color: '6dfd06'
