@@ -102,6 +102,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
                     /*
                      * Otherwise automerge for dependabot PRs will not work.
                      */
+                    $settings['required_pull_request_reviews']['dismissal_restrictions'] = [];
                     $settings['required_pull_request_reviews']['dismiss_stale_reviews'] = false;
                     $settings['required_pull_request_reviews']['require_code_owner_reviews'] = false;
                 }
