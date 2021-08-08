@@ -129,7 +129,7 @@ final class PullRequest
             Head::fromResponse($response['head']),
             User::fromResponse($response['user']),
             $response['mergeable'],
-            $response['body'],
+            $response['body'] ?? '',
             $response['html_url'],
             $labels
         );
