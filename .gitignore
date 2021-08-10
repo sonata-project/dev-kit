@@ -1,6 +1,7 @@
 /.php_cs.cache
 /.env
 /.bundle
+/docs/_build/
 
 ###> symfony/framework-bundle ###
 /.env.local
