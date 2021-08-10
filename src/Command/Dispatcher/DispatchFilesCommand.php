@@ -262,6 +262,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         if (!$project->hasDocumentation()) {
             $filesToRemove[] = $branch->docsPath()->toString();
             $filesToRemove[] = '.github/workflows/documentation.yaml';
+            $filesToRemove[] = '.readthedocs.yaml';
         }
 
         if (!$project->usesPHPStan() && !$project->usesPsalm()) {
