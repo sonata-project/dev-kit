@@ -88,8 +88,8 @@ admin-bundle:
       frontend: true
       custom_gitignore_part: ~
       variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
+        symfony/symfony: ['4.4.*']
+        sonata-project/block-bundle: ['4.*']
       tools: []
       php_extensions: []
       docs_path: docs
@@ -100,8 +100,8 @@ admin-bundle:
       frontend: false
       custom_gitignore_part: ~
       variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['3']
+        symfony/symfony: ['4.4.*']
+        sonata-project/block-bundle: ['3.*']
       tools: []
       php_extensions: []
       docs_path: docs
