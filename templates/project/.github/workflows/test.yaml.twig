@@ -63,7 +63,7 @@ jobs:
                     - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
                       allowed-to-fail: false
-                      symfony-require: {{ variant.version }}.*
+                      symfony-require: {{ variant.version }}
                       variant: '{{ variant.toString|raw }}'
 {% endfor %}
 
