@@ -249,6 +249,12 @@ doctrine-orm-admin-bundle:
             variants:
                 symfony/symfony: ['4.4']
                 sonata-project/admin-bundle: ['dev-master']
+        4.x:
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['zip']
+            variants:
+                symfony/symfony: ['4.4']
+                sonata-project/admin-bundle: ['^4@rc']
         3.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['zip']
