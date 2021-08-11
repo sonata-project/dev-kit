@@ -86,7 +86,7 @@ endif
 {% if project.hasDocumentation %}
 
 docs:
-	cd {{ branch.docsPath.toString }} && sphinx-build -W -b html -d _build/doctrees . _build/html
+	cd {{ branch.docsPath.toString }} && sphinx-build -W -b dirhtml -d _build/doctrees . _build/html
 .PHONY: docs
 {% endif %}
 {% if project.usesPHPStan %}
