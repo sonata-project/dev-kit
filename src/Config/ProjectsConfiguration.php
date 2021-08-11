@@ -43,6 +43,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                             ->scalarNode('custom_gitattributes_part')->defaultNull()->end()
                             ->scalarNode('custom_doctor_rst_whitelist_part')->defaultNull()->end()
                             ->booleanNode('has_documentation')->defaultTrue()->end()
+                            ->scalarNode('documentation_badge_path')->defaultNull()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
                                 ->defaultValue([])

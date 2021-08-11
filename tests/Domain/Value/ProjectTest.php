@@ -32,6 +32,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  documentation_badge_path: ~
   branches:
     master:
       php: ['7.3', '7.4']
@@ -128,7 +129,7 @@ CONFIG;
     {
         yield 'true - admin-bundle' => [
             true,
-$config = <<<CONFIG
+<<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true
@@ -139,6 +140,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  documentation_badge_path: 'sonataadminbundle2'
   branches:
     master:
       php: ['7.3', '7.4']
@@ -153,12 +155,12 @@ admin-bundle:
       docs_path: docs
       tests_path: tests
 CONFIG,
-        'admin-bundle',
+            'admin-bundle',
         ];
 
         yield 'false - twig-extensions' => [
             false,
-$config = <<<CONFIG
+<<<CONFIG
 twig-extensions:
   composer_version: '1'
   phpstan: true
@@ -169,6 +171,7 @@ twig-extensions:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  documentation_badge_path: ~
   branches:
     master:
       php: ['7.3', '7.4']
@@ -416,5 +419,95 @@ CONFIG,
             $expected,
             $project->topics()
         );
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider documentationBadgePathProvider
+     */
+    public function documentationBadgePath(string $expected, string $yamlConfig): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $config = Yaml::parse($yamlConfig);
+
+        $project = Project::fromValues(
+            'admin-bundle',
+            $config['admin-bundle'],
+            $package
+        );
+
+        self::assertSame($expected, $project->documentationBadgePath());
+    }
+
+    /**
+     * @return \Generator<string, array<0: string, 1: string>>
+     */
+    public function documentationBadgePathProvider(): \Generator
+    {
+        yield 'null - admin-bundle' => [
+            'sonataadminbundle',
+<<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_path: ~
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
+
+        yield 'custom - admin-bundle' => [
+            'sonataadminbundle2',
+<<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_path: 'sonataadminbundle2'
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
     }
 }
