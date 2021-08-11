@@ -32,7 +32,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
-  documentation_badge_path: ~
+  documentation_badge_slug: ~
   branches:
     master:
       php: ['7.3', '7.4']
@@ -129,7 +129,7 @@ CONFIG;
     {
         yield 'true - admin-bundle' => [
             true,
-<<<CONFIG
+            <<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true
@@ -140,7 +140,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
-  documentation_badge_path: 'sonataadminbundle2'
+  documentation_badge_slug: 'sonataadminbundle2'
   branches:
     master:
       php: ['7.3', '7.4']
@@ -160,7 +160,7 @@ CONFIG,
 
         yield 'false - twig-extensions' => [
             false,
-<<<CONFIG
+            <<<CONFIG
 twig-extensions:
   composer_version: '1'
   phpstan: true
@@ -171,7 +171,7 @@ twig-extensions:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
-  documentation_badge_path: ~
+  documentation_badge_slug: ~
   branches:
     master:
       php: ['7.3', '7.4']
@@ -424,9 +424,9 @@ CONFIG,
     /**
      * @test
      *
-     * @dataProvider documentationBadgePathProvider
+     * @dataProvider documentationBadgeSlugProvider
      */
-    public function documentationBadgePath(string $expected, string $yamlConfig): void
+    public function documentationBadgeSlug(string $expected, string $yamlConfig): void
     {
         $package = new Package();
         $package->fromArray([
@@ -442,17 +442,17 @@ CONFIG,
             $package
         );
 
-        self::assertSame($expected, $project->documentationBadgePath());
+        self::assertSame($expected, $project->documentationBadgeSlug());
     }
 
     /**
      * @return \Generator<string, array<0: string, 1: string>>
      */
-    public function documentationBadgePathProvider(): \Generator
+    public function documentationBadgeSlugProvider(): \Generator
     {
         yield 'null - admin-bundle' => [
             'sonataadminbundle',
-<<<CONFIG
+            <<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true
@@ -463,7 +463,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
-  documentation_badge_path: ~
+  documentation_badge_slug: ~
   branches:
     master:
       php: ['7.3', '7.4']
@@ -482,7 +482,7 @@ CONFIG,
 
         yield 'custom - admin-bundle' => [
             'sonataadminbundle2',
-<<<CONFIG
+            <<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true
@@ -493,7 +493,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
-  documentation_badge_path: 'sonataadminbundle2'
+  documentation_badge_slug: 'sonataadminbundle2'
   branches:
     master:
       php: ['7.3', '7.4']
