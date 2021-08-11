@@ -227,14 +227,18 @@ doctrine-mongodb-admin-bundle:
         master:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0', 'zip']
-            target_php: '7.4'
             variants:
-                symfony/symfony: ['4.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*']
+                sonata-project/admin-bundle: ['^4@rc']
+        4.x:
+            php: ['7.3', '7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'zip']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*']
                 sonata-project/admin-bundle: ['^4@rc']
         3.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0', 'zip']
-            target_php: '7.4'
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/admin-bundle: ['3.*']
