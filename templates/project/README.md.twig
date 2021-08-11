@@ -44,7 +44,7 @@ Feel free to ask if you want to help to keep this project up to date.
 {% if project.hasDocumentation %}
 ## Documentation
 
-Check out the documentation on the [official website](https://sonata-project.readthedocs.io/projects/{{ project.repository.name }}).
+Check out the documentation on the [official website](https://docs.sonata-project.org/projects/{{ project.repository.name }}).
 
 {% endif %}
 ## Support
@@ -78,9 +78,9 @@ This package is available under the [MIT license](LICENSE).
 
 {% if project.hasDocumentation %}
 {% if project.stableBranch is not null %}
-[documentation_stable_badge]: https://readthedocs.org/projects/{{ project.repository.name }}/badge/?version={{ project.stableBranch.name }}
-[documentation_stable_link]: https://sonata-project.readthedocs.io/projects/{{ project.repository.name }}/en/{{ project.stableBranch.name }}/?badge={{ project.stableBranch.name }}
+[documentation_stable_badge]: https://readthedocs.org/projects/{{ project.documentationBadgePath }}/badge/?version={{ project.stableBranch.name }}
+[documentation_stable_link]: https://docs.sonata-project.org/projects/{{ project.repository.name }}/en/{{ project.stableBranch.name }}/?badge={{ project.stableBranch.name }}
 {% endif %}
-[documentation_unstable_badge]: https://readthedocs.org/projects/{{ project.repository.name }}/badge/?version={{ project.unstableBranch.name }}
-[documentation_unstable_link]: https://sonata-project.readthedocs.io/projects/{{ project.repository.name }}/en/{{ project.unstableBranch.name }}/?badge={{ project.unstableBranch.name }}
+[documentation_unstable_badge]: https://readthedocs.org/projects/{{ project.documentationBadgePath }}/badge/?version={{ project.unstableBranch.name }}
+[documentation_unstable_link]: https://docs.readthedocs.org/projects/{{ project.repository.name }}/en/{{ project.unstableBranch.name }}/?badge={{ project.unstableBranch.name }}
 {% endif %}
