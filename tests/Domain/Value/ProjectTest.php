@@ -129,7 +129,7 @@ CONFIG;
     {
         yield 'true - admin-bundle' => [
             true,
-            <<<CONFIG
+<<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true
@@ -160,7 +160,7 @@ CONFIG,
 
         yield 'false - twig-extensions' => [
             false,
-            <<<CONFIG
+<<<CONFIG
 twig-extensions:
   composer_version: '1'
   phpstan: true
@@ -452,7 +452,7 @@ CONFIG,
     {
         yield 'null - admin-bundle' => [
             'sonataadminbundle',
-            <<<CONFIG
+<<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true
@@ -482,7 +482,7 @@ CONFIG,
 
         yield 'custom - admin-bundle' => [
             'sonataadminbundle2',
-            <<<CONFIG
+<<<CONFIG
 admin-bundle:
   composer_version: '1'
   phpstan: true

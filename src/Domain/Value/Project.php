@@ -259,7 +259,7 @@ final class Project
         $latestVersion = $this->getLatestPackagistVersion();
 
         return $this->package->isAbandoned()
-            ? '[Abandoned] ' . $latestVersion->getDescription()
+            ? '[Abandoned] '.$latestVersion->getDescription()
             : $latestVersion->getDescription();
     }
 
