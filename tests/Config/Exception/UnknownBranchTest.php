@@ -44,7 +44,7 @@ final class UnknownBranchTest extends TestCase
             $package
         );
 
-        $name = self::faker()->word;
+        $name = self::faker()->word();
 
         $unknownBranch = UnknownBranch::forName($project, $name);
 

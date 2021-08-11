@@ -81,6 +81,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  documentation_badge_path: ~
   branches:
     master:
       php: ['7.3', '7.4']

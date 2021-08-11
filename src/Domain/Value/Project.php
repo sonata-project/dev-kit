@@ -45,6 +45,7 @@ final class Project
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
+    private string $documentationBadgePath;
 
     private Repository $repository;
 
@@ -60,10 +61,12 @@ final class Project
         bool $panther,
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
-        ?string $customDoctorRstWhitelistPart
+        ?string $customDoctorRstWhitelistPart,
+        ?string $documentationBadgePath
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->bundle = u($this->name)->endsWith('bundle') ? true : false;
+        $this->repository = Repository::fromPackage($package);
 
         $this->package = $package;
         $this->branches = $branches;
@@ -76,8 +79,9 @@ final class Project
         $this->customGitignorePart = $customGitignorePart;
         $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
-
-        $this->repository = Repository::fromPackage($package);
+        $this->documentationBadgePath = $documentationBadgePath ?? u($this->repository->name())
+            ->lower()
+            ->toString();
     }
 
     public static function fromValues(string $name, array $config, Package $package): self
@@ -105,6 +109,7 @@ final class Project
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
+            $config['documentation_badge_path'],
         );
     }
 
@@ -227,6 +232,11 @@ final class Project
         return $this->customDoctorRstWhitelistPart;
     }
 
+    public function documentationBadgePath(): string
+    {
+        return $this->documentationBadgePath;
+    }
+
     public function repository(): Repository
     {
         return $this->repository;
@@ -235,14 +245,6 @@ final class Project
     public function hasBranches(): bool
     {
         return [] !== $this->branches;
-    }
-
-    public function websitePath(): string
-    {
-        return u($this->package->getName())
-            ->replace('sonata-project/', '')
-            ->replace('-bundle', '')
-            ->toString();
     }
 
     public function homepage(): string
