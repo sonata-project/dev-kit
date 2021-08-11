@@ -1,6 +1,7 @@
 admin-bundle:
     phpstan: true
     psalm: true
+    documentation_badge_path: sonata-project-sonataadminbundle
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
@@ -242,6 +243,7 @@ doctrine-orm-admin-bundle:
     phpstan: true
     psalm: true
     panther: true
+    documentation_badge_path: sonata-project-doctrineormadminbundle
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
@@ -284,6 +286,7 @@ doctrine-phpcr-admin-bundle:
 ecommerce:
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    documentation_badge_path: sonata-project-ecommerce
     branches:
         master:
             php: ['7.3', '7.4']
@@ -310,6 +313,7 @@ entity-audit-bundle:
 exporter:
     excluded_files:
         - README.md
+    documentation_badge_path: sonata-project-exporter
     branches:
         master:
             php: ['7.3', '7.4']
@@ -378,6 +382,7 @@ media-bundle:
     psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    documentation_badge_path: sonata-project-sonatamediabundle
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
@@ -501,6 +506,7 @@ translation-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 twig-extensions:
+    documentation_badge_path: sonata-project-twig-extensions
     branches:
         master:
             php: ['7.3', '7.4', '8.0']
