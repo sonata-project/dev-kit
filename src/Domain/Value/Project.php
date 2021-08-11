@@ -45,7 +45,7 @@ final class Project
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
-    private string $documentationBadgePath;
+    private string $documentationBadgeSlug;
 
     private Repository $repository;
 
@@ -62,7 +62,7 @@ final class Project
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart,
-        ?string $documentationBadgePath
+        ?string $documentationBadgeSlug
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->bundle = u($this->name)->endsWith('bundle') ? true : false;
@@ -79,7 +79,7 @@ final class Project
         $this->customGitignorePart = $customGitignorePart;
         $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
-        $this->documentationBadgePath = $documentationBadgePath ?? u($this->repository->name())
+        $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
             ->lower()
             ->toString();
     }
@@ -109,7 +109,7 @@ final class Project
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
-            $config['documentation_badge_path'],
+            $config['documentation_badge_slug'],
         );
     }
 
@@ -232,9 +232,9 @@ final class Project
         return $this->customDoctorRstWhitelistPart;
     }
 
-    public function documentationBadgePath(): string
+    public function documentationBadgeSlug(): string
     {
-        return $this->documentationBadgePath;
+        return $this->documentationBadgeSlug;
     }
 
     public function repository(): Repository
@@ -259,7 +259,7 @@ final class Project
         $latestVersion = $this->getLatestPackagistVersion();
 
         return $this->package->isAbandoned()
-            ? '[Abandoned] '.$latestVersion->getDescription()
+            ? '[Abandoned] ' . $latestVersion->getDescription()
             : $latestVersion->getDescription();
     }
 
