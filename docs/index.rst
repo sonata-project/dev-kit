@@ -1,5 +1,5 @@
-Sonata Project
-==============
+Sonata Project Documentation
+============================
 
 Sonata is a ecosystem of many bundles, we split them into the following categories:
 persistence, foundation, feature and libraries. First you should start with the SonataAdminBundle
