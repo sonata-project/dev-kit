@@ -7,7 +7,7 @@ helping others in return.
 
 We have two main channels opened:
 
-* `Symfony Slack <https://symfony.com/slack>`_ on the #sonata channel
+* `Symfony Slack <https://symfony.com/slack>`_ on the `#sonata <https://symfony-devs.slack.com/messages/sonata>`_ channel
 * Github issues (only for bugs and feature request)
 
 Sonata respects the Symfony's conventions about contributing to the code.
