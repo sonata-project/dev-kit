@@ -1,7 +1,9 @@
 Sonata Project
 ==============
 
-Main bundle of the whole ecosystem:
+Sonata is a ecosystem of many bundles, we split them into the following categories:
+persistence, foundation, feature and libraries. First you should start with the SonataAdminBundle
+documentation, which is the main piece of this puzzle.
 
 * `SonataAdminBundle <https://docs.sonata-project.org/projects/SonataAdminBundle>`_
 
@@ -10,13 +12,15 @@ Persistence Bundles
 Official persistence bundles, depends wheter you use Doctrine ORM
 or another solution you might need different persistence bundle.
 
-* `SonataDoctrineORMAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle>`_
 * `SonataDoctrineMongoDBAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle>`_
+* `SonataDoctrineORMAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle>`_
+* `SonataDoctrinePhpcrAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle>`_ (abandoned)
 
 Foundation Bundles
 ------------------
 Base features that most CMS could need.
 
+* `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_ (abandoned)
 * `SonataBlockBundle <https://docs.sonata-project.org/projects/SonataBlockBundle>`_
 * `SonataCacheBundle <https://docs.sonata-project.org/projects/SonataCacheBundle>`_
 * `SonataDashboardBundle <https://docs.sonata-project.org/projects/SonataDashboardBundle>`_
@@ -49,14 +53,7 @@ Libraries
 ---------
 Libraries used by our bundles, but can be also be installed as standalone packages.
 
-* cache
+* `cache <https://github.com/sonata-project/cache#cache>`_
 * `exporter <https://docs.sonata-project.org/projects/exporter>`_
 * `form-extensions <https://docs.sonata-project.org/projects/form-extensions>`_
 * `twig-extensions <https://docs.sonata-project.org/projects/twig-extensions>`_
-
-Abandoned
----------
-Those are projects that do now have active support.
-
-* `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_
-* `SonataDoctrinePhpcrAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle>`_
