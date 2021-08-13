@@ -61,3 +61,8 @@ Libraries used by our bundles, but can be also be installed as standalone packag
 * `exporter <https://docs.sonata-project.org/projects/exporter>`_
 * `form-extensions <https://docs.sonata-project.org/projects/form-extensions>`_
 * `twig-extensions <https://docs.sonata-project.org/projects/twig-extensions>`_
+
+.. toctree::
+    :maxdepth: 1
+
+    pages/contribute
