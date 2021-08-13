@@ -63,6 +63,8 @@ Libraries used by our bundles, but can be also be installed as standalone packag
 * `twig-extensions <https://docs.sonata-project.org/projects/twig-extensions>`_
 
 .. toctree::
+    :caption: General documentation
+    :name: pages
     :maxdepth: 1
 
     pages/contribute
