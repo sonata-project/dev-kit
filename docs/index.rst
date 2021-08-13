@@ -3,7 +3,11 @@ Sonata Project
 
 Sonata is a ecosystem of many bundles, we split them into the following categories:
 persistence, foundation, feature and libraries. First you should start with the SonataAdminBundle
-documentation, which is the main piece of this puzzle.
+documentation.
+
+Admin Bundle
+------------
+The main bundle of Sonata, it includes the main features of a CMS generator.
 
 * `SonataAdminBundle <https://docs.sonata-project.org/projects/SonataAdminBundle>`_
 
