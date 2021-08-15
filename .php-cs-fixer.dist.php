@@ -1,6 +1,6 @@
 <?php
 
-$config = include 'templates/project/.php_cs.dist';
+$config = include 'templates/project/.php-cs-fixer.dist.php';
 
 $finder->in(__DIR__);
 
