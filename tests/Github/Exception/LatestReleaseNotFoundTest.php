@@ -38,11 +38,11 @@ final class LatestReleaseNotFoundTest extends TestCase
 
         $latestReleaseNotFound = LatestReleaseNotFound::forRepository($repository);
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \RuntimeException::class,
             $latestReleaseNotFound
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
                 'Could not find latest Release for "%s".',
                 $repository->toString()

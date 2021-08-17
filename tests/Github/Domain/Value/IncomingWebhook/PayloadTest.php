@@ -59,12 +59,12 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action()->toString());
-        self::assertSame($htmlUrl, $payload->htmlUrl()->toString());
-        self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
-        self::assertTrue($payload->isTheCommentFromTheAuthor());
-        self::assertSame($repository, $payload->repository()->toString());
+        static::assertSame($action, $payload->action()->toString());
+        static::assertSame($htmlUrl, $payload->htmlUrl()->toString());
+        static::assertSame($issue, $payload->issue()->toInt());
+        static::assertSame($issueAuthorId, $payload->issueAuthor()->id());
+        static::assertTrue($payload->isTheCommentFromTheAuthor());
+        static::assertSame($repository, $payload->repository()->toString());
     }
 
     /**
@@ -104,11 +104,11 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
-        self::assertTrue($payload->isTheCommentFromTheAuthor());
-        self::assertSame($repository, $payload->repository()->toString());
+        static::assertSame($action, $payload->action()->toString());
+        static::assertSame($issue, $payload->issue()->toInt());
+        static::assertSame($issueAuthorId, $payload->issueAuthor()->id());
+        static::assertTrue($payload->isTheCommentFromTheAuthor());
+        static::assertSame($repository, $payload->repository()->toString());
     }
 
     /**
@@ -148,11 +148,11 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
-        self::assertFalse($payload->isTheCommentFromTheAuthor());
-        self::assertSame($repository, $payload->repository()->toString());
+        static::assertSame($action, $payload->action()->toString());
+        static::assertSame($issue, $payload->issue()->toInt());
+        static::assertSame($issueAuthorId, $payload->issueAuthor()->id());
+        static::assertFalse($payload->isTheCommentFromTheAuthor());
+        static::assertSame($repository, $payload->repository()->toString());
     }
 
     /**
@@ -182,10 +182,10 @@ final class PayloadTest extends TestCase
 
         $payload = Payload::fromJsonString($json, $event);
 
-        self::assertSame($action, $payload->action()->toString());
-        self::assertSame($issue, $payload->issue()->toInt());
-        self::assertSame($issueAuthorId, $payload->issueAuthor()->id());
-        self::assertFalse($payload->isTheCommentFromTheAuthor());
-        self::assertSame($repository, $payload->repository()->toString());
+        static::assertSame($action, $payload->action()->toString());
+        static::assertSame($issue, $payload->issue()->toInt());
+        static::assertSame($issueAuthorId, $payload->issueAuthor()->id());
+        static::assertFalse($payload->isTheCommentFromTheAuthor());
+        static::assertSame($repository, $payload->repository()->toString());
     }
 }

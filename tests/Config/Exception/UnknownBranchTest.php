@@ -48,11 +48,11 @@ final class UnknownBranchTest extends TestCase
 
         $unknownBranch = UnknownBranch::forName($project, $name);
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \InvalidArgumentException::class,
             $unknownBranch
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
                 'Could not find branch with name "%s" for project "%s".',
                 $name,

@@ -38,7 +38,7 @@ final class ActionTest extends TestCase
      */
     public function fromString(string $value): void
     {
-        self::assertSame(
+        static::assertSame(
             trim($value),
             Action::fromString($value)->toString()
         );
@@ -49,7 +49,7 @@ final class ActionTest extends TestCase
      */
     public function SYNCHRONIZE(): void
     {
-        self::assertSame(
+        static::assertSame(
             'synchronize',
             Action::SYNCHRONIZE()->toString()
         );
@@ -60,7 +60,7 @@ final class ActionTest extends TestCase
      */
     public function CREATED(): void
     {
-        self::assertSame(
+        static::assertSame(
             'created',
             Action::CREATED()->toString()
         );
@@ -73,7 +73,7 @@ final class ActionTest extends TestCase
      */
     public function equals(bool $expected, Action $action, Action $other): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $action->equals($other)
         );
@@ -101,7 +101,7 @@ final class ActionTest extends TestCase
      */
     public function equalsOneOf(bool $expected, Action $action, array $others): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $action->equalsOneOf($others)
         );

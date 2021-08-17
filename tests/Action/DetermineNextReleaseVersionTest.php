@@ -32,7 +32,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     {
         $tag = Tag::fromString('1.1.0');
 
-        self::assertSame(
+        static::assertSame(
             $tag,
             DetermineNextReleaseVersion::forTagAndPullRequests($tag, [])
         );
@@ -49,7 +49,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
             self::createPullRequestWithStability(Stability::unknown()),
         ];
 
-        self::assertSame(
+        static::assertSame(
             $tag,
             DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequests)
         );
@@ -66,7 +66,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         $nextVersion = DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequests)->toString();
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $nextVersion
         );
@@ -157,7 +157,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $stability->toString(),
             $pullRequest->stability()->toString()
         );

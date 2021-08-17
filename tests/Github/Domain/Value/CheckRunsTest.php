@@ -51,7 +51,7 @@ final class CheckRunsTest extends TestCase
             ],
         ]);
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             CheckRuns::fromResponse($response)->isSuccessful()
         );
@@ -87,7 +87,7 @@ final class CheckRunsTest extends TestCase
         $checkRuns = CheckRuns::fromResponse($response);
         $runs = $checkRuns->all();
 
-        self::assertCount(2, $runs);
+        static::assertCount(2, $runs);
         self::assertCheckRunEqualsCheckRun(
             $checkRun1 = CheckRun::fromResponse($response1),
             $runs[$checkRun1->name()]
@@ -119,7 +119,7 @@ final class CheckRunsTest extends TestCase
 
         $runs = CheckRuns::fromResponse($response)->all();
 
-        self::assertSame(
+        static::assertSame(
             [
                 'Bar',
                 'foo',
@@ -131,10 +131,10 @@ final class CheckRunsTest extends TestCase
 
     private static function assertCheckRunEqualsCheckRun(CheckRun $expected, CheckRun $other): void
     {
-        self::assertSame($expected->status(), $other->status());
-        self::assertSame($expected->conclusion(), $other->conclusion());
-        self::assertSame($expected->name(), $other->name());
-        self::assertSame($expected->detailsUrl(), $other->detailsUrl());
-        self::assertSame($expected->isSuccessful(), $other->isSuccessful());
+        static::assertSame($expected->status(), $other->status());
+        static::assertSame($expected->conclusion(), $other->conclusion());
+        static::assertSame($expected->name(), $other->name());
+        static::assertSame($expected->detailsUrl(), $other->detailsUrl());
+        static::assertSame($expected->isSuccessful(), $other->isSuccessful());
     }
 }

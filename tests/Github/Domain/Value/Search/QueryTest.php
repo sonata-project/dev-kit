@@ -54,7 +54,7 @@ final class QueryTest extends TestCase
     {
         $query = Query::fromString('abc');
 
-        self::assertSame('abc', $query->toString());
+        static::assertSame('abc', $query->toString());
     }
 
     /**
@@ -99,7 +99,7 @@ CONFIG;
             'SonataCI'
         );
 
-        self::assertSame(
+        static::assertSame(
             'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master merged:>2020-01-01T10:00:00Z -author:SonataCI',
             $query->toString()
         );

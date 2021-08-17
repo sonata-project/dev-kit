@@ -49,17 +49,17 @@ CONFIG;
             $config[self::DEFAULT_BRANCH_NAME]
         );
 
-        self::assertSame($name, $branch->name());
-        self::assertCount(3, $branch->phpVersions());
-        self::assertSame('7.4', $branch->targetPhpVersion()->toString());
-        self::assertSame('7.3', $branch->lowestPhpVersion()->toString());
-        self::assertSame('8.0', $branch->highestPhpVersion()->toString());
-        self::assertCount(2, $branch->variants());
-        self::assertSame('docs', $branch->docsPath()->toString());
-        self::assertSame('tests', $branch->testsPath()->toString());
-        self::assertTrue($branch->hasFrontend());
-        self::assertNull($branch->customGitignorePart());
-        self::assertTrue($branch->hasTool('foo'));
-        self::assertTrue($branch->hasPhpExtension('bar'));
+        static::assertSame($name, $branch->name());
+        static::assertCount(3, $branch->phpVersions());
+        static::assertSame('7.4', $branch->targetPhpVersion()->toString());
+        static::assertSame('7.3', $branch->lowestPhpVersion()->toString());
+        static::assertSame('8.0', $branch->highestPhpVersion()->toString());
+        static::assertCount(2, $branch->variants());
+        static::assertSame('docs', $branch->docsPath()->toString());
+        static::assertSame('tests', $branch->testsPath()->toString());
+        static::assertTrue($branch->hasFrontend());
+        static::assertNull($branch->customGitignorePart());
+        static::assertTrue($branch->hasTool('foo'));
+        static::assertTrue($branch->hasPhpExtension('bar'));
     }
 }

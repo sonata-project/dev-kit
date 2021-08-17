@@ -53,6 +53,6 @@ final class UrlTest extends TestCase
 
         $url = Url::fromString($value);
 
-        self::assertSame($value, $url->toString());
+        static::assertSame($value, $url->toString());
     }
 }

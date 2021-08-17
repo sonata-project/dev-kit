@@ -140,7 +140,7 @@ final class HeadTest extends TestCase
 
         $head = Head::fromResponse($response);
 
-        self::assertSame($ref, $head->ref());
-        self::assertSame($sha, $head->sha()->toString());
+        static::assertSame($ref, $head->ref());
+        static::assertSame($sha, $head->sha()->toString());
     }
 }

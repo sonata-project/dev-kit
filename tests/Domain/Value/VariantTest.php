@@ -82,9 +82,9 @@ final class VariantTest extends TestCase
     {
         $variant = Variant::fromValues($package, $version);
 
-        self::assertSame($package, $variant->package());
-        self::assertSame($version, $variant->version());
-        self::assertSame($expected, $variant->toString());
+        static::assertSame($package, $variant->package());
+        static::assertSame($version, $variant->version());
+        static::assertSame($expected, $variant->toString());
     }
 
     /**
