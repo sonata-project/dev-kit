@@ -53,11 +53,11 @@ final class NoPullRequestMergedSinceLastReleaseTest extends TestCase
             $lastRelease
         );
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \RuntimeException::class,
             $cannotDetermineNextRelease
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
                 'No pull requests merged since last release "%s" for branch "%s" of project "%s".',
                 $datetime,

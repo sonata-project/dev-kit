@@ -47,7 +47,7 @@ final class GithubSponsorsExtensionTest extends TestCase
         $package->fromArray(['repository' => 'https://github.com/sonata-project/SonataAdminBundle']);
 
         $repo = $this->createMock(Repo::class);
-        $repo->expects(self::once())
+        $repo->expects(static::once())
             ->method('contributors')
             ->with('sonata-project', 'SonataAdminBundle')
             ->willReturn([
@@ -58,12 +58,12 @@ final class GithubSponsorsExtensionTest extends TestCase
             ]);
 
         $this->github
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('__call')
             ->with('repo')
             ->willReturn($repo);
 
-        self::assertSame(
+        static::assertSame(
             ['OskarStark', 'VincentLanglet', 'greg0ire'],
             $this->githubSponsorsExtension->listSponsorisable(Repository::fromPackage($package)),
         );
@@ -78,7 +78,7 @@ final class GithubSponsorsExtensionTest extends TestCase
         $package->fromArray(['repository' => 'https://github.com/sonata-project/SonataAdminBundle']);
 
         $repo = $this->createMock(Repo::class);
-        $repo->expects(self::once())
+        $repo->expects(static::once())
             ->method('contributors')
             ->with('sonata-project', 'SonataAdminBundle')
             ->willReturn([
@@ -91,12 +91,12 @@ final class GithubSponsorsExtensionTest extends TestCase
             ]);
 
         $this->github
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('__call')
             ->with('repo')
             ->willReturn($repo);
 
-        self::assertSame(
+        static::assertSame(
             ['OskarStark', 'VincentLanglet', 'core23', 'wbloszyk'],
             $this->githubSponsorsExtension->listSponsorisable(Repository::fromPackage($package)),
         );

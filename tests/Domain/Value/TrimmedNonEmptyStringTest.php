@@ -28,7 +28,7 @@ final class TrimmedNonEmptyStringTest extends TestCase
     {
         $string = self::faker()->word();
 
-        self::assertSame(
+        static::assertSame(
             $string,
             TrimmedNonEmptyString::fromString($string)->toString()
         );
@@ -42,7 +42,7 @@ final class TrimmedNonEmptyStringTest extends TestCase
         $string = self::faker()->word();
         $untrimmed = ' '.$string.' ';
 
-        self::assertSame(
+        static::assertSame(
             $string,
             TrimmedNonEmptyString::fromString($untrimmed)->toString()
         );

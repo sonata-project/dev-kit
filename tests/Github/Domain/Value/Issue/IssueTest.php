@@ -45,12 +45,12 @@ final class IssueTest extends TestCase
     {
         $value = 123;
 
-        self::assertSame(
+        static::assertSame(
             $value,
             Issue::fromInt($value)->toInt()
         );
 
-        self::assertSame(
+        static::assertSame(
             sprintf(
                 '#%s',
                 $value

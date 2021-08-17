@@ -38,6 +38,6 @@ final class TagTest extends TestCase
     {
         $tag = Tag::fromString('1.1.0');
 
-        self::assertSame('1.1.0', $tag->toString());
+        static::assertSame('1.1.0', $tag->toString());
     }
 }

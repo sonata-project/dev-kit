@@ -41,10 +41,10 @@ final class LabelTest extends TestCase
             Label\Color::fromString('EDEDED')
         );
 
-        self::assertSame('Test', $label->name());
-        self::assertSame('ededed', $label->color()->toString());
-        self::assertSame('#ededed', $label->color()->asHexCode());
-        self::assertSame(
+        static::assertSame('Test', $label->name());
+        static::assertSame('ededed', $label->color()->toString());
+        static::assertSame('#ededed', $label->color()->asHexCode());
+        static::assertSame(
             [
                 'color' => 'ededed',
                 'name' => 'Test',
@@ -60,9 +60,9 @@ final class LabelTest extends TestCase
     {
         $label = Label::RTM();
 
-        self::assertSame('RTM', $label->name());
-        self::assertSame('ffffff', $label->color()->toString());
-        self::assertSame('#ffffff', $label->color()->asHexCode());
+        static::assertSame('RTM', $label->name());
+        static::assertSame('ffffff', $label->color()->toString());
+        static::assertSame('#ffffff', $label->color()->asHexCode());
     }
 
     /**
@@ -72,9 +72,9 @@ final class LabelTest extends TestCase
     {
         $label = Label::PendingAuthor();
 
-        self::assertSame('pending author', $label->name());
-        self::assertSame('ededed', $label->color()->toString());
-        self::assertSame('#ededed', $label->color()->asHexCode());
+        static::assertSame('pending author', $label->name());
+        static::assertSame('ededed', $label->color()->toString());
+        static::assertSame('#ededed', $label->color()->asHexCode());
     }
 
     /**
@@ -84,7 +84,7 @@ final class LabelTest extends TestCase
      */
     public function equals(bool $expected, Label $label, Label $other): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $label->equals($other)
         );

@@ -62,7 +62,7 @@ final class DispatchFilesCommandTest extends TestCase
             'branch' => $project->branches()[0],
         ]);
 
-        $this->assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     /**

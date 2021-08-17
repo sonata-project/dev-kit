@@ -38,7 +38,7 @@ final class EventTest extends TestCase
      */
     public function fromString(string $value): void
     {
-        self::assertSame(
+        static::assertSame(
             trim($value),
             Event::fromString($value)->toString()
         );
@@ -51,7 +51,7 @@ final class EventTest extends TestCase
      */
     public function equals(bool $expected, Event $event, Event $other): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $event->equals($other)
         );
@@ -79,7 +79,7 @@ final class EventTest extends TestCase
      */
     public function equalsOneOf(bool $expected, Event $event, array $others): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $event->equalsOneOf($others)
         );

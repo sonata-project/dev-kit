@@ -30,11 +30,11 @@ final class UnknownProjectTest extends TestCase
 
         $unknownProject = UnknownProject::forName($name);
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \InvalidArgumentException::class,
             $unknownProject
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
                 'Could not find project with name "%s".',
                 $name

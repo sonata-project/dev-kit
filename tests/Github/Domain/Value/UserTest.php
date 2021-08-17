@@ -75,7 +75,7 @@ final class UserTest extends TestCase
 
         $user = User::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $value,
             $user->id()
         );
@@ -122,7 +122,7 @@ final class UserTest extends TestCase
 
         $user = User::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $value,
             $user->login()
         );
@@ -139,7 +139,7 @@ final class UserTest extends TestCase
 
         $user = User::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             '@'.$value,
             $user->handle()
         );
@@ -186,7 +186,7 @@ final class UserTest extends TestCase
 
         $user = User::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $value,
             $user->htmlUrl()
         );

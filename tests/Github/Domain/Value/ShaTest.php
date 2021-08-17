@@ -43,6 +43,6 @@ final class ShaTest extends TestCase
 
         $sha = Sha::fromString($value);
 
-        self::assertSame($value, $sha->toString());
+        static::assertSame($value, $sha->toString());
     }
 }

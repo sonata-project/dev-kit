@@ -62,7 +62,7 @@ final class RepoTest extends TestCase
             'owner' => UserFactory::create(),
         ];
 
-        self::assertSame(
+        static::assertSame(
             $response['owner']['login'],
             Repo::fromResponse($response)->owner()->login()
         );

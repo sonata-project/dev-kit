@@ -79,23 +79,23 @@ CONFIG;
             $package
         );
 
-        self::assertSame(self::DEFAULT_CONFIG_NAME, $project->name());
-        self::assertSame('SonataAdminBundle', $project->title());
-        self::assertSame($packageName, $project->package()->getName());
-        self::assertTrue($project->hasBranches());
-        self::assertCount(2, $project->branches());
-        self::assertSame(['master', '3.x'], $project->branchNames());
-        self::assertSame(['3.x', 'master'], $project->branchNamesReverse());
-        self::assertSame('master', $project->unstableBranch()->name());
-        self::assertSame('3.x', $project->stableBranch()->name());
-        self::assertTrue($project->usesPHPStan());
-        self::assertTrue($project->usesPsalm());
-        self::assertTrue($project->usesPanther());
-        self::assertNull($project->customGitignorePart());
-        self::assertNull($project->customGitattributesPart());
-        self::assertTrue($project->hasDocumentation());
-        self::assertSame('1', $project->composerVersion());
-        self::assertTrue($project->isBundle());
+        static::assertSame(self::DEFAULT_CONFIG_NAME, $project->name());
+        static::assertSame('SonataAdminBundle', $project->title());
+        static::assertSame($packageName, $project->package()->getName());
+        static::assertTrue($project->hasBranches());
+        static::assertCount(2, $project->branches());
+        static::assertSame(['master', '3.x'], $project->branchNames());
+        static::assertSame(['3.x', 'master'], $project->branchNamesReverse());
+        static::assertSame('master', $project->unstableBranch()->name());
+        static::assertSame('3.x', $project->stableBranch()->name());
+        static::assertTrue($project->usesPHPStan());
+        static::assertTrue($project->usesPsalm());
+        static::assertTrue($project->usesPanther());
+        static::assertNull($project->customGitignorePart());
+        static::assertNull($project->customGitattributesPart());
+        static::assertTrue($project->hasDocumentation());
+        static::assertSame('1', $project->composerVersion());
+        static::assertTrue($project->isBundle());
     }
 
     /**
@@ -119,7 +119,7 @@ CONFIG;
             $package
         );
 
-        self::assertSame($expected, $project->isBundle());
+        static::assertSame($expected, $project->isBundle());
     }
 
     /**
@@ -216,7 +216,7 @@ CONFIG,
             $package
         );
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->homepage()
         );
@@ -265,7 +265,7 @@ CONFIG,
             $package
         );
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->description()
         );
@@ -340,7 +340,7 @@ CONFIG,
             sort($expected);
         }
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->topics()
         );
@@ -370,7 +370,7 @@ CONFIG,
             $package
         );
 
-        self::assertNotEmpty($project->topics());
+        static::assertNotEmpty($project->topics());
     }
 
     /**
@@ -415,7 +415,7 @@ CONFIG,
             sort($expected);
         }
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->topics()
         );
@@ -442,7 +442,7 @@ CONFIG,
             $package
         );
 
-        self::assertSame($expected, $project->documentationBadgeSlug());
+        static::assertSame($expected, $project->documentationBadgeSlug());
     }
 
     /**
@@ -532,7 +532,7 @@ CONFIG,
             $package
         );
 
-        self::assertSame($expected, $project->defaultBranch()->name());
+        static::assertSame($expected, $project->defaultBranch()->name());
     }
 
     /**
