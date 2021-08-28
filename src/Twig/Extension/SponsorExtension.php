@@ -15,9 +15,10 @@ namespace App\Twig\Extension;
 
 use App\Domain\Value\Repository;
 use Github\Client as GithubClient;
-use Twig\TwigFilter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SponsorExtension
+class SponsorExtension extends AbstractExtension
 {
     private const WITH_SPONSOR_DASHBOARD = [
         'core23',
@@ -34,10 +35,10 @@ class SponsorExtension
         $this->github = $github;
     }
 
-    public function getFilters()
+    public function getFunctions()
     {
         return [
-            new TwigFilter('list_sponsorisable', [$this, 'listSponsorisable']),
+            new TwigFunction('list_sponsorisable', [$this, 'listSponsorisable']),
         ];
     }
 
