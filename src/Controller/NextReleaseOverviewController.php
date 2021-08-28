@@ -47,7 +47,7 @@ final class NextReleaseOverviewController
             }
 
             foreach ($project->branches() as $branch) {
-                if ('master' === $branch->name() && $project->isStable()) {
+                if ($branch === $project->unstableBranch() && $project->isStable()) {
                     continue;
                 }
 
