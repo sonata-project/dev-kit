@@ -280,7 +280,7 @@ final class Project
         }
 
         /*
-         * add "hacktoberfest" topic to repositories in october
+         * add "Hacktoberfest" topic to repositories in october
          */
         if ('10' === (new \DateTimeImmutable())->format('m')) {
             $default[] = 'Hacktoberfest';
