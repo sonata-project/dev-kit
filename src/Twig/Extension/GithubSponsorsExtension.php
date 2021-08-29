@@ -18,7 +18,7 @@ use Github\Client as GithubClient;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class SponsorExtension extends AbstractExtension
+class GithubSponsorsExtension extends AbstractExtension
 {
     private const WITH_SPONSOR_DASHBOARD = [
         'core23',

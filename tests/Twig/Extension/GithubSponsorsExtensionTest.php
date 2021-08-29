@@ -14,28 +14,28 @@ declare(strict_types=1);
 namespace App\Tests\Twig\Extension;
 
 use App\Domain\Value\Repository;
-use App\Twig\Extension\SponsorExtension;
+use App\Twig\Extension\GithubSponsorsExtension;
 use Github\Api\Repo;
 use Github\Client as GithubClient;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
-final class SponsorExtensionTest extends TestCase
+final class GithubSponsorsExtensionTest extends TestCase
 {
     /**
      * @var GithubClient&Stub
      */
     private GithubClient $github;
 
-    private SponsorExtension $sponsorExtension;
+    private GithubSponsorsExtension $githubSponsorsExtension;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->github = $this->createMock(GithubClient::class);
-        $this->sponsorExtension = new SponsorExtension($this->github);
+        $this->githubSponsorsExtension = new GithubSponsorsExtension($this->github);
     }
 
     /**
@@ -65,7 +65,7 @@ final class SponsorExtensionTest extends TestCase
 
         self::assertSame(
             ['OskarStark', 'VincentLanglet', 'greg0ire'],
-            $this->sponsorExtension->listSponsorisable(Repository::fromPackage($package)),
+            $this->githubSponsorsExtension->listSponsorisable(Repository::fromPackage($package)),
         );
     }
 
@@ -98,7 +98,7 @@ final class SponsorExtensionTest extends TestCase
 
         self::assertSame(
             ['OskarStark', 'VincentLanglet', 'core23', 'wbloszyk'],
-            $this->sponsorExtension->listSponsorisable(Repository::fromPackage($package)),
+            $this->githubSponsorsExtension->listSponsorisable(Repository::fromPackage($package)),
         );
     }
 }
