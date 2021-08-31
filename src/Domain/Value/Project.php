@@ -319,6 +319,15 @@ final class Project
         return $this->branches[1] ?? null;
     }
 
+    public function defaultBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw NoBranchesAvailable::forProject($this);
+        }
+
+        return $this->stableBranch() ?? $this->unstableBranch();
+    }
+
     public function isStable(): bool
     {
         return null !== $this->stableBranch();

@@ -88,8 +88,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         ];
 
         if ($project->hasBranches()) {
-            $defaultBranch = $project->stableBranch() ?? $project->unstableBranch();
-            $infoToUpdate['default_branch'] = $defaultBranch->name();
+            $infoToUpdate['default_branch'] = $project->defaultBranch()->name();
         }
 
         foreach ($infoToUpdate as $info => $value) {
