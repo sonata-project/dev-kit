@@ -522,6 +522,8 @@ twig-extensions:
                 symfony/symfony: ['4.4.*', '5.3.*']
 
 user-bundle:
+    phpstan: true
+    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
