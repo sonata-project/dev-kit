@@ -21,7 +21,7 @@ final class UnknownProject extends \InvalidArgumentException
     public static function forName(string $name): self
     {
         return new self(sprintf(
-            'Could not find Project with name "%s".',
+            'Could not find project with name "%s".',
             $name
         ));
     }

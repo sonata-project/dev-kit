@@ -24,10 +24,13 @@ final class BranchTest extends TestCase
 master:
   php: ['7.3', '7.4', '8.0']
   target_php: '7.4'
+  frontend: true
+  custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
-  services: []
+  tools: ['foo']
+  php_extensions: ['bar']
   docs_path: docs
   tests_path: tests
 CONFIG;
@@ -46,44 +49,17 @@ CONFIG;
             $config[self::DEFAULT_BRANCH_NAME]
         );
 
-        self::assertSame($name, $branch->name());
-        self::assertCount(3, $branch->phpVersions());
-        self::assertSame('7.4', $branch->targetPhpVersion()->toString());
-        self::assertSame('7.3', $branch->lowestPhpVersion()->toString());
-        self::assertSame('8.0', $branch->highestPhpVersion()->toString());
-        self::assertCount(2, $branch->variants());
-        self::assertEmpty($branch->services());
-        self::assertSame('docs', $branch->docsPath()->toString());
-        self::assertSame('tests', $branch->testsPath()->toString());
-        self::assertFalse($branch->hasService('foo'));
-    }
-
-    /**
-     * @test
-     */
-    public function hasService(): void
-    {
-        $name = 'master';
-
-        $config = <<<CONFIG
-master:
-  php: ['7.3', '7.4']
-  target_php: ~
-  variants:
-    symfony/symfony: ['4.4']
-    sonata-project/block-bundle: ['4']
-  services: ['mongodb']
-  docs_path: docs
-  tests_path: tests
-CONFIG;
-
-        $config = Yaml::parse($config);
-
-        $branch = Branch::fromValues(
-            $name,
-            $config[self::DEFAULT_BRANCH_NAME]
-        );
-
-        self::assertTrue($branch->hasService('mongodb'));
+        static::assertSame($name, $branch->name());
+        static::assertCount(3, $branch->phpVersions());
+        static::assertSame('7.4', $branch->targetPhpVersion()->toString());
+        static::assertSame('7.3', $branch->lowestPhpVersion()->toString());
+        static::assertSame('8.0', $branch->highestPhpVersion()->toString());
+        static::assertCount(2, $branch->variants());
+        static::assertSame('docs', $branch->docsPath()->toString());
+        static::assertSame('tests', $branch->testsPath()->toString());
+        static::assertTrue($branch->hasFrontend());
+        static::assertNull($branch->customGitignorePart());
+        static::assertTrue($branch->hasTool('foo'));
+        static::assertTrue($branch->hasPhpExtension('bar'));
     }
 }

@@ -49,10 +49,10 @@ final class UrlTest extends TestCase
      */
     public function valid(): void
     {
-        $value = self::faker()->url;
+        $value = self::faker()->url();
 
         $url = Url::fromString($value);
 
-        self::assertSame($value, $url->toString());
+        static::assertSame($value, $url->toString());
     }
 }

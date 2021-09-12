@@ -44,8 +44,8 @@ final class CheckRunFactory
                 'success',
                 'timed_out',
             ]),
-            'name' => $faker->word,
-            'details_url' => $faker->url,
+            'name' => $faker->word(),
+            'details_url' => $faker->url(),
         ];
 
         return array_replace_recursive(

@@ -56,7 +56,7 @@ final class CommitCollectionTest extends TestCase
             ]),
         ];
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \Countable::class,
             CommitCollection::from($commits)
         );
@@ -90,11 +90,11 @@ final class CommitCollectionTest extends TestCase
 
         $collection = CommitCollection::from($commits);
 
-        self::assertSame(
+        static::assertSame(
             2,
             $collection->count()
         );
-        self::assertCount(
+        static::assertCount(
             2,
             $collection
         );
@@ -126,7 +126,7 @@ final class CommitCollectionTest extends TestCase
             ]),
         ];
 
-        self::assertSame(
+        static::assertSame(
             1,
             (CommitCollection::from($commits))->uniqueCount()
         );
@@ -158,7 +158,7 @@ final class CommitCollectionTest extends TestCase
             ]),
         ];
 
-        self::assertSame(
+        static::assertSame(
             $firstMessage,
             (CommitCollection::from($commits))->firstMessage()
         );
@@ -190,7 +190,7 @@ final class CommitCollectionTest extends TestCase
             ]),
         ];
 
-        self::assertSame(
+        static::assertSame(
             [
                 $message1,
                 $message2,

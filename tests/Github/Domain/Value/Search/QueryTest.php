@@ -54,7 +54,7 @@ final class QueryTest extends TestCase
     {
         $query = Query::fromString('abc');
 
-        self::assertSame('abc', $query->toString());
+        static::assertSame('abc', $query->toString());
     }
 
     /**
@@ -74,10 +74,13 @@ final class QueryTest extends TestCase
 master:
   php: ['7.3', '7.4']
   target_php: ~
+  frontend: true
+  custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
-  services: []
+  tools: []
+  php_extensions: []
   docs_path: docs
   tests_path: tests
 CONFIG;
@@ -96,7 +99,7 @@ CONFIG;
             'SonataCI'
         );
 
-        self::assertSame(
+        static::assertSame(
             'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master merged:>2020-01-01T10:00:00Z -author:SonataCI',
             $query->toString()
         );

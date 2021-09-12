@@ -43,16 +43,18 @@ final class CannotDeterminNextReleaseTest extends TestCase
             $config[ProjectTest::DEFAULT_CONFIG_NAME],
             $package
         );
+        $branch = $project->unstableBranch();
 
-        $cannotDetermineNextRelease = CannotDetermineNextRelease::forProject($project);
+        $cannotDetermineNextRelease = CannotDetermineNextRelease::forBranch($project, $branch);
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \RuntimeException::class,
             $cannotDetermineNextRelease
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
-                'Cannot determine next release for Project "%s".',
+                'Cannot determine next release for branch "%s" of project "%s".',
+                $branch->name(),
                 $project->name()
             ),
             $cannotDetermineNextRelease->getMessage()

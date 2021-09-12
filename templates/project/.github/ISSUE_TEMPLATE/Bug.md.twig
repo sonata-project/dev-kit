@@ -18,17 +18,29 @@ labels: bug, unconfirmed
 
 #### Sonata packages
 
+<details><summary>show</summary>
+<p>
+
 ```
 $ composer show --latest 'sonata-project/*'
 # Put the result here.
 ```
 
+</p>
+</details>
+
 #### Symfony packages
+
+<details><summary>show</summary>
+<p>
 
 ```
 $ composer show --latest 'symfony/*'
 # Put the result here.
 ```
+
+</p>
+</details>
 
 #### PHP version
 
@@ -56,5 +68,5 @@ $ php -v
     If it's an error message or piece of code, use code block tags,
     and make sure you provide the whole stack trace(s),
     not just the first error message you can see.
-    More details here: https://github.com/sonata-project/{{ project.repository.name }}/blob/{{ project.stableBranch.name }}/CONTRIBUTING.md#issues
+    More details here: https://github.com/sonata-project/{{ project.repository.name }}/blob/{{ (project.stableBranch|default(project.unstableBranch)).name }}/CONTRIBUTING.md#issues
 -->

@@ -18,16 +18,6 @@ namespace App\Domain\Value;
  */
 final class PhpVersion
 {
-    /**
-     * @var string[]
-     */
-    private const STABLE_VERSIONS = [
-        '7.1',
-        '7.2',
-        '7.3',
-        '7.4',
-    ];
-
     private string $version;
 
     private function __construct(string $version)
@@ -38,11 +28,6 @@ final class PhpVersion
     public static function fromString(string $version): self
     {
         return new self($version);
-    }
-
-    public function isStable(): bool
-    {
-        return \in_array($this->version, self::STABLE_VERSIONS, true);
     }
 
     public function toString(): string

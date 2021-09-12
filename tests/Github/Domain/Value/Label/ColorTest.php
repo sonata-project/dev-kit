@@ -65,8 +65,8 @@ final class ColorTest extends TestCase
     {
         $color = Label\Color::fromString('EDEDED');
 
-        self::assertSame('ededed', $color->toString());
-        self::assertSame('#ededed', $color->asHexCode());
+        static::assertSame('ededed', $color->toString());
+        static::assertSame('#ededed', $color->asHexCode());
     }
 
     /**
@@ -76,7 +76,7 @@ final class ColorTest extends TestCase
      */
     public function equals(bool $expected, Label\Color $color, Label\Color $other): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $color->equals($other)
         );

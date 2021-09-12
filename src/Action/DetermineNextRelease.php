@@ -16,7 +16,7 @@ namespace App\Action;
 use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Command\AbstractCommand;
-use App\Domain\Exception\NoBranchesAvailable;
+use App\Domain\Value\Branch;
 use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
 use App\Github\Api\Branches;
@@ -49,24 +49,16 @@ final class DetermineNextRelease
         $this->pullRequests = $pullRequests;
     }
 
-    public function __invoke(Project $project): NextRelease
+    public function __invoke(Project $project, Branch $branch): NextRelease
     {
         $repository = $project->repository();
 
         try {
-            $branch = $project->stableBranch();
-        } catch (NoBranchesAvailable $e) {
-            throw CannotDetermineNextRelease::forProject(
-                $project,
-                $e
-            );
-        }
-
-        try {
-            $currentRelease = $this->releases->latest($repository);
+            $currentRelease = $this->releases->latestForBranch($repository, $branch);
         } catch (LatestReleaseNotFound $e) {
-            throw CannotDetermineNextRelease::forProject(
+            throw CannotDetermineNextRelease::forBranch(
                 $project,
+                $branch,
                 $e
             );
         }
@@ -77,8 +69,9 @@ final class DetermineNextRelease
         );
 
         if ([] === $pullRequests) {
-            throw NoPullRequestsMergedSinceLastRelease::forProject(
+            throw NoPullRequestsMergedSinceLastRelease::forBranch(
                 $project,
+                $branch,
                 $currentRelease->publishedAt()
             );
         }
@@ -100,6 +93,7 @@ final class DetermineNextRelease
 
         return NextRelease::fromValues(
             $project,
+            $branch,
             $currentRelease->tag(),
             $combinedStatus,
             $checkRuns,

@@ -43,8 +43,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:topics')
-            ->setDescription('Dispatches repository topics for all sonata projects.')
-        ;
+            ->setDescription('Dispatches repository topics for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

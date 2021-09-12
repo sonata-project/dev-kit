@@ -52,11 +52,11 @@ final class HookTest extends TestCase
 
         $hook = Hook::fromResponse($response);
 
-        self::assertSame($id, $hook->id());
-        self::assertSame($hookUrl, $hook->url()->toString());
-        self::assertSame($active, $hook->active());
-        self::assertTrue($hook->config()->equals($config));
-        self::assertSame($url, $hook->config()->url()->toString());
-        self::assertTrue($hook->events()->equals($events));
+        static::assertSame($id, $hook->id());
+        static::assertSame($hookUrl, $hook->url()->toString());
+        static::assertSame($active, $hook->active());
+        static::assertTrue($hook->config()->equals($config));
+        static::assertSame($url, $hook->config()->url()->toString());
+        static::assertTrue($hook->events()->equals($events));
     }
 }

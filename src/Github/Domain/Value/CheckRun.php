@@ -97,10 +97,6 @@ final class CheckRun
 
     public function isSuccessful(): bool
     {
-        if ('PHP 8.0 + highest + normal' === $this->name) {
-            return true;
-        }
-
         if (null === $this->conclusion) {
             return false;
         }

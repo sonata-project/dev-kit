@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github\Exception;
 
+use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 
 /**
@@ -25,6 +26,19 @@ final class LatestReleaseNotFound extends \RuntimeException
         return new self(
             sprintf(
                 'Could not find latest Release for "%s".',
+                $repository->toString()
+            ),
+            0,
+            $previous
+        );
+    }
+
+    public static function forRepositoryAndBranch(Repository $repository, Branch $branch, ?\Throwable $previous = null): self
+    {
+        return new self(
+            sprintf(
+                'Could not find latest Release for the branch "%s" of "%s".',
+                $branch->name(),
                 $repository->toString()
             ),
             0,

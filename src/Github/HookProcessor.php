@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Github;
 
+use App\Command\AbstractCommand;
 use App\Domain\Value\Repository;
 use App\Github\Api\Comments;
 use App\Github\Api\Issues;
@@ -24,6 +25,7 @@ use App\Github\Domain\Value\Label;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
@@ -174,17 +176,23 @@ final class HookProcessor
             );
 
             if ('/request-release' === $body) {
-                $notification = new Notification(sprintf(
+                $message = sprintf(
                     '%s requested a release for %s in %s',
                     $comment->author()->handle(),
                     $payload->repository()->name(),
                     $payload->htmlUrl()->toString()
-                ));
-                $notification->channels([
-                    'chat/slack',
-                ]);
+                );
 
-                $this->notifier->send($notification);
+                $notification = new Notification(
+                    $message,
+                    [
+                        'chat/slack',
+                    ]
+                );
+
+                $recipient = new Recipient(AbstractCommand::GITHUB_EMAIL);
+
+                $this->notifier->send($notification, $recipient);
             }
         }
     }

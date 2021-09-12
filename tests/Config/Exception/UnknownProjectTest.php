@@ -26,17 +26,17 @@ final class UnknownProjectTest extends TestCase
      */
     public function forName()
     {
-        $name = self::faker()->word;
+        $name = self::faker()->word();
 
         $unknownProject = UnknownProject::forName($name);
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \InvalidArgumentException::class,
             $unknownProject
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
-                'Could not find Project with name "%s".',
+                'Could not find project with name "%s".',
                 $name
             ),
             $unknownProject->getMessage()

@@ -26,7 +26,12 @@
                             Open DevKit PR's
                         </a>
                     </li>
-                    {% if has_env('SYMFONY_BRANCH') and env('SYMFONY_BRANCH') != 'master' %}
+                    <li class="nav-item {% if app.request.attributes.get('_route') in ['next_releases_overview', 'next_release_project'] %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('next_releases_overview') }}">
+                            Next Releases
+                        </a>
+                    </li>
+                    {% if has_env('SYMFONY_BRANCH') %}
                         <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-code-fork"></i>

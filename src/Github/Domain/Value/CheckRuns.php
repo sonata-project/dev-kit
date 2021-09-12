@@ -47,7 +47,7 @@ final class CheckRuns
             $checkRuns[$checkRun['name']] = CheckRun::fromResponse($checkRun);
         }
 
-        ksort($checkRuns, SORT_NATURAL | SORT_FLAG_CASE);
+        ksort($checkRuns, \SORT_NATURAL | \SORT_FLAG_CASE);
 
         return new self($checkRuns);
     }

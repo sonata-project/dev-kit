@@ -39,10 +39,10 @@ final class ShaTest extends TestCase
      */
     public function valid(): void
     {
-        $value = self::faker()->sha256;
+        $value = self::faker()->sha256();
 
         $sha = Sha::fromString($value);
 
-        self::assertSame($value, $sha->toString());
+        static::assertSame($value, $sha->toString());
     }
 }

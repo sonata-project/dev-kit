@@ -26,7 +26,7 @@ final class VariantTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must contain a "/"!');
 
-        Variant::fromValues('sonata-projectdev-kit', '1.0');
+        Variant::fromValues('sonata-projectdev-kit', '1.0.*');
     }
 
     /**
@@ -37,7 +37,7 @@ final class VariantTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must not end with a "/"!');
 
-        Variant::fromValues('sonata-project/dev-kit/', '1.0');
+        Variant::fromValues('sonata-project/dev-kit/', '1.0.*');
     }
 
     /**
@@ -48,7 +48,7 @@ final class VariantTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must not start with a "/"!');
 
-        Variant::fromValues('/sonata-project/dev-kit', '1.0');
+        Variant::fromValues('/sonata-project/dev-kit', '1.0.*');
     }
 
     /**
@@ -59,7 +59,7 @@ final class VariantTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must not be empty!');
 
-        Variant::fromValues('', '1.0');
+        Variant::fromValues('', '1.0.*');
     }
 
     /**
@@ -82,9 +82,9 @@ final class VariantTest extends TestCase
     {
         $variant = Variant::fromValues($package, $version);
 
-        self::assertSame($package, $variant->package());
-        self::assertSame($version, $variant->version());
-        self::assertSame($expected, $variant->toString());
+        static::assertSame($package, $variant->package());
+        static::assertSame($version, $variant->version());
+        static::assertSame($expected, $variant->toString());
     }
 
     /**
@@ -95,13 +95,13 @@ final class VariantTest extends TestCase
         yield [
             'sonata-project/dev-kit:"1.*"',
             'sonata-project/dev-kit',
-            '1',
+            '1.*',
         ];
 
         yield [
             'sonata-project/dev-kit:"1.1.*"',
             'sonata-project/dev-kit',
-            '1.1',
+            '1.1.*',
         ];
 
         yield [

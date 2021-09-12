@@ -16,8 +16,6 @@ file that was distributed with this source code.
 HEADER;
 
 $rules = [
-    '@PHP56Migration' => true,
-    '@PHP56Migration:risky' => true,
     '@PHP70Migration' => true,
     '@PHP70Migration:risky' => true,
     '@PHP71Migration' => true,
@@ -39,6 +37,7 @@ $rules = [
     'list_syntax' => ['syntax' => 'short'],
     'logical_operators' => true,
     'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
+    'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
     'no_extra_blank_lines' => true,
     'no_php4_constructor' => true,
     'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
@@ -47,28 +46,31 @@ $rules = [
     'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
     'ordered_class_elements' => true,
     'ordered_imports' => true,
+    'php_unit_method_casing' => false,
     'php_unit_set_up_tear_down_visibility' => true,
     'php_unit_strict' => true,
+    'php_unit_test_annotation' => false,
+    'php_unit_test_case_static_method_calls' => true,
     'phpdoc_order' => true,
     'single_line_throw' => false,
     'static_lambda' => true,
     'strict_comparison' => true,
     'strict_param' => true,
-    'void_return' => null,
+    'void_return' => false,
 ];
-
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
-    ->exclude('Tests/Fixtures')
-    ->exclude('tests/Fixtures')
+    ->exclude('node_modules')
     ->exclude('Resources/skeleton')
     ->exclude('Resources/public/vendor')
-;
+    ->exclude('var');
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+$config
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules($rules)
-    ->setUsingCache(true)
-;
+    ->setUsingCache(true);
+
+return $config;

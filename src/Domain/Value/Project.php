@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Value;
 
+use App\Config\Exception\UnknownBranch;
 use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
 use function Symfony\Component\String\u;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -24,6 +24,7 @@ use Webmozart\Assert\Assert;
 final class Project
 {
     private string $name;
+    private bool $bundle;
     private Package $package;
 
     /**
@@ -40,9 +41,11 @@ final class Project
     private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
+    private bool $panther;
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
+    private string $documentationBadgeSlug;
 
     private Repository $repository;
 
@@ -55,11 +58,15 @@ final class Project
         bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
+        bool $panther,
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
-        ?string $customDoctorRstWhitelistPart
+        ?string $customDoctorRstWhitelistPart,
+        ?string $documentationBadgeSlug
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
+        $this->bundle = u($this->name)->endsWith('bundle') ? true : false;
+        $this->repository = Repository::fromPackage($package);
 
         $this->package = $package;
         $this->branches = $branches;
@@ -67,12 +74,14 @@ final class Project
         $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
+        $this->panther = $panther;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
         $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
-
-        $this->repository = Repository::fromPackage($package);
+        $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
+            ->lower()
+            ->toString();
     }
 
     public static function fromValues(string $name, array $config, Package $package): self
@@ -96,15 +105,22 @@ final class Project
             $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
+            $config['panther'],
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
+            $config['documentation_badge_slug'],
         );
     }
 
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function isBundle(): bool
+    {
+        return $this->bundle;
     }
 
     public function title(): string
@@ -121,6 +137,17 @@ final class Project
     public function package(): Package
     {
         return $this->package;
+    }
+
+    public function branch(string $name): Branch
+    {
+        foreach ($this->branches as $branch) {
+            if ($branch->name() === $name) {
+                return $branch;
+            }
+        }
+
+        throw UnknownBranch::forName($this, $name);
     }
 
     /**
@@ -185,6 +212,11 @@ final class Project
         return $this->psalm;
     }
 
+    public function usesPanther(): bool
+    {
+        return $this->panther;
+    }
+
     public function customGitignorePart(): ?string
     {
         return $this->customGitignorePart;
@@ -200,6 +232,11 @@ final class Project
         return $this->customDoctorRstWhitelistPart;
     }
 
+    public function documentationBadgeSlug(): string
+    {
+        return $this->documentationBadgeSlug;
+    }
+
     public function repository(): Repository
     {
         return $this->repository;
@@ -208,14 +245,6 @@ final class Project
     public function hasBranches(): bool
     {
         return [] !== $this->branches;
-    }
-
-    public function websitePath(): string
-    {
-        return u($this->package->getName())
-            ->replace('sonata-project/', '')
-            ->replace('-bundle', '')
-            ->toString();
     }
 
     public function homepage(): string
@@ -251,7 +280,7 @@ final class Project
         }
 
         /*
-         * add "hacktoberfest" topic to repositories in october
+         * add "Hacktoberfest" topic to repositories in october
          */
         if ('10' === (new \DateTimeImmutable())->format('m')) {
             $default[] = 'Hacktoberfest';
@@ -281,19 +310,27 @@ final class Project
         return $this->branches[0];
     }
 
-    public function stableBranch(): Branch
+    public function stableBranch(): ?Branch
     {
         if (!$this->hasBranches()) {
             throw NoBranchesAvailable::forProject($this);
         }
 
-        try {
-            Assert::keyExists($this->branches, 1);
+        return $this->branches[1] ?? null;
+    }
 
-            return $this->branches[1];
-        } catch (\InvalidArgumentException $e) {
-            return $this->unstableBranch();
+    public function defaultBranch(): Branch
+    {
+        if (!$this->hasBranches()) {
+            throw NoBranchesAvailable::forProject($this);
         }
+
+        return $this->stableBranch() ?? $this->unstableBranch();
+    }
+
+    public function isStable(): bool
+    {
+        return null !== $this->stableBranch();
     }
 
     private function getLatestPackagistVersion(): Package\Version

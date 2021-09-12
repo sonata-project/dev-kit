@@ -1,22 +1,24 @@
 name: Quality assurance
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+    push:
+        branches:
+            - master
+    pull_request:
 
 jobs:
-  phpstan:
-    name: PHPStan
+    phpstan:
+        name: PHPStan
 
-    runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2.3.4
 
-      - name: Run PHPStan
-        uses: docker://oskarstark/phpstan-ga:0.12.53
-        with:
-          args: analyse
+            - name: Run PHPStan
+              uses: docker://oskarstark/phpstan-ga:0.12.53
+              env:
+                  CHECK_PLATFORM_REQUIREMENTS: false
+              with:
+                  args: analyse

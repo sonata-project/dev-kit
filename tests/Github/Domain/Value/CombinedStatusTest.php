@@ -130,7 +130,7 @@ final class CombinedStatusTest extends TestCase
 
         $response['statuses'] = [];
 
-        self::assertSame(
+        static::assertSame(
             [],
             CombinedStatus::fromResponse($response)->statuses()
         );
@@ -147,7 +147,7 @@ final class CombinedStatusTest extends TestCase
             'state' => $state,
         ]);
 
-        self::assertSame(
+        static::assertSame(
             $state,
             CombinedStatus::fromResponse($response)->state()
         );
@@ -174,7 +174,7 @@ final class CombinedStatusTest extends TestCase
             'state' => $state,
         ]);
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             CombinedStatus::fromResponse($response)->isSuccessful()
         );
@@ -205,7 +205,7 @@ final class CombinedStatusTest extends TestCase
         $combined = CombinedStatus::fromResponse($response);
         $statuses = $combined->statuses();
 
-        self::assertCount(2, $statuses);
+        static::assertCount(2, $statuses);
         self::assertStatusEqualsStatus(
             Status::fromResponse($statusResponse1),
             $statuses[0]
@@ -218,9 +218,9 @@ final class CombinedStatusTest extends TestCase
 
     private static function assertStatusEqualsStatus(Status $expected, Status $other): void
     {
-        self::assertSame($expected->state(), $other->state());
-        self::assertSame($expected->description(), $other->description());
-        self::assertSame($expected->targetUrl(), $other->targetUrl());
-        self::assertSame($expected->isSuccessful(), $other->isSuccessful());
+        static::assertSame($expected->state(), $other->state());
+        static::assertSame($expected->description(), $other->description());
+        static::assertSame($expected->targetUrl(), $other->targetUrl());
+        static::assertSame($expected->isSuccessful(), $other->isSuccessful());
     }
 }

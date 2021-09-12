@@ -26,28 +26,36 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
+  panther: true
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  documentation_badge_slug: ~
   branches:
     master:
       php: ['7.3', '7.4']
       target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      services: []
+      tools: []
+      php_extensions: []
       docs_path: docs
       tests_path: tests
     3.x:
       php: ['7.2', '7.3', '7.4']
       target_php: ~
+      frontend: false
+      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['3']
-      services: []
+      tools: []
+      php_extensions: []
       docs_path: docs
       tests_path: tests
 CONFIG;
@@ -71,21 +79,115 @@ CONFIG;
             $package
         );
 
-        self::assertSame(self::DEFAULT_CONFIG_NAME, $project->name());
-        self::assertSame('SonataAdminBundle', $project->title());
-        self::assertSame($packageName, $project->package()->getName());
-        self::assertTrue($project->hasBranches());
-        self::assertCount(2, $project->branches());
-        self::assertSame(['master', '3.x'], $project->branchNames());
-        self::assertSame(['3.x', 'master'], $project->branchNamesReverse());
-        self::assertSame('master', $project->unstableBranch()->name());
-        self::assertSame('3.x', $project->stableBranch()->name());
-        self::assertTrue($project->usesPHPStan());
-        self::assertTrue($project->usesPsalm());
-        self::assertNull($project->customGitignorePart());
-        self::assertNull($project->customGitattributesPart());
-        self::assertTrue($project->hasDocumentation());
-        self::assertSame('1', $project->composerVersion());
+        static::assertSame(self::DEFAULT_CONFIG_NAME, $project->name());
+        static::assertSame('SonataAdminBundle', $project->title());
+        static::assertSame($packageName, $project->package()->getName());
+        static::assertTrue($project->hasBranches());
+        static::assertCount(2, $project->branches());
+        static::assertSame(['master', '3.x'], $project->branchNames());
+        static::assertSame(['3.x', 'master'], $project->branchNamesReverse());
+        static::assertSame('master', $project->unstableBranch()->name());
+        static::assertSame('3.x', $project->stableBranch()->name());
+        static::assertTrue($project->usesPHPStan());
+        static::assertTrue($project->usesPsalm());
+        static::assertTrue($project->usesPanther());
+        static::assertNull($project->customGitignorePart());
+        static::assertNull($project->customGitattributesPart());
+        static::assertTrue($project->hasDocumentation());
+        static::assertSame('1', $project->composerVersion());
+        static::assertTrue($project->isBundle());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider isBundleProvider
+     */
+    public function isBundle(bool $expected, string $yamlConfig, string $name): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => $packageName = 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $config = Yaml::parse($yamlConfig);
+
+        $project = Project::fromValues(
+            $name,
+            $config[$name],
+            $package
+        );
+
+        static::assertSame($expected, $project->isBundle());
+    }
+
+    /**
+     * @return \Generator<string, array<0: bool, 1: string, 2: string>>
+     */
+    public function isBundleProvider(): \Generator
+    {
+        yield 'true - admin-bundle' => [
+            true,
+<<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: 'sonataadminbundle2'
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+            'admin-bundle',
+        ];
+
+        yield 'false - twig-extensions' => [
+            false,
+<<<CONFIG
+twig-extensions:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: ~
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+            'twig-extensions',
+        ];
     }
 
     /**
@@ -114,7 +216,7 @@ CONFIG;
             $package
         );
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->homepage()
         );
@@ -163,7 +265,7 @@ CONFIG;
             $package
         );
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->description()
         );
@@ -238,7 +340,7 @@ CONFIG;
             sort($expected);
         }
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->topics()
         );
@@ -268,7 +370,7 @@ CONFIG;
             $package
         );
 
-        self::assertNotEmpty($project->topics());
+        static::assertNotEmpty($project->topics());
     }
 
     /**
@@ -313,9 +415,255 @@ CONFIG;
             sort($expected);
         }
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $project->topics()
         );
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider documentationBadgeSlugProvider
+     */
+    public function documentationBadgeSlug(string $expected, string $yamlConfig): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $config = Yaml::parse($yamlConfig);
+
+        $project = Project::fromValues(
+            'admin-bundle',
+            $config['admin-bundle'],
+            $package
+        );
+
+        static::assertSame($expected, $project->documentationBadgeSlug());
+    }
+
+    /**
+     * @return \Generator<string, array<0: string, 1: string>>
+     */
+    public function documentationBadgeSlugProvider(): \Generator
+    {
+        yield 'null - admin-bundle' => [
+            'sonataadminbundle',
+<<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: ~
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
+
+        yield 'custom - admin-bundle' => [
+            'sonataadminbundle2',
+<<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: 'sonataadminbundle2'
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider defaultBranchProvider
+     */
+    public function defaultBranch(string $expected, string $yamlConfig): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $config = Yaml::parse($yamlConfig);
+
+        $project = Project::fromValues(
+            'admin-bundle',
+            $config['admin-bundle'],
+            $package
+        );
+
+        static::assertSame($expected, $project->defaultBranch()->name());
+    }
+
+    /**
+     * @return \Generator<string, array<0: string, 1: string>>
+     */
+    public function defaultBranchProvider(): \Generator
+    {
+        yield 'master' => [
+            'master',
+            <<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: ~
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
+
+        yield 'master - 3.x' => [
+            '3.x',
+            <<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: ~
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+    3.x:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
+
+        yield 'master - 4.x - 3.x' => [
+            '4.x',
+            <<<CONFIG
+admin-bundle:
+  composer_version: '1'
+  phpstan: true
+  psalm: true
+  panther: true
+  excluded_files: []
+  custom_gitignore_part: ~
+  custom_gitattributes_part: ~
+  custom_doctor_rst_whitelist_part: ~
+  has_documentation: true
+  documentation_badge_slug: ~
+  branches:
+    master:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+    4.x:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+    3.x:
+      php: ['7.3', '7.4']
+      target_php: ~
+      frontend: true
+      custom_gitignore_part: ~
+      variants:
+        symfony/symfony: ['4.4']
+        sonata-project/block-bundle: ['4']
+      tools: []
+      php_extensions: []
+      docs_path: docs
+      tests_path: tests
+CONFIG,
+        ];
     }
 }

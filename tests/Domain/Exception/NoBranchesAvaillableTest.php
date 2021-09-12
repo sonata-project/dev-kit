@@ -46,11 +46,11 @@ final class NoBranchesAvaillableTest extends TestCase
 
         $noBranchesAvailable = NoBranchesAvailable::forProject($project);
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \InvalidArgumentException::class,
             $noBranchesAvailable
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
                 'Project "%s" has no branches configured.',
                 $project->name()

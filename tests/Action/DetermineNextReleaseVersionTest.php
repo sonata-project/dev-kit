@@ -32,7 +32,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     {
         $tag = Tag::fromString('1.1.0');
 
-        self::assertSame(
+        static::assertSame(
             $tag,
             DetermineNextReleaseVersion::forTagAndPullRequests($tag, [])
         );
@@ -41,7 +41,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @test
      */
-    public function returnsCurrentIfNoMinorOrPatchStabilityIsFound()
+    public function returnsCurrentIfNoMajorOrMinorOrPatchStabilityIsFound()
     {
         $tag = Tag::fromString('1.1.0');
 
@@ -49,7 +49,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
             self::createPullRequestWithStability(Stability::unknown()),
         ];
 
-        self::assertSame(
+        static::assertSame(
             $tag,
             DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequests)
         );
@@ -60,13 +60,13 @@ final class DetermineNextReleaseVersionTest extends TestCase
      *
      * @dataProvider determineProvider
      */
-    public function determine(string $expected, string $current, array $pullRequets)
+    public function determine(string $expected, string $current, array $pullRequests)
     {
         $tag = Tag::fromString($current);
 
-        $nextVersion = DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequets)->toString();
+        $nextVersion = DetermineNextReleaseVersion::forTagAndPullRequests($tag, $pullRequests)->toString();
 
-        self::assertSame(
+        static::assertSame(
             $expected,
             $nextVersion
         );
@@ -77,6 +77,50 @@ final class DetermineNextReleaseVersionTest extends TestCase
      */
     public function determineProvider(): \Generator
     {
+        yield [
+            '2.0.0',
+            '1.1.0',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '2.0.0-alpha-1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '2.0.0.alpha.1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '1.1.0',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
         yield [
             '1.2.0',
             '1.1.0',
@@ -113,7 +157,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $stability->toString(),
             $pullRequest->stability()->toString()
         );

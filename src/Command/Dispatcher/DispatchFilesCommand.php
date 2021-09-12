@@ -79,8 +79,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this
             ->setName('dispatch:files')
             ->setDescription('Dispatches files for all sonata projects.')
-            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
-        ;
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -258,63 +257,68 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
+        $filesToRemove = [];
+
         if (!$project->hasDocumentation()) {
-            $docsPath = $branch->docsPath()->toString();
-
-            $docsDirectory = u($distPath)
-                ->append('/')
-                ->append($docsPath)
-                ->toString();
-
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> directory!',
-                $docsPath
-            ));
-            $this->filesystem->remove($docsDirectory);
-
-            $filepath = '.github/workflows/documentation.yaml';
-            $documentationWorkflowFile = u($distPath)
-                ->append('/')
-                ->append($filepath)
-                ->toString();
-
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> file!',
-                $filepath
-            ));
-            $this->filesystem->remove($documentationWorkflowFile);
+            $filesToRemove[] = $branch->docsPath()->toString();
+            $filesToRemove[] = '.github/workflows/documentation.yaml';
+            $filesToRemove[] = '.readthedocs.yaml';
         }
 
         if (!$project->usesPHPStan() && !$project->usesPsalm()) {
-            $filepath = '.github/workflows/qa.yaml';
-            $qaWorkflowFile = u($distPath)
+            $filesToRemove[] = '.github/workflows/qa.yaml';
+        }
+
+        if (!$branch->hasFrontend()) {
+            $filesToRemove[] = '.babelrc.js';
+            $filesToRemove[] = '.eslintrc.js';
+            $filesToRemove[] = '.stylelintrc.js';
+            $filesToRemove[] = 'postcss.config.js';
+            $filesToRemove[] = '.github/workflows/frontend.yaml';
+        }
+
+        if (!$project->isBundle()) {
+            $filesToRemove[] = '.symfony.bundle.yaml';
+        }
+
+        foreach ($filesToRemove as $fileToRemove) {
+            $file = u($distPath)
                 ->append('/')
-                ->append($filepath)
+                ->append($fileToRemove)
                 ->toString();
 
-            $this->io->writeln(sprintf(
-                'Delete <info>/%s</info> file!',
-                $filepath
-            ));
-            $this->filesystem->remove($qaWorkflowFile);
+            if ($this->filesystem->exists($file)) {
+                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $fileToRemove));
+                $this->filesystem->remove($file);
+            }
         }
     }
 
     private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
-        if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
-            throw new \LogicException(sprintf(
-                'This method only supports files inside the "%s" directory',
-                static::FILES_DIR
-            ));
-        }
+        if (static::FILES_DIR !== $localPath) {
+            if (0 !== strpos($localPath, static::FILES_DIR.'/')) {
+                throw new \LogicException(sprintf(
+                    'This method only supports files inside the "%s" directory',
+                    static::FILES_DIR
+                ));
+            }
 
-        $excludedFiles = array_map(static function (ExcludedFile $excludedFile): string {
-            return $excludedFile->filename();
-        }, $project->excludedFiles());
+            $excludedFiles = array_map(
+                static function (ExcludedFile $excludedFile): string {
+                    return $excludedFile->filename();
+                },
+                $project->excludedFiles()
+            );
 
-        if (\in_array(substr($localPath, \strlen(static::FILES_DIR.'/')), $excludedFiles, true)) {
-            return;
+            $file = substr($localPath, \strlen(static::FILES_DIR.'/'));
+            if ('.twig' === substr($file, -5)) {
+                $file = substr($file, 0, -5);
+            }
+
+            if (\in_array($file, $excludedFiles, true)) {
+                return;
+            }
         }
 
         $localFullPath = sprintf(

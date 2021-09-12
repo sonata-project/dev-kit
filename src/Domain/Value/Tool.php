@@ -16,7 +16,7 @@ namespace App\Domain\Value;
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  */
-final class Service
+final class Tool
 {
     private string $name;
 

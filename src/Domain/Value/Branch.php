@@ -26,37 +26,51 @@ final class Branch
     private array $phpVersions;
 
     /**
-     * @var Service[]
+     * @var PhpExtension[]
      */
-    private array $services;
+    private array $phpExtensions;
+
+    /**
+     * @var Tool[]
+     */
+    private array $tools;
 
     /**
      * @var Variant[]
      */
     private array $variants;
 
+    private bool $frontend;
+    private ?string $customGitignorePart;
     private Path $docsPath;
     private Path $testsPath;
     private PhpVersion $targetPhpVersion;
 
     /**
      * @param array<string, PhpVersion> $phpVersions
-     * @param Service[]                 $services
+     * @param Tool[]                    $tools
+     * @param PhpExtension[]            $phpExtensions
      * @param Variant[]                 $variants
      */
     private function __construct(
         string $name,
         array $phpVersions,
-        array $services,
+        array $tools,
+        array $phpExtensions,
         array $variants,
+        ?string $customGitignorePart,
+        bool $frontend,
         Path $docsPath,
         Path $testsPath,
         ?PhpVersion $targetPhpVersion
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;
-        $this->services = $services;
+        $this->tools = $tools;
+        $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
+        $this->customGitignorePart = $customGitignorePart;
+        $this->frontend = $frontend;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
         $this->targetPhpVersion = $targetPhpVersion ?? end($this->phpVersions);
@@ -69,10 +83,13 @@ final class Branch
             $phpVersions[$version] = PhpVersion::fromString($version);
         }
 
-        $services = [];
-        foreach ($config['services'] as $serviceName) {
-            $services[] = Service::fromString($serviceName);
-        }
+        $tools = array_map(static function (string $toolName): Tool {
+            return Tool::fromString($toolName);
+        }, $config['tools']);
+
+        $phpExtensions = array_map(static function (string $phpExtension): PhpExtension {
+            return PhpExtension::fromString($phpExtension);
+        }, $config['php_extensions']);
 
         $variants = [];
         foreach ($config['variants'] as $variant => $versions) {
@@ -89,8 +106,11 @@ final class Branch
         return new self(
             $name,
             $phpVersions,
-            $services,
+            $tools,
+            $phpExtensions,
             $variants,
+            $config['custom_gitignore_part'],
+            $config['frontend'],
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
             $targetPhpVersion
@@ -111,24 +131,44 @@ final class Branch
     }
 
     /**
-     * @return Service[]
+     * @return Tool[]
      */
-    public function services(): array
+    public function tools(): array
     {
-        return $this->services;
+        return $this->tools;
     }
 
-    public function hasService(string $serviceName): bool
+    public function hasTool(string $toolName): bool
     {
-        if ([] === $this->services) {
-            return false;
+        foreach ($this->tools() as $tool) {
+            if ($tool->toString() === $toolName) {
+                return true;
+            }
         }
 
-        $serviceNames = array_map(static function (Service $service): string {
-            return $service->toString();
-        }, $this->services());
+        return false;
+    }
 
-        return \in_array($serviceName, $serviceNames, true);
+    /**
+     * @return PhpExtension[]
+     */
+    public function phpExtensions(): array
+    {
+        return $this->phpExtensions;
+    }
+
+    public function hasPhpExtension(string $phpExtensionName): bool
+    {
+        foreach ($this->phpExtensions() as $phpExtension) {
+            if (
+                $phpExtension->toString() === $phpExtensionName
+                || strstr($phpExtension->toString(), '-', true) === $phpExtensionName
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -137,6 +177,16 @@ final class Branch
     public function variants(): array
     {
         return $this->variants;
+    }
+
+    public function hasFrontend(): bool
+    {
+        return $this->frontend;
+    }
+
+    public function customGitignorePart(): ?string
+    {
+        return $this->customGitignorePart;
     }
 
     public function docsPath(): Path

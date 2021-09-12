@@ -16,21 +16,21 @@ jobs:
     php-cs-fixer:
         name: PHP-CS-Fixer
 
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
               uses: actions/checkout@v2
 
             - name: Run PHP-CS-Fixer
-              uses: docker://oskarstark/php-cs-fixer-ga:2.16.7
+              uses: docker://oskarstark/php-cs-fixer-ga:3.0.0
               with:
                   args: --ansi --verbose --diff --dry-run
 
     composer-normalize:
         name: composer-normalize
 
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
@@ -44,7 +44,7 @@ jobs:
     yaml-files:
         name: YAML files
 
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
@@ -64,7 +64,7 @@ jobs:
     xml-files:
         name: XML files
 
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
@@ -73,5 +73,8 @@ jobs:
             - name: Install required dependencies
               run: sudo apt-get update && sudo apt-get install libxml2-utils
 
-            - name: Lint files
+            - name: Lint xml files
               run: make lint-xml
+
+            - name: Lint xliff files
+              run: make lint-xliff

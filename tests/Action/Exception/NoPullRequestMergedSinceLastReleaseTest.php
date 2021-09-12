@@ -43,22 +43,25 @@ final class NoPullRequestMergedSinceLastReleaseTest extends TestCase
             $config[ProjectTest::DEFAULT_CONFIG_NAME],
             $package
         );
+        $branch = $project->unstableBranch();
 
         $lastRelease = new \DateTimeImmutable($datetime = '2020-01-01 10:00:01');
 
-        $cannotDetermineNextRelease = NoPullRequestsMergedSinceLastRelease::forProject(
+        $cannotDetermineNextRelease = NoPullRequestsMergedSinceLastRelease::forBranch(
             $project,
+            $branch,
             $lastRelease
         );
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \RuntimeException::class,
             $cannotDetermineNextRelease
         );
-        self::assertSame(
+        static::assertSame(
             sprintf(
-                'No pull requests merged since last release "%s" for Project "%s".',
+                'No pull requests merged since last release "%s" for branch "%s" of project "%s".',
                 $datetime,
+                $branch->name(),
                 $project->name()
             ),
             $cannotDetermineNextRelease->getMessage()

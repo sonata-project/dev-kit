@@ -46,8 +46,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:branches-protection')
-            ->setDescription('Dispatches branches protection for all sonata projects.')
-        ;
+            ->setDescription('Dispatches branches protection for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -99,6 +98,13 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
                     'enforce_admins' => false,
                 ];
 
+                if ('sandbox' === $project->name()) {
+                    /*
+                     * Otherwise automerge for dependabot PRs will not work.
+                     */
+                    $settings['required_pull_request_reviews'] = null;
+                }
+
                 $this->branchProtections->update(
                     $repository,
                     $branch,
@@ -142,6 +148,10 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         if ($project->usesPsalm()) {
             $requiredStatusChecks[] = 'Psalm';
+        }
+
+        if ($branch->hasFrontend()) {
+            $requiredStatusChecks[] = 'Webpack Encore';
         }
 
         /** @var PhpVersion $phpVersion */

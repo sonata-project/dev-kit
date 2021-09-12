@@ -32,7 +32,17 @@ final class DetermineNextReleaseVersion
             return $pr->stability()->toString();
         }, $pullRequests);
 
-        $parts = explode('.', $current->toString());
+        // Add compatibility for non-semantical versioning version like `4.0.0-alpha-1`
+        $currentTag = str_replace('-', '.', $current->toString());
+        $parts = explode('.', $currentTag);
+
+        if (isset($parts[3])) {
+            return Tag::fromString(implode('.', [$parts[0], $parts[1], $parts[2]]));
+        }
+
+        if (\in_array(Stability::major()->toString(), $stabilities, true)) {
+            return Tag::fromString(implode('.', [(int) $parts[0] + 1, 0, 0]));
+        }
 
         if (\in_array(Stability::minor()->toString(), $stabilities, true)) {
             return Tag::fromString(implode('.', [$parts[0], (int) $parts[1] + 1, 0]));

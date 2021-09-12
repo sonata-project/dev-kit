@@ -42,7 +42,7 @@ final class PullRequestTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame($response['number'], $pullRequest->issue()->toInt());
+        static::assertSame($response['number'], $pullRequest->issue()->toInt());
     }
 
     /**
@@ -91,7 +91,7 @@ final class PullRequestTest extends TestCase
      */
     public function usesTitleFromResponse()
     {
-        $value = self::faker()->sentence;
+        $value = self::faker()->sentence();
 
         $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
@@ -99,7 +99,7 @@ final class PullRequestTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame($value, $pullRequest->title());
+        static::assertSame($value, $pullRequest->title());
     }
 
     /**
@@ -143,7 +143,7 @@ final class PullRequestTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $value,
             $pullRequest->updatedAt()->format('Y-m-d\TH:i:s\Z')
         );
@@ -190,11 +190,11 @@ final class PullRequestTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $value,
             $pullRequest->mergedAt()->format('Y-m-d\TH:i:s\Z')
         );
-        self::assertTrue($pullRequest->isMerged());
+        static::assertTrue($pullRequest->isMerged());
     }
 
     /**
@@ -208,8 +208,8 @@ final class PullRequestTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
-        self::assertNull($pullRequest->mergedAt());
-        self::assertFalse($pullRequest->isMerged());
+        static::assertNull($pullRequest->mergedAt());
+        static::assertFalse($pullRequest->isMerged());
     }
 
     /**
@@ -284,23 +284,23 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertSame($baseRef, $pr->base()->ref());
-        self::assertSame($headRef, $pr->head()->ref());
-        self::assertSame($headSha, $pr->head()->sha()->toString());
-        self::assertSame($ownerId, $pr->head()->repo()->owner()->id());
-        self::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
-        self::assertSame($ownerHtmlUrl, $pr->head()->repo()->owner()->htmlUrl());
-        self::assertSame($userId, $pr->user()->id());
-        self::assertSame($userLogin, $pr->user()->login());
-        self::assertSame($userHtmlUrl, $pr->user()->htmlUrl());
-        self::assertTrue($pr->isMergeable());
-        self::assertSame($body, $pr->body());
-        self::assertSame($htmlUrl, $pr->htmlUrl());
-        self::assertTrue($pr->hasLabels());
+        static::assertSame($baseRef, $pr->base()->ref());
+        static::assertSame($headRef, $pr->head()->ref());
+        static::assertSame($headSha, $pr->head()->sha()->toString());
+        static::assertSame($ownerId, $pr->head()->repo()->owner()->id());
+        static::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
+        static::assertSame($ownerHtmlUrl, $pr->head()->repo()->owner()->htmlUrl());
+        static::assertSame($userId, $pr->user()->id());
+        static::assertSame($userLogin, $pr->user()->login());
+        static::assertSame($userHtmlUrl, $pr->user()->htmlUrl());
+        static::assertTrue($pr->isMergeable());
+        static::assertSame($body, $pr->body());
+        static::assertSame($htmlUrl, $pr->htmlUrl());
+        static::assertTrue($pr->hasLabels());
 
         $label = $pr->labels()[0];
-        self::assertSame($labelName, $label->name());
-        self::assertSame($labelColor, $label->color()->toString());
+        static::assertSame($labelName, $label->name());
+        static::assertSame($labelColor, $label->color()->toString());
     }
 
     /**
@@ -319,7 +319,7 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertTrue($pr->updatedWithinTheLast60Seconds());
+        static::assertTrue($pr->updatedWithinTheLast60Seconds());
     }
 
     /**
@@ -338,7 +338,7 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertFalse($pr->updatedWithinTheLast60Seconds());
+        static::assertFalse($pr->updatedWithinTheLast60Seconds());
     }
 
     /**
@@ -354,7 +354,7 @@ final class PullRequestTest extends TestCase
 
         $pr = PullRequest::fromResponse($response);
 
-        self::assertSame(
+        static::assertSame(
             $expected->toString(),
             $pr->stability()->toString()
         );
@@ -437,8 +437,8 @@ final class PullRequestTest extends TestCase
 - %s
 ```
 BODY,
-                self::faker()->text,
-                self::faker()->text,
+                self::faker()->text(),
+                self::faker()->text(),
                 $message = 'The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.'
             ),
         ]);
@@ -447,11 +447,11 @@ BODY,
 
         $changelog = $pr->changelog();
 
-        self::assertArrayHasKey(
+        static::assertArrayHasKey(
             'Changed',
             $changelog
         );
-        self::assertStringContainsString(
+        static::assertStringContainsString(
             $message,
             $changelog['Changed'][0]
         );

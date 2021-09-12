@@ -129,7 +129,7 @@ final class PullRequest
             Head::fromResponse($response['head']),
             User::fromResponse($response['user']),
             $response['mergeable'],
-            $response['body'],
+            $response['body'] ?? '',
             $response['html_url'],
             $labels
         );
@@ -214,7 +214,7 @@ final class PullRequest
         $diff = (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
             - $this->updatedAt->getTimestamp();
 
-        return  $diff < 60;
+        return $diff < 60;
     }
 
     public function stability(): Stability
@@ -226,6 +226,10 @@ final class PullRequest
         $labels = array_map(static function (Label $label): string {
             return $label->name();
         }, $this->labels);
+
+        if (\in_array('major', $labels, true)) {
+            return Stability::major();
+        }
 
         if (\in_array('minor', $labels, true)) {
             return Stability::minor();
@@ -252,6 +256,16 @@ final class PullRequest
         return [] !== $this->changelog();
     }
 
+    public function fulfilledChangelog(): bool
+    {
+        return !$this->needsChangelog() || ($this->needsChangelog() && $this->hasChangelog());
+    }
+
+    public function hasNotNeededChangelog(): bool
+    {
+        return !$this->needsChangelog() && $this->hasChangelog();
+    }
+
     public function changelog(): array
     {
         $changelog = [];
@@ -259,7 +273,7 @@ final class PullRequest
         preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
 
         if (2 === \count($matches)) {
-            $lines = explode(PHP_EOL, $matches[1]);
+            $lines = explode(\PHP_EOL, $matches[1]);
 
             $section = '';
             foreach ($lines as $line) {

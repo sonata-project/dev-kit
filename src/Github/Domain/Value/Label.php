@@ -75,8 +75,7 @@ final class Label
     public function equals(self $other): bool
     {
         return u($this->name)->ignoreCase()->equalsTo($other->name())
-            && $this->color->equals($other->color())
-            ;
+            && $this->color->equals($other->color());
     }
 
     public function color(): Color

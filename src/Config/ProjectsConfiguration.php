@@ -35,6 +35,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('composer_version')->defaultValue('2')->end()
+                            ->booleanNode('panther')->defaultFalse()->end()
                             ->booleanNode('phpstan')->defaultFalse()->end()
                             ->booleanNode('psalm')->defaultFalse()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
@@ -42,14 +43,18 @@ class ProjectsConfiguration implements ConfigurationInterface
                             ->scalarNode('custom_gitattributes_part')->defaultNull()->end()
                             ->scalarNode('custom_doctor_rst_whitelist_part')->defaultNull()->end()
                             ->booleanNode('has_documentation')->defaultTrue()->end()
+                            ->scalarNode('documentation_badge_slug')->defaultNull()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
                                 ->defaultValue([])
                                 ->prototype('array')
                                     ->children()
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
-                                        ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->arrayNode('tools')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->arrayNode('php_extensions')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
+                                        ->scalarNode('custom_gitignore_part')->defaultNull()->end()
+                                        ->scalarNode('frontend')->defaultFalse()->end()
                                         ->arrayNode('variants')
                                             ->normalizeKeys(false)
                                             ->useAttributeAsKey('name')
@@ -65,8 +70,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
     }

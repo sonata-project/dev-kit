@@ -135,7 +135,7 @@ final class StatusTest extends TestCase
             'state' => $state,
         ]);
 
-        self::assertSame(
+        static::assertSame(
             $state,
             Status::fromResponse($response)->state()
         );
@@ -159,7 +159,7 @@ final class StatusTest extends TestCase
     {
         $response = Github\Response\StatusFactory::create();
 
-        self::assertSame(
+        static::assertSame(
             $response['description'],
             Status::fromResponse($response)->description()
         );
@@ -172,7 +172,7 @@ final class StatusTest extends TestCase
     {
         $response = Github\Response\StatusFactory::create();
 
-        self::assertSame(
+        static::assertSame(
             $response['target_url'],
             Status::fromResponse($response)->targetUrl()
         );

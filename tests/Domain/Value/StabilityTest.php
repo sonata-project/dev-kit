@@ -39,7 +39,7 @@ final class StabilityTest extends TestCase
      */
     public function usesLowercaseForStability(): void
     {
-        self::assertSame(
+        static::assertSame(
             'minor',
             Stability::fromString('MINOR')->toString()
         );
@@ -50,7 +50,7 @@ final class StabilityTest extends TestCase
      */
     public function toStringReturnsLowercaseString(): void
     {
-        self::assertSame(
+        static::assertSame(
             'minor',
             Stability::minor()->toString()
         );
@@ -61,7 +61,7 @@ final class StabilityTest extends TestCase
      */
     public function toUppercaseStringReturnsUppercaseString(): void
     {
-        self::assertSame(
+        static::assertSame(
             'MINOR',
             Stability::minor()->toUppercaseString()
         );
@@ -76,7 +76,7 @@ final class StabilityTest extends TestCase
     {
         $stability = Stability::fromString($value);
 
-        self::assertSame($value, $stability->toString());
+        static::assertSame($value, $stability->toString());
     }
 
     /**
@@ -94,7 +94,7 @@ final class StabilityTest extends TestCase
      */
     public function patch()
     {
-        self::assertSame(
+        static::assertSame(
             'patch',
             Stability::patch()->toString()
         );
@@ -105,7 +105,7 @@ final class StabilityTest extends TestCase
      */
     public function minor()
     {
-        self::assertSame(
+        static::assertSame(
             'minor',
             Stability::minor()->toString()
         );
@@ -116,7 +116,7 @@ final class StabilityTest extends TestCase
      */
     public function pedantic()
     {
-        self::assertSame(
+        static::assertSame(
             'pedantic',
             Stability::pedantic()->toString()
         );
@@ -127,7 +127,7 @@ final class StabilityTest extends TestCase
      */
     public function unknown()
     {
-        self::assertSame(
+        static::assertSame(
             'unknown',
             Stability::unknown()->toString()
         );
@@ -140,12 +140,12 @@ final class StabilityTest extends TestCase
      */
     public function equals(bool $expected, Stability $stability, Stability $other): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             $stability->equals($other)
         );
 
-        self::assertSame(
+        static::assertSame(
             !$expected,
             $stability->notEquals($other)
         );

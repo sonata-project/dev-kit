@@ -70,7 +70,7 @@ final class Section
 
     public function asMarkdown(): string
     {
-        return implode(PHP_EOL, array_merge(
+        return implode(\PHP_EOL, array_merge(
             [
                 sprintf(
                     '### %s',

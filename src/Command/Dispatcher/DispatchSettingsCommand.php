@@ -44,8 +44,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:settings')
-            ->setDescription('Dispatches repository information and general settings for all sonata projects.')
-        ;
+            ->setDescription('Dispatches repository information and general settings for all sonata projects.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -89,12 +88,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
         ];
 
         if ($project->hasBranches()) {
-            $branchNames = $project->branchNames();
-            $defaultBranch = end($branchNames);
-
-            if (\is_string($defaultBranch)) {
-                $infoToUpdate['default_branch'] = $defaultBranch;
-            }
+            $infoToUpdate['default_branch'] = $project->defaultBranch()->name();
         }
 
         foreach ($infoToUpdate as $info => $value) {

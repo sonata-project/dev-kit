@@ -51,8 +51,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         $this
             ->setName('auto-merge')
             ->setDescription('Merges branches of repositories if there is no conflict.')
-            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', [])
-        ;
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

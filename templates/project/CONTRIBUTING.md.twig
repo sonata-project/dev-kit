@@ -22,6 +22,9 @@ interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
         * [Coding style](#coding-style)
         * [Documentation](#documentation)
         * [Tests](#tests)
+{% if branch.hasFrontend %}
+        * [Frontend](#frontend)
+{% endif %}
     * [Writing a pull request](#writing-a-pull-request)
         * [Subject](#subject)
         * [Changelog](#changelog)
@@ -148,6 +151,7 @@ If your PR contains an addition, a new feature, this one has to be fully covered
 
 Some rules have to be respected about the test:
 
+* Prefer [the built-in test doubles implementation](https://phpunit.de/manual/current/en/test-doubles.html) over prophecy.
 * Annotations about coverage are prohibited. This concerns:
   * `@covers`
   * `@coversDefaultClass`
@@ -161,22 +165,62 @@ Some rules have to be respected about the test:
 * Most of the time, the test class SHOULD have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
 
-##### Using test doubles
+{% if branch.hasFrontend %}
+#### Frontend
 
-Historically, Sonata has been using [the built-in test doubles implementation](https://phpunit.de/manual/current/en/test-doubles.html),
-but [started to use Prophecy](https://github.com/sonata-project/dev-kit/issues/89).
-This means the current Sonata codebase currently uses both implementations.
+Frontend assets are all located under `assets` directory, with the following structure:
 
-If you want to contribute a test that uses test doubles, please follow these rules :
+* `assets/js` for the JavaScript files
+* `assets/scss` for the [SCSS](https://sass-lang.com/) files
+* `assets/images` for the images
+* `assets/vendor` for the third party assets that can't be loaded via [NPM](https://www.npmjs.com/)
 
-1. All new test classes MUST use built-in test double implementation.
-2. If you are changing an existing test method, you MUST use the same implementation it already uses,
-and focus on the goal of your PR and only on that.
-3. If you are changing an existing test class, you MUST use the same implementation it already uses,
-to be more consistent.
-4. You MAY submit a PR that migrates a test class from Prophecy to the built-in test double implementation,
-but it MUST migrate it entirely. The PR SHOULD only be about the migration.
+This `assets` directory contains only the source code, and it is not directly accesible for the
+website, because is not placed under the `src/Resources/public`.
 
+If you take a look at the `src/Resources/public` you will see a lot of minified assets, this is done with
+[Webpack](https://webpack.js.org/), we are using [Webpack Encore](https://github.com/symfony/webpack-encore) to configure and run it.
+
+Similar to what Composer is for PHP there is a package manager for the frontend stack, called NPM and we declare our
+dependencies on `package.json` and the lockfile is `yarn.lock`, because we are using [Yarn](https://yarnpkg.com/).
+It is common to commit the lockfile in the case of frontend, because dependencies tend to upgrade really often and it
+affects directly the compiled files.
+
+If you PR is focused on fixing or improving the frontend you might need to modify
+JavaScript or CSS code. To do so, you will first need to install the dependencies:
+
+```bash
+yarn install --frozen-lockfile
+
+# if you want to upgrade some package you SHOULD omit the --frozen-lockfile
+yarn install
+# if you want to force the install of package you SHOULD add --force
+yarn install --force
+```
+
+To compile assets before the pull request you should run:
+
+```bash
+yarn encore production
+```
+
+This command will make the lint checks and compile for production usage the assets. You can also run
+lint checks ([ESLint](https://eslint.org/) and [Stylelint](https://stylelint.io/)) with:
+
+```bash
+yarn run eslint assets/js
+yarn run stylelint assets/scss
+```
+
+We have some strict rules following the most popular coding standards for JavaScript and SCSS.
+
+* [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+* [Stylelint Recommended Configuration](https://github.com/stylelint/stylelint-config-recommended)
+
+In case you need more documentation before making your Pull Request, please consider reading
+the documentation of all mentioned tools.
+
+{% endif %}
 ### Writing a Pull Request
 
 #### Subject
@@ -219,6 +263,7 @@ Your note can be put on one of these sections:
 * `Security` to invite users to upgrade in case of vulnerabilities.
 
 More information about the followed changelog format: [keepachangelog.com](http://keepachangelog.com/)
+{% if project.stableBranch is not null %}
 
 #### Base branch
 
@@ -259,6 +304,9 @@ For instance, assuming you want to introduce a new method to an existing interfa
 
 namespace Foo;
 
+/**
+ * @method void usefulMethod()
+ */
 interface BarInterface
 {
   /**
@@ -266,7 +314,7 @@ interface BarInterface
    *
    * This method does useful stuff.
    */
-  // public function usefulMethod();
+  // public function usefulMethod(): void;
 
   // …
 }
@@ -289,7 +337,7 @@ The `NEXT_MAJOR` tag SHOULD also be used for deprecations, it will be searched f
 You have three ways to deprecate things.
 
 For class definitions and properties, use the `@deprecated` tag.
-For methods, use the `@deprecated` tag and trigger a deprecation with `@trigger_error('...', E_USER_DEPRECATED)`:
+For methods, use the `@deprecated` tag and trigger a deprecation with `@trigger_error('...', \E_USER_DEPRECATED)`:
 
 ```php
 /**
@@ -320,7 +368,7 @@ final class StillUsedClass
         @trigger_error(sprintf(
             'Method %s() is deprecated since sonata-project/foo-lib 42.x and will be removed in version 43.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         echo "But this is not Gotham here.";
     }
@@ -348,7 +396,7 @@ you **MUST** still trigger a deprecation message (and add a `NEXT_MAJOR` comment
 if (/* some condition showing the user is using the legacy way */) {
     @trigger_error(
         'This is deprecated since sonata-project/bar-bundle 42.x and will not be supported in version 43.0.',
-        E_USER_DEPRECATED
+        \E_USER_DEPRECATED
     );
 } else {
     // new way of doing things
@@ -363,6 +411,7 @@ Be aware that pull requests with BC breaks could be rejected
 or postponed to next major release **only** if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
+{% endif %}
 
 ##### Dependency changes
 
@@ -373,8 +422,8 @@ If you want to change some dependencies, here are the rules:
 - Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
 but some extra rules MUST be respected here:
   - PHP versions that are under the [orange zone][php_supported_versions] (Security Support) **MUST NOT** be dropped on the stable branch.
-  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the master branch.
-  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
+  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the unstable branch.
+  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on the unstable branch.
   - Generally, don't drop dependency version if it doesn't have a big impact on the code.
   - Backward Compatible code related to the dropped version **MUST** be dropped on the same PR.
     This will allow seeing if this version drop **is really worth it** or not.
