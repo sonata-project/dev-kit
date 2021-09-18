@@ -206,8 +206,6 @@ datagrid-bundle:
 doctrine-extensions:
     phpstan: true
     psalm: true
-    excluded_files:
-        - README.md
     has_documentation: false
     branches:
         2.x:
@@ -360,8 +358,6 @@ form-extensions:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 google-authenticator:
-    excluded_files:
-        - README.md
     has_documentation: false
     branches:
         3.x:
