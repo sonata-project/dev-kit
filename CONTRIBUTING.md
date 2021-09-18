@@ -36,7 +36,7 @@ and docs help a lot with that.
 - missing tests : Encourage people to do TDD by making clear a PR will not get merged
 if it lacks tests. Not everything is easy to test though, keep that in mind.
 - BC breaks : If there is a BC-break, ask for a deprecation system to be created instead,
-and make sure the `master` branch is used.
+and make sure the unstable branch is used.
 - Unclear pieces of code : does the code use clear, appropriate variable or class names,
 or does it use names like `data`, `result`, `WhateverManager`, `SomethingService`?
 Are exception names still meaningful if you remove the `Exception` suffix? Do all
@@ -68,7 +68,7 @@ Applying labels requires write access to PRs, but you can still advise if you do
 There are several labels that will help determine what the next version number will be.
 Apply the first label that matches one of this conditions, in that order:
 
-- `major`: there is a BC-break. The PR SHOULD target the `master` branch.
+- `major`: there is a BC-break. The PR SHOULD target the unstable branch.
 - `minor`: there is a backwards-compatible change in the API. The PR SHOULD target the stable branch.
 - `patch`: this fixes an issue (not necessarily reported). The PR SHOULD target the stable branch.
 - `docs`: this PR is solely about the docs. `pedantic` is implied.
@@ -111,13 +111,13 @@ code yourself, or ping someone who can help.
 
 ## Manual merges
 
-Thanks to dev-kit, stable branches are regularly merged into master branches.
+Thanks to dev-kit, stable branches are regularly merged into unstable branches.
 It is great when it works, but often, there will be git conflicts and a human
 intervention will be needed. Let us assume we are working on a repository where
 the stable branch is 42.x. To do the merge manually, follow these steps:
 1. Fetch the latest commits: `git fetch --all`
-2. Checkout the master branch, and make sure it is up to date:
-   `git checkout -B master origin/master`
+2. Checkout the unsable branch, and make sure it is up to date:
+   `git checkout -B 43.x origin/43.x`
 3. Proceed with the merge: `git merge origin/42.x`
 4. Fix the conflicts (if you are doing this, it is because of conflicts,
    right?) `git mergetool`
@@ -137,48 +137,19 @@ To know what you are going to release on branch 42.x, given that the last releas
 go to `https://github.com/sonata-project/SonataAdminBundle/compare/42.3.1...42.x`.
 You should see a list of commits, some of which SHOULD contain links to pull requests.
 
-#### Determining the next release number
+#### Determining the next release number and compiling the changelog
 
-First of all, you MUST find the exact datetime of the last release.
-Go to the project releases section and display the last release page:
-
-![Release page](https://user-images.githubusercontent.com/1698357/39665568-d9dd74bc-5096-11e8-8c25-dff0d75ce717.png)
-
-Then, click on the commit hash to show it and open the browser dev toolbar from the commit date:
-
-![Commit page](https://user-images.githubusercontent.com/1698357/39665576-f9fa09ea-5096-11e8-8ddb-e5860a7b2122.png)
-
-Then you know the exact datetime of the released commit is `2018-04-20T09:47:48Z`. Copy it.
-
-It's important to NOT use the tag datetime because the tag MAY be written later after the commit.
-
-An alternative way to do this is to issue the following command in your shell:
-```shell
-git describe --abbrev=0 --tags| xargs git show --pretty=format:%aI --no-patch|tail -n 1
+On dev-kit project, run
 ```
-
-After that, go on the pull requests page of the repo and replace the default filter by this one:
-
+bin/console release
 ```
-base:3.x merged:>2018-04-20T09:47:48Z
-```
+then select the project and the branch to release.
 
- - `base`: The base branch where the PR are merged.
- It MUST be the current stable branch, or the legacy branch where you want to make a release.
- - `merged`: All the pull request merged **after** the given datetime.
+If everything is fine, a Changelog will be generated. If not an error will explain why,
+most of the time, a changelog or a label (pedantic/patch/minor/major) is missing on a PR.
 
-If any of those pull requests is labeled `minor`, then the next release SHOULD be a minor release (42.4.0).
-Otherwise, if there are any pull requests labeled `patch`,
-the next release SHOULD be a patch release (42.3.2).
-If there are neither minor nor patch pull requests, all the others SHOULD be labeled `docs` or `pedantic`,
-and you SHOULD not make a release.
-
-![Pull requests page](https://user-images.githubusercontent.com/1698357/39665578-031aa2e6-5097-11e8-9f68-9ea32eec2b79.png)
-
-In this case, it will be a patch release.
-
-:warning: All the pull requests MUST have only one `patch`, `minor`, `pedantic` or `docs` label.
-If you find a non-labelled PR or a `major` one, a mistake was made and MUST be fixed before the release.
+:warning: Do not hesitate to review the changelog before the copy.
+The entries SHOULD be short, clear and MUST tell what have been fixed/improved for **the end user**, not how.
 
 #### Adding the release to the UPGRADE file
 
@@ -203,30 +174,9 @@ by resolving `x` to its value at the time of the release.
 
 :warning: You can do it quickly with a "Search and Replace" feature, but be careful not to replace unwanted matches.
 
-#### Compiling the changelog
-
-Each non-pedantic (and therefore non-docs) PR SHOULD contain a `CHANGELOG` section,
-that you need to copy manually into the `CHANGELOG.md` file.
-The title is in the following format :
-`[42.3.2](https://github.com/sonata-project/SonataNewsBundle/compare/42.3.1...42.3.2) - YYYY-MM-DD`.
-
-:warning: Do not hesitate to review the changelog before the copy.
-The entries SHOULD be short, clear and MUST tell what have been fixed/improved for **the end user**, not how.
-
 #### Creating the release commit
 
-The changes above SHOULD be added to a signed commit with the following message : `42.3.2`. Nothing else.
-You MUST sign the tag with your GPG key, after which all you have to do is push it.
-If you don't have push access, you can still create a PR with the relevant changes
-and have them signed off by someone who has it.
-
-Commands summary (we assume `upstream` corresponds to the Sonata repository):
-
-```
-git commit -am 42.3.2
-git tag -s 42.3.2 -m 42.3.2
-git push upstream && git push upstream --tags
-```
+The previous changes above SHOULD be added with a PR reviewed by someone else.
 
 #### Fill the release note on GitHub
 
@@ -243,7 +193,7 @@ to avoid branches getting too far from their more stable counterparts:
 the biggest the gap, the harder the merges are.
 We use a 3 branch system, which means releasing 42.0.0 implies that:
 
-- the master branch is aliased to 43.x;
+- a new branch 43.x is created;
 - 42.x becomes the stable branch;
 - 41.x becomes the legacy branch;
 - 40.x is abandoned.
@@ -270,15 +220,13 @@ it SHOULD receive one if that version is a patch version.
 
 #### Creating the new stable branch and files
 
-If the current major is `42`, a new `43.x` branch SHOULD be created from master,
-then a commit SHOULD be done on master to bump the `branch-alias` and version numbers in the README.
+If the current major is `42`, a new `43.x` branch SHOULD be created from `42.x`.
 
 Also, the following files MUST be created/updated on the new stable branch:
 
  - `UPGRADE-43.x.md`, containing only the main title
  - `UPGRADE-43.0.md`, containing the upgrade notes fetched from the major PRs.
  - `CHANGELOG.md`, containing the changelog of the major PRs.
- - `composer.json`, the `branch-alias` MUST be changed to `43.x-dev`
 
 Push the new branch with a commit containing the modified files and "43.x-dev" as comment.
 
