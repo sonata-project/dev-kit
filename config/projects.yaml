@@ -518,6 +518,8 @@ translation-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 twig-extensions:
+    phpstan: true
+    psalm: true
     documentation_badge_slug: sonata-project-twig-extensions
     branches:
         2.x:
