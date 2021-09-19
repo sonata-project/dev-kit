@@ -347,6 +347,8 @@ formatter-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 form-extensions:
+    phpstan: true
+    psalm: true
     branches:
         2.x:
             php: ['7.3', '7.4', '8.0']
