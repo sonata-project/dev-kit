@@ -309,8 +309,12 @@ entity-audit-bundle:
     branches:
         2.x:
             php: ['7.3', '7.4', '8.0']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         1.x:
             php: ['7.3', '7.4', '8.0']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 exporter:
     phpstan: true
