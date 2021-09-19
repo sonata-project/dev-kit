@@ -102,6 +102,11 @@ jobs:
             - name: Allow unstable dependencies
               run: composer config minimum-stability dev
 
+{# Remove when when all dev dependencies are compatible with Symfony 6 #}
+            - name: Remove dev dependencies not compatible with Symfony 6
+              if: matrix.symfony-require == '6.0.*'
+              run: composer remove vimeo/psalm psalm/plugin-phpunit psalm/plugin-symfony weirdan/doctrine-psalm-plugin --dev --no-update --no-interaction
+
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
             - name: Set COMPOSER_ROOT_VERSION environment variable
