@@ -228,8 +228,6 @@ Also, the following files MUST be created/updated on the new stable branch:
  - `UPGRADE-43.0.md`, containing the upgrade notes fetched from the major PRs.
  - `CHANGELOG.md`, containing the changelog of the major PRs.
 
-Push the new branch with a commit containing the modified files and "43.x-dev" as comment.
-
 #### Tagging the release
 
 Finally, a signed tag SHOULD be created on the newly-created stable branch and the release note MUST be filled.
