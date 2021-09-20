@@ -319,8 +319,6 @@ entity-audit-bundle:
 exporter:
     phpstan: true
     psalm: true
-    excluded_files:
-        - README.md
     documentation_badge_slug: sonata-project-exporter
     branches:
         3.x:
