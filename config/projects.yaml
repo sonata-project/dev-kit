@@ -408,6 +408,8 @@ media-bundle:
                 imagine/imagine: ['1.*']
 
 news-bundle:
+    phpstan: true
+    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
