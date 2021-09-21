@@ -148,6 +148,8 @@ then select the project and the branch to release.
 If everything is fine, a Changelog will be generated. If not an error will explain why,
 most of the time, a changelog or a label (pedantic/patch/minor/major) is missing on a PR.
 
+You need to copy manually this changelog into the `CHANGELOG.md` file.
+
 :warning: Do not hesitate to review the changelog before the copy.
 The entries SHOULD be short, clear and MUST tell what have been fixed/improved for **the end user**, not how.
 
