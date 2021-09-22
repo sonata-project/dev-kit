@@ -64,7 +64,6 @@ This package is available under the [MIT license](LICENSE).
 {% endif %}
 [test_unstable_badge]: https://github.com/sonata-project/{{ project.repository.name }}/workflows/Test/badge.svg?branch={{ project.unstableBranch.name }}
 [test_unstable_link]: https://github.com/sonata-project/{{ project.repository.name }}/actions?query=workflow:test+branch:{{ project.unstableBranch.name }}
-
 {% if project.stableBranch is not null %}
 [coverage_stable_badge]: https://codecov.io/gh/sonata-project/{{ project.repository.name }}/branch/{{ project.stableBranch.name }}/graph/badge.svg
 [coverage_stable_link]: https://codecov.io/gh/sonata-project/{{ project.repository.name }}/branch/{{ project.stableBranch.name }}
@@ -75,7 +74,6 @@ This package is available under the [MIT license](LICENSE).
 [shepherd_stable_badge]: https://shepherd.dev/github/sonata-project/{{ project.repository.name }}/coverage.svg
 [shepherd_stable_link]: https://shepherd.dev/github/sonata-project/{{ project.repository.name }}
 {% endif %}
-
 {% if project.hasDocumentation %}
 {% if project.stableBranch is not null %}
 [documentation_stable_badge]: https://readthedocs.org/projects/{{ project.documentationBadgeSlug }}/badge/?version={{ project.stableBranch.name }}
