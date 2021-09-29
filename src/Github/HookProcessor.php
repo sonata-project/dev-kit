@@ -105,6 +105,7 @@ final class HookProcessor
             ]
         );
 
+        /** @var array<string, string> $magicActions */
         $magicActions = [
             '/request-release' => 'request-release.markdown',
         ];

@@ -154,9 +154,9 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0: string}>
+     * @return iterable<string, array{string}>
      */
-    public function stateProvider(): \Generator
+    public function stateProvider(): iterable
     {
         yield 'failure' => ['failure'];
         yield 'pending' => ['pending'];
@@ -181,9 +181,9 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0: bool, 1: string}>
+     * @return iterable<string, array{bool, string}>
      */
-    public function isSuccessfulProvider(): \Generator
+    public function isSuccessfulProvider(): iterable
     {
         yield 'failure' => [false, 'failure'];
         yield 'pending' => [false, 'pending'];

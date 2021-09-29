@@ -84,7 +84,6 @@ final class Projects
         $projects = [];
         foreach ($names as $name) {
             try {
-                Assert::stringNotEmpty($name);
                 Assert::keyExists($this->projects, $name);
             } catch (\InvalidArgumentException $e) {
                 throw UnknownProject::forName($name);

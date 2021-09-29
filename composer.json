@@ -37,10 +37,11 @@
         "symfony/notifier": "^5.3",
         "symfony/slack-notifier": "^5.3",
         "symfony/string": "^5.3",
-        "symfony/twig-pack": "^1.0",
+        "symfony/twig-bundle": "^5.3",
         "symfony/yaml": "^5.3",
         "twig/extra-bundle": "^3.1",
         "twig/markdown-extra": "^3.1",
+        "twig/twig": "^2.12 || ^3.0",
         "webmozart/assert": "^1.9"
     },
     "replace": {
@@ -57,13 +58,19 @@
     },
     "require-dev": {
         "ergebnis/test-util": "^1.2",
-        "phpstan/phpstan": "^0.12.53",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.84",
+        "phpstan/phpstan-phpunit": "^0.12.18",
+        "phpstan/phpstan-strict-rules": "^0.12.10",
+        "phpstan/phpstan-symfony": "^0.12.21",
+        "psalm/plugin-phpunit": "^0.16",
+        "psalm/plugin-symfony": "^2.0",
         "symfony/debug-bundle": "^5.3",
         "symfony/phpunit-bridge": "^5.3",
         "symfony/stopwatch": "^5.3",
-        "symfony/twig-bundle": "^5.3",
         "symfony/var-dumper": "^5.3",
-        "symfony/web-profiler-bundle": "^5.3"
+        "symfony/web-profiler-bundle": "^5.3",
+        "vimeo/psalm": "^4.9.2"
     },
     "config": {
         "platform": {
@@ -92,9 +99,11 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/simple-phpunit install",
             "@auto-scripts"
         ],
         "post-update-cmd": [
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/simple-phpunit install",
             "@auto-scripts"
         ],
         "auto-scripts": {

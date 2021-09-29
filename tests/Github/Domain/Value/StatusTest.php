@@ -142,9 +142,9 @@ final class StatusTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0: string}>
+     * @return iterable<string, array{string}>
      */
-    public function stateProvider(): \Generator
+    public function stateProvider(): iterable
     {
         yield 'error' => ['error'];
         yield 'failure' => ['failure'];

@@ -32,7 +32,7 @@ final class DetermineNextReleaseVersion
             return $pr->stability()->toString();
         }, $pullRequests);
 
-        // Add compatibility for non-semantical versioning version like `4.0.0-alpha-1`
+        // Add compatibility for non-semantic versioning like `4.0.0-alpha-1`
         $currentTag = str_replace('-', '.', $current->toString());
         $parts = explode('.', $currentTag);
 

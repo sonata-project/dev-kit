@@ -45,7 +45,7 @@ final class HookTest extends TestCase
         $response = [
             'id' => $id = 123,
             'url' => $hookUrl = 'http://test.de',
-            'active' => $active = true,
+            'active' => true,
             'config' => $config,
             'events' => $events,
         ];
@@ -54,7 +54,7 @@ final class HookTest extends TestCase
 
         static::assertSame($id, $hook->id());
         static::assertSame($hookUrl, $hook->url()->toString());
-        static::assertSame($active, $hook->active());
+        static::assertTrue($hook->active());
         static::assertTrue($hook->config()->equals($config));
         static::assertSame($url, $hook->config()->url()->toString());
         static::assertTrue($hook->events()->equals($events));

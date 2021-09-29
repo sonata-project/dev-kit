@@ -250,8 +250,11 @@ final class Project
     public function homepage(): string
     {
         $latestVersion = $this->getLatestPackagistVersion();
+        if ('' !== $latestVersion->getHomepage()) {
+            return $latestVersion->getHomepage();
+        }
 
-        return $latestVersion->getHomepage() ?: 'https://sonata-project.org';
+        return 'https://sonata-project.org';
     }
 
     public function description(): string

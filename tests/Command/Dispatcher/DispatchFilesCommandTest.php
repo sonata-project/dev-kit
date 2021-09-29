@@ -66,9 +66,9 @@ final class DispatchFilesCommandTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array<0: string, 1: string>>
+     * @return iterable<string, array{string, string}>
      */
-    public function projectProvider(): \Generator
+    public function projectProvider(): iterable
     {
         $project = <<<CONFIG
 admin-bundle:

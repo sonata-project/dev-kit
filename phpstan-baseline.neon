@@ -1,3 +1,5 @@
 parameters:
     ignoreErrors:
-    - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
+        - # https://github.com/phpstan/phpstan-strict-rules/issues/130
+            message: '#^Call to static method PHPUnit\\Framework\\Assert::.* will always evaluate to true\.$#'
+            path: tests/
