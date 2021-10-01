@@ -56,6 +56,7 @@ Abandoned
 * `ecommerce <https://docs.sonata-project.org/projects/ecommerce>`_
 * `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_
 * `SonataArticleBundle <https://docs.sonata-project.org/projects/SonataArticleBundle>`_
+* `SonataClassificationMediaBundle <https://docs.sonata-project.org/projects/SonataClassificationMediaBundle>`_
 * `SonataCommentBundle <https://docs.sonata-project.org/projects/SonataCommentBundle>`_
 * `SonataDashboardBundle <https://docs.sonata-project.org/projects/SonataDashboardBundle>`_
 * `SonataDoctrinePhpcrAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle>`_
