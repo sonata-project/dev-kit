@@ -18,16 +18,13 @@ or another solution you might need different persistence bundle.
 
 * `SonataDoctrineMongoDBAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle>`_
 * `SonataDoctrineORMAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle>`_
-* `SonataDoctrinePhpcrAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle>`_ (abandoned)
 
 Foundation Bundles
 ------------------
 Base features that most CMS could need.
 
-* `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_ (abandoned)
 * `SonataBlockBundle <https://docs.sonata-project.org/projects/SonataBlockBundle>`_
 * `SonataCacheBundle <https://docs.sonata-project.org/projects/SonataCacheBundle>`_
-* `SonataDashboardBundle <https://docs.sonata-project.org/projects/SonataDashboardBundle>`_
 * `SonataDatagridBundle <https://docs.sonata-project.org/projects/SonataDatagridBundle>`_
 * `SonataFormatterBundle <https://docs.sonata-project.org/projects/SonataFormatterBundle>`_
 * `SonataNotificationBundle <https://docs.sonata-project.org/projects/SonataNotificationBundle>`_
@@ -39,19 +36,10 @@ Feature Bundles
 ---------------
 Useful features packaged in a bundle to be installed if you need them.
 
-* `SonataArticleBundle <https://docs.sonata-project.org/projects/SonataArticleBundle>`_
 * `SonataClassificationBundle <https://docs.sonata-project.org/projects/SonataClassificationBundle>`_
-* `SonataCommentBundle <https://docs.sonata-project.org/projects/SonataCommentBundle>`_
+* `SonataIntlBundle <https://docs.sonata-project.org/projects/SonataIntlBundle>`_
 * `SonataMediaBundle <https://docs.sonata-project.org/projects/SonataMediaBundle>`_
-* `SonataNewsBundle <https://docs.sonata-project.org/projects/SonataNewsBundle>`_
 * `SonataPageBundle <https://docs.sonata-project.org/projects/SonataPageBundle>`_
-* `SonataTimelineBundle <https://docs.sonata-project.org/projects/SonataTimelineBundle>`_
-
-Ecommerce
----------
-Sonata ecommerce solution.
-
-* `ecommerce <https://docs.sonata-project.org/projects/ecommerce>`_
 
 Libraries
 ---------
@@ -61,6 +49,19 @@ Libraries used by our bundles, but can be also be installed as standalone packag
 * `exporter <https://docs.sonata-project.org/projects/exporter>`_
 * `form-extensions <https://docs.sonata-project.org/projects/form-extensions>`_
 * `twig-extensions <https://docs.sonata-project.org/projects/twig-extensions>`_
+
+Abandoned
+---------
+
+* `ecommerce <https://docs.sonata-project.org/projects/ecommerce>`_
+* `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_
+* `SonataArticleBundle <https://docs.sonata-project.org/projects/SonataArticleBundle>`_
+* `SonataClassificationMediaBundle <https://docs.sonata-project.org/projects/SonataClassificationMediaBundle>`_
+* `SonataCommentBundle <https://docs.sonata-project.org/projects/SonataCommentBundle>`_
+* `SonataDashboardBundle <https://docs.sonata-project.org/projects/SonataDashboardBundle>`_
+* `SonataDoctrinePhpcrAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle>`_
+* `SonataNewsBundle <https://docs.sonata-project.org/projects/SonataNewsBundle>`_
+* `SonataTimelineBundle <https://docs.sonata-project.org/projects/SonataTimelineBundle>`_
 
 .. toctree::
     :caption: General documentation
