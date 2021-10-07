@@ -31,11 +31,11 @@ final class ConfiguredLabels
     public function __construct()
     {
         $processor = new Processor();
-        $config = $processor->processConfiguration(new LabelsConfiguration(), [
+        $baseConfig = $processor->processConfiguration(new LabelsConfiguration(), [
             'sonata' => Yaml::parseFile(__DIR__.'/../../config/labels.yaml'),
         ]);
 
-        foreach ($config['labels'] as $name => $config) {
+        foreach ($baseConfig['labels'] as $name => $config) {
             $this->labels[$name] = Label::fromValues(
                 $name,
                 Label\Color::fromString($config['color'])

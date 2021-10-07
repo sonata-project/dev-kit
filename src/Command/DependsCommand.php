@@ -75,10 +75,6 @@ final class DependsCommand extends AbstractCommand
             ));
             $this->io->newLine();
 
-            if (!\is_array($version->getRequire())) {
-                continue;
-            }
-
             foreach ($version->getRequire() as $packageName => $constraint) {
                 if (!u($packageName)->startsWith('sonata-project/')) {
                     continue;

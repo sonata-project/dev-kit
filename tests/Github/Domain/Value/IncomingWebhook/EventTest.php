@@ -57,7 +57,10 @@ final class EventTest extends TestCase
         );
     }
 
-    public function equalsProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Event, Event}>
+     */
+    public function equalsProvider(): iterable
     {
         yield [
             true,
@@ -85,7 +88,10 @@ final class EventTest extends TestCase
         );
     }
 
-    public function equalsOneOfProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Event, array<Event>}>
+     */
+    public function equalsOneOfProvider(): iterable
     {
         yield [
             true,

@@ -123,9 +123,9 @@ CONFIG;
     }
 
     /**
-     * @return \Generator<string, array<0: bool, 1: string, 2: string>>
+     * @return iterable<string, array{bool, string, string}>
      */
-    public function isBundleProvider(): \Generator
+    public function isBundleProvider(): iterable
     {
         yield 'true - admin-bundle' => [
             true,
@@ -223,9 +223,9 @@ CONFIG,
     }
 
     /**
-     * @return \Generator<string, array<0: string, 1: string>>
+     * @return iterable<string, array{string, string}>
      */
-    public function homepageProvider(): \Generator
+    public function homepageProvider(): iterable
     {
         yield 'empty string' => [
             'https://sonata-project.org',
@@ -272,9 +272,9 @@ CONFIG,
     }
 
     /**
-     * @return \Generator<string, array<0: string, 1: string, 2: bool>>
+     * @return iterable<string, array{string, string, bool}>
      */
-    public function descriptionProvider(): \Generator
+    public function descriptionProvider(): iterable
     {
         yield 'empty string' => [
             '',
@@ -446,9 +446,9 @@ CONFIG,
     }
 
     /**
-     * @return \Generator<string, array<0: string, 1: string>>
+     * @return iterable<string, array{string, string}>
      */
-    public function documentationBadgeSlugProvider(): \Generator
+    public function documentationBadgeSlugProvider(): iterable
     {
         yield 'null - admin-bundle' => [
             'sonataadminbundle',
@@ -536,9 +536,9 @@ CONFIG,
     }
 
     /**
-     * @return \Generator<string, array<0: string, 1: string>>
+     * @return iterable<string, array{string, string}>
      */
-    public function defaultBranchProvider(): \Generator
+    public function defaultBranchProvider(): iterable
     {
         yield 'master' => [
             'master',

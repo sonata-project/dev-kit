@@ -82,7 +82,10 @@ final class ColorTest extends TestCase
         );
     }
 
-    public function equalsProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Label\Color, Label\Color}>
+     */
+    public function equalsProvider(): iterable
     {
         yield [
             true,

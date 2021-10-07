@@ -88,9 +88,9 @@ final class VariantTest extends TestCase
     }
 
     /**
-     * @return \Generator<array{0: string, 1: string, 2: string}>
+     * @return iterable<array{string, string, string}>
      */
-    public function validProvider(): \Generator
+    public function validProvider(): iterable
     {
         yield [
             'sonata-project/dev-kit:"1.*"',

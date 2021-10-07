@@ -18,13 +18,13 @@ use App\Twig\Extension\GithubSponsorsExtension;
 use Github\Api\Repo;
 use Github\Client as GithubClient;
 use Packagist\Api\Result\Package;
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class GithubSponsorsExtensionTest extends TestCase
 {
     /**
-     * @var GithubClient&Stub
+     * @var GithubClient&MockObject
      */
     private GithubClient $github;
 

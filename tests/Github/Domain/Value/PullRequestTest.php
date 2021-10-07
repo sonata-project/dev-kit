@@ -361,9 +361,9 @@ final class PullRequestTest extends TestCase
     }
 
     /**
-     * @return \Generator<array{0: Stability, 1: array<mixed>}>
+     * @return iterable<array{Stability, array<mixed>}>
      */
-    public function stabilityProvider(): \Generator
+    public function stabilityProvider(): iterable
     {
         yield [
             Stability::unknown(),

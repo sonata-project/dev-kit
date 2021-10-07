@@ -97,7 +97,7 @@ final class Changelog
 
     public function asMarkdown(): string
     {
-        $markdown[] = $this->headline;
+        $markdown = [$this->headline];
         foreach ($this->sections as $section) {
             $markdown[] = $section->asMarkdown();
             $markdown[] = '';

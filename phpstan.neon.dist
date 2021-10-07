@@ -3,9 +3,16 @@ includes:
 
 parameters:
     level: 5
-
+    bootstrapFiles:
+        - vendor/bin/.phpunit/phpunit/vendor/autoload.php
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+        console_application_loader: ./phpstan-console-application.php
     paths:
         - src
-
-    excludes_analyse:
-        - tests/bootstrap.php
+        - tests
+    treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: true
+    checkMissingIterableValueType: true
+    checkMissingVarTagTypehint: true
+    checkMissingTypehints: true

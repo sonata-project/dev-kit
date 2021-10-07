@@ -79,7 +79,10 @@ final class ActionTest extends TestCase
         );
     }
 
-    public function equalsProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Action, Action}>
+     */
+    public function equalsProvider(): iterable
     {
         yield [
             true,
@@ -107,7 +110,10 @@ final class ActionTest extends TestCase
         );
     }
 
-    public function equalsOneOfProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Action, array<Action>}>
+     */
+    public function equalsOneOfProvider(): iterable
     {
         yield [
             true,
