@@ -4,17 +4,15 @@ admin-bundle:
     documentation_badge_slug: sonata-project-sonataadminbundle
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
-                sonata-project/block-bundle: ['4.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
-                sonata-project/block-bundle: ['4.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
             custom_gitignore_part: |
