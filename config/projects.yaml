@@ -472,6 +472,10 @@ seo-bundle:
     phpstan: true
     psalm: true
     branches:
+        4.x:
+            php: ['7.4', '8.0']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
         3.x:
             php: ['7.4', '8.0']
             variants:
