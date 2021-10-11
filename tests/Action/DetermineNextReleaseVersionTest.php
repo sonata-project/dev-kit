@@ -78,6 +78,17 @@ final class DetermineNextReleaseVersionTest extends TestCase
     public function determineProvider(): iterable
     {
         yield [
+            '2.0.0-alpha-1',
+            '2.x',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
             '2.0.0',
             '1.1.0',
             [

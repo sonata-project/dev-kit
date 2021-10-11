@@ -40,6 +40,10 @@ final class DetermineNextReleaseVersion
             return Tag::fromString(implode('.', [$parts[0], $parts[1], $parts[2]]));
         }
 
+        if ('x' === $parts[1]) {
+            return Tag::fromString(implode('.', [(int) $parts[0], 0, '0-alpha-1']));
+        }
+
         if (\in_array(Stability::major()->toString(), $stabilities, true)) {
             return Tag::fromString(implode('.', [(int) $parts[0] + 1, 0, 0]));
         }
