@@ -391,7 +391,7 @@ media-bundle:
     documentation_badge_slug: sonata-project-sonatamediabundle
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
