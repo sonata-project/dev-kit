@@ -148,7 +148,7 @@ classification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
