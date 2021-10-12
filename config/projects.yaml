@@ -334,7 +334,7 @@ formatter-bundle:
     phpstan: true
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
