@@ -35,32 +35,32 @@ jobs:
             matrix:
                 php-version:
 {% for phpVersion in branch.phpVersions %}
-                    - {{ phpVersion.toString }}
+                    - '{{ phpVersion.toString }}'
 {% endfor %}
                 dependencies: [highest]
                 allowed-to-fail: [false]
                 symfony-require: ['']
                 variant: [normal]
                 include:
-                    - php-version: {{ branch.lowestPhpVersion.toString }}
+                    - php-version: '{{ branch.lowestPhpVersion.toString }}'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
 {# Remove when all branches supports php 8.0 #}
 {% if '8.0' != branch.highestPhpVersion.toString %}
-                    - php-version: 8.0
+                    - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: true
                       variant: normal
 {% endif %}
 {% for variant in branch.variants|filter(v => v.package != 'symfony/symfony') %}
-                    - php-version: {{ branch.targetPhpVersion.toString }}
+                    - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
                       allowed-to-fail: false
                       variant: {{ variant.toString|raw }}
 {% endfor %}
 {% for variant in branch.variants|filter(v => v.package == 'symfony/symfony') %}
-                    - php-version: {{ branch.targetPhpVersion.toString }}
+                    - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: {{ variant.version }}
