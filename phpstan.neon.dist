@@ -3,8 +3,6 @@ includes:
 
 parameters:
     level: 5
-    bootstrapFiles:
-        - vendor/bin/.phpunit/phpunit/vendor/autoload.php
     symfony:
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
         console_application_loader: ./phpstan-console-application.php
