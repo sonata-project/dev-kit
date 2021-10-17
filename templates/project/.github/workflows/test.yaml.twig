@@ -46,13 +46,6 @@ jobs:
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-{# Remove when all branches supports php 8.0 #}
-{% if '8.0' != branch.highestPhpVersion.toString %}
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed-to-fail: true
-                      variant: normal
-{% endif %}
 {% for variant in branch.variants|filter(v => v.package != 'symfony/symfony') %}
                     - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
@@ -84,13 +77,6 @@ jobs:
             - name: Add PHPUnit matcher
               {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
-{# Remove when all branches supports php 8.0 #}
-{% if '8.0' != branch.highestPhpVersion.toString %}
-            - name: Configuration required for PHP 8.0
-              if: matrix.php-version == '8.0'
-              run: composer config platform.php 7.4.99
-
-{% endif %}
             - name: Globally install symfony/flex
               if: matrix.symfony-require != ''
               run: composer global require --no-progress --no-scripts --no-plugins symfony/flex
