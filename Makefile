@@ -43,14 +43,14 @@ lint-xliff:
 .PHONY: lint-xliff
 
 lint-php:
-	php-cs-fixer fix --ansi --verbose --diff --dry-run
+	vendor/bin/php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
 cs-fix: cs-fix-php cs-fix-xml
 .PHONY: cs-fix
 
 cs-fix-php:
-	php-cs-fixer fix --verbose
+	vendor/bin/php-cs-fixer fix --verbose
 .PHONY: cs-fix-php
 
 cs-fix-xml:
@@ -64,11 +64,11 @@ cs-fix-xml:
 .PHONY: cs-fix-xml
 
 test:
-	vendor/bin/simple-phpunit -c phpunit.xml.dist
+	vendor/bin/phpunit -c phpunit.xml.dist
 .PHONY: test
 
 coverage:
-	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+	vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 .PHONY: coverage
 
 docs:

@@ -22,10 +22,32 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Run PHP-CS-Fixer
-              uses: docker://oskarstark/php-cs-fixer-ga:3.0.0
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
               with:
-                  args: --ansi --verbose --diff --dry-run
+                  php-version: {{ branch.targetPhpVersion.toString }}
+                  coverage: pcov
+                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+{% if branch.phpExtensions is not empty %}
+                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
+{% endif %}
+
+{# Remove when removing 3.x for the managed branches of block-bundle #}
+{% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
+            - name: Set COMPOSER_ROOT_VERSION environment variable
+              uses: ergebnis/composer-root-version-action@0.2.1
+              with:
+                  branch: master
+
+{% endif %}
+            - name: Install Composer dependencies (highest)
+              uses: ramsey/composer-install@v1
+              with:
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable
+
+            - name: Lint PHP files
+              run: make lint-php
 
     composer-normalize:
         name: composer-normalize
@@ -53,7 +75,7 @@ jobs:
             - name: Install Ruby 2.6
               uses: actions/setup-ruby@v1
               with:
-                  ruby-version: '2.6'
+                  ruby-version: 2.6
 
             - name: Install required gem
               run: gem install yaml-lint
