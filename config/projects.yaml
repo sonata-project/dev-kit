@@ -128,9 +128,9 @@ cache:
     has_documentation: false
     branches:
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
         2.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
 
 cache-bundle:
     branches:
@@ -367,9 +367,9 @@ google-authenticator:
     has_documentation: false
     branches:
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
         2.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
 
 intl-bundle:
     branches:
