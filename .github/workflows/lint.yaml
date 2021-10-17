@@ -21,13 +21,9 @@ jobs:
               with:
                   php-version: 8.0
                   coverage: none
-                  tools: composer:v2
-
-            - name: Install Composer dependencies
-              uses: ramsey/composer-install@v1
-              with:
-                  dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable
+                  tools: composer:v2, php-cs-fixer:3
+              env:
+                  COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Lint PHP files
               run: make lint-php
@@ -41,10 +37,17 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Run composer-normalize
-              uses: docker://ergebnis/composer-normalize-action:0.8.0
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
               with:
-                  args: --dry-run
+                  php-version: 8.0
+                  coverage: none
+                  tools: composer:v2, composer-normalize:2
+              env:
+                  COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Lint Composer
+              run: make lint-composer
 
     yaml-files:
         name: YAML files

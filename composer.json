@@ -58,7 +58,6 @@
     },
     "require-dev": {
         "ergebnis/test-util": "^1.2",
-        "friendsofphp/php-cs-fixer": "^3.2",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.84",
         "phpstan/phpstan-phpunit": "^0.12.18",
@@ -101,11 +100,9 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "[ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/simple-phpunit install",
             "@auto-scripts"
         ],
         "post-update-cmd": [
-            "[ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/simple-phpunit install",
             "@auto-scripts"
         ],
         "auto-scripts": {

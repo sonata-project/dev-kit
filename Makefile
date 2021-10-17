@@ -10,6 +10,7 @@ lint: lint-composer lint-yaml lint-xml lint-xliff lint-php
 .PHONY: lint
 
 lint-composer:
+	composer-normalize --dry-run
 	composer validate
 .PHONY: lint-composer
 
@@ -43,14 +44,14 @@ lint-xliff:
 .PHONY: lint-xliff
 
 lint-php:
-	vendor/bin/php-cs-fixer fix --ansi --verbose --diff --dry-run
+	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
-cs-fix: cs-fix-php cs-fix-xml
+cs-fix: cs-fix-php cs-fix-xml cs-fixer-composer
 .PHONY: cs-fix
 
 cs-fix-php:
-	vendor/bin/php-cs-fixer fix --verbose
+	php-cs-fixer fix --verbose
 .PHONY: cs-fix-php
 
 cs-fix-xml:
@@ -62,6 +63,10 @@ cs-fix-xml:
 		XMLLINT_INDENT='    ' xmllint --encode UTF-8 --format "$$xmlFile" --output "$$xmlFile"; \
 	done
 .PHONY: cs-fix-xml
+
+cs-fix-composer:
+	composer-normalize
+.PHONY: cs-fix-composer
 
 test:
 	vendor/bin/phpunit -c phpunit.xml.dist
