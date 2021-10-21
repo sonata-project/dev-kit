@@ -112,6 +112,17 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         yield [
             '2.0.0',
+            '2.0.0-alpha1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
             '1.1.0',
             [
                 self::createPullRequestWithStability(Stability::unknown()),
