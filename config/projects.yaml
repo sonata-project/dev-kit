@@ -220,10 +220,12 @@ entity-audit-bundle:
             php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/framework-bundle: ['4.4.*']
         1.x:
             php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/framework-bundle: ['4.4.*']
 
 exporter:
     phpstan: true
