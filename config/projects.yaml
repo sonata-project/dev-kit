@@ -211,6 +211,8 @@ doctrine-orm-admin-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 entity-audit-bundle:
+    phpstan: true
+    psalm: true
     excluded_files:
         - LICENSE
         - README.md
