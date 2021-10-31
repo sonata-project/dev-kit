@@ -307,14 +307,14 @@ media-bundle:
     branches:
         5.x:
             php: ['7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
+            php_extensions: ['mongodb-1.9.0', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
                 sonata-project/admin-bundle: ['4.*']
                 imagine/imagine: ['1.*']
         4.x:
             php: ['7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
+            php_extensions: ['mongodb-1.9.0', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
                 sonata-project/admin-bundle: ['4.*']
