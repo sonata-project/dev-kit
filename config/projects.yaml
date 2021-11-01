@@ -334,11 +334,11 @@ news-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
+                sonata-project/admin-bundle: ['4.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['zip']
