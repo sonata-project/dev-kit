@@ -31,11 +31,14 @@ final class CommitCollectionTest extends TestCase
 
     /**
      * @test
+     *
+     * @psalm-suppress InvalidArgument
      */
     public function throwsExceptionIfValueIsNotEmptyButNotAllInstanceOfCommitClass(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        // @phpstan-ignore-next-line
         CommitCollection::from(['foo']);
     }
 
@@ -90,14 +93,7 @@ final class CommitCollectionTest extends TestCase
 
         $collection = CommitCollection::from($commits);
 
-        static::assertSame(
-            2,
-            $collection->count()
-        );
-        static::assertCount(
-            2,
-            $collection
-        );
+        static::assertCount(2, $collection);
     }
 
     /**

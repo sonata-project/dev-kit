@@ -4,17 +4,17 @@ admin-bundle:
     documentation_badge_slug: sonata-project-sonataadminbundle
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             frontend: true
+            target_php: '8.0'
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
-                sonata-project/block-bundle: ['4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             frontend: true
+            target_php: '8.0'
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
-                sonata-project/block-bundle: ['4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
             custom_gitignore_part: |
@@ -79,32 +79,6 @@ admin-bundle:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
 
-admin-search-bundle:
-    branches:
-        2.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                ruflin/elastica: ['5.*', '6.*']
-        1.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                ruflin/elastica: ['5.*', '6.*']
-
-article-bundle:
-    branches:
-        2.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-        1.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-
 block-bundle:
     phpstan: true
     psalm: true
@@ -112,11 +86,11 @@ block-bundle:
         5.x:
             php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.3', '7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
             variants:
@@ -128,9 +102,9 @@ cache:
     has_documentation: false
     branches:
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
         2.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
 
 cache-bundle:
     branches:
@@ -150,7 +124,7 @@ classification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['mongodb-1.9.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
@@ -161,36 +135,6 @@ classification-bundle:
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/admin-bundle: ['3.*']
-
-classification-media-bundle:
-    branches:
-        0.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-
-comment-bundle:
-    branches:
-        4.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-        3.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-
-dashboard-bundle:
-    custom_gitignore_part: |
-        /.sass-cache
-        /node_modules
-    branches:
-        0.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                sonata-project/block-bundle: ['3.*']
 
 datagrid-bundle:
     branches:
@@ -266,42 +210,9 @@ doctrine-orm-admin-bundle:
                 symfony/symfony: ['4.4.*']
                 sonata-project/admin-bundle: ['3.*']
 
-doctrine-phpcr-admin-bundle:
-    custom_gitignore_part: |
-        tests/Fixtures/App/app.sqlite
-    custom_doctor_rst_whitelist_part:
-        "    - '.. _`cmf-sandbox configuration`: https://github.com/symfony-cmf/cmf-sandbox/blob/master/app/config/config.yml'"
-    branches:
-        3.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                sonata-project/block-bundle: ['3.*']
-        2.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                sonata-project/block-bundle: ['3.*']
-
-ecommerce:
-    custom_doctor_rst_whitelist_part:
-        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-    documentation_badge_slug: sonata-project-ecommerce
-    branches:
-        4.x:
-            php: ['7.3', '7.4']
-            php_extensions: ['zip']
-            variants:
-                symfony/symfony: ['4.4.*']
-        3.x:
-            php: ['7.3', '7.4']
-            php_extensions: ['zip']
-            variants:
-                symfony/symfony: ['4.4.*']
-
 entity-audit-bundle:
+    phpstan: true
+    psalm: true
     excluded_files:
         - LICENSE
         - README.md
@@ -311,10 +222,12 @@ entity-audit-bundle:
             php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/framework-bundle: ['4.4.*']
         1.x:
             php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/framework-bundle: ['4.4.*']
 
 exporter:
     phpstan: true
@@ -325,18 +238,18 @@ exporter:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 formatter-bundle:
     phpstan: true
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
@@ -367,9 +280,9 @@ google-authenticator:
     has_documentation: false
     branches:
         3.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
         2.x:
-            php: ['7.3', '7.4']
+            php: ['7.3', '7.4', '8.0']
 
 intl-bundle:
     branches:
@@ -377,12 +290,12 @@ intl-bundle:
             php: ['7.3', '7.4', '8.0']
             target_php: '7.4'
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
             php: ['7.3', '7.4', '8.0']
             target_php: '7.4'
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
                 sonata-project/user-bundle: ['4.*']
 
 media-bundle:
@@ -392,9 +305,16 @@ media-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     documentation_badge_slug: sonata-project-sonatamediabundle
     branches:
+        5.x:
+            php: ['7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'gd']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                sonata-project/admin-bundle: ['4.*']
+                imagine/imagine: ['1.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
+            php: ['7.4', '8.0']
+            php_extensions: ['mongodb-1.9.0', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
                 sonata-project/admin-bundle: ['4.*']
@@ -446,7 +366,7 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/admin-bundle: ['3.*']
@@ -474,10 +394,14 @@ seo-bundle:
     phpstan: true
     psalm: true
     branches:
+        4.x:
+            php: ['7.4', '8.0']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.4', '8.0']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
             php: ['7.3', '7.4', '8.0']
             variants:
@@ -485,27 +409,12 @@ seo-bundle:
                 sonata-project/block-bundle: ['3.*']
                 sonata-project/admin-bundle: ['3.*']
 
-timeline-bundle:
-    branches:
-        4.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                sonata-project/block-bundle: ['3.*']
-        3.x:
-            php: ['7.3', '7.4']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/admin-bundle: ['3.*']
-                sonata-project/block-bundle: ['3.*']
-
 translation-bundle:
     phpstan: true
     psalm: true
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.4', '8.0']
             php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']

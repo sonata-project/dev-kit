@@ -97,7 +97,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             }
         }
 
-        if (\count($infoToUpdate)) {
+        if (\count($infoToUpdate) > 0) {
             $this->io->writeln('    Following info have to be changed:');
 
             foreach ($infoToUpdate as $info => $value) {

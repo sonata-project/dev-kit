@@ -20,9 +20,9 @@ final class StringProvider
     use Helper;
 
     /**
-     * @return \Generator<string, array{0: string}>
+     * @return iterable<string, array{string}>
      */
-    public static function lengthGreaterThan256Characters(): \Generator
+    public static function lengthGreaterThan256Characters(): iterable
     {
         yield 'string-longer-than-256-characters' => [self::stringWithLength(257)];
     }

@@ -26,7 +26,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: {{ branch.targetPhpVersion.toString }}
+                  php-version: '{{ branch.targetPhpVersion.toString }}'
                   coverage: none
                   tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
 {% if branch.phpExtensions is not empty %}
@@ -42,13 +42,13 @@ jobs:
 
 {% endif %}
             - name: Install Composer dependencies (highest)
-              uses: "ramsey/composer-install@v1"
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "highest"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: PHPStan
-              run: vendor/bin/phpstan --memory-limit=1G analyse
+              run: vendor/bin/phpstan --memory-limit=1G analyse --error-format=github
 {% endif %}
 {% if project.usesPsalm %}
     psalm:
@@ -63,7 +63,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: {{ branch.targetPhpVersion.toString }}
+                  php-version: '{{ branch.targetPhpVersion.toString }}'
                   coverage: none
                   tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
 {% if branch.phpExtensions is not empty %}
@@ -79,10 +79,10 @@ jobs:
 
 {% endif %}
             - name: Install Composer dependencies (highest)
-              uses: "ramsey/composer-install@v1"
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "highest"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: Psalm
               run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version={{ branch.targetPhpVersion.toString }}

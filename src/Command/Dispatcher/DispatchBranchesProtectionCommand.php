@@ -127,7 +127,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
     {
         $lowestPhpVersion = $branch->lowestPhpVersion();
         $requiredStatusChecks = [
-            'composer-normalize',
+            'Composer',
             'YAML files',
             'XML files',
             'PHP-CS-Fixer',

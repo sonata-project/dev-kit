@@ -80,9 +80,9 @@ final class StabilityTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0: string}>
+     * @return iterable<string, array{string}>
      */
-    public function validProvider(): \Generator
+    public function validProvider(): iterable
     {
         yield 'unknown' => ['unknown'];
         yield 'minor' => ['minor'];
@@ -151,7 +151,10 @@ final class StabilityTest extends TestCase
         );
     }
 
-    public function equalsProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Stability, Stability}>
+     */
+    public function equalsProvider(): iterable
     {
         yield [
             true,

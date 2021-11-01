@@ -239,7 +239,7 @@ final class PullRequest
             return Stability::patch();
         }
 
-        if (array_intersect(['docs', 'pedantic'], $labels)) {
+        if ([] !== array_intersect(['docs', 'pedantic'], $labels)) {
             return Stability::pedantic();
         }
 
@@ -279,13 +279,13 @@ final class PullRequest
             foreach ($lines as $line) {
                 $line = trim($line);
 
-                if (empty($line)) {
+                if ('' === $line) {
                     continue;
                 }
 
                 if (0 === strpos($line, '#')) {
                     $section = preg_replace('/^#* /i', '', $line);
-                } elseif (!empty($section)) {
+                } elseif ('' !== $section) {
                     $line = preg_replace('/^- /i', '', $line);
                     $changelog[$section][] = sprintf(
                         '- [[#%s](%s)] %s ([@%s](%s))',

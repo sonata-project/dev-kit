@@ -39,32 +39,25 @@ jobs:
 {% endfor %}
                 dependencies: [highest]
                 allowed-to-fail: [false]
-                symfony-require: [""]
+                symfony-require: ['']
                 variant: [normal]
                 include:
                     - php-version: '{{ branch.lowestPhpVersion.toString }}'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-{# Remove when all branches supports php 8.0 #}
-{% if '8.0' != branch.highestPhpVersion.toString %}
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed-to-fail: true
-                      variant: normal
-{% endif %}
 {% for variant in branch.variants|filter(v => v.package != 'symfony/symfony') %}
                     - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
                       allowed-to-fail: false
-                      variant: '{{ variant.toString|raw }}'
+                      variant: {{ variant.toString|raw }}
 {% endfor %}
 {% for variant in branch.variants|filter(v => v.package == 'symfony/symfony') %}
                     - php-version: '{{ branch.targetPhpVersion.toString }}'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: {{ variant.version }}
-                      variant: '{{ variant.toString|raw }}'
+                      variant: {{ variant.toString|raw }}
 {% endfor %}
 
         steps:
@@ -84,16 +77,9 @@ jobs:
             - name: Add PHPUnit matcher
               {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
 
-{# Remove when all branches supports php 8.0 #}
-{% if '8.0' != branch.highestPhpVersion.toString %}
-            - name: Configuration required for PHP 8.0
-              if: matrix.php-version == '8.0'
-              run: composer config platform.php 7.4.99
-
-{% endif %}
-            - name: "Globally install symfony/flex"
+            - name: Globally install symfony/flex
               if: matrix.symfony-require != ''
-              run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex"
+              run: composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
             - name: Install variant
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
@@ -105,7 +91,7 @@ jobs:
 {# Remove when when all dev dependencies are compatible with Symfony 6 #}
             - name: Remove dev dependencies not compatible with Symfony 6
               if: matrix.symfony-require == '6.0.*'
-              run: composer remove vimeo/psalm psalm/plugin-phpunit psalm/plugin-symfony weirdan/doctrine-psalm-plugin --dev --no-update --no-interaction
+              run: composer remove vimeo/psalm psalm/plugin-phpunit psalm/plugin-symfony weirdan/doctrine-psalm-plugin symfony/maker-bundle --dev --no-update --no-interaction
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
 {% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
@@ -115,16 +101,16 @@ jobs:
                   branch: master
 
 {% endif %}
-            - name: "Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})"
-              uses: "ramsey/composer-install@v1"
+            - name: Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "{% verbatim %}${{ matrix.dependencies }}{% endverbatim %}"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: {% verbatim %}${{ matrix.dependencies }}{% endverbatim %}
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: Run Tests with coverage
               run: make coverage
 
             - name: Send coverage to Codecov
-              uses: codecov/codecov-action@v1
+              uses: codecov/codecov-action@v2
               with:
                   file: build/logs/clover.xml

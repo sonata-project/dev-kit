@@ -58,9 +58,9 @@ final class CheckRunsTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0: bool, 1: string}>
+     * @return iterable<string, array{bool, string}>
      */
-    public function isSuccessfulProvider(): \Generator
+    public function isSuccessfulProvider(): iterable
     {
         yield 'action_required' => [false, 'action_required'];
         yield 'cancelled' => [false, 'cancelled'];

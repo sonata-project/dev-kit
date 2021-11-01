@@ -7,7 +7,7 @@ on:
     pull_request:
 
 env:
-    REQUIRED_PHP_EXTENSIONS: "redis"
+    REQUIRED_PHP_EXTENSIONS: redis
 
 jobs:
     test:
@@ -23,13 +23,13 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2.3.4
+              uses: actions/checkout@v2
 
             - name: Install PHP with extensions
-              uses: shivammathur/setup-php@2.15.0
+              uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
-                  extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                  extensions: ${{ env.REQUIRED_PHP_EXTENSIONS }}
                   coverage: pcov
                   tools: composer:v2
 
@@ -37,16 +37,16 @@ jobs:
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
             - name: Install Composer dependencies (highest)
-              uses: "ramsey/composer-install@v1"
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "highest"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: Run Tests with coverage
               run: make coverage
 
             - name: Send coverage to Codecov
-              uses: codecov/codecov-action@v2.1.0
+              uses: codecov/codecov-action@v2
               with:
                   file: build/logs/clover.xml
 
@@ -57,21 +57,21 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2.3.4
+              uses: actions/checkout@v2
 
             - name: Install PHP with extensions
-              uses: shivammathur/setup-php@2.15.0
+              uses: shivammathur/setup-php@v2
               with:
                   php-version: '7.4'
-                  extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                  extensions: ${{ env.REQUIRED_PHP_EXTENSIONS }}
                   coverage: pcov
                   tools: composer:v2
 
             - name: Install Composer dependencies (highest)
-              uses: "ramsey/composer-install@v1"
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "highest"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: Validate Twig syntax
               run: bin/console lint:twig templates/

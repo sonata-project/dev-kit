@@ -73,9 +73,9 @@ final class DetermineNextReleaseVersionTest extends TestCase
     }
 
     /**
-     * @return \Generator<array{0: string, 1: string, 2: array<PullRequest>}>
+     * @return iterable<array{string, string, array<PullRequest>}>
      */
-    public function determineProvider(): \Generator
+    public function determineProvider(): iterable
     {
         yield [
             '2.0.0',
@@ -102,6 +102,17 @@ final class DetermineNextReleaseVersionTest extends TestCase
         yield [
             '2.0.0',
             '2.0.0.alpha.1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0',
+            '2.0.0-alpha1',
             [
                 self::createPullRequestWithStability(Stability::unknown()),
                 self::createPullRequestWithStability(Stability::major()),

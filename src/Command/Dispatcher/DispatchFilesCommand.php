@@ -152,9 +152,12 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $previousDevKitBranchName = null;
         foreach ($project->branchesReverse() as $branch) {
             // We have to fetch all branches on each step in case a PR is submitted.
-            $remoteBranchNames = array_map(static function (\App\Github\Domain\Value\Branch $branch) {
-                return $branch->name();
-            }, $this->branches->all($repository));
+            $remoteBranchNames = array_map(
+                static function (\App\Github\Domain\Value\Branch $branch): string {
+                    return $branch->name();
+                },
+                $this->branches->all($repository)
+            );
 
             $devKitBranchName = u($branch->name())->append('-dev-kit')->toString();
 
@@ -175,7 +178,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $repository,
                     $branch,
                     $previousBranch
-                )['ahead_by']) {
+                )['ahead_by'] > 0) {
                     $this->io->comment('The previous branch is not merged into the current one! Do nothing!');
 
                     continue;
@@ -214,7 +217,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $git->add('.', ['all' => true]);
             $diff = $git->diff('--color', '--cached');
 
-            if (!empty($diff)) {
+            if ('' !== $diff) {
                 $this->io->writeln($diff);
                 if ($this->apply) {
                     $git->commit('DevKit updates');

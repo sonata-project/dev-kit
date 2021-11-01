@@ -90,7 +90,10 @@ final class LabelTest extends TestCase
         );
     }
 
-    public function equalsProvider(): \Generator
+    /**
+     * @return iterable<array{bool, Label, Label}>
+     */
+    public function equalsProvider(): iterable
     {
         yield [
             true,
