@@ -41,9 +41,12 @@ final class NextReleaseOverviewController
      */
     public function __invoke(): Response
     {
-        $releases = array_reduce($this->projects->all(), function (array $releases, Project $project): array {
+        $releases = [];
+        $apiRateLimit = false;
+
+        foreach ($this->projects->all() as $project) {
             if ($project->package()->isAbandoned()) {
-                return $releases;
+                continue;
             }
 
             foreach ($project->branches() as $branch) {
@@ -55,13 +58,15 @@ final class NextReleaseOverviewController
                     $release = $this->determineNextRelease->__invoke($project, $branch);
                 } catch (CannotDetermineNextRelease | NoPullRequestsMergedSinceLastRelease $e) {
                     continue;
+                } catch (\RuntimeException $e) {
+                    // API rate limit, display what we can
+                    $apiRateLimit = true;
+                    break 2;
                 }
 
                 $releases[] = $release;
             }
-
-            return $releases;
-        }, []);
+        }
 
         usort($releases, static function (NextRelease $a, NextRelease $b): int {
             return \count($b->pullRequests()) <=> \count($a->pullRequests());
@@ -71,6 +76,7 @@ final class NextReleaseOverviewController
             'releases/overview.html.twig',
             [
                 'releases' => $releases,
+                'api_rate_limit' => $apiRateLimit,
             ]
         );
 
