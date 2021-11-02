@@ -7,6 +7,13 @@
 {% endblock %}
 
 {% block content %}
+    {% if api_rate_limit_reached_with is not null %}
+        <div class="alert alert-danger">
+            The Github API rate limit was reached with the project <strong>{{ api_rate_limit_reached_with }}</strong>,
+            you can try again later or do some releases to see the next ones.
+        </div>
+    {% endif %}
+
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
