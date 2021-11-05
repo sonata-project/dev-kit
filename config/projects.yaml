@@ -280,8 +280,6 @@ google-authenticator:
             php: ['7.3', '7.4', '8.0']
 
 intl-bundle:
-    phpstan: false
-    psalm: false
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0']
