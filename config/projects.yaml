@@ -1,6 +1,4 @@
 admin-bundle:
-    phpstan: true
-    psalm: true
     documentation_badge_slug: sonata-project-sonataadminbundle
     branches:
         5.x:
@@ -80,8 +78,6 @@ admin-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 block-bundle:
-    phpstan: true
-    psalm: true
     branches:
         5.x:
             php: ['7.3', '7.4', '8.0']
@@ -97,6 +93,8 @@ block-bundle:
                 symfony/symfony: ['4.4.*']
 
 cache:
+    phpstan: false
+    psalm: false
     excluded_files:
         - README.md
     has_documentation: false
@@ -107,6 +105,8 @@ cache:
             php: ['7.3', '7.4', '8.0']
 
 cache-bundle:
+    phpstan: false
+    psalm: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0']
@@ -118,8 +118,6 @@ cache-bundle:
                 symfony/symfony: ['4.4.*']
 
 classification-bundle:
-    phpstan: true
-    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
@@ -142,6 +140,8 @@ classification-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 datagrid-bundle:
+    phpstan: false
+    psalm: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0']
@@ -153,8 +153,6 @@ datagrid-bundle:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 doctrine-extensions:
-    phpstan: true
-    psalm: true
     has_documentation: false
     branches:
         2.x:
@@ -167,8 +165,6 @@ doctrine-extensions:
             target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
-    phpstan: true
-    psalm: true
     panther: true
     branches:
         5.x:
@@ -191,8 +187,6 @@ doctrine-mongodb-admin-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 doctrine-orm-admin-bundle:
-    phpstan: true
-    psalm: true
     panther: true
     documentation_badge_slug: sonata-project-doctrineormadminbundle
     branches:
@@ -216,8 +210,6 @@ doctrine-orm-admin-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 entity-audit-bundle:
-    phpstan: true
-    psalm: true
     excluded_files:
         - LICENSE
         - README.md
@@ -235,8 +227,6 @@ entity-audit-bundle:
                 symfony/framework-bundle: ['4.4.*']
 
 exporter:
-    phpstan: true
-    psalm: true
     documentation_badge_slug: sonata-project-exporter
     branches:
         3.x:
@@ -251,7 +241,7 @@ exporter:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 formatter-bundle:
-    phpstan: true
+    psalm: false
     branches:
         5.x:
             php: ['7.4', '8.0']
@@ -267,8 +257,6 @@ formatter-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 form-extensions:
-    phpstan: true
-    psalm: true
     branches:
         2.x:
             php: ['7.3', '7.4', '8.0']
@@ -280,6 +268,8 @@ form-extensions:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 google-authenticator:
+    phpstan: false
+    psalm: false
     excluded_files:
         - README.md
     has_documentation: false
@@ -290,6 +280,8 @@ google-authenticator:
             php: ['7.3', '7.4', '8.0']
 
 intl-bundle:
+    phpstan: false
+    psalm: false
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0']
@@ -302,8 +294,6 @@ intl-bundle:
                 sonata-project/user-bundle: ['4.*']
 
 media-bundle:
-    phpstan: true
-    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     documentation_badge_slug: sonata-project-sonatamediabundle
@@ -331,8 +321,6 @@ media-bundle:
                 imagine/imagine: ['1.*']
 
 news-bundle:
-    phpstan: true
-    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
@@ -350,8 +338,6 @@ news-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 notification-bundle:
-    phpstan: true
-    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
@@ -365,6 +351,8 @@ notification-bundle:
                 symfony/symfony: ['4.4.*']
 
 page-bundle:
+    phpstan: false
+    psalm: false
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
@@ -383,7 +371,7 @@ page-bundle:
 
 sandbox:
     has_documentation: false
-    phpstan: true
+    psalm: false
     excluded_files:
         - .gitignore
         - Makefile
@@ -394,8 +382,6 @@ sandbox:
             php: ['7.4']
 
 seo-bundle:
-    phpstan: true
-    psalm: true
     branches:
         4.x:
             php: ['7.4', '8.0']
@@ -413,8 +399,6 @@ seo-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 translation-bundle:
-    phpstan: true
-    psalm: true
     branches:
         3.x:
             php: ['7.4', '8.0']
@@ -430,8 +414,6 @@ translation-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 twig-extensions:
-    phpstan: true
-    psalm: true
     documentation_badge_slug: sonata-project-twig-extensions
     branches:
         2.x:
@@ -444,8 +426,6 @@ twig-extensions:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 user-bundle:
-    phpstan: true
-    psalm: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
