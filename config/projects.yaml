@@ -140,8 +140,6 @@ classification-bundle:
                 sonata-project/admin-bundle: ['3.*']
 
 datagrid-bundle:
-    phpstan: false
-    psalm: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0']
