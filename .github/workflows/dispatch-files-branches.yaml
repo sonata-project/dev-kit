@@ -1,0 +1,68 @@
+name: Dispatch files and branches protection
+
+on:
+    schedule:
+        # At minute 5 past every 4th hour
+        # https://crontab.guru/#5_*/4_*_*_*
+        - cron: '5 */4 * * *'
+
+env:
+    REQUIRED_PHP_EXTENSIONS: redis
+
+jobs:
+    dispatch:
+        name: PHP ${{ matrix.php-version }}
+
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                php-version:
+                    - '8.0'
+
+        services:
+            redis:
+                image: redis
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 6379:6379
+
+        env:
+            APP_ENV: prod
+            APP_DEBUG: 0
+            REDIS_HOST: localhost
+            REDIS_PORT: 6379
+            GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN_GITHUB }}
+            DEV_KIT_TOKEN: ${{ secrets.DEV_KIT_TOKEN }}
+            SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  extensions: ${{ env.REQUIRED_PHP_EXTENSIONS }}
+                  coverage: pcov
+                  tools: composer:v2
+
+            - name: Install Composer dependencies (highest)
+              uses: ramsey/composer-install@v1
+              with:
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable --no-dev --classmap-authoritative
+
+            - name: Dump env
+              run: composer dump-env prod
+
+            - name: Dispatch files
+              run: bin/console dispatch:files --apply
+
+            - name: Dispatch branches protection
+              run: bin/console dispatch:branches-protection --apply
