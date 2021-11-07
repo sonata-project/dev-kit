@@ -91,15 +91,3 @@ crons:
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console dispatch:topics --apply
             fi
-    dispatch-files:
-        spec: '5 */4 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:files --apply
-            fi
-    dispatch-branches-protection:
-        spec: '10 */4 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:branches-protection --apply
-            fi
