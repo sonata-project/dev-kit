@@ -67,27 +67,3 @@ crons:
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape bin/console auto-merge --apply
             fi
-    dispatch-labels:
-        spec: '0 */4 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:labels --apply
-            fi
-    dispatch-webhooks:
-        spec: '0 */6 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:hooks --apply
-            fi
-    dispatch-settings:
-        spec: '0 5 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:settings --apply
-            fi
-    dispatch-topics:
-        spec: '0 5 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console dispatch:topics --apply
-            fi
