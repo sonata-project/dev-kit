@@ -105,8 +105,6 @@ cache:
             php: ['7.3', '7.4', '8.0']
 
 cache-bundle:
-    phpstan: false
-    psalm: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0']
