@@ -331,8 +331,6 @@ notification-bundle:
                 symfony/symfony: ['4.4.*']
 
 page-bundle:
-    phpstan: false
-    psalm: false
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
