@@ -49,7 +49,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-version }}
                   extensions: ${{ env.REQUIRED_PHP_EXTENSIONS }}
-                  coverage: pcov
+                  coverage: none
                   tools: composer:v2
 
             - name: Install Composer dependencies (highest)
