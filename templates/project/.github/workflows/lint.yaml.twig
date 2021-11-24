@@ -25,7 +25,8 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '{{ branch.targetPhpVersion.toString }}'
+{# Use `branch.targetPhpVersion.toString` when PHP-CS-Fixer supports PHP 8.1: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5891 #}
+                  php-version: '8.0'
                   coverage: none
                   tools: composer:v2, php-cs-fixer:3
               env:

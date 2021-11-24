@@ -4,13 +4,11 @@ admin-bundle:
         5.x:
             php: ['7.3', '7.4', '8.0', '8.1']
             frontend: true
-            target_php: '8.0'
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.3', '7.4', '8.0', '8.1']
             frontend: true
-            target_php: '8.0'
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
@@ -80,11 +78,11 @@ admin-bundle:
 block-bundle:
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
@@ -100,18 +98,18 @@ cache:
     has_documentation: false
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
 
 cache-bundle:
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
 
@@ -138,11 +136,11 @@ classification-bundle:
 datagrid-bundle:
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -180,12 +178,12 @@ doctrine-orm-admin-bundle:
     documentation_badge_slug: sonata-project-doctrineormadminbundle
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -202,12 +200,12 @@ entity-audit-bundle:
     has_documentation: false
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
                 symfony/framework-bundle: ['4.4.*']
         1.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
                 symfony/framework-bundle: ['4.4.*']
@@ -230,13 +228,13 @@ formatter-bundle:
     psalm: false
     branches:
         5.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
@@ -245,11 +243,11 @@ formatter-bundle:
 form-extensions:
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         1.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -261,18 +259,18 @@ google-authenticator:
     has_documentation: false
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
 
 intl-bundle:
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
                 sonata-project/user-bundle: ['4.*']
@@ -318,11 +316,11 @@ notification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
 
@@ -331,12 +329,12 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
@@ -356,11 +354,11 @@ sandbox:
 seo-bundle:
     branches:
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
@@ -372,12 +370,12 @@ seo-bundle:
 translation-bundle:
     branches:
         3.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4.*']
@@ -386,11 +384,11 @@ twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         1.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -399,10 +397,10 @@ user-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']

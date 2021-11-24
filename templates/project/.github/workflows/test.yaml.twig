@@ -88,7 +88,7 @@ jobs:
             - name: Allow unstable dependencies
               run: composer config minimum-stability dev
 
-{# Remove when when all dev dependencies are compatible with Symfony 6 #}
+{# Remove when all dev dependencies are compatible with Symfony 6 #}
             - name: Remove dev dependencies not compatible with Symfony 6
               if: matrix.symfony-require == '6.0.*'
               run: composer remove psalm/plugin-symfony --dev --no-update --no-interaction
