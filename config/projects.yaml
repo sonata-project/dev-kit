@@ -165,12 +165,12 @@ doctrine-mongodb-admin-bundle:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0', 'zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0', 'zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb-1.9.0', 'zip']
