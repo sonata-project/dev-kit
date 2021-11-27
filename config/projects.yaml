@@ -121,17 +121,17 @@ classification-bundle:
     branches:
         5.x:
             php: ['7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*']
 
@@ -151,11 +151,11 @@ doctrine-extensions:
     branches:
         2.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             target_php: '7.4'
         1.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
@@ -163,17 +163,17 @@ doctrine-mongodb-admin-bundle:
     branches:
         5.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'zip']
+            php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'zip']
+            php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'zip']
+            php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*']
 
@@ -219,12 +219,12 @@ exporter:
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -286,17 +286,17 @@ media-bundle:
     branches:
         5.x:
             php: ['7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'gd']
+            php_extensions: ['mongodb', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'gd']
+            php_extensions: ['mongodb', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb-1.9.0', 'soap', 'gd']
+            php_extensions: ['mongodb', 'soap', 'gd']
             variants:
                 symfony/symfony: ['4.4.*']
 
