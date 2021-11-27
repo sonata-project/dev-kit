@@ -152,11 +152,9 @@ doctrine-extensions:
         2.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb']
-            target_php: '7.4'
         1.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb']
-            target_php: '7.4'
 
 doctrine-mongodb-admin-bundle:
     panther: true
