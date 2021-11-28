@@ -20,6 +20,7 @@ use App\Domain\Value\PhpVersion;
 use App\Domain\Value\Project;
 use App\Github\Api\BranchProtections;
 use Github\Exception\ExceptionInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -46,15 +47,27 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         $this
             ->setName('dispatch:branches-protection')
-            ->setDescription('Dispatches branches protection for all sonata projects.');
+            ->setDescription('Dispatches branches protection for all sonata projects.')
+            ->addArgument('projects', InputArgument::IS_ARRAY, 'To limit the dispatcher on given project(s).', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->io->title('Dispatch branches protection for all sonata projects');
+        $projects = $this->projects->all();
+
+        $title = 'Dispatch branches protection for all sonata projects';
+        if ([] !== $input->getArgument('projects')) {
+            $projects = $this->projects->byNames($input->getArgument('projects'));
+            $title = sprintf(
+                'Dispatch branches protection for: %s',
+                implode(', ', $input->getArgument('projects'))
+            );
+        }
+
+        $this->io->title($title);
 
         /** @var Project $project */
-        foreach ($this->projects->all() as $project) {
+        foreach ($projects as $project) {
             try {
                 $this->io->section($project->name());
 
