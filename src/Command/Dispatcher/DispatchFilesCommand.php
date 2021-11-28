@@ -215,13 +215,16 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             );
 
             $git->add('.', ['all' => true]);
-            $diff = $git->diff('--color', '--cached');
+            $diff = $git->diff('--color', '--cached', 'origin/'.$branch->name());
 
             if ('' !== $diff) {
                 $this->io->writeln($diff);
+
                 if ($this->apply) {
-                    $git->commit('DevKit updates');
-                    $git->push('-u', 'origin', $devKitBranchName);
+                    if ($git->hasChanges()) {
+                        $git->commit('DevKit updates');
+                        $git->push('-u', 'origin', $devKitBranchName);
+                    }
 
                     $currentHead = u('sonata-project:')->append($devKitBranchName)->toString();
 
@@ -291,7 +294,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 ->toString();
 
             if ($this->filesystem->exists($file)) {
-                $this->io->writeln(sprintf('Delete <info>/%s</info> file!', $fileToRemove));
                 $this->filesystem->remove($file);
             }
         }
