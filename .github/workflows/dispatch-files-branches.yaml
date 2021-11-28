@@ -9,7 +9,7 @@ on:
         workflow_dispatch:
             inputs:
                 projects:
-                    description: 'Projects to dispatch files, separated by spaces (empty means all)'
+                    description: 'Projects to dispatch files and branches protection, separated by spaces (empty means all)'
                     default: ''
 
 env:
