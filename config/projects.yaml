@@ -369,6 +369,11 @@ seo-bundle:
 
 translation-bundle:
     branches:
+        4.x:
+            php: ['7.4', '8.0', '8.1']
+            php_extensions: ['pdo_sqlite']
+            variants:
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['pdo_sqlite']
