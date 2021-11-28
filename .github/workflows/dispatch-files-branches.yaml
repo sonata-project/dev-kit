@@ -5,12 +5,11 @@ on:
         # At minute 5 past every 4th hour
         # https://crontab.guru/#5_*/4_*_*_*
         - cron: '5 */4 * * *'
-    on:
-        workflow_dispatch:
-            inputs:
-                projects:
-                    description: 'Projects to dispatch files and branches protection, separated by spaces (empty means all)'
-                    default: ''
+    workflow_dispatch:
+        inputs:
+            projects:
+                description: 'Projects to dispatch files and branches protection, separated by spaces (empty means all)'
+                default: ''
 
 env:
     REQUIRED_PHP_EXTENSIONS: redis
