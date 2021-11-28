@@ -195,7 +195,6 @@ doctrine-orm-admin-bundle:
 
 entity-audit-bundle:
     excluded_files:
-        - LICENSE
         - README.md
     has_documentation: false
     branches:
