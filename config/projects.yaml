@@ -316,11 +316,11 @@ notification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
         3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
 
@@ -329,12 +329,12 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.4', '8.0', '8.1']
+            php: ['7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
         3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
