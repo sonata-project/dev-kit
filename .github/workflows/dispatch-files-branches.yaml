@@ -5,6 +5,12 @@ on:
         # At minute 5 past every 4th hour
         # https://crontab.guru/#5_*/4_*_*_*
         - cron: '5 */4 * * *'
+    on:
+        workflow_dispatch:
+            inputs:
+                projects:
+                    description: 'Projects to dispatch files, separated by spaces (empty means all)'
+                    default: ''
 
 env:
     REQUIRED_PHP_EXTENSIONS: redis
@@ -62,7 +68,7 @@ jobs:
               run: composer dump-env prod
 
             - name: Dispatch files
-              run: bin/console dispatch:files --apply
+              run: bin/console dispatch:files ${{ github.event.inputs.projects }} --apply
 
             - name: Dispatch branches protection
-              run: bin/console dispatch:branches-protection --apply
+              run: bin/console dispatch:branches-protection ${{ github.event.inputs.projects }} --apply
