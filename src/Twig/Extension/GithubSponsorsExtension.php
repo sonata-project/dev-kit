@@ -35,7 +35,10 @@ class GithubSponsorsExtension extends AbstractExtension
         $this->github = $github;
     }
 
-    public function getFunctions()
+    /**
+     * @return TwigFunction[]
+     */
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('list_sponsorisable', [$this, 'listSponsorisable']),
