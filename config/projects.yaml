@@ -402,10 +402,10 @@ user-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
