@@ -86,6 +86,7 @@ jobs:
               {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
 
             - name: Allow unstable dependencies
+              if: matrix.symfony-require == '6.0.*'
               run: composer config minimum-stability dev
 
 {# Remove when removing 3.x for the managed branches of block-bundle #}
