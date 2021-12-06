@@ -13,7 +13,7 @@ phpstan.neon
 {% if project.hasDocumentation %}
 /docs/_build/
 {% endif %}
-{% if project.usesPanther %}
+{% if project.hasPhpunitExtension('panther') %}
 /drivers
 /tests/App/public/bundles
 {% endif %}
