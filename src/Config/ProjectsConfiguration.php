@@ -36,6 +36,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('composer_version')->defaultValue('2')->end()
                             ->booleanNode('panther')->defaultFalse()->end()
+                            ->booleanNode('doctrine_test')->defaultFalse()->end()
                             ->booleanNode('phpstan')->defaultTrue()->end()
                             ->booleanNode('psalm')->defaultTrue()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()

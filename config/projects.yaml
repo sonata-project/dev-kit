@@ -398,6 +398,7 @@ twig-extensions:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 user-bundle:
+    doctrine_test: true
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:

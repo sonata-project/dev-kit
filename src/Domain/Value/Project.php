@@ -42,6 +42,7 @@ final class Project
     private bool $phpstan;
     private bool $psalm;
     private bool $panther;
+    private bool $doctrineTest;
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
@@ -59,6 +60,7 @@ final class Project
         bool $phpstan,
         bool $psalm,
         bool $panther,
+        bool $doctrineTest,
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart,
@@ -75,6 +77,7 @@ final class Project
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
         $this->panther = $panther;
+        $this->doctrineTest = $doctrineTest;
         $this->excludedFiles = $excludedFiles;
         $this->customGitignorePart = $customGitignorePart;
         $this->customGitattributesPart = $customGitattributesPart;
@@ -106,6 +109,7 @@ final class Project
             $config['phpstan'],
             $config['psalm'],
             $config['panther'],
+            $config['doctrine_test'],
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
@@ -215,6 +219,11 @@ final class Project
     public function usesPanther(): bool
     {
         return $this->panther;
+    }
+
+    public function usesDoctrineTest(): bool
+    {
+        return $this->doctrineTest;
     }
 
     public function customGitignorePart(): ?string
