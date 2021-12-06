@@ -37,12 +37,15 @@ final class Project
      */
     private array $excludedFiles;
 
+    /**
+     * @var PhpunitExtension[]
+     */
+    private array $phpunitExtensions;
+
     private string $composerVersion;
     private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
-    private bool $panther;
-    private bool $doctrineTest;
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
@@ -55,12 +58,11 @@ final class Project
         Package $package,
         array $branches,
         array $excludedFiles,
+        array $phpunitExtensions,
         string $composerVersion,
         bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
-        bool $panther,
-        bool $doctrineTest,
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart,
@@ -76,9 +78,8 @@ final class Project
         $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
-        $this->panther = $panther;
-        $this->doctrineTest = $doctrineTest;
         $this->excludedFiles = $excludedFiles;
+        $this->phpunitExtensions = $phpunitExtensions;
         $this->customGitignorePart = $customGitignorePart;
         $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
@@ -99,17 +100,21 @@ final class Project
             $excludedFiles[] = ExcludedFile::fromString($filename);
         }
 
+        $phpunitExtensions = [];
+        foreach ($config['phpunit_extensions'] as $phpunitExtension) {
+            $phpunitExtensions[] = PhpunitExtension::fromString($phpunitExtension);
+        }
+
         return new self(
             $name,
             $package,
             $branches,
             $excludedFiles,
+            $phpunitExtensions,
             $config['composer_version'],
             $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
-            $config['panther'],
-            $config['doctrine_test'],
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
@@ -196,6 +201,22 @@ final class Project
         return $this->excludedFiles;
     }
 
+    public function hasPhpunitExtension(string $extension): bool
+    {
+        foreach ($this->phpunitExtensions as $phpunitExtension) {
+            if ($phpunitExtension->extension() === $extension) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasPhpunitExtensions(): bool
+    {
+        return [] !== $this->phpunitExtensions;
+    }
+
     public function composerVersion(): string
     {
         return $this->composerVersion;
@@ -214,16 +235,6 @@ final class Project
     public function usesPsalm(): bool
     {
         return $this->psalm;
-    }
-
-    public function usesPanther(): bool
-    {
-        return $this->panther;
-    }
-
-    public function usesDoctrineTest(): bool
-    {
-        return $this->doctrineTest;
     }
 
     public function customGitignorePart(): ?string

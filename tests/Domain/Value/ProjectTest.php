@@ -26,7 +26,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -90,7 +90,9 @@ CONFIG;
         static::assertSame('3.x', $project->stableBranch()->name());
         static::assertTrue($project->usesPHPStan());
         static::assertTrue($project->usesPsalm());
-        static::assertTrue($project->usesPanther());
+        static::assertTrue($project->hasPhpunitExtensions());
+        static::assertTrue($project->hasPhpunitExtension('panther'));
+        static::assertFalse($project->hasPhpunitExtension('random_extension'));
         static::assertNull($project->customGitignorePart());
         static::assertNull($project->customGitattributesPart());
         static::assertTrue($project->hasDocumentation());
@@ -134,7 +136,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -165,7 +167,7 @@ twig-extensions:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -457,7 +459,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -487,7 +489,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -547,7 +549,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -577,7 +579,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~
@@ -619,7 +621,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~

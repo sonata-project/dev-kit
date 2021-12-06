@@ -75,7 +75,7 @@ admin-bundle:
   composer_version: '1'
   phpstan: true
   psalm: true
-  panther: true
+  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
   custom_gitattributes_part: ~

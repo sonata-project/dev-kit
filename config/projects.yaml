@@ -155,7 +155,7 @@ doctrine-extensions:
             php_extensions: ['mongodb']
 
 doctrine-mongodb-admin-bundle:
-    panther: true
+    phpunit_extensions: ['panther']
     branches:
         5.x:
             php: ['7.3', '7.4', '8.0']
@@ -174,7 +174,7 @@ doctrine-mongodb-admin-bundle:
                 symfony/symfony: ['4.4.*']
 
 doctrine-orm-admin-bundle:
-    panther: true
+    phpunit_extensions: ['panther']
     documentation_badge_slug: sonata-project-doctrineormadminbundle
     branches:
         5.x:
@@ -398,7 +398,7 @@ twig-extensions:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 user-bundle:
-    doctrine_test: true
+    phpunit_extensions: ['doctrine_test']
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
