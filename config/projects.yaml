@@ -107,11 +107,11 @@ cache-bundle:
         4.x:
             php: ['7.3', '7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         3.x:
             php: ['7.3', '7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 classification-bundle:
     custom_doctor_rst_whitelist_part:
