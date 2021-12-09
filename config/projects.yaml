@@ -118,12 +118,12 @@ classification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         5.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -148,22 +148,22 @@ doctrine-extensions:
     has_documentation: false
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
         1.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
 
 doctrine-mongodb-admin-bundle:
     phpunit_extensions: ['panther']
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -214,12 +214,12 @@ exporter:
     documentation_badge_slug: sonata-project-exporter
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -281,12 +281,12 @@ media-bundle:
     documentation_badge_slug: sonata-project-sonatamediabundle
     branches:
         5.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -301,12 +301,12 @@ news-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
@@ -316,11 +316,11 @@ notification-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
 
@@ -329,12 +329,12 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
         3.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
@@ -403,10 +403,10 @@ user-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
         4.x:
-            php: ['7.3', '7.4', '8.0']
+            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
