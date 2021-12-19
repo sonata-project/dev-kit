@@ -338,18 +338,6 @@ page-bundle:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
 
-sandbox:
-    has_documentation: false
-    psalm: false
-    excluded_files:
-        - .gitignore
-        - Makefile
-        - phpunit.xml.dist
-        - README.md
-    branches:
-        0.x:
-            php: ['7.4']
-
 seo-bundle:
     branches:
         4.x:
