@@ -24,10 +24,7 @@ Foundation Bundles
 Base features that most CMS could need.
 
 * `SonataBlockBundle <https://docs.sonata-project.org/projects/SonataBlockBundle>`_
-* `SonataCacheBundle <https://docs.sonata-project.org/projects/SonataCacheBundle>`_
-* `SonataDatagridBundle <https://docs.sonata-project.org/projects/SonataDatagridBundle>`_
 * `SonataFormatterBundle <https://docs.sonata-project.org/projects/SonataFormatterBundle>`_
-* `SonataNotificationBundle <https://docs.sonata-project.org/projects/SonataNotificationBundle>`_
 * `SonataSeoBundle <https://docs.sonata-project.org/projects/SonataSeoBundle>`_
 * `SonataTranslationBundle <https://docs.sonata-project.org/projects/SonataTranslationBundle>`_
 * `SonataUserBundle <https://docs.sonata-project.org/projects/SonataUserBundle>`_
@@ -56,11 +53,14 @@ Abandoned
 * `ecommerce <https://docs.sonata-project.org/projects/ecommerce>`_
 * `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_
 * `SonataArticleBundle <https://docs.sonata-project.org/projects/SonataArticleBundle>`_
+* `SonataCacheBundle <https://docs.sonata-project.org/projects/SonataCacheBundle>`_
 * `SonataClassificationMediaBundle <https://docs.sonata-project.org/projects/SonataClassificationMediaBundle>`_
 * `SonataCommentBundle <https://docs.sonata-project.org/projects/SonataCommentBundle>`_
 * `SonataDashboardBundle <https://docs.sonata-project.org/projects/SonataDashboardBundle>`_
+* `SonataDatagridBundle <https://docs.sonata-project.org/projects/SonataDatagridBundle>`_
 * `SonataDoctrinePhpcrAdminBundle <https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle>`_
 * `SonataNewsBundle <https://docs.sonata-project.org/projects/SonataNewsBundle>`_
+* `SonataNotificationBundle <https://docs.sonata-project.org/projects/SonataNotificationBundle>`_
 * `SonataTimelineBundle <https://docs.sonata-project.org/projects/SonataTimelineBundle>`_
 
 .. toctree::
