@@ -117,6 +117,8 @@ CONFIG;
 name: Test
 
 on:
+    schedule:
+        - cron: '30 0 * * *'
     push:
         branches:
             - 3.x
