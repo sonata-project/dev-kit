@@ -103,6 +103,6 @@ phpstan:
 {% if project.usesPsalm %}
 
 psalm:
-	vendor/bin/psalm {{ branch.targetPhpVersion.toString }}
+	vendor/bin/psalm --php-version={{ branch.targetPhpVersion.toString }}
 .PHONY: psalm
 {% endif %}
