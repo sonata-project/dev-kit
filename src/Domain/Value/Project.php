@@ -143,6 +143,13 @@ final class Project
             ->toString();
     }
 
+    public function namespace(): string
+    {
+        return u($this->title())
+            ->replace('Sonata', '')
+            ->toString();
+    }
+
     public function package(): Package
     {
         return $this->package;
