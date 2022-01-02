@@ -78,6 +78,7 @@ CONFIG;
 
         static::assertSame(self::DEFAULT_CONFIG_NAME, $project->name());
         static::assertSame('SonataAdminBundle', $project->title());
+        static::assertSame('AdminBundle', $project->namespace());
         static::assertSame($packageName, $project->package()->getName());
         static::assertTrue($project->hasBranches());
         static::assertCount(2, $project->branches());
