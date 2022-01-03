@@ -31,11 +31,6 @@ final class Branch
     private array $phpExtensions;
 
     /**
-     * @var Tool[]
-     */
-    private array $tools;
-
-    /**
      * @var Variant[]
      */
     private array $variants;
@@ -48,14 +43,12 @@ final class Branch
 
     /**
      * @param array<string, PhpVersion> $phpVersions
-     * @param Tool[]                    $tools
      * @param PhpExtension[]            $phpExtensions
      * @param Variant[]                 $variants
      */
     private function __construct(
         string $name,
         array $phpVersions,
-        array $tools,
         array $phpExtensions,
         array $variants,
         ?string $customGitignorePart,
@@ -66,7 +59,6 @@ final class Branch
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;
-        $this->tools = $tools;
         $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
         $this->customGitignorePart = $customGitignorePart;
@@ -82,10 +74,6 @@ final class Branch
         foreach ($config['php'] as $version) {
             $phpVersions[$version] = PhpVersion::fromString($version);
         }
-
-        $tools = array_map(static function (string $toolName): Tool {
-            return Tool::fromString($toolName);
-        }, $config['tools']);
 
         $phpExtensions = array_map(static function (string $phpExtension): PhpExtension {
             return PhpExtension::fromString($phpExtension);
@@ -106,7 +94,6 @@ final class Branch
         return new self(
             $name,
             $phpVersions,
-            $tools,
             $phpExtensions,
             $variants,
             $config['custom_gitignore_part'],
@@ -128,25 +115,6 @@ final class Branch
     public function phpVersions(): array
     {
         return $this->phpVersions;
-    }
-
-    /**
-     * @return Tool[]
-     */
-    public function tools(): array
-    {
-        return $this->tools;
-    }
-
-    public function hasTool(string $toolName): bool
-    {
-        foreach ($this->tools() as $tool) {
-            if ($tool->toString() === $toolName) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
