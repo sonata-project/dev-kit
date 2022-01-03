@@ -56,11 +56,10 @@ jobs:
                   coverage: none
                   tools: composer:v2
 
-            - name: Install Composer dependencies (highest)
-              uses: ramsey/composer-install@v1
+            - name: Install Composer dependencies (locked)
+              uses: ramsey/composer-install@v2
               with:
-                  dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable --no-dev --classmap-authoritative
+                  composer-options: --no-dev --classmap-authoritative
 
             - name: Dump env
               run: composer dump-env prod
