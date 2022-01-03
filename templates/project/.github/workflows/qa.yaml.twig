@@ -30,7 +30,7 @@ jobs:
               with:
                   php-version: '{{ branch.targetPhpVersion.toString }}'
                   coverage: none
-                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+                  tools: composer:v2
 {% if branch.phpExtensions is not empty %}
                   extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
@@ -67,7 +67,7 @@ jobs:
               with:
                   php-version: '{{ branch.targetPhpVersion.toString }}'
                   coverage: none
-                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+                  tools: composer:v2
 {% if branch.phpExtensions is not empty %}
                   extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
