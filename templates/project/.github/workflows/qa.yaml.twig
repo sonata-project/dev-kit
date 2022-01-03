@@ -35,14 +35,6 @@ jobs:
                   extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
-{# Remove when removing 3.x for the managed branches of block-bundle #}
-{% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-            - name: Set COMPOSER_ROOT_VERSION environment variable
-              uses: ergebnis/composer-root-version-action@0.2.1
-              with:
-                  branch: master
-
-{% endif %}
             - name: Install Composer dependencies (highest)
               uses: ramsey/composer-install@v1
               with:
@@ -72,14 +64,6 @@ jobs:
                   extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
 
-{# Remove when removing 3.x for the managed branches of block-bundle #}
-{% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-            - name: Set COMPOSER_ROOT_VERSION environment variable
-              uses: ergebnis/composer-root-version-action@0.2.1
-              with:
-                  branch: master
-
-{% endif %}
             - name: Install Composer dependencies (highest)
               uses: ramsey/composer-install@v1
               with:
