@@ -71,7 +71,7 @@ jobs:
               with:
                   {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
-                  tools: {{ ['composer:v' ~ project.composerVersion]|merge(branch.tools|map(tool => tool.toString))|join(', ') }}
+                  tools: composer:v2
 {% if branch.phpExtensions is not empty %}
                   extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
 {% endif %}
@@ -92,7 +92,7 @@ jobs:
               run: composer config minimum-stability dev
 
             - name: Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})
-              uses: ramsey/composer-install@v1
+              uses: ramsey/composer-install@v2
               with:
                   dependency-versions: {% verbatim %}${{ matrix.dependencies }}{% endverbatim %}
                   composer-options: --prefer-dist --prefer-stable

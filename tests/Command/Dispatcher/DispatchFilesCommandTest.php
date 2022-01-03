@@ -72,7 +72,6 @@ final class DispatchFilesCommandTest extends TestCase
     {
         $project = <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -91,7 +90,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4.*']
         sonata-project/block-bundle: ['4.*']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -103,7 +101,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4.*']
         sonata-project/block-bundle: ['3.*']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -169,7 +166,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-version }}
                   coverage: pcov
-                  tools: composer:v1
+                  tools: composer:v2
 
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -187,7 +184,7 @@ jobs:
               run: composer config minimum-stability dev
 
             - name: Install Composer dependencies (${{ matrix.dependencies }})
-              uses: ramsey/composer-install@v1
+              uses: ramsey/composer-install@v2
               with:
                   dependency-versions: ${{ matrix.dependencies }}
                   composer-options: --prefer-dist --prefer-stable

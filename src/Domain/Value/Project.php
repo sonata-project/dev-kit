@@ -42,7 +42,6 @@ final class Project
      */
     private array $phpunitExtensions;
 
-    private string $composerVersion;
     private bool $hasDocumentation;
     private bool $phpstan;
     private bool $psalm;
@@ -59,7 +58,6 @@ final class Project
         array $branches,
         array $excludedFiles,
         array $phpunitExtensions,
-        string $composerVersion,
         bool $hasDocumentation,
         bool $phpstan,
         bool $psalm,
@@ -74,7 +72,6 @@ final class Project
 
         $this->package = $package;
         $this->branches = $branches;
-        $this->composerVersion = $composerVersion;
         $this->hasDocumentation = $hasDocumentation;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
@@ -111,7 +108,6 @@ final class Project
             $branches,
             $excludedFiles,
             $phpunitExtensions,
-            $config['composer_version'],
             $config['has_documentation'],
             $config['phpstan'],
             $config['psalm'],
@@ -215,11 +211,6 @@ final class Project
     public function hasPhpunitExtensions(): bool
     {
         return [] !== $this->phpunitExtensions;
-    }
-
-    public function composerVersion(): string
-    {
-        return $this->composerVersion;
     }
 
     public function hasDocumentation(): bool
