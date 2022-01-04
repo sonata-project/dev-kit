@@ -31,6 +31,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -94,6 +95,7 @@ CONFIG;
         static::assertNull($project->customGitignorePart());
         static::assertNull($project->customGitattributesPart());
         static::assertTrue($project->hasDocumentation());
+        static::assertTrue($project->hasTestKernel());
         static::assertTrue($project->isBundle());
     }
 
@@ -138,6 +140,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: 'sonataadminbundle2'
   branches:
     master:
@@ -167,6 +170,7 @@ twig-extensions:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -457,6 +461,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -485,6 +490,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: 'sonataadminbundle2'
   branches:
     master:
@@ -543,6 +549,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -571,6 +578,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -610,6 +618,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:

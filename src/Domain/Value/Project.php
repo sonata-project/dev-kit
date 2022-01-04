@@ -43,6 +43,7 @@ final class Project
     private array $phpunitExtensions;
 
     private bool $hasDocumentation;
+    private bool $hasTestKernel;
     private bool $phpstan;
     private bool $psalm;
     private ?string $customGitignorePart;
@@ -59,6 +60,7 @@ final class Project
         array $excludedFiles,
         array $phpunitExtensions,
         bool $hasDocumentation,
+        bool $hasTestKernel,
         bool $phpstan,
         bool $psalm,
         ?string $customGitignorePart,
@@ -73,6 +75,7 @@ final class Project
         $this->package = $package;
         $this->branches = $branches;
         $this->hasDocumentation = $hasDocumentation;
+        $this->hasTestKernel = $hasTestKernel;
         $this->phpstan = $phpstan;
         $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
@@ -109,6 +112,7 @@ final class Project
             $excludedFiles,
             $phpunitExtensions,
             $config['has_documentation'],
+            $config['has_test_kernel'],
             $config['phpstan'],
             $config['psalm'],
             $config['custom_gitignore_part'],
@@ -223,6 +227,11 @@ final class Project
     public function hasDocumentation(): bool
     {
         return $this->hasDocumentation;
+    }
+
+    public function hasTestKernel(): bool
+    {
+        return $this->hasTestKernel;
     }
 
     public function usesPHPStan(): bool

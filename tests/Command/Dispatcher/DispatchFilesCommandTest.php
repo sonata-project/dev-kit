@@ -80,6 +80,7 @@ admin-bundle:
   custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
+  has_test_kernel: true
   documentation_badge_slug: ~
   branches:
     master:

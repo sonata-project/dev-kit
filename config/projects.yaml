@@ -76,6 +76,7 @@ admin-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 block-bundle:
+    has_test_kernel: false
     branches:
         5.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -91,6 +92,7 @@ block-bundle:
                 symfony/symfony: ['4.4.*']
 
 cache:
+    has_test_kernel: false
     phpstan: false
     psalm: false
     excluded_files:
@@ -103,6 +105,7 @@ cache:
             php: ['7.3', '7.4', '8.0', '8.1']
 
 cache-bundle:
+    has_test_kernel: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -134,6 +137,7 @@ classification-bundle:
                 symfony/symfony: ['4.4.*']
 
 datagrid-bundle:
+    has_test_kernel: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -192,6 +196,7 @@ entity-audit-bundle:
     excluded_files:
         - README.md
     has_documentation: false
+    has_test_kernel: false
     branches:
         2.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -206,6 +211,7 @@ entity-audit-bundle:
 
 exporter:
     documentation_badge_slug: sonata-project-exporter
+    has_test_kernel: false
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -220,6 +226,7 @@ exporter:
 
 formatter-bundle:
     psalm: false
+    has_test_kernel: false
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
@@ -235,6 +242,7 @@ formatter-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 form-extensions:
+    has_test_kernel: false
     branches:
         2.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -251,6 +259,7 @@ google-authenticator:
     excluded_files:
         - README.md
     has_documentation: false
+    has_test_kernel: false
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -258,6 +267,7 @@ google-authenticator:
             php: ['7.3', '7.4', '8.0', '8.1']
 
 intl-bundle:
+    has_test_kernel: false
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0', '8.1']
@@ -293,6 +303,7 @@ media-bundle:
 notification-bundle:
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
+    has_test_kernel: false
     branches:
         4.x:
             php: ['7.3', '7.4', '8.0']
@@ -319,6 +330,7 @@ page-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 seo-bundle:
+    has_test_kernel: false
     branches:
         4.x:
             php: ['7.4', '8.0', '8.1']
