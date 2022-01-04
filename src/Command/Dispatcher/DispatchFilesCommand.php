@@ -287,6 +287,11 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $filesToRemove[] = '.symfony.bundle.yaml';
         }
 
+        if (!$project->hasTestKernel()) {
+            $filesToRemove[] = 'bin/console';
+            $filesToRemove[] = '.github/workflows/symfony-lint.yaml';
+        }
+
         foreach ($filesToRemove as $fileToRemove) {
             $file = u($distPath)
                 ->append('/')

@@ -167,6 +167,13 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'Webpack Encore';
         }
 
+        if ($project->hasTestKernel()) {
+            $requiredStatusChecks[] = 'Symfony container';
+            $requiredStatusChecks[] = 'Twig files';
+            $requiredStatusChecks[] = 'XLIFF files';
+            $requiredStatusChecks[] = 'YML files';
+        }
+
         /** @var PhpVersion $phpVersion */
         foreach ($branch->phpVersions() as $phpVersion) {
             $requiredStatusChecks[] = sprintf(
