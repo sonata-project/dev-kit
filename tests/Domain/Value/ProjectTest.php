@@ -23,7 +23,6 @@ final class ProjectTest extends TestCase
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
     public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -42,7 +41,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -54,7 +52,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['3']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -97,7 +94,6 @@ CONFIG;
         static::assertNull($project->customGitignorePart());
         static::assertNull($project->customGitattributesPart());
         static::assertTrue($project->hasDocumentation());
-        static::assertSame('1', $project->composerVersion());
         static::assertTrue($project->isBundle());
     }
 
@@ -134,7 +130,6 @@ CONFIG;
             true,
 <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -153,7 +148,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -165,7 +159,6 @@ CONFIG,
             false,
 <<<CONFIG
 twig-extensions:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -184,7 +177,6 @@ twig-extensions:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -457,7 +449,6 @@ CONFIG,
             'sonataadminbundle',
 <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -476,7 +467,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -487,7 +477,6 @@ CONFIG,
             'sonataadminbundle2',
 <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -506,7 +495,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -547,7 +535,6 @@ CONFIG,
             'master',
             <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -566,7 +553,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -577,7 +563,6 @@ CONFIG,
             '3.x',
             <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -596,7 +581,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -608,7 +592,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -619,7 +602,6 @@ CONFIG,
             '4.x',
             <<<CONFIG
 admin-bundle:
-  composer_version: '1'
   phpstan: true
   psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
@@ -638,7 +620,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -650,7 +631,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests
@@ -662,7 +642,6 @@ admin-bundle:
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
-      tools: []
       php_extensions: []
       docs_path: docs
       tests_path: tests

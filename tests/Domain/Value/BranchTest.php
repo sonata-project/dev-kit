@@ -29,7 +29,6 @@ master:
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
-  tools: ['foo']
   php_extensions: ['bar']
   docs_path: docs
   tests_path: tests
@@ -59,7 +58,6 @@ CONFIG;
         static::assertSame('tests', $branch->testsPath()->toString());
         static::assertTrue($branch->hasFrontend());
         static::assertNull($branch->customGitignorePart());
-        static::assertTrue($branch->hasTool('foo'));
         static::assertTrue($branch->hasPhpExtension('bar'));
     }
 }
