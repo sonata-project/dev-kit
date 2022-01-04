@@ -36,7 +36,7 @@ hooks:
     build: |
         set -x -e
 
-        curl -fs https://get.symfony.com/cloud/configurator | (>&2 bash)
+        curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
 
         (>&2
             php-ext-install redis 5.3.2
