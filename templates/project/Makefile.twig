@@ -46,7 +46,7 @@ lint-xliff:
 lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
-{% if project.hasSymfonyTestKernel %}
+{% if project.hasTestKernel %}
 
 lint-symfony: lint-symfony-container lint-symfony-twig lint-symfony-xliff lint-symfony-yaml
 .PHONY: lint-symfony
