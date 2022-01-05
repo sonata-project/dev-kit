@@ -31,11 +31,11 @@
                             Next Releases
                         </a>
                     </li>
-                    {% if has_env('SYMFONY_BRANCH') %}
+                    {% if has_env('PLATFORM_BRANCH') %}
                         <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-code-fork"></i>
-                                {{ env('SYMFONY_BRANCH') }}
+                                {{ env('PLATFORM_BRANCH') }}
                             </a>
                         </li>
                     {% endif %}
