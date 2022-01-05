@@ -48,22 +48,24 @@ hooks:
 
         (>&2 symfony-deploy)
 
-crons:
-    comment-non-mergeable-pull-requests:
-        spec: '*/10 * * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console comment-non-mergeable-pull-requests --apply
-            fi
-    pull-request-auto-merge:
-        spec: '*/5 * * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console pull-request-auto-merge --apply
-            fi
-    auto-merge:
-        spec: '0 2 * * *'
-        cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
-                croncape bin/console auto-merge --apply
-            fi
+#crons:
+#    comment-non-mergeable-pull-requests:
+#        spec: '*/10 * * * *'
+#        cmd: |
+#            if [ "$SYMFONY_BRANCH" = master ]; then
+#                croncape bin/console comment-non-mergeable-pull-requests --apply
+#            fi
+#    pull-request-auto-merge:
+#        spec: '*/5 * * * *'
+#        cmd: |
+#            if [ "$SYMFONY_BRANCH" = master ]; then
+#                croncape bin/console pull-request-auto-merge --apply
+#            fi
+#    auto-merge:
+#        spec: '0 2 * * *'
+#        cmd: |
+#            if [ "$SYMFONY_BRANCH" = master ]; then
+#                croncape bin/console auto-merge --apply
+#            fi
+#
+#
