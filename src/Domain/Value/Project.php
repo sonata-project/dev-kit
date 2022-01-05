@@ -139,6 +139,8 @@ final class Project
             ->replace('/', ' ')
             ->replace('-', ' ')
             ->title(true)
+            ->replace(' Orm ', ' ORM ')
+            ->replace('db ', 'DB ')
             ->replace(' ', '')
             ->toString();
     }
@@ -147,6 +149,7 @@ final class Project
     {
         return u($this->title())
             ->replace('Sonata', '')
+            ->replace('Extensions', '')
             ->toString();
     }
 
