@@ -94,7 +94,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
         $this->io->writeln('    Check DevKit Hook for existence and configuration...');
 
-        $devKitHookBaseUrl = 'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io/github';
+        $devKitHookBaseUrl = 'https://master-7rqtwti-ptm4dx6rjpjko.eu-5.platformsh.site/github';
 
         $config = [
             'url' => sprintf(
