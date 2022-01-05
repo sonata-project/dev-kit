@@ -10,7 +10,7 @@
 {% endif %}
 Makefile export-ignore
 phpunit.xml.dist export-ignore
-{% if not project.hasTestKernel %}
+{% if project.hasTestKernel %}
 bin/console export-ignore
 {% endif %}
 {% if project.usesPHPStan %}
