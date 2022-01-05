@@ -37,6 +37,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         'http://scrutinizer-ci.com',
         'http://localhost:8000',
         'https://notify.travis-ci.org',
+        'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io',
     ];
 
     private Projects $projects;
