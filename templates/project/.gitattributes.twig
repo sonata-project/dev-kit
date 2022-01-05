@@ -10,6 +10,9 @@
 {% endif %}
 Makefile export-ignore
 phpunit.xml.dist export-ignore
+{% if project.hasTestKernel %}
+bin/console export-ignore
+{% endif %}
 {% if project.usesPHPStan %}
 phpstan.neon.dist export-ignore
 phpstan-baseline.neon export-ignore
