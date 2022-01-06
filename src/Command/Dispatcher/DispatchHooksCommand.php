@@ -184,6 +184,12 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         // Check if a Hook should be deleted.
         foreach ($this->hooks->all($repository) as $hook) {
             foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
+                $this->io->writeln(sprintf(
+                    '        Check if %s starts with %s',
+                    $hook->config()->url()->toString(),
+                    $url,
+                ));
+
                 if (u($hook->url()->toString())->startsWith($url)) {
                     $deleted = true;
                     $this->io->writeln(sprintf(
