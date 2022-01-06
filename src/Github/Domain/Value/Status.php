@@ -39,6 +39,9 @@ final class Status
         $this->targetUrl = TrimmedNonEmptyString::fromString($targetUrl)->toString();
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

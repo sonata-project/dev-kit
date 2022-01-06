@@ -28,6 +28,9 @@ final class Base
         $this->ref = TrimmedNonEmptyString::fromString($ref)->toString();
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

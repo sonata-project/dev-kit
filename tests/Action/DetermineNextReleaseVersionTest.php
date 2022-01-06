@@ -28,7 +28,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @test
      */
-    public function returnsCurrentIfNoPullRequestsAreProvider()
+    public function returnsCurrentIfNoPullRequestsAreProvider(): void
     {
         $tag = Tag::fromString('1.1.0');
 
@@ -41,7 +41,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @test
      */
-    public function returnsCurrentIfNoMajorOrMinorOrPatchStabilityIsFound()
+    public function returnsCurrentIfNoMajorOrMinorOrPatchStabilityIsFound(): void
     {
         $tag = Tag::fromString('1.1.0');
 
@@ -58,9 +58,11 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @test
      *
+     * @param array<PullRequest> $pullRequests
+     *
      * @dataProvider determineProvider
      */
-    public function determine(string $expected, string $current, array $pullRequests)
+    public function determine(string $expected, string $current, array $pullRequests): void
     {
         $tag = Tag::fromString($current);
 

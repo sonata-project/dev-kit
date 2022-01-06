@@ -92,7 +92,7 @@ final class StabilityTest extends TestCase
     /**
      * @test
      */
-    public function patch()
+    public function patch(): void
     {
         static::assertSame(
             'patch',
@@ -103,7 +103,7 @@ final class StabilityTest extends TestCase
     /**
      * @test
      */
-    public function minor()
+    public function minor(): void
     {
         static::assertSame(
             'minor',
@@ -114,7 +114,7 @@ final class StabilityTest extends TestCase
     /**
      * @test
      */
-    public function pedantic()
+    public function pedantic(): void
     {
         static::assertSame(
             'pedantic',
@@ -125,7 +125,7 @@ final class StabilityTest extends TestCase
     /**
      * @test
      */
-    public function unknown()
+    public function unknown(): void
     {
         static::assertSame(
             'unknown',

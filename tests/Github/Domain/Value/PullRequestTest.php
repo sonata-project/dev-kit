@@ -36,7 +36,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function usesNumberFromResponse()
+    public function usesNumberFromResponse(): void
     {
         $response = Github\Response\PullRequestFactory::create();
 
@@ -48,7 +48,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfNumberIsNotSet()
+    public function throwsExceptionIfNumberIsNotSet(): void
     {
         $response = Github\Response\PullRequestFactory::create();
         unset($response['number']);
@@ -61,7 +61,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfNumberIsZero()
+    public function throwsExceptionIfNumberIsZero(): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'number' => 0,
@@ -75,7 +75,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfNumberIsNgeative()
+    public function throwsExceptionIfNumberIsNgeative(): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'number' => -1,
@@ -89,7 +89,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function usesTitleFromResponse()
+    public function usesTitleFromResponse(): void
     {
         $value = self::faker()->sentence();
 
@@ -105,7 +105,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfTitleIsNotSet()
+    public function throwsExceptionIfTitleIsNotSet(): void
     {
         $response = Github\Response\PullRequestFactory::create();
         unset($response['title']);
@@ -121,7 +121,7 @@ final class PullRequestTest extends TestCase
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfTitleIs(string $value)
+    public function throwsExceptionIfTitleIs(string $value): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'title' => $value,
@@ -135,7 +135,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function usesUpdatedAtFromResponse()
+    public function usesUpdatedAtFromResponse(): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'updated_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
@@ -152,7 +152,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfUpdatedAtIsNotSet()
+    public function throwsExceptionIfUpdatedAtIsNotSet(): void
     {
         $response = Github\Response\PullRequestFactory::create();
         unset($response['updated_at']);
@@ -168,7 +168,7 @@ final class PullRequestTest extends TestCase
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfUpdatedAtIs(string $value)
+    public function throwsExceptionIfUpdatedAtIs(string $value): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'updated_at' => $value,
@@ -182,7 +182,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function usesMergedAtFromResponse()
+    public function usesMergedAtFromResponse(): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'merged_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
@@ -190,6 +190,7 @@ final class PullRequestTest extends TestCase
 
         $pullRequest = PullRequest::fromResponse($response);
 
+        static::assertNotNull($pullRequest->mergedAt());
         static::assertSame(
             $value,
             $pullRequest->mergedAt()->format('Y-m-d\TH:i:s\Z')
@@ -200,7 +201,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function mergedAtCanBeNull()
+    public function mergedAtCanBeNull(): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'merged_at' => null,
@@ -215,7 +216,7 @@ final class PullRequestTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfMergedAtIsNotSet()
+    public function throwsExceptionIfMergedAtIsNotSet(): void
     {
         $response = Github\Response\PullRequestFactory::create();
         unset($response['merged_at']);
@@ -231,7 +232,7 @@ final class PullRequestTest extends TestCase
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfMergedAtIs(string $value)
+    public function throwsExceptionIfMergedAtIs(string $value): void
     {
         $response = Github\Response\PullRequestFactory::create([
             'merged_at' => $value,
@@ -287,6 +288,7 @@ final class PullRequestTest extends TestCase
         static::assertSame($baseRef, $pr->base()->ref());
         static::assertSame($headRef, $pr->head()->ref());
         static::assertSame($headSha, $pr->head()->sha()->toString());
+        static::assertNotNull($pr->head()->repo());
         static::assertSame($ownerId, $pr->head()->repo()->owner()->id());
         static::assertSame($ownerLogin, $pr->head()->repo()->owner()->login());
         static::assertSame($ownerHtmlUrl, $pr->head()->repo()->owner()->htmlUrl());
@@ -343,6 +345,8 @@ final class PullRequestTest extends TestCase
 
     /**
      * @test
+     *
+     * @param array<mixed> $labels
      *
      * @dataProvider stabilityProvider
      */

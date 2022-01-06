@@ -82,6 +82,9 @@ final class PullRequest
         $this->labels = $labels;
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);
@@ -258,7 +261,7 @@ final class PullRequest
 
     public function fulfilledChangelog(): bool
     {
-        return !$this->needsChangelog() || ($this->needsChangelog() && $this->hasChangelog());
+        return !$this->needsChangelog() || $this->hasChangelog();
     }
 
     public function hasNotNeededChangelog(): bool
@@ -266,10 +269,13 @@ final class PullRequest
         return !$this->needsChangelog() && $this->hasChangelog();
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function changelog(): array
     {
         $changelog = [];
-        $body = preg_replace('/<!--(.*)-->/Uis', '', $this->body);
+        $body = preg_replace('/<!--(.*)-->/Uis', '', $this->body) ?? '';
         preg_match('/## Changelog.*```\s*markdown\s*\\n(.*)\\n```/Uis', $body, $matches);
 
         if (2 === \count($matches)) {
@@ -284,9 +290,9 @@ final class PullRequest
                 }
 
                 if (0 === strpos($line, '#')) {
-                    $section = preg_replace('/^#* /i', '', $line);
+                    $section = preg_replace('/^#* /i', '', $line) ?? '';
                 } elseif ('' !== $section) {
-                    $line = preg_replace('/^- /i', '', $line);
+                    $line = preg_replace('/^- /i', '', $line) ?? '';
                     $changelog[$section][] = sprintf(
                         '- [[#%s](%s)] %s ([@%s](%s))',
                         $this->issue->toInt(),

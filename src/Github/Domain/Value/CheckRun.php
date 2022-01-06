@@ -47,6 +47,9 @@ final class CheckRun
         $this->detailsUrl = TrimmedNonEmptyString::fromString($detailsUrl)->toString();
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

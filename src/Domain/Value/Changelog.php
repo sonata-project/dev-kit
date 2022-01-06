@@ -31,6 +31,9 @@ final class Changelog
      */
     private array $sections;
 
+    /**
+     * @param Section[] $sections
+     */
     private function __construct(string $headline, array $sections)
     {
         $this->headline = TrimmedNonEmptyString::fromString($headline)->toString();
@@ -39,11 +42,17 @@ final class Changelog
         $this->sections = $sections;
     }
 
+    /**
+     * @param Section[] $sections
+     */
     public static function fromValues(string $headline, array $sections): self
     {
         return new self($headline, $sections);
     }
 
+    /**
+     * @param PullRequest[] $pullRequests
+     */
     public static function fromPullRequests(array $pullRequests, Tag $next, Tag $current, Package $package): self
     {
         $headline = sprintf(

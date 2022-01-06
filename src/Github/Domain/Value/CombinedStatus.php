@@ -40,6 +40,9 @@ final class CombinedStatus
         $this->statuses = $statuses;
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

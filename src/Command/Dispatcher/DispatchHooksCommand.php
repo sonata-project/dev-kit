@@ -178,7 +178,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
         $this->io->writeln('    Check if some Hooks needs to be deleted...');
 
-        $deleted = null;
+        $deleted = false;
 
         // Check if a Hook should be deleted.
         foreach ($this->hooks->all($repository) as $hook) {

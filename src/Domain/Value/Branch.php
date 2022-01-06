@@ -15,13 +15,24 @@ namespace App\Domain\Value;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
+ *
+ * @phpstan-type BranchConfig = array{
+ *     php: non-empty-array<string>,
+ *     php_extensions: array<string>,
+ *     variants: array<string, array<string>>,
+ *     target_php: string|null,
+ *     custom_gitignore_part: string|null,
+ *     frontend: bool,
+ *     docs_path: string,
+ *     tests_path: string,
+ * }
  */
 final class Branch
 {
     private string $name;
 
     /**
-     * @var array<string, PhpVersion>
+     * @var non-empty-array<string, PhpVersion>
      */
     private array $phpVersions;
 
@@ -42,9 +53,9 @@ final class Branch
     private PhpVersion $targetPhpVersion;
 
     /**
-     * @param array<string, PhpVersion> $phpVersions
-     * @param PhpExtension[]            $phpExtensions
-     * @param Variant[]                 $variants
+     * @param non-empty-array<string, PhpVersion> $phpVersions
+     * @param PhpExtension[]                      $phpExtensions
+     * @param Variant[]                           $variants
      */
     private function __construct(
         string $name,
@@ -68,6 +79,11 @@ final class Branch
         $this->targetPhpVersion = $targetPhpVersion ?? end($this->phpVersions);
     }
 
+    /**
+     * @param mixed[] $config
+     *
+     * @phpstan-param BranchConfig $config
+     */
     public static function fromValues(string $name, array $config): self
     {
         $phpVersions = [];

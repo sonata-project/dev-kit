@@ -53,7 +53,7 @@ final class UserTest extends TestCase
      * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::zero()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::lessThanZero()
      */
-    public function throwsExceptionIfIdIs($value): void
+    public function throwsExceptionIfIdIs(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -67,7 +67,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function usesIdFromResponse()
+    public function usesIdFromResponse(): void
     {
         $response = Github\Response\UserFactory::create([
             'id' => $value = self::faker()->numberBetween(1, 999),
@@ -114,7 +114,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function usesLoginFromResponse()
+    public function usesLoginFromResponse(): void
     {
         $response = Github\Response\UserFactory::create([
             'login' => $value = self::faker()->word(),
@@ -131,7 +131,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function usesLoginForHandleFromResponse()
+    public function usesLoginForHandleFromResponse(): void
     {
         $response = Github\Response\UserFactory::create([
             'login' => $value = self::faker()->word(),
@@ -178,7 +178,7 @@ final class UserTest extends TestCase
     /**
      * @test
      */
-    public function usesHtmlurlFromResponse()
+    public function usesHtmlurlFromResponse(): void
     {
         $response = Github\Response\UserFactory::create([
             'html_url' => $value = self::faker()->url(),

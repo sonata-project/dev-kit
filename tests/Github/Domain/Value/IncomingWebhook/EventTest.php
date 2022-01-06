@@ -78,6 +78,8 @@ final class EventTest extends TestCase
     /**
      * @test
      *
+     * @param array<Event> $others
+     *
      * @dataProvider equalsOneOfProvider
      */
     public function equalsOneOf(bool $expected, Event $event, array $others): void

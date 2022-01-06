@@ -55,7 +55,7 @@ final class PayloadTest extends TestCase
             ],
         ];
 
-        $json = json_encode($array);
+        $json = json_encode($array, \JSON_THROW_ON_ERROR);
 
         $payload = Payload::fromJsonString($json, $event);
 
@@ -100,7 +100,7 @@ final class PayloadTest extends TestCase
             ],
         ];
 
-        $json = json_encode($array);
+        $json = json_encode($array, \JSON_THROW_ON_ERROR);
 
         $payload = Payload::fromJsonString($json, $event);
 
@@ -144,7 +144,7 @@ final class PayloadTest extends TestCase
             ],
         ];
 
-        $json = json_encode($array);
+        $json = json_encode($array, \JSON_THROW_ON_ERROR);
 
         $payload = Payload::fromJsonString($json, $event);
 
@@ -178,7 +178,7 @@ final class PayloadTest extends TestCase
             ],
         ];
 
-        $json = json_encode($array);
+        $json = json_encode($array, \JSON_THROW_ON_ERROR);
 
         $payload = Payload::fromJsonString($json, $event);
 

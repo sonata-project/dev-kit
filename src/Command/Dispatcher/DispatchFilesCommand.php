@@ -356,6 +356,13 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
+            if (false === $localDirectory) {
+                throw new \RuntimeException(sprintf(
+                    'Cannot read "%s" dir',
+                    $localFullPath
+                ));
+            }
+
             while (false !== ($entry = $localDirectory->read())) {
                 if (!\in_array($entry, ['.', '..'], true)) {
                     $this->renderFile(

@@ -19,6 +19,7 @@ use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Search\Query;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -35,6 +36,8 @@ final class PullRequests
     }
 
     /**
+     * @param mixed[] $params
+     *
      * @return PullRequest[]
      */
     public function all(Repository $repository, array $params = []): array
@@ -47,6 +50,7 @@ final class PullRequests
                 $repository->name(),
                 $issue->toInt()
             );
+            Assert::isArray($response);
 
             return PullRequest::fromResponse($response);
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
@@ -105,6 +109,7 @@ final class PullRequests
                 $repository->name(),
                 $issue->toInt()
             );
+            Assert::isArray($response);
 
             return PullRequest::fromResponse($response);
         }, $this->githubPager->fetchAll($this->github->search(), 'issues', [$query->toString()]));

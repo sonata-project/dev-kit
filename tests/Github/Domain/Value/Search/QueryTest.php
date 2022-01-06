@@ -64,7 +64,7 @@ final class QueryTest extends TestCase
     {
         $package = new Package();
         $package->fromArray([
-            'name' => $packageName = 'sonata-project/admin-bundle',
+            'name' => 'sonata-project/admin-bundle',
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
         ]);
 
@@ -85,6 +85,9 @@ master:
 CONFIG;
 
         $config = Yaml::parse($config);
+
+        static::assertIsArray($config);
+        static::assertArrayHasKey('master', $config);
 
         $branch = Branch::fromValues(
             'master',

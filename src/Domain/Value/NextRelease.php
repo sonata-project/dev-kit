@@ -38,6 +38,9 @@ final class NextRelease
 
     private Tag $nextTag;
 
+    /**
+     * @param PullRequest[] $pullRequests
+     */
     private function __construct(
         Project $project,
         Branch $branch,

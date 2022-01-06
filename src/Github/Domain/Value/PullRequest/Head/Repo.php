@@ -28,6 +28,9 @@ final class Repo
         $this->owner = $owner;
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

@@ -48,6 +48,9 @@ final class Labels
         );
     }
 
+    /**
+     * @param mixed[] $params
+     */
     public function update(Repository $repository, Label $label, array $params): void
     {
         $this->github->repo()->labels()->update(

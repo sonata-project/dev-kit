@@ -27,7 +27,7 @@ final class GithubController
     public function index(Request $request, Github\HookProcessor $hookProcessor, string $devKitToken): Response
     {
         $event = Github\Domain\Value\IncomingWebhook\Event::fromString(
-            $request->headers->get('X-GitHub-Event')
+            $request->headers->get('X-GitHub-Event') ?? ''
         );
 
         if ('' === $devKitToken || $request->query->get('token') !== $devKitToken) {

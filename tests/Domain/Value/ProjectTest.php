@@ -71,6 +71,9 @@ CONFIG;
 
         $config = Yaml::parse(self::DEFAULT_CONFIG);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
             self::DEFAULT_CONFIG_NAME,
             $config[self::DEFAULT_CONFIG_NAME],
@@ -86,6 +89,7 @@ CONFIG;
         static::assertSame(['master', '3.x'], $project->branchNames());
         static::assertSame(['3.x', 'master'], $project->branchNamesReverse());
         static::assertSame('master', $project->unstableBranch()->name());
+        static::assertNotNull($project->stableBranch());
         static::assertSame('3.x', $project->stableBranch()->name());
         static::assertTrue($project->usesPHPStan());
         static::assertTrue($project->usesPsalm());
@@ -108,11 +112,14 @@ CONFIG;
     {
         $package = new Package();
         $package->fromArray([
-            'name' => $packageName = 'sonata-project/admin-bundle',
+            'name' => 'sonata-project/admin-bundle',
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
         ]);
 
         $config = Yaml::parse($yamlConfig);
+
+        static::assertIsArray($config);
+        static::assertArrayHasKey($name, $config);
 
         $project = Project::fromValues(
             $name,
@@ -209,6 +216,9 @@ CONFIG,
 
         $config = Yaml::parse(self::DEFAULT_CONFIG);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
             self::DEFAULT_CONFIG_NAME,
             $config[self::DEFAULT_CONFIG_NAME],
@@ -257,6 +267,9 @@ CONFIG,
         ]);
 
         $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
 
         $project = Project::fromValues(
             self::DEFAULT_CONFIG_NAME,
@@ -316,6 +329,9 @@ CONFIG,
 
         $config = Yaml::parse(self::DEFAULT_CONFIG);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
             self::DEFAULT_CONFIG_NAME,
             $config[self::DEFAULT_CONFIG_NAME],
@@ -363,6 +379,9 @@ CONFIG,
 
         $config = Yaml::parse(self::DEFAULT_CONFIG);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
             self::DEFAULT_CONFIG_NAME,
             $config[self::DEFAULT_CONFIG_NAME],
@@ -393,6 +412,9 @@ CONFIG,
         ]);
 
         $config = Yaml::parse(self::DEFAULT_CONFIG);
+
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
 
         $project = Project::fromValues(
             self::DEFAULT_CONFIG_NAME,
@@ -435,9 +457,12 @@ CONFIG,
 
         $config = Yaml::parse($yamlConfig);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
-            'admin-bundle',
-            $config['admin-bundle'],
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
             $package
         );
 
@@ -523,9 +548,12 @@ CONFIG,
 
         $config = Yaml::parse($yamlConfig);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(self::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
-            'admin-bundle',
-            $config['admin-bundle'],
+            self::DEFAULT_CONFIG_NAME,
+            $config[self::DEFAULT_CONFIG_NAME],
             $package
         );
 

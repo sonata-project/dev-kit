@@ -19,6 +19,7 @@ use App\Github\Domain\Value\Commit;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
 use Github\ResultPagerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
@@ -51,8 +52,10 @@ final class Commits
     public function lastCommit(Repository $repository, PullRequest $pullRequest): Commit
     {
         $allCommits = $this->all($repository, $pullRequest);
+        $lastCommit = end($allCommits);
+        Assert::notFalse($lastCommit);
 
-        return end($allCommits);
+        return $lastCommit;
     }
 
     /**

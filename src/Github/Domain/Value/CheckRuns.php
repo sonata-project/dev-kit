@@ -33,6 +33,9 @@ final class CheckRuns
         $this->checkRuns = $checkRuns;
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);
@@ -43,6 +46,7 @@ final class CheckRuns
         $checkRuns = [];
         foreach ($response['check_runs'] as $checkRun) {
             Assert::keyExists($checkRun, 'name');
+            Assert::string($checkRun['name']);
 
             $checkRuns[$checkRun['name']] = CheckRun::fromResponse($checkRun);
         }
