@@ -57,20 +57,21 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projects = $this->projects->all();
-
         $title = 'Merge branches of repositories if there is no conflict';
-        if ([] !== $input->getArgument('projects')) {
-            $projects = $this->projects->byNames($input->getArgument('projects'));
+
+        /** @var string[] $projectNames */
+        $projectNames = $input->getArgument('projects');
+        if ([] !== $projectNames) {
+            $projects = $this->projects->byNames($projectNames);
             $title = sprintf(
                 '%s for: %s',
                 $title,
-                implode(', ', $input->getArgument('projects'))
+                implode(', ', $projectNames)
             );
         }
 
         $this->io->title($title);
 
-        /** @var Project $project */
         foreach ($projects as $project) {
             try {
                 $this->io->section($project->name());

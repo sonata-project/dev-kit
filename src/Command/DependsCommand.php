@@ -49,7 +49,6 @@ final class DependsCommand extends AbstractCommand
         $branchDepth = (int) $input->getOption('branch-depth');
         Assert::greaterThan($branchDepth, 0, 'branch-depth needs to be greater than 0');
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             $this->io->title($project->name());
 

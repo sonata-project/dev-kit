@@ -48,12 +48,10 @@ final class UserTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::zero()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::lessThanZero()
      */
-    public function throwsExceptionIfIdIs(string $value): void
+    public function throwsExceptionIfIdIs(int $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

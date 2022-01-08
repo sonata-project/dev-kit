@@ -85,19 +85,20 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projects = $this->projects->all();
-
         $title = 'Dispatch files for all sonata projects';
-        if ([] !== $input->getArgument('projects')) {
-            $projects = $this->projects->byNames($input->getArgument('projects'));
+
+        /** @var string[] $projectNames */
+        $projectNames = $input->getArgument('projects');
+        if ([] !== $projectNames) {
+            $projects = $this->projects->byNames($projectNames);
             $title = sprintf(
                 'Dispatch files for: %s',
-                implode(', ', $input->getArgument('projects'))
+                implode(', ', $projectNames)
             );
         }
 
         $this->io->title($title);
 
-        /** @var Project $project */
         foreach ($projects as $project) {
             try {
                 $this->io->section($project->name());

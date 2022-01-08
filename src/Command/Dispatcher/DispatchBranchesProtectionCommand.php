@@ -16,7 +16,6 @@ namespace App\Command\Dispatcher;
 use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
-use App\Domain\Value\PhpVersion;
 use App\Domain\Value\Project;
 use App\Github\Api\BranchProtections;
 use Github\Exception\ExceptionInterface;
@@ -54,19 +53,20 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projects = $this->projects->all();
-
         $title = 'Dispatch branches protection for all sonata projects';
-        if ([] !== $input->getArgument('projects')) {
-            $projects = $this->projects->byNames($input->getArgument('projects'));
+
+        /** @var string[] $projectNames */
+        $projectNames = $input->getArgument('projects');
+        if ([] !== $projectNames) {
+            $projects = $this->projects->byNames($projectNames);
             $title = sprintf(
                 'Dispatch branches protection for: %s',
-                implode(', ', $input->getArgument('projects'))
+                implode(', ', $projectNames)
             );
         }
 
         $this->io->title($title);
 
-        /** @var Project $project */
         foreach ($projects as $project) {
             try {
                 $this->io->section($project->name());
@@ -174,7 +174,6 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'YML files';
         }
 
-        /** @var PhpVersion $phpVersion */
         foreach ($branch->phpVersions() as $phpVersion) {
             $requiredStatusChecks[] = sprintf(
                 'PHP %s + highest + normal',

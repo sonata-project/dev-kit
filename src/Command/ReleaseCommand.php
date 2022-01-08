@@ -20,7 +20,6 @@ use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
-use App\Github\Domain\Value\CheckRun;
 use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
@@ -285,7 +284,6 @@ EOT;
             'URL',
         ]);
 
-        /** @var CheckRun $checkRun */
         foreach ($checkRuns->all() as $checkRun) {
             $table->addRow([
                 $checkRun->nameFormatted(),

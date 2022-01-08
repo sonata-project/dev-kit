@@ -44,7 +44,7 @@ CONFIG;
         $config = Yaml::parse(self::DEFAULT_BRANCH_CONFIG);
 
         static::assertIsArray($config);
-        static::assertArrayHasKey(self::DEFAULT_BRANCH_CONFIG, $config);
+        static::assertArrayHasKey(self::DEFAULT_BRANCH_NAME, $config);
 
         $branch = Branch::fromValues(
             $name,

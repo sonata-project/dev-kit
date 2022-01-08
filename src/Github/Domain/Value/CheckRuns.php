@@ -58,7 +58,6 @@ final class CheckRuns
 
     public function isSuccessful(): bool
     {
-        /** @var CheckRun $checkRun */
         foreach ($this->checkRuns as $checkRun) {
             if (!$checkRun->isSuccessful()) {
                 return false;

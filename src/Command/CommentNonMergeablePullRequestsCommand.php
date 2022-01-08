@@ -66,7 +66,6 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
     {
         $this->io->title('Comment non-mergeable pull requests');
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->section($project->name());

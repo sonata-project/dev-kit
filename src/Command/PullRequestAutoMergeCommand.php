@@ -76,7 +76,6 @@ final class PullRequestAutoMergeCommand extends AbstractNeedApplyCommand
             self::SONATA_CI_BOT
         ));
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->section($project->name());

@@ -70,7 +70,6 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch hooks for all sonata projects');
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->section($project->name());

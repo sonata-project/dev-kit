@@ -50,7 +50,6 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch repository topics for all sonata projects');
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->title($project->name());
