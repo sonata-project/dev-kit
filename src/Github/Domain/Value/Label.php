@@ -41,7 +41,7 @@ final class Label
     }
 
     /**
-     * @param array{name: string, color: string} $response
+     * @param mixed[] $response
      */
     public static function fromResponse(array $response): self
     {

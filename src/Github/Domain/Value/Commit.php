@@ -32,6 +32,9 @@ final class Commit
         $this->date = $date;
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

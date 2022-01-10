@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Command\Dispatcher;
 
 use App\Domain\Value\Project;
+use App\Tests\Domain\Value\ProjectTest;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
@@ -51,9 +52,12 @@ final class DispatchFilesCommandTest extends TestCase
             'versions' => [],
         ]);
 
+        static::assertIsArray($config);
+        static::assertArrayHasKey(ProjectTest::DEFAULT_CONFIG_NAME, $config);
+
         $project = Project::fromValues(
-            'admin-bundle',
-            $config['admin-bundle'],
+            ProjectTest::DEFAULT_CONFIG_NAME,
+            $config[ProjectTest::DEFAULT_CONFIG_NAME],
             $package
         );
 

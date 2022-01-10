@@ -39,6 +39,9 @@ final class Hooks
         }, $this->github->repo()->hooks()->all($repository->username(), $repository->name()));
     }
 
+    /**
+     * @param mixed[] $params
+     */
     public function create(Repository $repository, array $params): void
     {
         $this->github->repo()->hooks()->create(
@@ -48,6 +51,9 @@ final class Hooks
         );
     }
 
+    /**
+     * @param mixed[] $params
+     */
     public function update(Repository $repository, Hook $hook, array $params): void
     {
         $this->github->repo()->hooks()->update(

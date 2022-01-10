@@ -28,6 +28,9 @@ final class Section
      */
     private array $lines;
 
+    /**
+     * @param string[] $lines
+     */
     private function __construct(string $headline, array $lines)
     {
         $headline = TrimmedNonEmptyString::fromString($headline)->toString();
@@ -50,6 +53,9 @@ final class Section
         $this->lines = $lines;
     }
 
+    /**
+     * @param string[] $lines
+     */
     public static function fromValues(string $headline, array $lines): self
     {
         return new self($headline, $lines);

@@ -24,7 +24,7 @@ final class UnknownProjectTest extends TestCase
     /**
      * @test
      */
-    public function forName()
+    public function forName(): void
     {
         $name = self::faker()->word();
 

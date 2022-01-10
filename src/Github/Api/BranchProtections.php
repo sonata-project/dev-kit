@@ -29,6 +29,9 @@ final class BranchProtections
         $this->github = $github;
     }
 
+    /**
+     * @param mixed[] $params
+     */
     public function update(Repository $repository, Branch $branch, array $params): void
     {
         $this->github->repo()->protection()->update(

@@ -20,16 +20,17 @@ use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
-use App\Github\Domain\Value\CheckRun;
 use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
@@ -95,6 +96,7 @@ EOT;
     private function selectProject(InputInterface $input, OutputInterface $output): Project
     {
         $helper = $this->getHelper('question');
+        Assert::isInstanceOf($helper, QuestionHelper::class);
 
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
         $question->setAutocompleterValues(array_keys($this->projects->all()));
@@ -104,12 +106,16 @@ EOT;
         });
         $question->setMaxAttempts(3);
 
-        return $helper->ask($input, $output, $question);
+        $project = $helper->ask($input, $output, $question);
+        Assert::isInstanceOf($project, Project::class);
+
+        return $project;
     }
 
     private function selectBranch(InputInterface $input, OutputInterface $output, Project $project): Branch
     {
         $helper = $this->getHelper('question');
+        Assert::isInstanceOf($helper, QuestionHelper::class);
 
         $default = ($project->stableBranch() ?? $project->unstableBranch())->name();
 
@@ -124,7 +130,10 @@ EOT;
         });
         $question->setMaxAttempts(3);
 
-        return $helper->ask($input, $output, $question);
+        $branch = $helper->ask($input, $output, $question);
+        Assert::isInstanceOf($branch, Branch::class);
+
+        return $branch;
     }
 
     private function renderNextRelease(Project $project, Branch $branch): int
@@ -275,7 +284,6 @@ EOT;
             'URL',
         ]);
 
-        /** @var CheckRun $checkRun */
         foreach ($checkRuns->all() as $checkRun) {
             $table->addRow([
                 $checkRun->nameFormatted(),

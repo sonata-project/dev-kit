@@ -44,6 +44,9 @@ final class Payload
         $this->repository = $repository;
     }
 
+    /**
+     * @param mixed[] $payload
+     */
     public static function fromArray(array $payload, Event $event): self
     {
         Assert::notEmpty($payload);
@@ -85,8 +88,11 @@ final class Payload
 
     public static function fromJsonString(string $payload, Event $event): self
     {
+        $decodedPayload = json_decode($payload, true);
+        Assert::isArray($decodedPayload);
+
         return self::fromArray(
-            json_decode($payload, true),
+            $decodedPayload,
             $event
         );
     }
@@ -133,7 +139,7 @@ final class Payload
             return true;
         }
 
-        if (!$this->hasComment()) {
+        if (null === $this->comment) {
             return false;
         }
 

@@ -51,7 +51,6 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch repository information and general settings for all sonata projects');
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->title($project->name());
@@ -104,7 +103,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
                 $this->io->writeln(sprintf(
                     '        %s: <info>%s</info>',
                     $info,
-                    $value
+                    \is_bool($value) ? ($value ? 'true' : 'false') : $value
                 ));
             }
 

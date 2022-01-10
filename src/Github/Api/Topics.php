@@ -47,6 +47,9 @@ final class Topics
         return $topics;
     }
 
+    /**
+     * @param string[] $topics
+     */
     public function replace(Repository $repository, array $topics): void
     {
         $this->github->repo()->replaceTopics(

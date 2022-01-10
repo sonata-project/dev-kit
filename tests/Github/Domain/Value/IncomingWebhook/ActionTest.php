@@ -100,6 +100,8 @@ final class ActionTest extends TestCase
     /**
      * @test
      *
+     * @param array<Action> $others
+     *
      * @dataProvider equalsOneOfProvider
      */
     public function equalsOneOf(bool $expected, Action $action, array $others): void

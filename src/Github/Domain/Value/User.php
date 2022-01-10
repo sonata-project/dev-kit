@@ -32,6 +32,9 @@ final class User
         $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

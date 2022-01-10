@@ -21,6 +21,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class ProjectsConfiguration implements ConfigurationInterface
 {
+    /**
+     * @psalm-suppress PossiblyNullReference, PossiblyUndefinedMethod
+     *
+     * @see https://github.com/psalm/psalm-plugin-symfony/issues/174
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sonata');

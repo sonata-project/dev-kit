@@ -16,6 +16,7 @@ namespace App\Config;
 use App\Config\Exception\UnknownProject;
 use App\Domain\Value\Project;
 use Packagist\Api\Client as PackagistClient;
+use Packagist\Api\Result\Package;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
@@ -46,6 +47,7 @@ final class Projects
                 'sonata-project/%s',
                 $name
             ));
+            Assert::isInstanceOf($package, Package::class);
 
             $this->projects[$name] = Project::fromValues($name, $config, $package);
         }

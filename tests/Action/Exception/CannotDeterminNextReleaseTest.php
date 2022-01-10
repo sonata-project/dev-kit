@@ -28,15 +28,18 @@ final class CannotDeterminNextReleaseTest extends TestCase
     /**
      * @test
      */
-    public function forProject()
+    public function forProject(): void
     {
         $package = new Package();
         $package->fromArray([
-            'name' => $packageName = 'sonata-project/admin-bundle',
+            'name' => 'sonata-project/admin-bundle',
             'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
         ]);
 
         $config = Yaml::parse(ProjectTest::DEFAULT_CONFIG);
+
+        static::assertIsArray($config);
+        static::assertArrayHasKey(ProjectTest::DEFAULT_CONFIG_NAME, $config);
 
         $project = Project::fromValues(
             ProjectTest::DEFAULT_CONFIG_NAME,

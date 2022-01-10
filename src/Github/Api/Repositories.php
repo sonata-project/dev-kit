@@ -29,6 +29,9 @@ final class Repositories
         $this->github = $github;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function show(Repository $repository): array
     {
         return $this->github->repo()->show(
@@ -37,6 +40,9 @@ final class Repositories
         );
     }
 
+    /**
+     * @param mixed[] $params
+     */
     public function update(Repository $repository, array $params): void
     {
         $this->github->repo()->update(

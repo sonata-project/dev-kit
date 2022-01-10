@@ -18,7 +18,6 @@ use App\Config\ConfiguredLabels;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Labels;
-use App\Github\Domain\Value\Label;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,7 +57,6 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch labels for all sonata projects');
 
-        /** @var Project $project */
         foreach ($this->projects->all() as $project) {
             try {
                 $this->io->section($project->name());
@@ -131,7 +129,6 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
             }
         }
 
-        /** @var Label $label */
         foreach ($missingLabels as $label) {
             if ($this->apply) {
                 $this->labels->create($repository, $label);

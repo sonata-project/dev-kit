@@ -34,6 +34,9 @@ final class Head
         $this->repo = $repo;
     }
 
+    /**
+     * @param mixed[] $config
+     */
     public static function fromResponse(array $config): self
     {
         Assert::notEmpty($config);

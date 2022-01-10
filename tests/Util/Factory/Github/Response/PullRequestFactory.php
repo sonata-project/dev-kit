@@ -49,7 +49,7 @@ final class PullRequestFactory
                 'repo' => $repo,
             ],
             'user' => UserFactory::create(),
-            'mergeable' => $faker->optional()->boolean(),
+            'mergeable' => $faker->boolean() ? $faker->boolean() : null,
             'body' => sprintf(
                 <<<'BODY'
 <!-- %s -->

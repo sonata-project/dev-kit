@@ -30,6 +30,9 @@ final class Branch
         $this->commit = $commit;
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function fromResponse(array $response): self
     {
         Assert::notEmpty($response);

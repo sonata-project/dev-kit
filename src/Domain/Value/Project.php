@@ -20,6 +20,22 @@ use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
+ *
+ * @phpstan-import-type BranchConfig from \App\Domain\Value\Branch
+ *
+ * @phpstan-type ProjectConfig = array{
+ *     branches: array<string, BranchConfig>,
+ *     excluded_files: array<string>,
+ *     phpunit_extensions: array<string>,
+ *     has_documentation: bool,
+ *     has_test_kernel: bool,
+ *     phpstan: bool,
+ *     psalm: bool,
+ *     custom_gitignore_part: string|null,
+ *     custom_gitattributes_part: string|null,
+ *     custom_doctor_rst_whitelist_part: string|null,
+ *     documentation_badge_slug: string|null,
+ * }
  */
 final class Project
 {
@@ -53,6 +69,11 @@ final class Project
 
     private Repository $repository;
 
+    /**
+     * @param Branch[]           $branches
+     * @param ExcludedFile[]     $excludedFiles
+     * @param PhpunitExtension[] $phpunitExtensions
+     */
     private function __construct(
         string $name,
         Package $package,
@@ -88,6 +109,11 @@ final class Project
             ->toString();
     }
 
+    /**
+     * @param mixed[] $config
+     *
+     * @phpstan-param ProjectConfig $config
+     */
     public static function fromValues(string $name, array $config, Package $package): self
     {
         $branches = [];
