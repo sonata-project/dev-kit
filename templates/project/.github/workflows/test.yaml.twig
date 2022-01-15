@@ -91,14 +91,6 @@ jobs:
               if: matrix.symfony-require == '6.0.*'
               run: composer config minimum-stability dev
 
-{# Remove when removing 3.x for the managed branches of block-bundle #}
-{% if project.repository.name == 'SonataBlockBundle' and branch.name == '3.x' %}
-            - name: Set COMPOSER_ROOT_VERSION environment variable
-              uses: ergebnis/composer-root-version-action@0.2.1
-              with:
-                  branch: master
-
-{% endif %}
             - name: Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})
               uses: ramsey/composer-install@v2
               with:
