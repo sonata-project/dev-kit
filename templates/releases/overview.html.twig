@@ -14,7 +14,7 @@
         </div>
     {% endif %}
 
-    <table class="table table-striped">
+    <table class="table table-striped" style="margin-bottom: 30px;">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Project</th>
@@ -70,4 +70,29 @@
             {% endfor %}
         </tbody>
     </table>
+
+
+    <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse">
+        Show all release links
+    </button>
+
+    <div class="collapse" id="collapse" style="margin: 10px;">
+        <div class="card card-body">
+            <div class="row">
+                {% for project in projects %}
+                    <div class="col-3">
+                        <ul>
+                            {% for branch in project.branches %}
+                                <li>
+                                    <a href="{{ path('next_release_project', {'projectName': project.name, 'branchName': branch.name}) }}">
+                                        {{ project.name }}/{{ branch.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

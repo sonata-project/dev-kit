@@ -40,10 +40,11 @@ final class NextReleaseOverviewController
      */
     public function __invoke(): Response
     {
+        $projects = $this->projects->all();
         $releases = [];
         $apiRateLimitReachedWith = null;
 
-        foreach ($this->projects->all() as $project) {
+        foreach ($projects as $project) {
             if ($project->package()->isAbandoned()) {
                 continue;
             }
@@ -74,6 +75,7 @@ final class NextReleaseOverviewController
         $content = $this->twig->render(
             'releases/overview.html.twig',
             [
+                'projects' => $projects,
                 'releases' => $releases,
                 'api_rate_limit_reached_with' => $apiRateLimitReachedWith,
             ]

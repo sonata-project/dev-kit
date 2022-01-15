@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Action\DetermineNextRelease;
+use App\Action\Exception\CannotDetermineNextRelease;
+use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Exception\UnknownProject;
 use App\Config\Projects;
 use App\Domain\Value\Project;
@@ -47,7 +49,11 @@ final class NextReleaseForProjectController
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $release = $this->determineNextRelease->__invoke($project, $branch);
+        try {
+            $release = $this->determineNextRelease->__invoke($project, $branch);
+        } catch (CannotDetermineNextRelease | NoPullRequestsMergedSinceLastRelease $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
 
         $content = $this->twig->render(
             'releases/project.html.twig',
