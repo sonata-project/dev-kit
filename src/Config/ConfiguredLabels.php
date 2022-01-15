@@ -36,6 +36,8 @@ final class ConfiguredLabels
         ]);
 
         foreach ($baseConfig['labels'] as $name => $config) {
+            Assert::string($name);
+
             $this->labels[$name] = Label::fromValues(
                 $name,
                 Label\Color::fromString($config['color'])

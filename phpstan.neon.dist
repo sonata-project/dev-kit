@@ -4,8 +4,8 @@ includes:
 parameters:
     level: 9
     symfony:
-        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
-        console_application_loader: ./phpstan-console-application.php
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+        consoleApplicationLoader: ./phpstan-console-application.php
     paths:
         - src
         - tests
