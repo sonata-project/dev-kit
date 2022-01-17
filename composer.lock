@@ -7600,16 +7600,16 @@
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "d779d1a5a1678827e56010b47dedf790a0a4baad"
+                "reference": "2e25964784fb657dbd1723691ffe6d5bc0e195a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/d779d1a5a1678827e56010b47dedf790a0a4baad",
-                "reference": "d779d1a5a1678827e56010b47dedf790a0a4baad",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/2e25964784fb657dbd1723691ffe6d5bc0e195a6",
+                "reference": "2e25964784fb657dbd1723691ffe6d5bc0e195a6",
                 "shasum": ""
             },
             "require": {
@@ -7630,8 +7630,9 @@
                 "symfony/console": "^4.0 || ^5.0",
                 "symfony/form": "^4.0 || ^5.0",
                 "symfony/framework-bundle": "^4.4 || ^5.0",
-                "symfony/http-foundation": "^4.0 || ^5.0",
+                "symfony/http-foundation": "^5.1",
                 "symfony/messenger": "^4.2 || ^5.0",
+                "symfony/polyfill-php80": "^1.24",
                 "symfony/serializer": "^4.0 || ^5.0"
             },
             "type": "phpstan-extension",
@@ -7665,9 +7666,9 @@
             "description": "Symfony Framework extensions and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-symfony/issues",
-                "source": "https://github.com/phpstan/phpstan-symfony/tree/1.1.0"
+                "source": "https://github.com/phpstan/phpstan-symfony/tree/1.1.1"
             },
-            "time": "2022-01-10T16:07:09+00:00"
+            "time": "2022-01-16T09:09:48+00:00"
         },
         {
             "name": "phpstan/phpstan-webmozart-assert",
