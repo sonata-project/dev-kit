@@ -229,7 +229,7 @@ formatter-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
+                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.3', '7.4', '8.0', '8.1']
             php_extensions: ['zip']
