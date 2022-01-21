@@ -276,6 +276,7 @@ intl-bundle:
                 sonata-project/user-bundle: ['4.*']
 
 media-bundle:
+    phpunit_extensions: ['doctrine_test']
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     documentation_badge_slug: sonata-project-sonatamediabundle
