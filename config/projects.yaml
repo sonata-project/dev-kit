@@ -89,16 +89,16 @@ block-bundle:
 
 cache:
     has_test_kernel: false
-    phpstan: false
-    psalm: false
     excluded_files:
         - README.md
     has_documentation: false
     branches:
         3.x:
             php: ['7.3', '7.4', '8.0', '8.1']
+            php_extensions: ['mongodb']
         2.x:
             php: ['7.3', '7.4', '8.0', '8.1']
+            php_extensions: ['mongodb']
 
 cache-bundle:
     has_test_kernel: false
