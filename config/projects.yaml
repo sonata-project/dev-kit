@@ -220,7 +220,6 @@ exporter:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 formatter-bundle:
-    psalm: false
     has_test_kernel: false
     branches:
         5.x:
@@ -229,7 +228,7 @@ formatter-bundle:
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.3', '7.4', '8.0']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
