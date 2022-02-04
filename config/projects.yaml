@@ -132,18 +132,6 @@ classification-bundle:
             variants:
                 symfony/symfony: ['4.4.*']
 
-datagrid-bundle:
-    has_test_kernel: false
-    branches:
-        4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-            variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-            variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-
 doctrine-extensions:
     has_documentation: false
     has_test_kernel: false
@@ -246,19 +234,6 @@ form-extensions:
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
-google-authenticator:
-    phpstan: false
-    psalm: false
-    excluded_files:
-        - README.md
-    has_documentation: false
-    has_test_kernel: false
-    branches:
-        3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-        2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-
 intl-bundle:
     has_test_kernel: false
     branches:
@@ -291,20 +266,6 @@ media-bundle:
         3.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['mongodb', 'soap', 'gd']
-            variants:
-                symfony/symfony: ['4.4.*']
-
-notification-bundle:
-    custom_doctor_rst_whitelist_part:
-        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
-    has_test_kernel: false
-    branches:
-        4.x:
-            php: ['7.3', '7.4', '8.0']
-            variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
 
