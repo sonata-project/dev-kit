@@ -59,7 +59,9 @@ final class DetermineNextRelease
             $currentTag = $currentRelease->tag();
         } catch (LatestReleaseNotFound $e) {
             $releaseDate = null;
-            $currentTag = Tag::fromString($branch->name());
+
+            $parts = explode('.', $branch->name());
+            $currentTag = Tag::fromString(implode('.', [(int) $parts[0] - 1, 'x']));
         }
 
         if (null === $releaseDate) {
