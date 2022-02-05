@@ -80,6 +80,17 @@ final class DetermineNextReleaseVersionTest extends TestCase
     public function determineProvider(): iterable
     {
         yield [
+            '2.0.0-alpha-1',
+            '1.x',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
             '2.0.0',
             '1.1.0',
             [
@@ -92,6 +103,17 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
         yield [
             '2.0.0',
+            '2.0.0-rc-1',
+            [
+                self::createPullRequestWithStability(Stability::unknown()),
+                self::createPullRequestWithStability(Stability::major()),
+                self::createPullRequestWithStability(Stability::minor()),
+                self::createPullRequestWithStability(Stability::patch()),
+            ],
+        ];
+
+        yield [
+            '2.0.0-rc-1',
             '2.0.0-alpha-1',
             [
                 self::createPullRequestWithStability(Stability::unknown()),
@@ -102,7 +124,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
         ];
 
         yield [
-            '2.0.0',
+            '2.0.0-rc-1',
             '2.0.0.alpha.1',
             [
                 self::createPullRequestWithStability(Stability::unknown()),
@@ -113,7 +135,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
         ];
 
         yield [
-            '2.0.0',
+            '2.0.0-rc-1',
             '2.0.0-alpha1',
             [
                 self::createPullRequestWithStability(Stability::unknown()),

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Action\DetermineNextRelease;
-use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\Branch;
@@ -142,10 +141,6 @@ EOT;
             $notificationStyle->warning($e->getMessage());
 
             return 0;
-        } catch (CannotDetermineNextRelease $e) {
-            $notificationStyle->error($e->getMessage());
-
-            return 1;
         }
 
         if (!$nextRelease->isNeeded()) {

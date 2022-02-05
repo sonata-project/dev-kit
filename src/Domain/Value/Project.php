@@ -29,8 +29,6 @@ use function Symfony\Component\String\u;
  *     phpunit_extensions: array<string>,
  *     has_documentation: bool,
  *     has_test_kernel: bool,
- *     phpstan: bool,
- *     psalm: bool,
  *     custom_gitignore_part: string|null,
  *     custom_gitattributes_part: string|null,
  *     custom_doctor_rst_whitelist_part: string|null,
@@ -60,8 +58,6 @@ final class Project
 
     private bool $hasDocumentation;
     private bool $hasTestKernel;
-    private bool $phpstan;
-    private bool $psalm;
     private ?string $customGitignorePart;
     private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
@@ -82,8 +78,6 @@ final class Project
         array $phpunitExtensions,
         bool $hasDocumentation,
         bool $hasTestKernel,
-        bool $phpstan,
-        bool $psalm,
         ?string $customGitignorePart,
         ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart,
@@ -97,8 +91,6 @@ final class Project
         $this->branches = $branches;
         $this->hasDocumentation = $hasDocumentation;
         $this->hasTestKernel = $hasTestKernel;
-        $this->phpstan = $phpstan;
-        $this->psalm = $psalm;
         $this->excludedFiles = $excludedFiles;
         $this->phpunitExtensions = $phpunitExtensions;
         $this->customGitignorePart = $customGitignorePart;
@@ -139,8 +131,6 @@ final class Project
             $phpunitExtensions,
             $config['has_documentation'],
             $config['has_test_kernel'],
-            $config['phpstan'],
-            $config['psalm'],
             $config['custom_gitignore_part'],
             $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
@@ -261,16 +251,6 @@ final class Project
     public function hasTestKernel(): bool
     {
         return $this->hasTestKernel;
-    }
-
-    public function usesPHPStan(): bool
-    {
-        return $this->phpstan;
-    }
-
-    public function usesPsalm(): bool
-    {
-        return $this->psalm;
     }
 
     public function customGitignorePart(): ?string

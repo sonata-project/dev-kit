@@ -37,7 +37,15 @@ final class DetermineNextReleaseVersion
         $parts = explode('.', $currentTag);
 
         if (isset($parts[3])) {
+            if (false !== strpos($parts[3], 'alpha')) {
+                return Tag::fromString(implode('.', [$parts[0], $parts[1], sprintf('%s-rc-1', $parts[2])]));
+            }
+
             return Tag::fromString(implode('.', [$parts[0], $parts[1], $parts[2]]));
+        }
+
+        if ('x' === $parts[1]) {
+            return Tag::fromString(implode('.', [(int) $parts[0] + 1, 0, '0-alpha-1']));
         }
 
         if (\in_array(Stability::major()->toString(), $stabilities, true)) {

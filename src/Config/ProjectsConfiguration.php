@@ -40,8 +40,6 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->arrayNode('phpunit_extensions')->prototype('scalar')->defaultValue([])->end()->end()
-                            ->booleanNode('phpstan')->defaultTrue()->end()
-                            ->booleanNode('psalm')->defaultTrue()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->scalarNode('custom_gitignore_part')->defaultNull()->end()
                             ->scalarNode('custom_gitattributes_part')->defaultNull()->end()

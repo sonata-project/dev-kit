@@ -60,6 +60,56 @@ final class QueryTest extends TestCase
     /**
      * @test
      */
+    public function pullRequests(): void
+    {
+        $package = new Package();
+        $package->fromArray([
+            'name' => $packageName = 'sonata-project/admin-bundle',
+            'repository' => 'https://github.com/sonata-project/SonataAdminBundle',
+        ]);
+
+        $repository = Repository::fromPackage($package);
+
+        $config = <<<CONFIG
+master:
+  php: ['7.3', '7.4']
+  target_php: ~
+  frontend: true
+  custom_gitignore_part: ~
+  variants:
+    symfony/symfony: ['4.4']
+    sonata-project/block-bundle: ['4']
+  tools: []
+  php_extensions: []
+  docs_path: docs
+  tests_path: tests
+CONFIG;
+
+        $config = Yaml::parse($config);
+
+        static::assertIsArray($config);
+        static::assertArrayHasKey('master', $config);
+
+        $branch = Branch::fromValues(
+            'master',
+            $config['master']
+        );
+
+        $query = Query::pullRequests(
+            $repository,
+            $branch,
+            'SonataCI'
+        );
+
+        static::assertSame(
+            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master -author:SonataCI',
+            $query->toString()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function pullRequestsSince(): void
     {
         $package = new Package();

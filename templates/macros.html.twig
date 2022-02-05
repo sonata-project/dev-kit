@@ -10,4 +10,8 @@
     {% if stability.toString == 'minor' %}
         <span class="badge badge-success">minor</span>
     {% endif %}
+
+    {% if stability.toString == 'major' %}
+        <span class="badge badge-warning">major</span>
+    {% endif %}
 {% endmacro %}

@@ -23,8 +23,6 @@ final class ProjectTest extends TestCase
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
     public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -91,8 +89,6 @@ CONFIG;
         static::assertSame('master', $project->unstableBranch()->name());
         static::assertNotNull($project->stableBranch());
         static::assertSame('3.x', $project->stableBranch()->name());
-        static::assertTrue($project->usesPHPStan());
-        static::assertTrue($project->usesPsalm());
         static::assertTrue($project->hasPhpunitExtensions());
         static::assertTrue($project->hasPhpunitExtension('panther'));
         static::assertFalse($project->hasPhpunitExtension('random_extension'));
@@ -139,8 +135,6 @@ CONFIG;
             true,
 <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -169,8 +163,6 @@ CONFIG,
             false,
 <<<CONFIG
 twig-extensions:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -478,8 +470,6 @@ CONFIG,
             'sonataadminbundle',
 <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -507,8 +497,6 @@ CONFIG,
             'sonataadminbundle2',
 <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -569,8 +557,6 @@ CONFIG,
             'master',
             <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -598,8 +584,6 @@ CONFIG,
             '3.x',
             <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
@@ -638,8 +622,6 @@ CONFIG,
             '4.x',
             <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Action;
 
-use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Command\AbstractCommand;
 use App\Domain\Value\Branch;
@@ -24,6 +23,7 @@ use App\Github\Api\Checks;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
 use App\Github\Exception\LatestReleaseNotFound;
 
@@ -55,24 +55,32 @@ final class DetermineNextRelease
 
         try {
             $currentRelease = $this->releases->latestForBranch($repository, $branch);
+            $releaseDate = $currentRelease->publishedAt();
+            $currentTag = $currentRelease->tag();
         } catch (LatestReleaseNotFound $e) {
-            throw CannotDetermineNextRelease::forBranch(
-                $project,
-                $branch,
-                $e
-            );
+            $releaseDate = null;
+
+            $parts = explode('.', $branch->name());
+            $currentTag = Tag::fromString(implode('.', [(int) $parts[0] - 1, 'x']));
         }
 
-        $pullRequests = $this->pullRequests->search(
-            $repository,
-            Query::pullRequestsSince($repository, $branch, $currentRelease->publishedAt(), AbstractCommand::SONATA_CI_BOT)
-        );
+        if (null === $releaseDate) {
+            $pullRequests = $this->pullRequests->search(
+                $repository,
+                Query::pullRequests($repository, $branch, AbstractCommand::SONATA_CI_BOT)
+            );
+        } else {
+            $pullRequests = $this->pullRequests->search(
+                $repository,
+                Query::pullRequestsSince($repository, $branch, $releaseDate, AbstractCommand::SONATA_CI_BOT)
+            );
+        }
 
         if ([] === $pullRequests) {
             throw NoPullRequestsMergedSinceLastRelease::forBranch(
                 $project,
                 $branch,
-                $currentRelease->publishedAt()
+                $releaseDate
             );
         }
 
@@ -94,7 +102,7 @@ final class DetermineNextRelease
         return NextRelease::fromValues(
             $project,
             $branch,
-            $currentRelease->tag(),
+            $currentTag,
             $combinedStatus,
             $checkRuns,
             $pullRequests
