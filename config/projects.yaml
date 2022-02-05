@@ -113,8 +113,6 @@ cache-bundle:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 classification-bundle:
-    custom_doctor_rst_whitelist_part:
-        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
@@ -126,11 +124,6 @@ classification-bundle:
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb']
-            variants:
-                symfony/symfony: ['4.4.*']
 
 doctrine-extensions:
     has_documentation: false
@@ -249,8 +242,6 @@ intl-bundle:
 
 media-bundle:
     phpunit_extensions: ['doctrine_test']
-    custom_doctor_rst_whitelist_part:
-        "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     documentation_badge_slug: sonata-project-sonatamediabundle
     branches:
         5.x:
@@ -263,11 +254,6 @@ media-bundle:
             php_extensions: ['mongodb', 'gd']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0']
-            php_extensions: ['mongodb', 'soap', 'gd']
-            variants:
-                symfony/symfony: ['4.4.*']
 
 page-bundle:
     custom_doctor_rst_whitelist_part:
@@ -295,11 +281,6 @@ seo-bundle:
             php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        2.x:
-            php: ['7.3', '7.4', '8.0']
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/block-bundle: ['3.*']
 
 translation-bundle:
     branches:
@@ -313,11 +294,6 @@ translation-bundle:
             php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        2.x:
-            php: ['7.3', '7.4', '8.0']
-            php_extensions: ['pdo_sqlite']
-            variants:
-                symfony/symfony: ['4.4.*']
 
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
