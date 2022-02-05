@@ -144,6 +144,8 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             'YAML files',
             'XML files',
             'PHP-CS-Fixer',
+            'PHPStan',
+            'Psalm',
             sprintf(
                 'PHP %s + lowest + normal',
                 $lowestPhpVersion->toString()
@@ -153,14 +155,6 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         if ($project->hasDocumentation()) {
             $requiredStatusChecks[] = 'Sphinx build';
             $requiredStatusChecks[] = 'DOCtor-RST';
-        }
-
-        if ($project->usesPHPStan()) {
-            $requiredStatusChecks[] = 'PHPStan';
-        }
-
-        if ($project->usesPsalm()) {
-            $requiredStatusChecks[] = 'Psalm';
         }
 
         if ($branch->hasFrontend()) {

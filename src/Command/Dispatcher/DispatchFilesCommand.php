@@ -272,10 +272,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $filesToRemove[] = '.readthedocs.yaml';
         }
 
-        if (!$project->usesPHPStan() && !$project->usesPsalm()) {
-            $filesToRemove[] = '.github/workflows/qa.yaml';
-        }
-
         if (!$branch->hasFrontend()) {
             $filesToRemove[] = '.babelrc.js';
             $filesToRemove[] = '.eslintrc.js';

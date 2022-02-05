@@ -76,8 +76,6 @@ final class DispatchFilesCommandTest extends TestCase
     {
         $project = <<<CONFIG
 admin-bundle:
-  phpstan: true
-  psalm: true
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_gitignore_part: ~
