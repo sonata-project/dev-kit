@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Action\DetermineNextRelease;
-use App\Action\Exception\CannotDetermineNextRelease;
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\NextRelease;
@@ -56,7 +55,7 @@ final class NextReleaseOverviewController
 
                 try {
                     $release = $this->determineNextRelease->__invoke($project, $branch);
-                } catch (CannotDetermineNextRelease | NoPullRequestsMergedSinceLastRelease $e) {
+                } catch (NoPullRequestsMergedSinceLastRelease $e) {
                     continue;
                 } catch (\RuntimeException $e) {
                     // API rate limit, we display what we can

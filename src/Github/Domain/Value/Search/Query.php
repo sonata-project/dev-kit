@@ -42,6 +42,18 @@ final class Query
         return new self($value);
     }
 
+    public static function pullRequests(Repository $repository, Branch $branch, string $excludedAuthor): self
+    {
+        return new self(
+            sprintf(
+                'repo:%s type:pr is:merged base:%s -author:%s',
+                $repository->toString(),
+                $branch->name(),
+                $excludedAuthor
+            )
+        );
+    }
+
     public static function pullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date, string $excludedAuthor): self
     {
         return new self(
