@@ -2,12 +2,12 @@ admin-bundle:
     documentation_badge_slug: sonata-project-sonataadminbundle
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -79,11 +79,11 @@ block-bundle:
     has_test_kernel: false
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -130,22 +130,22 @@ doctrine-extensions:
     has_test_kernel: false
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
         1.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
 
 doctrine-mongodb-admin-bundle:
     phpunit_extensions: ['panther']
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -155,12 +155,12 @@ doctrine-orm-admin-bundle:
     documentation_badge_slug: sonata-project-doctrineormadminbundle
     branches:
         5.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -177,11 +177,11 @@ entity-audit-bundle:
     has_test_kernel: false
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         1.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -190,12 +190,12 @@ exporter:
     has_test_kernel: false
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
@@ -219,11 +219,11 @@ form-extensions:
     has_test_kernel: false
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         1.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -231,7 +231,7 @@ intl-bundle:
     has_test_kernel: false
     branches:
         3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         2.x:
@@ -299,11 +299,11 @@ twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
     branches:
         2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         1.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
