@@ -19,8 +19,11 @@ phpstan-console-application.php export-ignore
 psalm.xml export-ignore
 psalm-baseline.xml export-ignore
 {% if project.hasFrontend %}
+package.json export-ignore
+package-lock.json export-ignore
 postcss.config.js export-ignore
 prettier.config.js export-ignore
+webpack.config.js export-ignore
 {% endif %}
 {% if project.customGitattributesPart is not empty %}
 {{ project.customGitattributesPart }}
