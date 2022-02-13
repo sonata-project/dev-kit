@@ -275,8 +275,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         if (!$branch->hasFrontend()) {
             $filesToRemove[] = '.babelrc.js';
             $filesToRemove[] = '.eslintrc.js';
+            $filesToRemove[] = '.prettierignore';
             $filesToRemove[] = '.stylelintrc.js';
             $filesToRemove[] = 'postcss.config.js';
+            $filesToRemove[] = 'prettier.config.js';
             $filesToRemove[] = '.github/workflows/frontend.yaml';
         }
 
