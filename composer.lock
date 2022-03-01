@@ -693,12 +693,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -800,12 +800,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1053,16 +1053,16 @@
         },
         {
             "name": "knplabs/packagist-api",
-            "version": "v1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/packagist-api.git",
-                "reference": "be6295ec879cc1e822af4adf07a74f0c361888a0"
+                "reference": "4feae228a4505c1cd817da61e752e5dea2b22c2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/packagist-api/zipball/be6295ec879cc1e822af4adf07a74f0c361888a0",
-                "reference": "be6295ec879cc1e822af4adf07a74f0c361888a0",
+                "url": "https://api.github.com/repos/KnpLabs/packagist-api/zipball/4feae228a4505c1cd817da61e752e5dea2b22c2d",
+                "reference": "4feae228a4505c1cd817da61e752e5dea2b22c2d",
                 "shasum": ""
             },
             "require": {
@@ -1104,9 +1104,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/packagist-api/issues",
-                "source": "https://github.com/KnpLabs/packagist-api/tree/v1.7.1"
+                "source": "https://github.com/KnpLabs/packagist-api/tree/v1.7.2"
             },
-            "time": "2020-12-03T18:20:13+00:00"
+            "time": "2022-03-01T08:20:15+00:00"
         },
         {
             "name": "league/commonmark",
