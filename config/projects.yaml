@@ -76,7 +76,6 @@ admin-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 block-bundle:
-    has_test_kernel: false
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
