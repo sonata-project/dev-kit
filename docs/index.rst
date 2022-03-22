@@ -42,7 +42,6 @@ Libraries
 ---------
 Libraries used by our bundles, but can be also be installed as standalone packages.
 
-* `cache <https://github.com/sonata-project/cache#cache>`_
 * `exporter <https://docs.sonata-project.org/projects/exporter>`_
 * `form-extensions <https://docs.sonata-project.org/projects/form-extensions>`_
 * `twig-extensions <https://docs.sonata-project.org/projects/twig-extensions>`_
@@ -50,6 +49,7 @@ Libraries used by our bundles, but can be also be installed as standalone packag
 Abandoned
 ---------
 
+* `cache <https://github.com/sonata-project/cache#cache>`_
 * `ecommerce <https://docs.sonata-project.org/projects/ecommerce>`_
 * `SonataAdminSearchBundle <https://docs.sonata-project.org/projects/SonataAdminSearchBundle>`_
 * `SonataArticleBundle <https://docs.sonata-project.org/projects/SonataArticleBundle>`_
