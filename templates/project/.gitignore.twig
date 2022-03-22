@@ -20,10 +20,3 @@ phpstan.neon
 {% if branch.hasFrontend %}
 npm-debug.log
 {% endif %}
-{% if branch.customGitignorePart is not empty %}
-
-{{ branch.customGitignorePart }}
-{%- elseif project.customGitignorePart is not empty -%}
-
-{{ project.customGitignorePart }}
-{% endif %}

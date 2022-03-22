@@ -75,7 +75,6 @@ master:
   php: ['7.3', '7.4']
   target_php: ~
   frontend: true
-  custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
@@ -125,7 +124,6 @@ master:
   php: ['7.3', '7.4']
   target_php: ~
   frontend: true
-  custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']

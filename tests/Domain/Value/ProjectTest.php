@@ -25,8 +25,6 @@ final class ProjectTest extends TestCase
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -36,7 +34,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -47,7 +44,6 @@ admin-bundle:
       php: ['7.2', '7.3', '7.4']
       target_php: ~
       frontend: false
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['3']
@@ -92,8 +88,6 @@ CONFIG;
         static::assertTrue($project->hasPhpunitExtensions());
         static::assertTrue($project->hasPhpunitExtension('panther'));
         static::assertFalse($project->hasPhpunitExtension('random_extension'));
-        static::assertNull($project->customGitignorePart());
-        static::assertNull($project->customGitattributesPart());
         static::assertTrue($project->hasDocumentation());
         static::assertTrue($project->hasTestKernel());
         static::assertTrue($project->isBundle());
@@ -137,8 +131,6 @@ CONFIG;
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -148,7 +140,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -165,8 +156,6 @@ CONFIG,
 twig-extensions:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -176,7 +165,6 @@ twig-extensions:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -472,8 +460,6 @@ CONFIG,
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -483,7 +469,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -499,8 +484,6 @@ CONFIG,
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -510,7 +493,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -559,8 +541,6 @@ CONFIG,
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -570,7 +550,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -586,8 +565,6 @@ CONFIG,
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -597,7 +574,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -608,7 +584,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -624,8 +599,6 @@ CONFIG,
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -635,7 +608,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -646,7 +618,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']
@@ -657,7 +628,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4']
         sonata-project/block-bundle: ['4']

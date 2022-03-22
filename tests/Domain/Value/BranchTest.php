@@ -25,7 +25,6 @@ master:
   php: ['7.3', '7.4', '8.0']
   target_php: '7.4'
   frontend: true
-  custom_gitignore_part: ~
   variants:
     symfony/symfony: ['4.4']
     sonata-project/block-bundle: ['4']
@@ -60,7 +59,6 @@ CONFIG;
         static::assertSame('docs', $branch->docsPath()->toString());
         static::assertSame('tests', $branch->testsPath()->toString());
         static::assertTrue($branch->hasFrontend());
-        static::assertNull($branch->customGitignorePart());
         static::assertTrue($branch->hasPhpExtension('bar'));
     }
 }

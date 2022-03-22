@@ -21,7 +21,6 @@ namespace App\Domain\Value;
  *     php_extensions: array<string>,
  *     variants: array<string, array<string>>,
  *     target_php: string|null,
- *     custom_gitignore_part: string|null,
  *     frontend: bool,
  *     docs_path: string,
  *     tests_path: string,
@@ -47,7 +46,6 @@ final class Branch
     private array $variants;
 
     private bool $frontend;
-    private ?string $customGitignorePart;
     private Path $docsPath;
     private Path $testsPath;
     private PhpVersion $targetPhpVersion;
@@ -62,7 +60,6 @@ final class Branch
         array $phpVersions,
         array $phpExtensions,
         array $variants,
-        ?string $customGitignorePart,
         bool $frontend,
         Path $docsPath,
         Path $testsPath,
@@ -72,7 +69,6 @@ final class Branch
         $this->phpVersions = $phpVersions;
         $this->phpExtensions = $phpExtensions;
         $this->variants = $variants;
-        $this->customGitignorePart = $customGitignorePart;
         $this->frontend = $frontend;
         $this->docsPath = $docsPath;
         $this->testsPath = $testsPath;
@@ -112,7 +108,6 @@ final class Branch
             $phpVersions,
             $phpExtensions,
             $variants,
-            $config['custom_gitignore_part'],
             $config['frontend'],
             Path::fromString($config['docs_path']),
             Path::fromString($config['tests_path']),
@@ -166,11 +161,6 @@ final class Branch
     public function hasFrontend(): bool
     {
         return $this->frontend;
-    }
-
-    public function customGitignorePart(): ?string
-    {
-        return $this->customGitignorePart;
     }
 
     public function docsPath(): Path
