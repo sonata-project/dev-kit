@@ -59,6 +59,7 @@ final class Project
     private bool $hasTestKernel;
     private bool $rector;
     private ?string $customDoctorRstWhitelistPart;
+    private string $documentationBadgeSlug;
 
     private Repository $repository;
 
@@ -77,6 +78,7 @@ final class Project
         bool $hasTestKernel,
         bool $rector,
         ?string $customDoctorRstWhitelistPart,
+        ?string $documentationBadgeSlug
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->bundle = u($this->name)->endsWith('bundle') ? true : false;

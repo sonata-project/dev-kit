@@ -28,6 +28,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -134,6 +135,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: 'sonataadminbundle2'
   branches:
     master:
@@ -159,6 +161,7 @@ twig-extensions:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -463,6 +466,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -487,6 +491,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: 'sonataadminbundle2'
   branches:
     master:
@@ -544,6 +549,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -568,6 +574,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: ~
   branches:
     master:
@@ -602,6 +609,7 @@ admin-bundle:
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
+  rector: true
   documentation_badge_slug: ~
   branches:
     master:
