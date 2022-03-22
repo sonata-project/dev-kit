@@ -11,69 +11,6 @@ admin-bundle:
             frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0']
-            custom_gitignore_part: |
-                # clean up some non bower ready package
-                src/Resources/public/vendor/admin-lte/bootstrap
-                src/Resources/public/vendor/admin-lte/build
-                src/Resources/public/vendor/admin-lte/dist/img
-                !src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTE.css
-                src/Resources/public/vendor/admin-lte/dist/js/app.js
-                src/Resources/public/vendor/admin-lte/dist/js/demo.js
-                src/Resources/public/vendor/admin-lte/dist/js/pages
-                src/Resources/public/vendor/admin-lte/documentation
-                src/Resources/public/vendor/admin-lte/pages
-                src/Resources/public/vendor/admin-lte/plugins
-                src/Resources/public/vendor/admin-lte/*.html
-                src/Resources/public/vendor/admin-lte/Gruntfile.js
-
-                src/Resources/public/vendor/iCheck/skins/all.css
-                src/Resources/public/vendor/iCheck/skins/*/*
-                !src/Resources/public/vendor/iCheck/skins/square/blue.css
-                !src/Resources/public/vendor/iCheck/skins/square/blue.png
-                !src/Resources/public/vendor/iCheck/skins/square/blue@2x.png
-                src/Resources/public/vendor/iCheck/icheck.js
-
-                src/Resources/public/vendor/slimScroll/examples
-                src/Resources/public/vendor/slimScroll/jquery.slimscroll.js
-
-                src/Resources/public/vendor/bootstrap/grunt
-                src/Resources/public/vendor/bootstrap/less
-                src/Resources/public/vendor/bootstrap/test-infra
-                src/Resources/public/vendor/bootstrap/Gruntfile.js
-
-                src/Resources/public/vendor/jqueryui/themes/black-tie
-                src/Resources/public/vendor/jqueryui/themes/blitzer
-                src/Resources/public/vendor/jqueryui/themes/cupertino
-                src/Resources/public/vendor/jqueryui/themes/dark-hive
-                src/Resources/public/vendor/jqueryui/themes/dot-luv
-                src/Resources/public/vendor/jqueryui/themes/eggplant
-                src/Resources/public/vendor/jqueryui/themes/excite-bike
-                src/Resources/public/vendor/jqueryui/themes/hot-sneaks
-                src/Resources/public/vendor/jqueryui/themes/humanity
-                src/Resources/public/vendor/jqueryui/themes/le-frog
-                src/Resources/public/vendor/jqueryui/themes/mint-choc
-                src/Resources/public/vendor/jqueryui/themes/overcast
-                src/Resources/public/vendor/jqueryui/themes/pepper-grinder
-                src/Resources/public/vendor/jqueryui/themes/redmond
-                src/Resources/public/vendor/jqueryui/themes/smoothness
-                src/Resources/public/vendor/jqueryui/themes/south-street
-                src/Resources/public/vendor/jqueryui/themes/start
-                src/Resources/public/vendor/jqueryui/themes/sunny
-                src/Resources/public/vendor/jqueryui/themes/swanky-purse
-                src/Resources/public/vendor/jqueryui/themes/trontastic
-                src/Resources/public/vendor/jqueryui/themes/ui-darkness
-                src/Resources/public/vendor/jqueryui/themes/ui-lightness
-                src/Resources/public/vendor/jqueryui/themes/vader
-
-                src/Resources/public/vendor/jquery/src
-
-                src/Resources/public/vendor/jquery.scrollTo/demo
-                src/Resources/public/vendor/jquery.scrollTo/tests
-            variants:
-                symfony/symfony: ['4.4.*']
-                sonata-project/block-bundle: ['3.*']
 
 block-bundle:
     branches:
@@ -83,31 +20,6 @@ block-bundle:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
-            variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-
-cache:
-    has_test_kernel: false
-    excluded_files:
-        - README.md
-    has_documentation: false
-    branches:
-        3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-            php_extensions: ['mongodb']
-        2.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-            php_extensions: ['mongodb']
-
-cache-bundle:
-    has_test_kernel: false
-    branches:
-        4.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
-            variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
@@ -163,11 +75,6 @@ doctrine-orm-admin-bundle:
             php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
-        3.x:
-            php: ['7.3', '7.4', '8.0']
-            php_extensions: ['zip']
-            variants:
-                symfony/symfony: ['4.4.*']
 
 entity-audit-bundle:
     excluded_files:
