@@ -29,8 +29,6 @@ use function Symfony\Component\String\u;
  *     phpunit_extensions: array<string>,
  *     has_documentation: bool,
  *     has_test_kernel: bool,
- *     custom_gitignore_part: string|null,
- *     custom_gitattributes_part: string|null,
  *     custom_doctor_rst_whitelist_part: string|null,
  *     documentation_badge_slug: string|null,
  * }
@@ -58,8 +56,6 @@ final class Project
 
     private bool $hasDocumentation;
     private bool $hasTestKernel;
-    private ?string $customGitignorePart;
-    private ?string $customGitattributesPart;
     private ?string $customDoctorRstWhitelistPart;
     private string $documentationBadgeSlug;
 
@@ -78,8 +74,6 @@ final class Project
         array $phpunitExtensions,
         bool $hasDocumentation,
         bool $hasTestKernel,
-        ?string $customGitignorePart,
-        ?string $customGitattributesPart,
         ?string $customDoctorRstWhitelistPart,
         ?string $documentationBadgeSlug
     ) {
@@ -93,8 +87,6 @@ final class Project
         $this->hasTestKernel = $hasTestKernel;
         $this->excludedFiles = $excludedFiles;
         $this->phpunitExtensions = $phpunitExtensions;
-        $this->customGitignorePart = $customGitignorePart;
-        $this->customGitattributesPart = $customGitattributesPart;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
         $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
             ->lower()
@@ -131,8 +123,6 @@ final class Project
             $phpunitExtensions,
             $config['has_documentation'],
             $config['has_test_kernel'],
-            $config['custom_gitignore_part'],
-            $config['custom_gitattributes_part'],
             $config['custom_doctor_rst_whitelist_part'],
             $config['documentation_badge_slug'],
         );
@@ -251,16 +241,6 @@ final class Project
     public function hasTestKernel(): bool
     {
         return $this->hasTestKernel;
-    }
-
-    public function customGitignorePart(): ?string
-    {
-        return $this->customGitignorePart;
-    }
-
-    public function customGitattributesPart(): ?string
-    {
-        return $this->customGitattributesPart;
     }
 
     public function customDoctorRstWhitelistPart(): ?string

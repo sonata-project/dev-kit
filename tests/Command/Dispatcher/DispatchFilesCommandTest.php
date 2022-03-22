@@ -78,8 +78,6 @@ final class DispatchFilesCommandTest extends TestCase
 admin-bundle:
   phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
-  custom_gitignore_part: ~
-  custom_gitattributes_part: ~
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
   has_test_kernel: true
@@ -89,7 +87,6 @@ admin-bundle:
       php: ['7.3', '7.4']
       target_php: ~
       frontend: true
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4.*']
         sonata-project/block-bundle: ['4.*']
@@ -100,7 +97,6 @@ admin-bundle:
       php: ['7.2', '7.3', '7.4']
       target_php: ~
       frontend: false
-      custom_gitignore_part: ~
       variants:
         symfony/symfony: ['4.4.*']
         sonata-project/block-bundle: ['3.*']
