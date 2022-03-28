@@ -22,7 +22,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Set up Python 3.7
               uses: actions/setup-python@v2
@@ -33,13 +33,12 @@ jobs:
               run: python -c "import sys; print(sys.version)"
 
             - name: Cache pip
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: ~/.cache/pip
-{% verbatim %}
-                  key: ${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}
-                  restore-keys: ${{ runner.os }}-pip-
-{% endverbatim %}
+                  key: {% verbatim %}${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}{% endverbatim %}
+                  restore-keys: {% verbatim %}${{ runner.os }}{% endverbatim %}-pip-
+
             - name: Install custom requirements via pip
               run: pip install -r docs/requirements.txt
 
@@ -53,7 +52,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Run DOCtor-RST
               uses: docker://oskarstark/doctor-rst

@@ -16,14 +16,14 @@ on:
 
 jobs:
     test:
-        {% verbatim %}name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
+        name: PHP {% verbatim %}${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}{% endverbatim %}
 
         runs-on: ubuntu-latest
 
-        {% verbatim %}continue-on-error: ${{ matrix.allowed-to-fail }}{% endverbatim %}
+        continue-on-error: {% verbatim %}${{ matrix.allowed-to-fail }}{% endverbatim %}
 
         env:
-            {% verbatim %}SYMFONY_REQUIRE: ${{matrix.symfony-require}}{% endverbatim %}
+            SYMFONY_REQUIRE: {% verbatim %}${{matrix.symfony-require}}{% endverbatim %}
 
 {% if branch.hasPhpExtension('mongodb') %}
         services:
@@ -64,12 +64,12 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  {% verbatim %}php-version: ${{ matrix.php-version }}{% endverbatim %}
+                  php-version: {% verbatim %}${{ matrix.php-version }}{% endverbatim %}
                   coverage: pcov
                   tools: composer:v2
 {% if branch.phpExtensions is not empty %}
@@ -77,7 +77,7 @@ jobs:
 {% endif %}
 
             - name: Add PHPUnit matcher
-              {% verbatim %}run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"{% endverbatim %}
+              run: echo "::add-matcher::{% verbatim %}${{ runner.tool_cache }}{% endverbatim %}/phpunit.json"
 
             - name: Globally install symfony/flex
               if: matrix.symfony-require != ''
@@ -85,7 +85,7 @@ jobs:
 
             - name: Install variant
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
-              {% verbatim %}run: composer require ${{ matrix.variant }} --no-update{% endverbatim %}
+              run: composer require {% verbatim %}${{ matrix.variant }}{% endverbatim %} --no-update
 
             - name: Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})
               uses: ramsey/composer-install@v2

@@ -22,7 +22,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
@@ -50,7 +50,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
@@ -59,7 +59,7 @@ jobs:
                   coverage: none
                   tools: composer:v2, composer-normalize:2
               env:
-                  {% verbatim %}COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endverbatim %}
+                  COMPOSER_TOKEN: {% verbatim %}${{ secrets.GITHUB_TOKEN }}{% endverbatim %}
 
             - name: Lint Composer
               run: make lint-composer
@@ -71,15 +71,10 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
-            - name: Install Ruby 2.6
-              uses: actions/setup-ruby@v1
-              with:
-                  ruby-version: '2.6'
-
-            - name: Install required gem
-              run: gem install yaml-lint
+            - name: Install yamllint
+              run: sudo apt-get install yamllint
 
             - name: Lint files
               run: make lint-yaml
@@ -91,7 +86,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install required dependencies
               run: sudo apt-get update && sudo apt-get install libxml2-utils
