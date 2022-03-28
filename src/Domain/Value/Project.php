@@ -29,6 +29,7 @@ use function Symfony\Component\String\u;
  *     phpunit_extensions: array<string>,
  *     has_documentation: bool,
  *     has_test_kernel: bool,
+ *     rector: bool,
  *     custom_doctor_rst_whitelist_part: string|null,
  *     documentation_badge_slug: string|null,
  * }
@@ -56,6 +57,7 @@ final class Project
 
     private bool $hasDocumentation;
     private bool $hasTestKernel;
+    private bool $rector;
     private ?string $customDoctorRstWhitelistPart;
     private string $documentationBadgeSlug;
 
@@ -74,6 +76,7 @@ final class Project
         array $phpunitExtensions,
         bool $hasDocumentation,
         bool $hasTestKernel,
+        bool $rector,
         ?string $customDoctorRstWhitelistPart,
         ?string $documentationBadgeSlug
     ) {
@@ -85,6 +88,7 @@ final class Project
         $this->branches = $branches;
         $this->hasDocumentation = $hasDocumentation;
         $this->hasTestKernel = $hasTestKernel;
+        $this->rector = $rector;
         $this->excludedFiles = $excludedFiles;
         $this->phpunitExtensions = $phpunitExtensions;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
@@ -123,6 +127,7 @@ final class Project
             $phpunitExtensions,
             $config['has_documentation'],
             $config['has_test_kernel'],
+            $config['rector'],
             $config['custom_doctor_rst_whitelist_part'],
             $config['documentation_badge_slug'],
         );
@@ -241,6 +246,11 @@ final class Project
     public function hasTestKernel(): bool
     {
         return $this->hasTestKernel;
+    }
+
+    public function rector(): bool
+    {
+        return $this->rector;
     }
 
     public function customDoctorRstWhitelistPart(): ?string
