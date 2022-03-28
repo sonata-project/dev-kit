@@ -83,8 +83,17 @@
     "felixfbecker/language-server-protocol": {
         "version": "1.5.1"
     },
-    "fzaninotto/faker": {
-        "version": "v1.9.1"
+    "friendsofphp/php-cs-fixer": {
+        "version": "3.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "be2103eb4a20942e28a6dd87736669b757132435"
+        },
+        "files": [
+            ".php-cs-fixer.dist.php"
+        ]
     },
     "guzzlehttp/guzzle": {
         "version": "7.2.0"
@@ -170,8 +179,8 @@
     "phar-io/version": {
         "version": "3.1.0"
     },
-    "php": {
-        "version": "7.4"
+    "php-cs-fixer/diff": {
+        "version": "v2.0.2"
     },
     "php-http/cache-plugin": {
         "version": "1.7.1"
@@ -181,9 +190,6 @@
     },
     "php-http/discovery": {
         "version": "1.12.0"
-    },
-    "php-http/guzzle6-adapter": {
-        "version": "v1.1.1"
     },
     "php-http/httplug": {
         "version": "2.2.0"
@@ -255,9 +261,6 @@
             "phpunit.xml.dist",
             "tests/bootstrap.php"
         ]
-    },
-    "predis/predis": {
-        "version": "v1.1.6"
     },
     "psalm/plugin-phpunit": {
         "version": "0.16.1"
@@ -441,21 +444,6 @@
     "symfony/http-kernel": {
         "version": "v5.2.0"
     },
-    "symfony/inflector": {
-        "version": "v4.4.3"
-    },
-    "symfony/maker-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
-        }
-    },
-    "symfony/mime": {
-        "version": "v4.4.11"
-    },
     "symfony/monolog-bridge": {
         "version": "v5.2.0"
     },
@@ -525,9 +513,6 @@
     "symfony/process": {
         "version": "v5.2.0"
     },
-    "symfony/property-access": {
-        "version": "v4.4.3"
-    },
     "symfony/routing": {
         "version": "5.1",
         "recipe": {
@@ -541,30 +526,6 @@
             "config/packages/routing.yaml",
             "config/routes.yaml"
         ]
-    },
-    "symfony/security-bundle": {
-        "version": "4.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.4",
-            "ref": "30efd98dd3b4ead6e9ad4713b1efc43bbe94bf77"
-        },
-        "files": [
-            "config/packages/security.yaml"
-        ]
-    },
-    "symfony/security-core": {
-        "version": "v4.4.3"
-    },
-    "symfony/security-csrf": {
-        "version": "v4.4.3"
-    },
-    "symfony/security-guard": {
-        "version": "v4.4.3"
-    },
-    "symfony/security-http": {
-        "version": "v4.4.3"
     },
     "symfony/service-contracts": {
         "version": "v2.2.0"

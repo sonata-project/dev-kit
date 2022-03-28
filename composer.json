@@ -27,18 +27,18 @@
         "league/commonmark": "^1.5",
         "nyholm/psr7": "^1.2",
         "oskarstark/env-var-extension": "^1.0",
-        "symfony/cache": "^5.3",
-        "symfony/console": "^5.3",
-        "symfony/dotenv": "^5.3",
+        "symfony/cache": "^5.4",
+        "symfony/console": "^5.4",
+        "symfony/dotenv": "^5.4",
         "symfony/flex": "^1.10",
-        "symfony/framework-bundle": "^5.3",
-        "symfony/http-client": "^5.3",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/http-client": "^5.4",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/notifier": "^5.3",
-        "symfony/slack-notifier": "^5.3",
-        "symfony/string": "^5.3",
-        "symfony/twig-bundle": "^5.3",
-        "symfony/yaml": "^5.3",
+        "symfony/notifier": "^5.4",
+        "symfony/slack-notifier": "^5.4",
+        "symfony/string": "^5.4",
+        "symfony/twig-bundle": "^5.4",
+        "symfony/yaml": "^5.4",
         "twig/extra-bundle": "^3.1",
         "twig/markdown-extra": "^3.1",
         "twig/twig": "^2.12 || ^3.0",
@@ -46,6 +46,7 @@
     },
     "require-dev": {
         "ergebnis/test-util": "^1.2",
+        "friendsofphp/php-cs-fixer": "^3.8",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
@@ -55,11 +56,11 @@
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16",
         "psalm/plugin-symfony": "^3.0",
-        "symfony/debug-bundle": "^5.3",
-        "symfony/phpunit-bridge": "^5.3",
-        "symfony/stopwatch": "^5.3",
-        "symfony/var-dumper": "^5.3",
-        "symfony/web-profiler-bundle": "^5.3",
+        "symfony/debug-bundle": "^5.4",
+        "symfony/phpunit-bridge": "^5.4",
+        "symfony/stopwatch": "^5.4",
+        "symfony/var-dumper": "^5.4",
+        "symfony/web-profiler-bundle": "^5.4",
         "vimeo/psalm": "^4.9.2"
     },
     "replace": {
@@ -96,7 +97,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.3.*"
+            "require": "5.4.*"
         }
     },
     "scripts": {
