@@ -168,6 +168,10 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'YML files';
         }
 
+        if ($project->rector()) {
+            $requiredStatusChecks[] = 'Rector';
+        }
+
         foreach ($branch->phpVersions() as $phpVersion) {
             $requiredStatusChecks[] = sprintf(
                 'PHP %s + highest + normal',
