@@ -36,9 +36,10 @@ final class CombinedStatusFactory
 
         $response = [
             'state' => $state,
-            'statuses' => array_map(static function (): array {
-                return StatusFactory::create();
-            }, range('pending' === $state ? 0 : 1, $faker->numberBetween(2, 3))),
+            'statuses' => array_map(
+                static fn (): array => StatusFactory::create(),
+                range('pending' === $state ? 0 : 1, $faker->numberBetween(2, 3))
+            ),
         ];
 
         if (\array_key_exists('statuses', $parameters)) {

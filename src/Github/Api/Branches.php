@@ -34,10 +34,11 @@ final class Branches
      */
     public function all(Repository $repository): array
     {
-        return array_map(function (array $listResponse) use ($repository): Branch {
-            // Fetch the more detailed information
-            return $this->get($repository, $listResponse['name']);
-        }, $this->github->repos()->branches($repository->username(), $repository->name()));
+        // Fetch the more detailed information
+        return array_map(
+            fn (array $listResponse): Branch => $this->get($repository, $listResponse['name']),
+            $this->github->repos()->branches($repository->username(), $repository->name())
+        );
     }
 
     public function get(Repository $repository, string $name): Branch

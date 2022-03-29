@@ -28,9 +28,10 @@ final class DetermineNextReleaseVersion
             return $current;
         }
 
-        $stabilities = array_map(static function (PullRequest $pr): string {
-            return $pr->stability()->toString();
-        }, $pullRequests);
+        $stabilities = array_map(
+            static fn (PullRequest $pr): string => $pr->stability()->toString(),
+            $pullRequests
+        );
 
         // Add compatibility for non-semantic versioning like `4.0.0-alpha-1`
         $currentTag = str_replace('-', '.', $current->toString());

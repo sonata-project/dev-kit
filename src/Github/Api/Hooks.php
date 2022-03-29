@@ -34,9 +34,10 @@ final class Hooks
      */
     public function all(Repository $repository): array
     {
-        return array_map(static function (array $response): Hook {
-            return Hook::fromResponse($response);
-        }, $this->github->repo()->hooks()->all($repository->username(), $repository->name()));
+        return array_map(
+            static fn (array $response): Hook => Hook::fromResponse($response),
+            $this->github->repo()->hooks()->all($repository->username(), $repository->name())
+        );
     }
 
     /**

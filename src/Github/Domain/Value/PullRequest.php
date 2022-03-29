@@ -226,9 +226,10 @@ final class PullRequest
             return Stability::unknown();
         }
 
-        $labels = array_map(static function (Label $label): string {
-            return $label->name();
-        }, $this->labels);
+        $labels = array_map(
+            static fn (Label $label): string => $label->name(),
+            $this->labels
+        );
 
         if (\in_array('major', $labels, true)) {
             return Stability::major();

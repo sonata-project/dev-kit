@@ -16,12 +16,13 @@ namespace App\Domain\Value;
 use App\Config\Exception\UnknownBranch;
 use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
+use Packagist\Api\Result\Package\Version;
 use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
  *
- * @phpstan-import-type BranchConfig from \App\Domain\Value\Branch
+ * @phpstan-import-type BranchConfig from Branch
  *
  * @phpstan-type ProjectConfig = array{
  *     branches: array<string, BranchConfig>,
@@ -201,9 +202,10 @@ final class Project
      */
     public function branchNames(): array
     {
-        return array_map(static function (Branch $branch): string {
-            return $branch->name();
-        }, $this->branches);
+        return array_map(
+            static fn (Branch $branch): string => $branch->name(),
+            $this->branches
+        );
     }
 
     /**
@@ -317,13 +319,14 @@ final class Project
 
         $latestVersion = $this->getLatestPackagistVersion();
 
-        $keywords = array_map(static function (string $keyword): string {
-            return u($keyword)
+        $keywords = array_map(
+            static fn (string $keyword): string => u($keyword)
                 ->lower()
                 ->replace(' ', '-')
                 ->trim()
-                ->toString();
-        }, array_merge($default, $latestVersion->getKeywords()));
+                ->toString(),
+            array_merge($default, $latestVersion->getKeywords())
+        );
 
         sort($keywords);
 
@@ -362,13 +365,13 @@ final class Project
         return null !== $this->stableBranch();
     }
 
-    private function getLatestPackagistVersion(): Package\Version
+    private function getLatestPackagistVersion(): Version
     {
         $versions = $this->package->getVersions();
         $latest = reset($versions);
 
         if (false === $latest) {
-            return new Package\Version();
+            return new Version();
         }
 
         return $latest;

@@ -22,6 +22,7 @@ use App\Domain\Value\Repository;
 use App\Github\Api\Branches;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
+use App\Github\Domain\Value\Branch as GithubBranch;
 use Github\Exception\ExceptionInterface;
 use GitWrapper\GitWrapper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -154,9 +155,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         foreach ($project->branchesReverse() as $branch) {
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranchNames = array_map(
-                static function (\App\Github\Domain\Value\Branch $branch): string {
-                    return $branch->name();
-                },
+                static fn (GithubBranch $branch): string => $branch->name(),
                 $this->branches->all($repository)
             );
 
@@ -318,9 +317,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
 
             $excludedFiles = array_map(
-                static function (ExcludedFile $excludedFile): string {
-                    return $excludedFile->filename();
-                },
+                static fn (ExcludedFile $excludedFile): string => $excludedFile->filename(),
                 $project->excludedFiles()
             );
 

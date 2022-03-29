@@ -40,13 +40,14 @@ final class Comments
      */
     public function all(Repository $repository, PullRequest $pullRequest, ?string $username = null): array
     {
-        $comments = array_map(static function (array $response): Comment {
-            return Comment::fromResponse($response);
-        }, $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
-            $repository->username(),
-            $repository->name(),
-            $pullRequest->issue()->toInt(),
-        ]));
+        $comments = array_map(
+            static fn (array $response): Comment => Comment::fromResponse($response),
+            $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
+                $repository->username(),
+                $repository->name(),
+                $pullRequest->issue()->toInt(),
+            ])
+        );
 
         if (null === $username) {
             return $comments;
@@ -54,9 +55,7 @@ final class Comments
 
         return array_filter(
             $comments,
-            static function (Comment $comment) use ($username): bool {
-                return $comment->author()->login() === $username;
-            }
+            static fn (Comment $comment): bool => $comment->author()->login() === $username
         );
     }
 

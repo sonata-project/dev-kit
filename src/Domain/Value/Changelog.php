@@ -64,9 +64,10 @@ final class Changelog
             date('Y-m-d')
         );
 
-        $changelogs = array_map(static function (PullRequest $pr): array {
-            return $pr->changelog();
-        }, $pullRequests);
+        $changelogs = array_map(
+            static fn (PullRequest $pr): array => $pr->changelog(),
+            $pullRequests
+        );
 
         $changelog = array_reduce(
             $changelogs,

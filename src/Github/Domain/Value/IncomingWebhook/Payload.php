@@ -88,7 +88,7 @@ final class Payload
 
     public static function fromJsonString(string $payload, Event $event): self
     {
-        $decodedPayload = json_decode($payload, true);
+        $decodedPayload = json_decode($payload, true, 512, \JSON_THROW_ON_ERROR);
         Assert::isArray($decodedPayload);
 
         return self::fromArray(

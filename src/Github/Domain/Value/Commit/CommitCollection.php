@@ -51,9 +51,10 @@ final class CommitCollection implements \Countable
      */
     public function messages(): array
     {
-        return array_map(static function (Commit $commit): string {
-            return $commit->message();
-        }, $this->commits);
+        return array_map(
+            static fn (Commit $commit): string => $commit->message(),
+            $this->commits
+        );
     }
 
     public function firstMessage(): string

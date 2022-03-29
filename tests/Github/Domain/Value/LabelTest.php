@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Label;
+use App\Github\Domain\Value\Label\Color;
 use PHPUnit\Framework\TestCase;
 
 final class LabelTest extends TestCase
@@ -27,7 +28,7 @@ final class LabelTest extends TestCase
 
         Label::fromValues(
             '',
-            Label\Color::fromString('ededed')
+            Color::fromString('ededed')
         );
     }
 
@@ -38,7 +39,7 @@ final class LabelTest extends TestCase
     {
         $label = Label::fromValues(
             'Test',
-            Label\Color::fromString('EDEDED')
+            Color::fromString('EDEDED')
         );
 
         static::assertSame('Test', $label->name());
@@ -97,7 +98,7 @@ final class LabelTest extends TestCase
     {
         yield [
             true,
-            Label::fromValues('RTM', Label\Color::fromString('ffffff')),
+            Label::fromValues('RTM', Color::fromString('ffffff')),
             Label::RTM(),
         ];
 

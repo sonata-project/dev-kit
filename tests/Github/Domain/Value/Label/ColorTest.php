@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\Label;
 
 use App\Github\Domain\Value\Label;
+use App\Github\Domain\Value\Label\Color;
 use PHPUnit\Framework\TestCase;
 
 final class ColorTest extends TestCase
@@ -25,7 +26,7 @@ final class ColorTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Label\Color::fromString('');
+        Color::fromString('');
     }
 
     /**
@@ -35,7 +36,7 @@ final class ColorTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Label\Color::fromString('#123454');
+        Color::fromString('#123454');
     }
 
     /**
@@ -45,7 +46,7 @@ final class ColorTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Label\Color::fromString('12345');
+        Color::fromString('12345');
     }
 
     /**
@@ -55,7 +56,7 @@ final class ColorTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Label\Color::fromString('1234567');
+        Color::fromString('1234567');
     }
 
     /**
@@ -63,7 +64,7 @@ final class ColorTest extends TestCase
      */
     public function valid(): void
     {
-        $color = Label\Color::fromString('EDEDED');
+        $color = Color::fromString('EDEDED');
 
         static::assertSame('ededed', $color->toString());
         static::assertSame('#ededed', $color->asHexCode());
@@ -74,7 +75,7 @@ final class ColorTest extends TestCase
      *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Label\Color $color, Label\Color $other): void
+    public function equals(bool $expected, Color $color, Color $other): void
     {
         static::assertSame(
             $expected,
@@ -89,20 +90,20 @@ final class ColorTest extends TestCase
     {
         yield [
             true,
-            Label\Color::fromString('ededed'),
-            Label\Color::fromString('ededed'),
+            Color::fromString('ededed'),
+            Color::fromString('ededed'),
         ];
 
         yield 'equal, because of case insensitive' => [
             true,
-            Label\Color::fromString('ededed'),
-            Label\Color::fromString('EDEDED'),
+            Color::fromString('ededed'),
+            Color::fromString('EDEDED'),
         ];
 
         yield [
             false,
-            Label\Color::fromString('111111'),
-            Label\Color::fromString('222222'),
+            Color::fromString('111111'),
+            Color::fromString('222222'),
         ];
     }
 }
