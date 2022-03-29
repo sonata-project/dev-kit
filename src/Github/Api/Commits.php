@@ -40,13 +40,14 @@ final class Commits
      */
     public function all(Repository $repository, PullRequest $pullRequest): array
     {
-        return array_map(static function (array $response): Commit {
-            return Commit::fromResponse($response);
-        }, $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
-            $repository->username(),
-            $repository->name(),
-            $pullRequest->issue()->toInt(),
-        ]));
+        return array_map(
+            static fn (array $response): Commit => Commit::fromResponse($response),
+            $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
+                $repository->username(),
+                $repository->name(),
+                $pullRequest->issue()->toInt(),
+            ])
+        );
     }
 
     public function lastCommit(Repository $repository, PullRequest $pullRequest): Commit

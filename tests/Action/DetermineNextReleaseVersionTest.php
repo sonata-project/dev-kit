@@ -17,7 +17,8 @@ use App\Action\DetermineNextReleaseVersion;
 use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
-use App\Tests\Util\Factory\Github;
+use App\Tests\Util\Factory\Github\Response\LabelFactory;
+use App\Tests\Util\Factory\Github\Response\PullRequestFactory;
 use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
@@ -178,13 +179,13 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
     private static function createPullRequestWithStability(Stability $stability): PullRequest
     {
-        $response = Github\Response\PullRequestFactory::create();
+        $response = PullRequestFactory::create();
 
         if ($stability->equals(Stability::unknown())) {
             $response['labels'] = [];
         } else {
             $response['labels'] = [
-                Github\Response\LabelFactory::create([
+                LabelFactory::create([
                     'name' => $stability->toString(),
                 ]),
             ];

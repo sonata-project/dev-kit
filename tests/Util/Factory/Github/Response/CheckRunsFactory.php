@@ -29,9 +29,10 @@ final class CheckRunsFactory
         $faker = self::faker();
 
         $response = [
-            'check_runs' => array_map(static function (): array {
-                return CheckRunFactory::create();
-            }, range(0, $faker->numberBetween(2, 3))),
+            'check_runs' => array_map(
+                static fn (): array => CheckRunFactory::create(),
+                range(0, $faker->numberBetween(2, 3))
+            ),
         ];
 
         if (\array_key_exists('check_runs', $parameters)) {

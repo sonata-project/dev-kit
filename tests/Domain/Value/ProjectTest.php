@@ -15,6 +15,7 @@ namespace App\Tests\Domain\Value;
 
 use App\Domain\Value\Project;
 use Packagist\Api\Result\Package;
+use Packagist\Api\Result\Package\Version;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
@@ -186,7 +187,7 @@ CONFIG,
      */
     public function homepage(string $expected, string $value): void
     {
-        $version = new Package\Version();
+        $version = new Version();
         $version->fromArray([
             'homepage' => $value,
         ]);
@@ -237,7 +238,7 @@ CONFIG,
      */
     public function description(string $expected, string $value, bool $abandoned): void
     {
-        $version = new Package\Version();
+        $version = new Version();
         $version->fromArray([
             'description' => $value,
         ]);
@@ -295,7 +296,7 @@ CONFIG,
      */
     public function topics(): void
     {
-        $version = new Package\Version();
+        $version = new Version();
         $version->fromArray([
             'keywords' => [
                 'Admin Generator',
@@ -349,7 +350,7 @@ CONFIG,
      */
     public function topicsReturnsDefaultTopicsIfNoTopicsAreSetInPackage(): void
     {
-        $version = new Package\Version();
+        $version = new Version();
         $version->fromArray([
             'keywords' => [],
         ]);
@@ -379,7 +380,7 @@ CONFIG,
      */
     public function defaultTopicsAreNotDuplicatedWithPackageKeywords(): void
     {
-        $version = new Package\Version();
+        $version = new Version();
         $version->fromArray([
             'keywords' => [
                 'Symfony bundle',

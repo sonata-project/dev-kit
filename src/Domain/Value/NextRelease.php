@@ -200,9 +200,10 @@ final class NextRelease
 
     public function stability(): Stability
     {
-        $stabilities = array_map(static function (PullRequest $pr): string {
-            return $pr->stability()->toString();
-        }, $this->pullRequests);
+        $stabilities = array_map(
+            static fn (PullRequest $pr): string => $pr->stability()->toString(),
+            $this->pullRequests
+        );
 
         if (\in_array(Stability::major()->toString(), $stabilities, true)) {
             return Stability::major();

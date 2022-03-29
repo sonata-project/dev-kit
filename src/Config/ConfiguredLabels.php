@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Config;
 
 use App\Github\Domain\Value\Label;
+use App\Github\Domain\Value\Label\Color;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
@@ -40,7 +41,7 @@ final class ConfiguredLabels
 
             $this->labels[$name] = Label::fromValues(
                 $name,
-                Label\Color::fromString($config['color'])
+                Color::fromString($config['color'])
             );
         }
     }

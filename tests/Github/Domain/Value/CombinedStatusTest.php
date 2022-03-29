@@ -15,7 +15,8 @@ namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Status;
-use App\Tests\Util\Factory\Github;
+use App\Tests\Util\Factory\Github\Response\CombinedStatusFactory;
+use App\Tests\Util\Factory\Github\Response\StatusFactory;
 use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
@@ -38,7 +39,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfResponseArrayDoesNotContainKeyState(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create();
+        $response = CombinedStatusFactory::create();
         unset($response['state']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -51,7 +52,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStateIsEmptyString(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => '',
         ]);
 
@@ -65,7 +66,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStateIsUnknown(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => 'foo',
         ]);
 
@@ -79,7 +80,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStatusesKeyDoesNotExist(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create();
+        $response = CombinedStatusFactory::create();
         unset($response['statuses']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -92,7 +93,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsSuccess(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => 'success',
         ]);
 
@@ -108,7 +109,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsFailure(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => 'failure',
         ]);
 
@@ -124,7 +125,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function allowStatusesKeyIsEmptyArrayAndStateIsPending(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => 'pending',
         ]);
 
@@ -143,7 +144,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function usesStateFromResponse(string $state): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => $state,
         ]);
 
@@ -170,7 +171,7 @@ final class CombinedStatusTest extends TestCase
      */
     public function isSuccessful(bool $expected, string $state): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'state' => $state,
         ]);
 
@@ -195,10 +196,10 @@ final class CombinedStatusTest extends TestCase
      */
     public function usesStatusesFromResponse(): void
     {
-        $response = Github\Response\CombinedStatusFactory::create([
+        $response = CombinedStatusFactory::create([
             'statuses' => [
-                $statusResponse1 = Github\Response\StatusFactory::create(),
-                $statusResponse2 = Github\Response\StatusFactory::create(),
+                $statusResponse1 = StatusFactory::create(),
+                $statusResponse2 = StatusFactory::create(),
             ],
         ]);
 

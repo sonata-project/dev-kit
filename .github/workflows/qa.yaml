@@ -27,7 +27,7 @@ jobs:
               uses: ramsey/composer-install@v2
 
             - name: PHPStan
-              run: vendor/bin/phpstan --memory-limit=1G analyse --error-format=github
+              run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse --error-format=github
     psalm:
         name: Psalm
 
@@ -48,4 +48,25 @@ jobs:
               uses: ramsey/composer-install@v2
 
             - name: Psalm
-              run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.0
+              run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.0
+    rector:
+        name: Rector
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.0'
+                  coverage: none
+                  tools: composer:v2
+
+            - name: Install Composer dependencies (locked)
+              uses: ramsey/composer-install@v2
+
+            - name: Rector
+              run: vendor/bin/rector --no-progress-bar --dry-run

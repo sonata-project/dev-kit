@@ -87,9 +87,10 @@ final class Branch
             $phpVersions[$version] = PhpVersion::fromString($version);
         }
 
-        $phpExtensions = array_map(static function (string $phpExtension): PhpExtension {
-            return PhpExtension::fromString($phpExtension);
-        }, $config['php_extensions']);
+        $phpExtensions = array_map(
+            static fn (string $phpExtension): PhpExtension => PhpExtension::fromString($phpExtension),
+            $config['php_extensions']
+        );
 
         $variants = [];
         foreach ($config['variants'] as $variant => $versions) {

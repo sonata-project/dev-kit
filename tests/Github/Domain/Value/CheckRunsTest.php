@@ -15,7 +15,8 @@ namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\CheckRun;
 use App\Github\Domain\Value\CheckRuns;
-use App\Tests\Util\Factory\Github;
+use App\Tests\Util\Factory\Github\Response\CheckRunFactory;
+use App\Tests\Util\Factory\Github\Response\CheckRunsFactory;
 use Ergebnis\Test\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +29,7 @@ final class CheckRunsTest extends TestCase
      */
     public function throwsExceptionIfCheckRunsKeyDoesNotExist(): void
     {
-        $response = Github\Response\CheckRunsFactory::create();
+        $response = CheckRunsFactory::create();
         unset($response['check_runs']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -43,9 +44,9 @@ final class CheckRunsTest extends TestCase
      */
     public function isSuccessful(bool $expected, string $conclusion): void
     {
-        $response = Github\Response\CheckRunsFactory::create([
+        $response = CheckRunsFactory::create([
             'check_runs' => [
-                Github\Response\CheckRunFactory::create([
+                CheckRunFactory::create([
                     'conclusion' => $conclusion,
                 ]),
             ],
@@ -77,10 +78,10 @@ final class CheckRunsTest extends TestCase
      */
     public function usesCheckRunsFromResponse(): void
     {
-        $response = Github\Response\CheckRunsFactory::create([
+        $response = CheckRunsFactory::create([
             'check_runs' => [
-                $response1 = Github\Response\CheckRunFactory::create(),
-                $response2 = Github\Response\CheckRunFactory::create(),
+                $response1 = CheckRunFactory::create(),
+                $response2 = CheckRunFactory::create(),
             ],
         ]);
 
@@ -103,15 +104,15 @@ final class CheckRunsTest extends TestCase
      */
     public function returnsSortedByName(): void
     {
-        $response = Github\Response\CheckRunsFactory::create([
+        $response = CheckRunsFactory::create([
             'check_runs' => [
-                Github\Response\CheckRunFactory::create([
+                CheckRunFactory::create([
                     'name' => 'foo',
                 ]),
-                Github\Response\CheckRunFactory::create([
+                CheckRunFactory::create([
                     'name' => 'Bar',
                 ]),
-                Github\Response\CheckRunFactory::create([
+                CheckRunFactory::create([
                     'name' => 'Zoo',
                 ]),
             ],

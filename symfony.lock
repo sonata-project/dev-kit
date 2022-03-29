@@ -295,6 +295,9 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
+    "rector/rector": {
+        "version": "0.12.19"
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },

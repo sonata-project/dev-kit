@@ -51,9 +51,7 @@ class GithubSponsorsExtension extends AbstractExtension
     public function listSponsorisable(Repository $repository): array
     {
         $contributors = array_map(
-            static function (array $contributor): string {
-                return $contributor['login'];
-            },
+            static fn (array $contributor): string => $contributor['login'],
             $this->github->repo()->contributors(
                 $repository->username(),
                 $repository->name(),

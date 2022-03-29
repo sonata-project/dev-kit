@@ -49,7 +49,7 @@ final class PullRequestFactory
                 'repo' => $repo,
             ],
             'user' => UserFactory::create(),
-            'mergeable' => $faker->boolean() ? $faker->boolean() : null,
+            'mergeable' => $faker->boolean(),
             'body' => sprintf(
                 <<<'BODY'
 <!-- %s -->
@@ -69,9 +69,10 @@ BODY,
                 $faker->text()
             ),
             'html_url' => $faker->url(),
-            'labels' => array_map(static function (): array {
-                return LabelFactory::create();
-            }, range(0, $faker->numberBetween(0, 5))),
+            'labels' => array_map(
+                static fn (): array => LabelFactory::create(),
+                range(0, $faker->numberBetween(0, 5))
+            ),
         ];
 
         return array_replace_recursive(
