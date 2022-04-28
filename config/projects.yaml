@@ -11,6 +11,7 @@ admin-bundle:
             frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                sonata-project/block-bundle: ['5.x-dev as 5.0']
 
 block-bundle:
     rector: false
