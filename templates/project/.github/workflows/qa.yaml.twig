@@ -70,6 +70,7 @@ jobs:
             - name: Psalm
               run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version={{ branch.targetPhpVersion.toString }}
 {% if project.rector %}
+
     rector:
         name: Rector
 
