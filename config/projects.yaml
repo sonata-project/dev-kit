@@ -17,7 +17,7 @@ block-bundle:
         5.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['5.4.*', '6.0.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             variants:
