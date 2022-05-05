@@ -129,7 +129,6 @@ formatter-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 form-extensions:
-    rector: false
     has_test_kernel: false
     branches:
         2.x:
