@@ -30,6 +30,11 @@ final class PhpVersion
         return new self($version);
     }
 
+    public function rectorFormat(): string
+    {
+        return str_replace('.', '', $this->version);
+    }
+
     public function toString(): string
     {
         return $this->version;
