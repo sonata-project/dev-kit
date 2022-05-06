@@ -15,7 +15,7 @@ admin-bundle:
 block-bundle:
     branches:
         5.x:
-            php: ['7.4', '8.0', '8.1']
+            php: ['8.0', '8.1']
             variants:
                 symfony/symfony: ['5.4.*', '6.0.*']
         4.x:
