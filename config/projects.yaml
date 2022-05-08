@@ -133,10 +133,12 @@ form-extensions:
     branches:
         2.x:
             php: ['8.0', '8.1']
+            frontend: true
             variants:
                 symfony/symfony: ['5.4.*', '6.0.*']
         1.x:
             php: ['7.4', '8.0', '8.1']
+            frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
