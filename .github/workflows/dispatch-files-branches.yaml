@@ -13,6 +13,9 @@ on:
 env:
     REQUIRED_PHP_EXTENSIONS: redis
 
+permissions:
+    contents: read
+
 jobs:
     dispatch:
         name: PHP ${{ matrix.php-version }}

@@ -9,6 +9,9 @@ on:
 env:
     REQUIRED_PHP_EXTENSIONS: redis
 
+permissions:
+    contents: read
+
 jobs:
     test:
         name: PHP ${{ matrix.php-version }}
