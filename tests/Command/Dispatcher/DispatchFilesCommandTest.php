@@ -122,6 +122,9 @@ on:
             - master
     pull_request:
 
+permissions:
+    contents: read
+
 jobs:
     test:
         name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}
