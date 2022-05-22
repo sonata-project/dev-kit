@@ -101,7 +101,6 @@ entity-audit-bundle:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 exporter:
-    rector: false
     documentation_badge_slug: sonata-project-exporter
     has_test_kernel: false
     branches:
