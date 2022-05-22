@@ -216,7 +216,6 @@ translation-bundle:
                 symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
 
 twig-extensions:
-    rector: false
     documentation_badge_slug: sonata-project-twig-extensions
     branches:
         2.x:
