@@ -5,12 +5,12 @@ admin-bundle:
             php: ['7.4', '8.0', '8.1']
             frontend: true
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             frontend: true
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
                 sonata-project/block-bundle: ['5.x-dev as 4.999']
                 sonata-project/doctrine-extensions: ['2.x-dev as 1.999']
                 sonata-project/exporter: ['3.x-dev as 2.999']
@@ -22,11 +22,11 @@ block-bundle:
         5.x:
             php: ['8.0', '8.1']
             variants:
-                symfony/symfony: ['5.4.*', '6.0.*']
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 classification-bundle:
     rector: false
@@ -35,12 +35,12 @@ classification-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 doctrine-extensions:
     has_documentation: false
@@ -61,12 +61,12 @@ doctrine-mongodb-admin-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 doctrine-orm-admin-bundle:
     rector: false
@@ -77,12 +77,12 @@ doctrine-orm-admin-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 entity-audit-bundle:
     rector: false
@@ -94,11 +94,11 @@ entity-audit-bundle:
         2.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         1.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 exporter:
     documentation_badge_slug: sonata-project-exporter
@@ -108,12 +108,12 @@ exporter:
             php: ['8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
-                symfony/symfony: ['5.4.*', '6.0.*']
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         2.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 formatter-bundle:
     rector: false
@@ -123,7 +123,7 @@ formatter-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['zip']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.3', '7.4', '8.0']
             php_extensions: ['zip']
@@ -138,12 +138,12 @@ form-extensions:
             php: ['8.0', '8.1']
             frontend: true
             variants:
-                symfony/symfony: ['5.4.*', '6.0.*']
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         1.x:
             php: ['7.4', '8.0', '8.1']
             frontend: true
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 intl-bundle:
     rector: false
@@ -152,11 +152,11 @@ intl-bundle:
         3.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         2.x:
             php: ['7.3', '7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
                 sonata-project/user-bundle: ['4.*']
 
 media-bundle:
@@ -168,12 +168,12 @@ media-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'gd']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['mongodb', 'gd']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 page-bundle:
     rector: false
@@ -198,11 +198,11 @@ seo-bundle:
         4.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         3.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 translation-bundle:
     rector: false
@@ -211,12 +211,12 @@ translation-bundle:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['pdo_sqlite']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         3.x:
             php: ['7.4', '8.0', '8.1']
             php_extensions: ['pdo_sqlite']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
@@ -224,11 +224,11 @@ twig-extensions:
         2.x:
             php: ['8.0', '8.1']
             variants:
-                symfony/symfony: ['5.4.*', '6.0.*']
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         1.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 user-bundle:
     rector: false
@@ -237,8 +237,8 @@ user-bundle:
         6.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         5.x:
             php: ['7.4', '8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.3.*', '5.4.*', '6.0.*']
+                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
