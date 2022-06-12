@@ -252,7 +252,8 @@ final class PullRequest
 
     public function needsChangelog(): bool
     {
-        return $this->stability()->notEquals(Stability::pedantic());
+        return $this->stability()->equals(Stability::minor())
+            || $this->stability()->equals(Stability::patch());
     }
 
     public function hasChangelog(): bool
