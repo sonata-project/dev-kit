@@ -37,8 +37,6 @@ final class Changelog
     private function __construct(string $headline, array $sections)
     {
         $this->headline = TrimmedNonEmptyString::fromString($headline)->toString();
-
-        Assert::notEmpty($sections);
         $this->sections = $sections;
     }
 
