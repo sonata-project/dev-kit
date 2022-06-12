@@ -116,17 +116,13 @@ exporter:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 formatter-bundle:
-    rector: false
-    has_test_kernel: false
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.3', '7.4', '8.0']
-            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*']
                 sonata-project/block-bundle: ['3.*']
