@@ -152,11 +152,7 @@ final class NextRelease
     public function pullRequestsWithoutChangelog(): array
     {
         return array_reduce($this->pullRequests(), static function (array $pullRequests, PullRequest $pullRequest): array {
-            if ($pullRequest->hasChangelog()) {
-                return $pullRequests;
-            }
-
-            if ($pullRequest->stability()->equals(Stability::pedantic())) {
+            if (!$pullRequest->needsChangelog() || $pullRequest->hasChangelog()) {
                 return $pullRequests;
             }
 
