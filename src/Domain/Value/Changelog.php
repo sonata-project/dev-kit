@@ -17,7 +17,6 @@ use App\Domain\Value\Changelog\Section;
 use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use Packagist\Api\Result\Package;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>
