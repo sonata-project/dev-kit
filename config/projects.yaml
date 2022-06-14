@@ -116,6 +116,7 @@ exporter:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 formatter-bundle:
+    phpunit_extensions: ['doctrine_test']
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
