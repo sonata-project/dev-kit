@@ -80,7 +80,6 @@ doctrine-orm-admin-bundle:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 entity-audit-bundle:
-    rector: false
     excluded_files:
         - README.md
     has_documentation: false
