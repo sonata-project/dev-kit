@@ -151,7 +151,6 @@ intl-bundle:
                 sonata-project/user-bundle: ['4.*']
 
 media-bundle:
-    rector: false
     phpunit_extensions: ['doctrine_test']
     documentation_badge_slug: sonata-project-sonatamediabundle
     branches:
