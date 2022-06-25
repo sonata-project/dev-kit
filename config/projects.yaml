@@ -189,7 +189,6 @@ page-bundle:
                 sonata-project/block-bundle: ['3.*']
 
 seo-bundle:
-    rector: false
     has_test_kernel: false
     branches:
         4.x:
