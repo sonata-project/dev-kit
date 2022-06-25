@@ -202,16 +202,13 @@ seo-bundle:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 translation-bundle:
-    rector: false
     branches:
         4.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         3.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['pdo_sqlite']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
