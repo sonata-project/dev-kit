@@ -54,17 +54,16 @@ doctrine-extensions:
             php_extensions: ['mongodb']
 
 doctrine-mongodb-admin-bundle:
-    rector: false
     phpunit_extensions: ['panther']
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['mongodb', 'zip']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['mongodb', 'zip']
+            php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
