@@ -69,18 +69,15 @@ doctrine-mongodb-admin-bundle:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 doctrine-orm-admin-bundle:
-    rector: false
     phpunit_extensions: ['panther']
     documentation_badge_slug: sonata-project-doctrineormadminbundle
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         4.x:
             php: ['7.4', '8.0', '8.1']
-            php_extensions: ['zip']
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
