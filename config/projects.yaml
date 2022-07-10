@@ -164,7 +164,6 @@ media-bundle:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 page-bundle:
-    rector: false
     custom_doctor_rst_whitelist_part:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
