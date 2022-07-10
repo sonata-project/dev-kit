@@ -173,12 +173,10 @@ page-bundle:
             php: ['7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
-                sonata-project/block-bundle: ['3.*']
         3.x:
             php: ['7.4', '8.0']
             variants:
                 symfony/symfony: ['4.4.*']
-                sonata-project/block-bundle: ['3.*']
 
 seo-bundle:
     has_test_kernel: false
