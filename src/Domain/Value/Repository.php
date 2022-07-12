@@ -15,8 +15,9 @@ namespace App\Domain\Value;
 
 use App\Github\Domain\Value\IncomingWebhook\Payload;
 use Packagist\Api\Result\Package;
-use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
+
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>

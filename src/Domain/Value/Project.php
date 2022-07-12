@@ -17,6 +17,7 @@ use App\Config\Exception\UnknownBranch;
 use App\Domain\Exception\NoBranchesAvailable;
 use Packagist\Api\Result\Package;
 use Packagist\Api\Result\Package\Version;
+
 use function Symfony\Component\String\u;
 
 /**

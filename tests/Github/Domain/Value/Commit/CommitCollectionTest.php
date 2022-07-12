@@ -124,7 +124,7 @@ final class CommitCollectionTest extends TestCase
 
         static::assertSame(
             1,
-            (CommitCollection::from($commits))->uniqueCount()
+            CommitCollection::from($commits)->uniqueCount()
         );
     }
 
@@ -156,7 +156,7 @@ final class CommitCollectionTest extends TestCase
 
         static::assertSame(
             $firstMessage,
-            (CommitCollection::from($commits))->firstMessage()
+            CommitCollection::from($commits)->firstMessage()
         );
     }
 
@@ -191,7 +191,7 @@ final class CommitCollectionTest extends TestCase
                 $message1,
                 $message2,
             ],
-            (CommitCollection::from($commits))->messages()
+            CommitCollection::from($commits)->messages()
         );
     }
 }
