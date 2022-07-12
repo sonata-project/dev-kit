@@ -18,8 +18,9 @@ use App\Domain\Value\Stability;
 use App\Domain\Value\TrimmedNonEmptyString;
 use App\Github\Domain\Value\PullRequest\Base;
 use App\Github\Domain\Value\PullRequest\Head;
-use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
+
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>

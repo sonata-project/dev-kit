@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace App\Github\Domain\Value;
 
 use App\Domain\Value\TrimmedNonEmptyString;
-use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
+
+use function Symfony\Component\String\u;
 
 /**
  * @author Oskar Stark <oskarstark@googlemail.com>

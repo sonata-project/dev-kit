@@ -26,8 +26,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
-use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
+
+use function Symfony\Component\String\u;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>

@@ -16,6 +16,7 @@ namespace App\Github\Api;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\PullRequest;
 use Github\Client as GithubClient;
+
 use function Symfony\Component\String\u;
 
 /**
