@@ -169,7 +169,7 @@ page-bundle:
         "    - 'resource: \"@NelmioApiDocBundle/Resources/config/routing.yml\"'"
     branches:
         4.x:
-            php: ['7.4', '8.0']
+            php: ['7.4', '8.0', '8.1']
             variants:
                 symfony/symfony: ['4.4.*']
         3.x:
