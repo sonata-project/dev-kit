@@ -147,7 +147,7 @@ intl-bundle:
         3.x:
             php: ['8.0', '8.1']
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         2.x:
             php: ['7.4', '8.0', '8.1']
             variants:
