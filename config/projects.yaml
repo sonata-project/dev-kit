@@ -12,7 +12,6 @@ admin-bundle:
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
                 sonata-project/block-bundle: ['5.x-dev as 4.999']
-                sonata-project/doctrine-extensions: ['2.x-dev as 1.999']
                 sonata-project/form-extensions: ['2.x-dev as 1.999']
                 sonata-project/twig-extensions: ['2.x-dev as 1.999']
 
@@ -44,6 +43,9 @@ doctrine-extensions:
     has_documentation: false
     has_test_kernel: false
     branches:
+        3.x:
+            php: ['8.0', '8.1']
+            php_extensions: ['mongodb']
         2.x:
             php: ['8.0', '8.1']
             php_extensions: ['mongodb']
