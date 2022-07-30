@@ -146,6 +146,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             'PHP-CS-Fixer',
             'PHPStan',
             'Psalm',
+            'Rector',
             sprintf(
                 'PHP %s + lowest + normal',
                 $lowestPhpVersion->toString()
@@ -166,10 +167,6 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             $requiredStatusChecks[] = 'Twig files';
             $requiredStatusChecks[] = 'XLIFF files';
             $requiredStatusChecks[] = 'YML files';
-        }
-
-        if ($project->rector()) {
-            $requiredStatusChecks[] = 'Rector';
         }
 
         foreach ($branch->phpVersions() as $phpVersion) {

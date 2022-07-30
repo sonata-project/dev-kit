@@ -123,9 +123,7 @@ phpstan:
 psalm:
 	vendor/bin/psalm --php-version={{ branch.targetPhpVersion.toString }}
 .PHONY: psalm
-{% if project.rector %}
 
 rector:
 	vendor/bin/rector
 .PHONY: rector
-{% endif %}

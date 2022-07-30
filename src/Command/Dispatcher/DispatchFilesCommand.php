@@ -291,10 +291,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $filesToRemove[] = '.github/workflows/symfony-lint.yaml';
         }
 
-        if (!$project->rector()) {
-            $filesToRemove[] = 'rector.php';
-        }
-
         foreach ($filesToRemove as $fileToRemove) {
             $file = u($distPath)
                 ->append('/')
