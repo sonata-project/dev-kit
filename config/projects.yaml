@@ -208,6 +208,10 @@ translation-bundle:
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
     branches:
+        3.x:
+            php: ['8.0', '8.1']
+            variants:
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         2.x:
             php: ['8.0', '8.1']
             variants:
