@@ -39,7 +39,6 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
-                            ->arrayNode('phpunit_extensions')->prototype('scalar')->defaultValue([])->end()->end()
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->scalarNode('custom_doctor_rst_whitelist_part')->defaultNull()->end()
                             ->booleanNode('has_documentation')->defaultTrue()->end()
