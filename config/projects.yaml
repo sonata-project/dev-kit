@@ -13,6 +13,7 @@ admin-bundle:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
                 sonata-project/block-bundle: ['5.x-dev as 4.999']
                 sonata-project/form-extensions: ['2.x-dev as 1.999']
+                sonata-project/intl-bundle: ['3.x-dev as 2.999']
 
 block-bundle:
     branches:
