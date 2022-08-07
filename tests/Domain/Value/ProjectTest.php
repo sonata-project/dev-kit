@@ -24,7 +24,6 @@ final class ProjectTest extends TestCase
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
     public const DEFAULT_CONFIG = <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -86,9 +85,6 @@ CONFIG;
         static::assertSame('master', $project->unstableBranch()->name());
         static::assertNotNull($project->stableBranch());
         static::assertSame('3.x', $project->stableBranch()->name());
-        static::assertTrue($project->hasPhpunitExtensions());
-        static::assertTrue($project->hasPhpunitExtension('panther'));
-        static::assertFalse($project->hasPhpunitExtension('random_extension'));
         static::assertTrue($project->hasDocumentation());
         static::assertTrue($project->hasTestKernel());
         static::assertTrue($project->isBundle());
@@ -130,7 +126,6 @@ CONFIG;
             true,
 <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -155,7 +150,6 @@ CONFIG,
             false,
 <<<CONFIG
 twig-extensions:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -459,7 +453,6 @@ CONFIG,
             'sonataadminbundle',
 <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -483,7 +476,6 @@ CONFIG,
             'sonataadminbundle2',
 <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -540,7 +532,6 @@ CONFIG,
             'master',
             <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -564,7 +555,6 @@ CONFIG,
             '3.x',
             <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true
@@ -598,7 +588,6 @@ CONFIG,
             '4.x',
             <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true

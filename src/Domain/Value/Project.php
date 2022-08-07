@@ -28,7 +28,6 @@ use function Symfony\Component\String\u;
  * @phpstan-type ProjectConfig = array{
  *     branches: array<string, BranchConfig>,
  *     excluded_files: array<string>,
- *     phpunit_extensions: array<string>,
  *     has_documentation: bool,
  *     has_test_kernel: bool,
  *     custom_doctor_rst_whitelist_part: string|null,
@@ -51,11 +50,6 @@ final class Project
      */
     private array $excludedFiles;
 
-    /**
-     * @var PhpunitExtension[]
-     */
-    private array $phpunitExtensions;
-
     private bool $hasDocumentation;
     private bool $hasTestKernel;
     private ?string $customDoctorRstWhitelistPart;
@@ -64,16 +58,14 @@ final class Project
     private Repository $repository;
 
     /**
-     * @param Branch[]           $branches
-     * @param ExcludedFile[]     $excludedFiles
-     * @param PhpunitExtension[] $phpunitExtensions
+     * @param Branch[]       $branches
+     * @param ExcludedFile[] $excludedFiles
      */
     private function __construct(
         string $name,
         Package $package,
         array $branches,
         array $excludedFiles,
-        array $phpunitExtensions,
         bool $hasDocumentation,
         bool $hasTestKernel,
         ?string $customDoctorRstWhitelistPart,
@@ -88,7 +80,6 @@ final class Project
         $this->hasDocumentation = $hasDocumentation;
         $this->hasTestKernel = $hasTestKernel;
         $this->excludedFiles = $excludedFiles;
-        $this->phpunitExtensions = $phpunitExtensions;
         $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
         $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
             ->lower()
@@ -112,17 +103,11 @@ final class Project
             $excludedFiles[] = ExcludedFile::fromString($filename);
         }
 
-        $phpunitExtensions = [];
-        foreach ($config['phpunit_extensions'] as $phpunitExtension) {
-            $phpunitExtensions[] = PhpunitExtension::fromString($phpunitExtension);
-        }
-
         return new self(
             $name,
             $package,
             $branches,
             $excludedFiles,
-            $phpunitExtensions,
             $config['has_documentation'],
             $config['has_test_kernel'],
             $config['custom_doctor_rst_whitelist_part'],
@@ -218,22 +203,6 @@ final class Project
     public function excludedFiles(): array
     {
         return $this->excludedFiles;
-    }
-
-    public function hasPhpunitExtension(string $extension): bool
-    {
-        foreach ($this->phpunitExtensions as $phpunitExtension) {
-            if ($phpunitExtension->extension() === $extension) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function hasPhpunitExtensions(): bool
-    {
-        return [] !== $this->phpunitExtensions;
     }
 
     public function hasDocumentation(): bool

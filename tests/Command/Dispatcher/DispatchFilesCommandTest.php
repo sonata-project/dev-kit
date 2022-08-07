@@ -76,7 +76,6 @@ final class DispatchFilesCommandTest extends TestCase
     {
         $project = <<<CONFIG
 admin-bundle:
-  phpunit_extensions: ['panther', 'doctrine_test']
   excluded_files: []
   custom_doctor_rst_whitelist_part: ~
   has_documentation: true

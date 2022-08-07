@@ -383,8 +383,9 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             ));
         }
 
-        if (!$this->filesystem->exists(\dirname($distPath))) {
-            $this->filesystem->mkdir(\dirname($distPath));
+        $distDir = \dirname($distPath);
+        if (!$this->filesystem->exists($distDir)) {
+            $this->filesystem->mkdir($distDir);
         }
 
         $localPathInfo = pathinfo($localFullPath);
@@ -402,7 +403,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = sprintf(
                 '%s/%s',
-                \dirname($distPath),
+                $distDir,
                 basename($distPath, '.twig')
             );
 
@@ -411,6 +412,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 [
                     'project' => $project,
                     'branch' => $branch,
+                    'project_dir' => $distDir,
                 ]
             );
         }

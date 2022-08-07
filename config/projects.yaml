@@ -54,7 +54,6 @@ doctrine-extensions:
             php_extensions: ['mongodb']
 
 doctrine-mongodb-admin-bundle:
-    phpunit_extensions: ['panther']
     branches:
         5.x:
             php: ['7.4', '8.0', '8.1']
@@ -68,7 +67,6 @@ doctrine-mongodb-admin-bundle:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 doctrine-orm-admin-bundle:
-    phpunit_extensions: ['panther']
     documentation_badge_slug: sonata-project-doctrineormadminbundle
     branches:
         5.x:
@@ -116,7 +114,6 @@ exporter:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 formatter-bundle:
-    phpunit_extensions: ['doctrine_test']
     branches:
         6.x:
             php: ['7.4', '8.0', '8.1']
@@ -155,7 +152,6 @@ intl-bundle:
                 sonata-project/user-bundle: ['4.*']
 
 media-bundle:
-    phpunit_extensions: ['doctrine_test']
     documentation_badge_slug: sonata-project-sonatamediabundle
     branches:
         5.x:
@@ -222,7 +218,6 @@ twig-extensions:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 user-bundle:
-    phpunit_extensions: ['doctrine_test']
     branches:
         6.x:
             php: ['7.4', '8.0', '8.1']
