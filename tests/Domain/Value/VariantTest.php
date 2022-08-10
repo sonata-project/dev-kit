@@ -18,10 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class VariantTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfPackageDoesNotContainSlash(): void
+    public function testThrowsExceptionIfPackageDoesNotContainSlash(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must contain a "/"!');
@@ -29,10 +26,7 @@ final class VariantTest extends TestCase
         Variant::fromValues('sonata-projectdev-kit', '1.0.*');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfPackageEndsWithSlash(): void
+    public function testThrowsExceptionIfPackageEndsWithSlash(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must not end with a "/"!');
@@ -40,10 +34,7 @@ final class VariantTest extends TestCase
         Variant::fromValues('sonata-project/dev-kit/', '1.0.*');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfPackageStartsWithSlash(): void
+    public function testThrowsExceptionIfPackageStartsWithSlash(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must not start with a "/"!');
@@ -51,10 +42,7 @@ final class VariantTest extends TestCase
         Variant::fromValues('/sonata-project/dev-kit', '1.0.*');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfPackageIsEmptyString(): void
+    public function testThrowsExceptionIfPackageIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Package must not be empty!');
@@ -62,10 +50,7 @@ final class VariantTest extends TestCase
         Variant::fromValues('', '1.0.*');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfVersionIsEmptyString(): void
+    public function testThrowsExceptionIfVersionIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Version must not be empty!');
@@ -74,11 +59,9 @@ final class VariantTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider validProvider
      */
-    public function valid(string $expected, string $package, string $version): void
+    public function testValid(string $expected, string $package, string $version): void
     {
         $variant = Variant::fromValues($package, $version);
 

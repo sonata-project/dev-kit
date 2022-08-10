@@ -18,50 +18,35 @@ use PHPUnit\Framework\TestCase;
 
 final class RepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function testThrowsExceptionIfValueIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Repository::fromString('');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueDoesNotContainSlash(): void
+    public function testThrowsExceptionIfValueDoesNotContainSlash(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Repository::fromString('foo');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueContainSlashButAtEnd(): void
+    public function testThrowsExceptionIfValueContainSlashButAtEnd(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Repository::fromString('foo/');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueContainSlashButAtStart(): void
+    public function testThrowsExceptionIfValueContainSlashButAtStart(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Repository::fromString('/foo');
     }
 
-    /**
-     * @test
-     */
-    public function fromString(): void
+    public function testFromString(): void
     {
         $repository = Repository::fromString('sonata-project/SonataAdminBundle');
 

@@ -19,20 +19,14 @@ use PHPUnit\Framework\TestCase;
 
 final class StatusTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Status::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyState(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyState(): void
     {
         $response = StatusFactory::create();
         unset($response['state']);
@@ -42,10 +36,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStateIsEmptyString(): void
+    public function testThrowsExceptionIfStateIsEmptyString(): void
     {
         $response = StatusFactory::create([
             'state' => '',
@@ -56,10 +47,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStateIsUnknown(): void
+    public function testThrowsExceptionIfStateIsUnknown(): void
     {
         $response = StatusFactory::create([
             'state' => 'foo',
@@ -70,10 +58,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfContextKeyDoesNotExist(): void
+    public function testThrowsExceptionIfContextKeyDoesNotExist(): void
     {
         $response = StatusFactory::create();
         unset($response['context']);
@@ -83,10 +68,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfContextKeyIsEmptyString(): void
+    public function testThrowsExceptionIfContextKeyIsEmptyString(): void
     {
         $response = StatusFactory::create([
             'context' => '',
@@ -97,10 +79,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfDescriptionKeyDoesNotExist(): void
+    public function testThrowsExceptionIfDescriptionKeyDoesNotExist(): void
     {
         $response = StatusFactory::create();
         unset($response['description']);
@@ -110,10 +89,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfDescriptionKeyIsEmptyString(): void
+    public function testThrowsExceptionIfDescriptionKeyIsEmptyString(): void
     {
         $response = StatusFactory::create([
             'description' => '',
@@ -125,11 +101,9 @@ final class StatusTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider stateProvider
      */
-    public function usesStateFromResponse(string $state): void
+    public function testUsesStateFromResponse(string $state): void
     {
         $response = StatusFactory::create([
             'state' => $state,
@@ -152,10 +126,7 @@ final class StatusTest extends TestCase
         yield 'success' => ['success'];
     }
 
-    /**
-     * @test
-     */
-    public function usesDescriptionFromResponse(): void
+    public function testUsesDescriptionFromResponse(): void
     {
         $response = StatusFactory::create();
 
@@ -165,10 +136,7 @@ final class StatusTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function usesTargetUrlFromResponse(): void
+    public function testUsesTargetUrlFromResponse(): void
     {
         $response = StatusFactory::create();
 

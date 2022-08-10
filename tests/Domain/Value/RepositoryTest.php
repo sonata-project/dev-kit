@@ -19,10 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $package = new Package();
         $package->fromArray([

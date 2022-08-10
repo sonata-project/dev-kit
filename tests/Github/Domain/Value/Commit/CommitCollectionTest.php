@@ -19,10 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CommitCollectionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsEmpty(): void
+    public function testThrowsExceptionIfValueIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -30,11 +27,9 @@ final class CommitCollectionTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @psalm-suppress InvalidArgument
      */
-    public function throwsExceptionIfValueIsNotEmptyButNotAllInstanceOfCommitClass(): void
+    public function testThrowsExceptionIfValueIsNotEmptyButNotAllInstanceOfCommitClass(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -42,10 +37,7 @@ final class CommitCollectionTest extends TestCase
         CommitCollection::from(['foo']);
     }
 
-    /**
-     * @test
-     */
-    public function implementsCountable(): void
+    public function testImplementsCountable(): void
     {
         $commits = [
             Commit::fromResponse([
@@ -65,10 +57,7 @@ final class CommitCollectionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function countByMethodAndInterface(): void
+    public function testCountByMethodAndInterface(): void
     {
         $commits = [
             Commit::fromResponse([
@@ -96,10 +85,7 @@ final class CommitCollectionTest extends TestCase
         static::assertCount(2, $collection);
     }
 
-    /**
-     * @test
-     */
-    public function uniqueCount(): void
+    public function testUniqueCount(): void
     {
         $commits = [
             Commit::fromResponse([
@@ -128,10 +114,7 @@ final class CommitCollectionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function firstMessage(): void
+    public function testFirstMessage(): void
     {
         $commits = [
             Commit::fromResponse([
@@ -160,10 +143,7 @@ final class CommitCollectionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function messages(): void
+    public function testMessages(): void
     {
         $commits = [
             Commit::fromResponse([

@@ -18,20 +18,14 @@ use PHPUnit\Framework\TestCase;
 
 final class HookTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Hook::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $config = [
             'url' => $url = 'http://hook.de',

@@ -22,20 +22,14 @@ final class UserTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         User::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyId(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyId(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -46,12 +40,10 @@ final class UserTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::zero()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::lessThanZero()
      */
-    public function throwsExceptionIfIdIs(int $value): void
+    public function testThrowsExceptionIfIdIs(int $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -62,10 +54,7 @@ final class UserTest extends TestCase
         User::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function usesIdFromResponse(): void
+    public function testUsesIdFromResponse(): void
     {
         $response = UserFactory::create([
             'id' => $value = self::faker()->numberBetween(1, 999),
@@ -79,10 +68,7 @@ final class UserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyLogin(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyLogin(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -93,12 +79,10 @@ final class UserTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfLoginIs(string $value): void
+    public function testThrowsExceptionIfLoginIs(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -109,10 +93,7 @@ final class UserTest extends TestCase
         User::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function usesLoginFromResponse(): void
+    public function testUsesLoginFromResponse(): void
     {
         $response = UserFactory::create([
             'login' => $value = self::faker()->word(),
@@ -126,10 +107,7 @@ final class UserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function usesLoginForHandleFromResponse(): void
+    public function testUsesLoginForHandleFromResponse(): void
     {
         $response = UserFactory::create([
             'login' => $value = self::faker()->word(),
@@ -143,10 +121,7 @@ final class UserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyHtmlUrl(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyHtmlUrl(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -157,12 +132,10 @@ final class UserTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfHtmlUrlIs(string $value): void
+    public function testThrowsExceptionIfHtmlUrlIs(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -173,10 +146,7 @@ final class UserTest extends TestCase
         User::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function usesHtmlurlFromResponse(): void
+    public function testUsesHtmlurlFromResponse(): void
     {
         $response = UserFactory::create([
             'html_url' => $value = self::faker()->url(),

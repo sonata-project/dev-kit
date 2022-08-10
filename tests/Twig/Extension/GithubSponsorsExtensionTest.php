@@ -38,10 +38,7 @@ final class GithubSponsorsExtensionTest extends TestCase
         $this->githubSponsorsExtension = new GithubSponsorsExtension($this->github);
     }
 
-    /**
-     * @test
-     */
-    public function listSponsorisableIsFilteredAndOrdered(): void
+    public function testListSponsorisableIsFilteredAndOrdered(): void
     {
         $package = new Package();
         $package->fromArray(['repository' => 'https://github.com/sonata-project/SonataAdminBundle']);
@@ -69,10 +66,7 @@ final class GithubSponsorsExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function listSponsorisableOnlyReturnFourSponsors(): void
+    public function testListSponsorisableOnlyReturnFourSponsors(): void
     {
         $package = new Package();
         $package->fromArray(['repository' => 'https://github.com/sonata-project/SonataAdminBundle']);

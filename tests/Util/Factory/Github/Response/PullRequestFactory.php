@@ -52,19 +52,19 @@ final class PullRequestFactory
             'mergeable' => $faker->boolean(),
             'body' => sprintf(
                 <<<'BODY'
-<!-- %s -->
+                    <!-- %s -->
 
-## Subject
+                    ## Subject
 
-%s
+                    %s
 
-## Changelog
+                    ## Changelog
 
-```markdown
-### Changed
-- The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
-```
-BODY,
+                    ```markdown
+                    ### Changed
+                    - The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.
+                    ```
+                    BODY,
                 $faker->text(),
                 $faker->text()
             ),

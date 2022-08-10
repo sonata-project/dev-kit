@@ -19,20 +19,14 @@ use PHPUnit\Framework\TestCase;
 
 final class HeadTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Head::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyRef(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyRef(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -47,10 +41,7 @@ final class HeadTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayContainKeyRefButEmptyString(): void
+    public function testThrowsExceptionIfResponseArrayContainKeyRefButEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -63,10 +54,7 @@ final class HeadTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeySha(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeySha(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -79,10 +67,7 @@ final class HeadTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayContainKeyShaButEmptyString(): void
+    public function testThrowsExceptionIfResponseArrayContainKeyShaButEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -95,10 +80,7 @@ final class HeadTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyRepo(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyRepo(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -111,10 +93,7 @@ final class HeadTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayContainKeyRepoButEmptyArray(): void
+    public function testThrowsExceptionIfResponseArrayContainKeyRepoButEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -125,10 +104,7 @@ final class HeadTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $response = [
             'ref' => $ref = 'foo',

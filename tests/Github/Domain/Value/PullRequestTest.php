@@ -24,20 +24,14 @@ final class PullRequestTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         PullRequest::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function usesNumberFromResponse(): void
+    public function testUsesNumberFromResponse(): void
     {
         $response = PullRequestFactory::create();
 
@@ -46,10 +40,7 @@ final class PullRequestTest extends TestCase
         static::assertSame($response['number'], $pullRequest->issue()->toInt());
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfNumberIsNotSet(): void
+    public function testThrowsExceptionIfNumberIsNotSet(): void
     {
         $response = PullRequestFactory::create();
         unset($response['number']);
@@ -59,10 +50,7 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfNumberIsZero(): void
+    public function testThrowsExceptionIfNumberIsZero(): void
     {
         $response = PullRequestFactory::create([
             'number' => 0,
@@ -73,10 +61,7 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfNumberIsNgeative(): void
+    public function testThrowsExceptionIfNumberIsNgeative(): void
     {
         $response = PullRequestFactory::create([
             'number' => -1,
@@ -87,10 +72,7 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function usesTitleFromResponse(): void
+    public function testUsesTitleFromResponse(): void
     {
         $value = self::faker()->sentence();
 
@@ -103,10 +85,7 @@ final class PullRequestTest extends TestCase
         static::assertSame($value, $pullRequest->title());
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfTitleIsNotSet(): void
+    public function testThrowsExceptionIfTitleIsNotSet(): void
     {
         $response = PullRequestFactory::create();
         unset($response['title']);
@@ -117,12 +96,10 @@ final class PullRequestTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfTitleIs(string $value): void
+    public function testThrowsExceptionIfTitleIs(string $value): void
     {
         $response = PullRequestFactory::create([
             'title' => $value,
@@ -133,10 +110,7 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function usesUpdatedAtFromResponse(): void
+    public function testUsesUpdatedAtFromResponse(): void
     {
         $response = PullRequestFactory::create([
             'updated_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
@@ -150,10 +124,7 @@ final class PullRequestTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfUpdatedAtIsNotSet(): void
+    public function testThrowsExceptionIfUpdatedAtIsNotSet(): void
     {
         $response = PullRequestFactory::create();
         unset($response['updated_at']);
@@ -164,12 +135,10 @@ final class PullRequestTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfUpdatedAtIs(string $value): void
+    public function testThrowsExceptionIfUpdatedAtIs(string $value): void
     {
         $response = PullRequestFactory::create([
             'updated_at' => $value,
@@ -180,10 +149,7 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function usesMergedAtFromResponse(): void
+    public function testUsesMergedAtFromResponse(): void
     {
         $response = PullRequestFactory::create([
             'merged_at' => $value = self::faker()->date('Y-m-d\TH:i:s\Z'),
@@ -199,10 +165,7 @@ final class PullRequestTest extends TestCase
         static::assertTrue($pullRequest->isMerged());
     }
 
-    /**
-     * @test
-     */
-    public function mergedAtCanBeNull(): void
+    public function testMergedAtCanBeNull(): void
     {
         $response = PullRequestFactory::create([
             'merged_at' => null,
@@ -214,10 +177,7 @@ final class PullRequestTest extends TestCase
         static::assertFalse($pullRequest->isMerged());
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfMergedAtIsNotSet(): void
+    public function testThrowsExceptionIfMergedAtIsNotSet(): void
     {
         $response = PullRequestFactory::create();
         unset($response['merged_at']);
@@ -228,12 +188,10 @@ final class PullRequestTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionIfMergedAtIs(string $value): void
+    public function testThrowsExceptionIfMergedAtIs(string $value): void
     {
         $response = PullRequestFactory::create([
             'merged_at' => $value,
@@ -244,10 +202,7 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $response = [
             'number' => 123,
@@ -306,10 +261,7 @@ final class PullRequestTest extends TestCase
         static::assertSame($labelColor, $label->color()->toString());
     }
 
-    /**
-     * @test
-     */
-    public function updatedWithinTheLast60SecondsReturnsTrue(): void
+    public function testUpdatedWithinTheLast60SecondsReturnsTrue(): void
     {
         $now = new \DateTimeImmutable(
             'now',
@@ -325,10 +277,7 @@ final class PullRequestTest extends TestCase
         static::assertTrue($pr->updatedWithinTheLast60Seconds());
     }
 
-    /**
-     * @test
-     */
-    public function updatedWithinTheLast60SecondsReturnsFalse(): void
+    public function testUpdatedWithinTheLast60SecondsReturnsFalse(): void
     {
         $now = new \DateTimeImmutable(
             '2020-01-01 19:00:00',
@@ -345,13 +294,11 @@ final class PullRequestTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @param array<mixed> $labels
      *
      * @dataProvider stabilityProvider
      */
-    public function stability(Stability $expected, array $labels): void
+    public function testStability(Stability $expected, array $labels): void
     {
         $response = PullRequestFactory::create([
             'labels' => $labels,
@@ -421,27 +368,24 @@ final class PullRequestTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
-    public function body(): void
+    public function testBody(): void
     {
         $response = PullRequestFactory::create([
             'body' => sprintf(
                 <<<BODY
-<!-- %s -->
+                    <!-- %s -->
 
-## Subject
+                    ## Subject
 
-%s
+                    %s
 
-## Changelog
+                    ## Changelog
 
-```markdown
-### Changed
-- %s
-```
-BODY,
+                    ```markdown
+                    ### Changed
+                    - %s
+                    ```
+                    BODY,
                 self::faker()->text(),
                 self::faker()->text(),
                 $message = 'The fourth argument of the `SetObjectFieldValueAction::__construct` method is now mandatory.'

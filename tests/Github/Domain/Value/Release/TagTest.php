@@ -19,22 +19,17 @@ use PHPUnit\Framework\TestCase;
 final class TagTest extends TestCase
 {
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionFor(string $value): void
+    public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Tag::fromString($value);
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $tag = Tag::fromString('1.1.0');
 

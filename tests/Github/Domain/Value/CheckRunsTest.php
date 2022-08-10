@@ -24,10 +24,7 @@ final class CheckRunsTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfCheckRunsKeyDoesNotExist(): void
+    public function testThrowsExceptionIfCheckRunsKeyDoesNotExist(): void
     {
         $response = CheckRunsFactory::create();
         unset($response['check_runs']);
@@ -38,11 +35,9 @@ final class CheckRunsTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider isSuccessfulProvider
      */
-    public function isSuccessful(bool $expected, string $conclusion): void
+    public function testIsSuccessful(bool $expected, string $conclusion): void
     {
         $response = CheckRunsFactory::create([
             'check_runs' => [
@@ -73,10 +68,7 @@ final class CheckRunsTest extends TestCase
         yield 'timed_out' => [false, 'timed_out'];
     }
 
-    /**
-     * @test
-     */
-    public function usesCheckRunsFromResponse(): void
+    public function testUsesCheckRunsFromResponse(): void
     {
         $response = CheckRunsFactory::create([
             'check_runs' => [
@@ -99,10 +91,7 @@ final class CheckRunsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function returnsSortedByName(): void
+    public function testReturnsSortedByName(): void
     {
         $response = CheckRunsFactory::create([
             'check_runs' => [

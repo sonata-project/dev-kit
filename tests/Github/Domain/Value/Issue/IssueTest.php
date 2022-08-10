@@ -18,30 +18,21 @@ use PHPUnit\Framework\TestCase;
 
 final class IssueTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsZero(): void
+    public function testThrowsExceptionIfValueIsZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Issue::fromInt(0);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsNegative(): void
+    public function testThrowsExceptionIfValueIsNegative(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Issue::fromInt(-1);
     }
 
-    /**
-     * @test
-     */
-    public function fromInt(): void
+    public function testFromInt(): void
     {
         $value = 123;
 

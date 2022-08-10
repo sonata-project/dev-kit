@@ -25,10 +25,7 @@ final class UnknownBranchTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function forName(): void
+    public function testForName(): void
     {
         $package = new Package();
         $package->fromArray([
