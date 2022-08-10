@@ -19,20 +19,14 @@ use PHPUnit\Framework\TestCase;
 
 final class RepoTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Repo::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyOwner(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyOwner(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -41,10 +35,7 @@ final class RepoTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsEmpty(): void
+    public function testThrowsExceptionIfValueIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -53,10 +44,7 @@ final class RepoTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function owner(): void
+    public function testOwner(): void
     {
         $response = [
             'owner' => UserFactory::create(),

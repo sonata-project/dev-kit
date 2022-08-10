@@ -22,32 +22,24 @@ final class UrlTest extends TestCase
     use Helper;
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionFor(string $value): void
+    public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Url::fromString($value);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueDoesNotStartWithHttp(): void
+    public function testThrowsExceptionIfValueDoesNotStartWithHttp(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Url::fromString('://example.com');
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $value = self::faker()->url();
 

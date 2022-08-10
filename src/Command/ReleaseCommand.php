@@ -53,27 +53,27 @@ final class ReleaseCommand extends AbstractCommand
         parent::configure();
 
         $help = <<<'EOT'
-The <info>release</info> command analyzes pull request of a given project to determine
-the changelog and the next version to release.
+            The <info>release</info> command analyzes pull request of a given project to determine
+            the changelog and the next version to release.
 
-Usage:
+            Usage:
 
-<info>php dev-kit release</info>
+            <info>php dev-kit release</info>
 
-First, a question about what bundle to release will be shown, this will be autocompleted will
-the projects configured on <info>projects.yaml</info>.
+            First, a question about what bundle to release will be shown, this will be autocompleted will
+            the projects configured on <info>projects.yaml</info>.
 
-The command will show what is the status of the project, then a list of pull requests
-made against the stable branch with the following information:
+            The command will show what is the status of the project, then a list of pull requests
+            made against the stable branch with the following information:
 
- * stability
- * name
- * labels
- * changelog
- * url
+             * stability
+             * name
+             * labels
+             * changelog
+             * url
 
-After that, it will show what is the next version to release and the changelog for that release.
-EOT;
+            After that, it will show what is the next version to release and the changelog for that release.
+            EOT;
 
         $this
             ->setName('release')

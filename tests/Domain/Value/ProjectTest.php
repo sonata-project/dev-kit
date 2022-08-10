@@ -23,39 +23,36 @@ final class ProjectTest extends TestCase
 {
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
     public const DEFAULT_CONFIG = <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: ~
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-    3.x:
-      php: ['7.2', '7.3', '7.4']
-      target_php: ~
-      frontend: false
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['3']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG;
+        admin-bundle:
+          excluded_files: []
+          custom_doctor_rst_whitelist_part: ~
+          has_documentation: true
+          has_test_kernel: true
+          documentation_badge_slug: ~
+          branches:
+            master:
+              php: ['7.3', '7.4']
+              target_php: ~
+              frontend: true
+              variants:
+                symfony/symfony: ['4.4']
+                sonata-project/block-bundle: ['4']
+              php_extensions: []
+              docs_path: docs
+              tests_path: tests
+            3.x:
+              php: ['7.2', '7.3', '7.4']
+              target_php: ~
+              frontend: false
+              variants:
+                symfony/symfony: ['4.4']
+                sonata-project/block-bundle: ['3']
+              php_extensions: []
+              docs_path: docs
+              tests_path: tests
+        CONFIG;
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $package = new Package();
         $package->fromArray([
@@ -91,11 +88,9 @@ CONFIG;
     }
 
     /**
-     * @test
-     *
      * @dataProvider isBundleProvider
      */
-    public function isBundle(bool $expected, string $yamlConfig, string $name): void
+    public function testIsBundle(bool $expected, string $yamlConfig, string $name): void
     {
         $package = new Package();
         $package->fromArray([
@@ -125,58 +120,56 @@ CONFIG;
         yield 'true - admin-bundle' => [
             true,
 <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: 'sonataadminbundle2'
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+    admin-bundle:
+      excluded_files: []
+      custom_doctor_rst_whitelist_part: ~
+      has_documentation: true
+      has_test_kernel: true
+      documentation_badge_slug: 'sonataadminbundle2'
+      branches:
+        master:
+          php: ['7.3', '7.4']
+          target_php: ~
+          frontend: true
+          variants:
+            symfony/symfony: ['4.4']
+            sonata-project/block-bundle: ['4']
+          php_extensions: []
+          docs_path: docs
+          tests_path: tests
+    CONFIG,
             'admin-bundle',
         ];
 
         yield 'false - twig-extensions' => [
             false,
 <<<CONFIG
-twig-extensions:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: ~
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+    twig-extensions:
+      excluded_files: []
+      custom_doctor_rst_whitelist_part: ~
+      has_documentation: true
+      has_test_kernel: true
+      documentation_badge_slug: ~
+      branches:
+        master:
+          php: ['7.3', '7.4']
+          target_php: ~
+          frontend: true
+          variants:
+            symfony/symfony: ['4.4']
+            sonata-project/block-bundle: ['4']
+          php_extensions: []
+          docs_path: docs
+          tests_path: tests
+    CONFIG,
             'twig-extensions',
         ];
     }
 
     /**
-     * @test
-     *
      * @dataProvider homepageProvider
      */
-    public function homepage(string $expected, string $value): void
+    public function testHomepage(string $expected, string $value): void
     {
         $version = new Version();
         $version->fromArray([
@@ -223,11 +216,9 @@ CONFIG,
     }
 
     /**
-     * @test
-     *
      * @dataProvider descriptionProvider
      */
-    public function description(string $expected, string $value, bool $abandoned): void
+    public function testDescription(string $expected, string $value, bool $abandoned): void
     {
         $version = new Version();
         $version->fromArray([
@@ -282,10 +273,7 @@ CONFIG,
         ];
     }
 
-    /**
-     * @test
-     */
-    public function topics(): void
+    public function testTopics(): void
     {
         $version = new Version();
         $version->fromArray([
@@ -336,10 +324,7 @@ CONFIG,
         );
     }
 
-    /**
-     * @test
-     */
-    public function topicsReturnsDefaultTopicsIfNoTopicsAreSetInPackage(): void
+    public function testTopicsReturnsDefaultTopicsIfNoTopicsAreSetInPackage(): void
     {
         $version = new Version();
         $version->fromArray([
@@ -366,10 +351,7 @@ CONFIG,
         static::assertNotEmpty($project->topics());
     }
 
-    /**
-     * @test
-     */
-    public function defaultTopicsAreNotDuplicatedWithPackageKeywords(): void
+    public function testDefaultTopicsAreNotDuplicatedWithPackageKeywords(): void
     {
         $version = new Version();
         $version->fromArray([
@@ -418,11 +400,9 @@ CONFIG,
     }
 
     /**
-     * @test
-     *
      * @dataProvider documentationBadgeSlugProvider
      */
-    public function documentationBadgeSlug(string $expected, string $yamlConfig): void
+    public function testDocumentationBadgeSlug(string $expected, string $yamlConfig): void
     {
         $package = new Package();
         $package->fromArray([
@@ -452,56 +432,54 @@ CONFIG,
         yield 'null - admin-bundle' => [
             'sonataadminbundle',
 <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: ~
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+    admin-bundle:
+      excluded_files: []
+      custom_doctor_rst_whitelist_part: ~
+      has_documentation: true
+      has_test_kernel: true
+      documentation_badge_slug: ~
+      branches:
+        master:
+          php: ['7.3', '7.4']
+          target_php: ~
+          frontend: true
+          variants:
+            symfony/symfony: ['4.4']
+            sonata-project/block-bundle: ['4']
+          php_extensions: []
+          docs_path: docs
+          tests_path: tests
+    CONFIG,
         ];
 
         yield 'custom - admin-bundle' => [
             'sonataadminbundle2',
 <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: 'sonataadminbundle2'
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+    admin-bundle:
+      excluded_files: []
+      custom_doctor_rst_whitelist_part: ~
+      has_documentation: true
+      has_test_kernel: true
+      documentation_badge_slug: 'sonataadminbundle2'
+      branches:
+        master:
+          php: ['7.3', '7.4']
+          target_php: ~
+          frontend: true
+          variants:
+            symfony/symfony: ['4.4']
+            sonata-project/block-bundle: ['4']
+          php_extensions: []
+          docs_path: docs
+          tests_path: tests
+    CONFIG,
         ];
     }
 
     /**
-     * @test
-     *
      * @dataProvider defaultBranchProvider
      */
-    public function defaultBranch(string $expected, string $yamlConfig): void
+    public function testDefaultBranch(string $expected, string $yamlConfig): void
     {
         $package = new Package();
         $package->fromArray([
@@ -531,100 +509,100 @@ CONFIG,
         yield 'master' => [
             'master',
             <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: ~
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+                admin-bundle:
+                  excluded_files: []
+                  custom_doctor_rst_whitelist_part: ~
+                  has_documentation: true
+                  has_test_kernel: true
+                  documentation_badge_slug: ~
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
         ];
 
         yield 'master - 3.x' => [
             '3.x',
             <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: ~
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-    3.x:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+                admin-bundle:
+                  excluded_files: []
+                  custom_doctor_rst_whitelist_part: ~
+                  has_documentation: true
+                  has_test_kernel: true
+                  documentation_badge_slug: ~
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                    3.x:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
         ];
 
         yield 'master - 4.x - 3.x' => [
             '4.x',
             <<<CONFIG
-admin-bundle:
-  excluded_files: []
-  custom_doctor_rst_whitelist_part: ~
-  has_documentation: true
-  has_test_kernel: true
-  documentation_badge_slug: ~
-  branches:
-    master:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-    4.x:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-    3.x:
-      php: ['7.3', '7.4']
-      target_php: ~
-      frontend: true
-      variants:
-        symfony/symfony: ['4.4']
-        sonata-project/block-bundle: ['4']
-      php_extensions: []
-      docs_path: docs
-      tests_path: tests
-CONFIG,
+                admin-bundle:
+                  excluded_files: []
+                  custom_doctor_rst_whitelist_part: ~
+                  has_documentation: true
+                  has_test_kernel: true
+                  documentation_badge_slug: ~
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                    4.x:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                    3.x:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
         ];
     }
 }

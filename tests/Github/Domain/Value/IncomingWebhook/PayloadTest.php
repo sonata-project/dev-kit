@@ -22,10 +22,7 @@ final class PayloadTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function fromJsonString(): void
+    public function testFromJsonString(): void
     {
         $event = Event::ISSUE_COMMENT();
 
@@ -67,10 +64,7 @@ final class PayloadTest extends TestCase
         static::assertSame($repository, $payload->repository()->toString());
     }
 
-    /**
-     * @test
-     */
-    public function thatTheCommentIsFromTheAuthorBecauseOfSameUserIdsAndAnActionDifferentToSynchronize(): void
+    public function testThatTheCommentIsFromTheAuthorBecauseOfSameUserIdsAndAnActionDifferentToSynchronize(): void
     {
         $event = Event::ISSUE_COMMENT();
 
@@ -111,10 +105,7 @@ final class PayloadTest extends TestCase
         static::assertSame($repository, $payload->repository()->toString());
     }
 
-    /**
-     * @test
-     */
-    public function thatTheCommentIsNotFromTheAuthorBecauseOfDifferentUserIdsAndAnActionDifferentToSynchronize(): void
+    public function testThatTheCommentIsNotFromTheAuthorBecauseOfDifferentUserIdsAndAnActionDifferentToSynchronize(): void
     {
         $event = Event::ISSUE_COMMENT();
 
@@ -155,10 +146,7 @@ final class PayloadTest extends TestCase
         static::assertSame($repository, $payload->repository()->toString());
     }
 
-    /**
-     * @test
-     */
-    public function thatCommentDoesNotNeedToBeSetInPayload(): void
+    public function testThatCommentDoesNotNeedToBeSetInPayload(): void
     {
         $event = Event::ISSUE_COMMENT();
 

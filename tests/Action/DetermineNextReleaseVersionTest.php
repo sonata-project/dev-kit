@@ -26,10 +26,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function returnsCurrentIfNoPullRequestsAreProvider(): void
+    public function testReturnsCurrentIfNoPullRequestsAreProvider(): void
     {
         $tag = Tag::fromString('1.1.0');
 
@@ -39,10 +36,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function returnsCurrentIfNoMajorOrMinorOrPatchStabilityIsFound(): void
+    public function testReturnsCurrentIfNoMajorOrMinorOrPatchStabilityIsFound(): void
     {
         $tag = Tag::fromString('1.1.0');
 
@@ -57,13 +51,11 @@ final class DetermineNextReleaseVersionTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @param array<PullRequest> $pullRequests
      *
      * @dataProvider determineProvider
      */
-    public function determine(string $expected, string $current, array $pullRequests): void
+    public function testDetermine(string $expected, string $current, array $pullRequests): void
     {
         $tag = Tag::fromString($current);
 

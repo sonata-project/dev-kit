@@ -35,10 +35,7 @@ final class FileSystemExtensionTest extends TestCase
         $this->fileSystemExtension = new FileSystemExtension($this->fileSystem);
     }
 
-    /**
-     * @test
-     */
-    public function hasDependency(): void
+    public function testHasDependency(): void
     {
         static::assertTrue($this->fileSystemExtension->hasDependency(
             __DIR__.'/../../..',

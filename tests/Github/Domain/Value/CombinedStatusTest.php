@@ -24,20 +24,14 @@ final class CombinedStatusTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         CombinedStatus::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseArrayDoesNotContainKeyState(): void
+    public function testThrowsExceptionIfResponseArrayDoesNotContainKeyState(): void
     {
         $response = CombinedStatusFactory::create();
         unset($response['state']);
@@ -47,10 +41,7 @@ final class CombinedStatusTest extends TestCase
         CombinedStatus::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStateIsEmptyString(): void
+    public function testThrowsExceptionIfStateIsEmptyString(): void
     {
         $response = CombinedStatusFactory::create([
             'state' => '',
@@ -61,10 +52,7 @@ final class CombinedStatusTest extends TestCase
         CombinedStatus::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStateIsUnknown(): void
+    public function testThrowsExceptionIfStateIsUnknown(): void
     {
         $response = CombinedStatusFactory::create([
             'state' => 'foo',
@@ -75,10 +63,7 @@ final class CombinedStatusTest extends TestCase
         CombinedStatus::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStatusesKeyDoesNotExist(): void
+    public function testThrowsExceptionIfStatusesKeyDoesNotExist(): void
     {
         $response = CombinedStatusFactory::create();
         unset($response['statuses']);
@@ -88,10 +73,7 @@ final class CombinedStatusTest extends TestCase
         CombinedStatus::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsSuccess(): void
+    public function testThrowsExceptionIfStatusesKeyIsEmptyArrayAndStateIsSuccess(): void
     {
         $response = CombinedStatusFactory::create([
             'state' => 'success',
@@ -104,10 +86,7 @@ final class CombinedStatusTest extends TestCase
         CombinedStatus::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfStatusesKeyIsEmptyArrayAndStateIsFailure(): void
+    public function testThrowsExceptionIfStatusesKeyIsEmptyArrayAndStateIsFailure(): void
     {
         $response = CombinedStatusFactory::create([
             'state' => 'failure',
@@ -120,10 +99,7 @@ final class CombinedStatusTest extends TestCase
         CombinedStatus::fromResponse($response);
     }
 
-    /**
-     * @test
-     */
-    public function allowStatusesKeyIsEmptyArrayAndStateIsPending(): void
+    public function testAllowStatusesKeyIsEmptyArrayAndStateIsPending(): void
     {
         $response = CombinedStatusFactory::create([
             'state' => 'pending',
@@ -138,11 +114,9 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider stateProvider
      */
-    public function usesStateFromResponse(string $state): void
+    public function testUsesStateFromResponse(string $state): void
     {
         $response = CombinedStatusFactory::create([
             'state' => $state,
@@ -165,11 +139,9 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider isSuccessfulProvider
      */
-    public function isSuccessful(bool $expected, string $state): void
+    public function testIsSuccessful(bool $expected, string $state): void
     {
         $response = CombinedStatusFactory::create([
             'state' => $state,
@@ -191,10 +163,7 @@ final class CombinedStatusTest extends TestCase
         yield 'success' => [true, 'success'];
     }
 
-    /**
-     * @test
-     */
-    public function usesStatusesFromResponse(): void
+    public function testUsesStatusesFromResponse(): void
     {
         $response = CombinedStatusFactory::create([
             'statuses' => [

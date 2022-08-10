@@ -21,22 +21,19 @@ final class BranchTest extends TestCase
 {
     public const DEFAULT_BRANCH_NAME = 'master';
     public const DEFAULT_BRANCH_CONFIG = <<<CONFIG
-master:
-  php: ['7.3', '7.4', '8.0']
-  target_php: '7.4'
-  frontend: true
-  variants:
-    symfony/symfony: ['4.4']
-    sonata-project/block-bundle: ['4']
-  php_extensions: ['bar']
-  docs_path: docs
-  tests_path: tests
-CONFIG;
+        master:
+          php: ['7.3', '7.4', '8.0']
+          target_php: '7.4'
+          frontend: true
+          variants:
+            symfony/symfony: ['4.4']
+            sonata-project/block-bundle: ['4']
+          php_extensions: ['bar']
+          docs_path: docs
+          tests_path: tests
+        CONFIG;
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $name = 'master';
 

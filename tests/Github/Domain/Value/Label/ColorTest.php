@@ -19,50 +19,35 @@ use PHPUnit\Framework\TestCase;
 
 final class ColorTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function testThrowsExceptionIfValueIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Color::fromString('');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorStartsWithHash(): void
+    public function testThrowsExceptionIfColorStartsWithHash(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Color::fromString('#123454');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorLengthIsLessThan6(): void
+    public function testThrowsExceptionIfColorLengthIsLessThan6(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Color::fromString('12345');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfColorLengthIsGreaterThan6(): void
+    public function testThrowsExceptionIfColorLengthIsGreaterThan6(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Color::fromString('1234567');
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $color = Color::fromString('EDEDED');
 
@@ -71,11 +56,9 @@ final class ColorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Color $color, Color $other): void
+    public function testEquals(bool $expected, Color $color, Color $other): void
     {
         static::assertSame(
             $expected,

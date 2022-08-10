@@ -18,20 +18,14 @@ use PHPUnit\Framework\TestCase;
 
 final class CommitTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfResponseIsEmpty(): void
+    public function testThrowsExceptionIfResponseIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Commit::fromResponse([]);
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $response = [
             'sha' => $sha = 'sha',

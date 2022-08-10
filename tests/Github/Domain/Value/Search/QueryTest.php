@@ -25,10 +25,7 @@ final class QueryTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function throwsExceptionIfValueIsEmptyString(): void
+    public function testThrowsExceptionIfValueIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -36,31 +33,23 @@ final class QueryTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \App\Tests\Util\DataProvider\StringProvider::lengthGreaterThan256Characters()
      */
-    public function throwsExceptionIfValueIsGreaterThan256Characters(string $value): void
+    public function testThrowsExceptionIfValueIsGreaterThan256Characters(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Query::fromString($value);
     }
 
-    /**
-     * @test
-     */
-    public function fromString(): void
+    public function testFromString(): void
     {
         $query = Query::fromString('abc');
 
         static::assertSame('abc', $query->toString());
     }
 
-    /**
-     * @test
-     */
-    public function pullRequests(): void
+    public function testPullRequests(): void
     {
         $package = new Package();
         $package->fromArray([
@@ -71,18 +60,18 @@ final class QueryTest extends TestCase
         $repository = Repository::fromPackage($package);
 
         $config = <<<CONFIG
-master:
-  php: ['7.3', '7.4']
-  target_php: ~
-  frontend: true
-  variants:
-    symfony/symfony: ['4.4']
-    sonata-project/block-bundle: ['4']
-  tools: []
-  php_extensions: []
-  docs_path: docs
-  tests_path: tests
-CONFIG;
+            master:
+              php: ['7.3', '7.4']
+              target_php: ~
+              frontend: true
+              variants:
+                symfony/symfony: ['4.4']
+                sonata-project/block-bundle: ['4']
+              tools: []
+              php_extensions: []
+              docs_path: docs
+              tests_path: tests
+            CONFIG;
 
         $config = Yaml::parse($config);
 
@@ -106,10 +95,7 @@ CONFIG;
         );
     }
 
-    /**
-     * @test
-     */
-    public function pullRequestsSince(): void
+    public function testPullRequestsSince(): void
     {
         $package = new Package();
         $package->fromArray([
@@ -120,17 +106,17 @@ CONFIG;
         $repository = Repository::fromPackage($package);
 
         $config = <<<CONFIG
-master:
-  php: ['7.3', '7.4']
-  target_php: ~
-  frontend: true
-  variants:
-    symfony/symfony: ['4.4']
-    sonata-project/block-bundle: ['4']
-  php_extensions: []
-  docs_path: docs
-  tests_path: tests
-CONFIG;
+            master:
+              php: ['7.3', '7.4']
+              target_php: ~
+              frontend: true
+              variants:
+                symfony/symfony: ['4.4']
+                sonata-project/block-bundle: ['4']
+              php_extensions: []
+              docs_path: docs
+              tests_path: tests
+            CONFIG;
 
         $config = Yaml::parse($config);
 

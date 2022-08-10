@@ -23,10 +23,7 @@ final class LatestReleaseNotFoundTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function forRepository(): void
+    public function testForRepository(): void
     {
         $package = new Package();
         $package->fromArray([

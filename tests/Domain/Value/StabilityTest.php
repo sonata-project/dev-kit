@@ -22,22 +22,17 @@ final class StabilityTest extends TestCase
     use Helper;
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionFor(string $value): void
+    public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Stability::fromString($value);
     }
 
-    /**
-     * @test
-     */
-    public function usesLowercaseForStability(): void
+    public function testUsesLowercaseForStability(): void
     {
         static::assertSame(
             'minor',
@@ -45,10 +40,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function toStringReturnsLowercaseString(): void
+    public function testToStringReturnsLowercaseString(): void
     {
         static::assertSame(
             'minor',
@@ -56,10 +48,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function toUppercaseStringReturnsUppercaseString(): void
+    public function testToUppercaseStringReturnsUppercaseString(): void
     {
         static::assertSame(
             'MINOR',
@@ -68,11 +57,9 @@ final class StabilityTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider validProvider
      */
-    public function valid(string $value): void
+    public function testValid(string $value): void
     {
         $stability = Stability::fromString($value);
 
@@ -89,10 +76,7 @@ final class StabilityTest extends TestCase
         yield 'patch' => ['patch'];
     }
 
-    /**
-     * @test
-     */
-    public function patch(): void
+    public function testPatch(): void
     {
         static::assertSame(
             'patch',
@@ -100,10 +84,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function minor(): void
+    public function testMinor(): void
     {
         static::assertSame(
             'minor',
@@ -111,10 +92,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function pedantic(): void
+    public function testPedantic(): void
     {
         static::assertSame(
             'pedantic',
@@ -122,10 +100,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function unknown(): void
+    public function testUnknown(): void
     {
         static::assertSame(
             'unknown',
@@ -134,11 +109,9 @@ final class StabilityTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Stability $stability, Stability $other): void
+    public function testEquals(bool $expected, Stability $stability, Stability $other): void
     {
         static::assertSame(
             $expected,

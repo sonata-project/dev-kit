@@ -19,10 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LabelTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function throwsExceptionIfNameIsEmptyString(): void
+    public function testThrowsExceptionIfNameIsEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -32,10 +29,7 @@ final class LabelTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function valid(): void
+    public function testValid(): void
     {
         $label = Label::fromValues(
             'Test',
@@ -54,10 +48,7 @@ final class LabelTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function RTM(): void
+    public function testRTM(): void
     {
         $label = Label::RTM();
 
@@ -66,10 +57,7 @@ final class LabelTest extends TestCase
         static::assertSame('#ffffff', $label->color()->asHexCode());
     }
 
-    /**
-     * @test
-     */
-    public function PendingAuthor(): void
+    public function testPendingAuthor(): void
     {
         $label = Label::PendingAuthor();
 
@@ -79,11 +67,9 @@ final class LabelTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Label $label, Label $other): void
+    public function testEquals(bool $expected, Label $label, Label $other): void
     {
         static::assertSame(
             $expected,

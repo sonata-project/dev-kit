@@ -19,12 +19,10 @@ use PHPUnit\Framework\TestCase;
 final class EventTest extends TestCase
 {
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionFor(string $value): void
+    public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -32,11 +30,9 @@ final class EventTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::untrimmed()
      */
-    public function fromString(string $value): void
+    public function testFromString(string $value): void
     {
         static::assertSame(
             trim($value),
@@ -45,11 +41,9 @@ final class EventTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Event $event, Event $other): void
+    public function testEquals(bool $expected, Event $event, Event $other): void
     {
         static::assertSame(
             $expected,
@@ -76,13 +70,11 @@ final class EventTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @param array<Event> $others
      *
      * @dataProvider equalsOneOfProvider
      */
-    public function equalsOneOf(bool $expected, Event $event, array $others): void
+    public function testEqualsOneOf(bool $expected, Event $event, array $others): void
     {
         static::assertSame(
             $expected,

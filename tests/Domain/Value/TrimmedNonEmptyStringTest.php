@@ -21,10 +21,7 @@ final class TrimmedNonEmptyStringTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function fromString(): void
+    public function testFromString(): void
     {
         $string = self::faker()->word();
 
@@ -34,10 +31,7 @@ final class TrimmedNonEmptyStringTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function fromStringWithUntrimmedValue(): void
+    public function testFromStringWithUntrimmedValue(): void
     {
         $string = self::faker()->word();
         $untrimmed = ' '.$string.' ';
@@ -48,20 +42,14 @@ final class TrimmedNonEmptyStringTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function fromStringWithEmptyValue(): void
+    public function testFromStringWithEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         TrimmedNonEmptyString::fromString('');
     }
 
-    /**
-     * @test
-     */
-    public function fromStringWithBlankValue(): void
+    public function testFromStringWithBlankValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

@@ -25,10 +25,7 @@ final class NoPullRequestMergedSinceLastReleaseTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @test
-     */
-    public function forProject(): void
+    public function testForProject(): void
     {
         $package = new Package();
         $package->fromArray([

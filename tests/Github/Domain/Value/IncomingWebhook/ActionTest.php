@@ -19,12 +19,10 @@ use PHPUnit\Framework\TestCase;
 final class ActionTest extends TestCase
 {
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
      */
-    public function throwsExceptionFor(string $value): void
+    public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -32,11 +30,9 @@ final class ActionTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::untrimmed()
      */
-    public function fromString(string $value): void
+    public function testFromString(string $value): void
     {
         static::assertSame(
             trim($value),
@@ -44,10 +40,7 @@ final class ActionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function SYNCHRONIZE(): void
+    public function testSYNCHRONIZE(): void
     {
         static::assertSame(
             'synchronize',
@@ -55,10 +48,7 @@ final class ActionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function CREATED(): void
+    public function testCREATED(): void
     {
         static::assertSame(
             'created',
@@ -67,11 +57,9 @@ final class ActionTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider equalsProvider
      */
-    public function equals(bool $expected, Action $action, Action $other): void
+    public function testEquals(bool $expected, Action $action, Action $other): void
     {
         static::assertSame(
             $expected,
@@ -98,13 +86,11 @@ final class ActionTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @param array<Action> $others
      *
      * @dataProvider equalsOneOfProvider
      */
-    public function equalsOneOf(bool $expected, Action $action, array $others): void
+    public function testEqualsOneOf(bool $expected, Action $action, array $others): void
     {
         static::assertSame(
             $expected,
