@@ -171,6 +171,7 @@ page-bundle:
     branches:
         4.x:
             php: ['7.4', '8.0', '8.1']
+            frontend: true
             variants:
                 symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
         3.x:
