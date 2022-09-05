@@ -49,9 +49,6 @@ doctrine-extensions:
         2.x:
             php: ['8.0', '8.1']
             php_extensions: ['mongodb']
-        1.x:
-            php: ['7.4', '8.0', '8.1']
-            php_extensions: ['mongodb']
 
 doctrine-mongodb-admin-bundle:
     branches:
@@ -107,11 +104,6 @@ exporter:
             php_extensions: ['mongodb']
             variants:
                 symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
-        2.x:
-            php: ['7.4', '8.0', '8.1']
-            php_extensions: ['mongodb']
-            variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 formatter-bundle:
     branches:
@@ -213,10 +205,6 @@ twig-extensions:
             php: ['8.0', '8.1']
             variants:
                 symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
-        1.x:
-            php: ['7.4', '8.0', '8.1']
-            variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.0.*', '6.1.*']
 
 user-bundle:
     branches:
