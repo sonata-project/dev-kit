@@ -133,6 +133,10 @@ form-extensions:
 intl-bundle:
     has_test_kernel: false
     branches:
+        4.x:
+            php: ['8.0', '8.1']
+            variants:
+                symfony/symfony: ['5.4.*', '6.0.*', '6.1.*']
         3.x:
             php: ['8.0', '8.1']
             variants:
