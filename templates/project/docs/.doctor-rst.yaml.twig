@@ -45,12 +45,4 @@ rules:
 whitelist:
     lines:
         - '.. versionadded:: {{ project.stableBranch.name }}'
-{% if project.customDoctorRstWhitelistPart is not empty %}
-    {{ project.customDoctorRstWhitelistPart|raw }}
-{% endif %}
-{% elseif project.customDoctorRstWhitelistPart is not empty %}
-
-whitelist:
-    lines:
-    {{ project.customDoctorRstWhitelistPart|raw }}
 {% endif %}

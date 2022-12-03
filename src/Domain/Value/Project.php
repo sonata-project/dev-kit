@@ -30,7 +30,6 @@ use function Symfony\Component\String\u;
  *     excluded_files: array<string>,
  *     has_documentation: bool,
  *     has_test_kernel: bool,
- *     custom_doctor_rst_whitelist_part: string|null,
  *     documentation_badge_slug: string|null,
  * }
  */
@@ -52,7 +51,6 @@ final class Project
 
     private bool $hasDocumentation;
     private bool $hasTestKernel;
-    private ?string $customDoctorRstWhitelistPart;
     private string $documentationBadgeSlug;
 
     private Repository $repository;
@@ -68,7 +66,6 @@ final class Project
         array $excludedFiles,
         bool $hasDocumentation,
         bool $hasTestKernel,
-        ?string $customDoctorRstWhitelistPart,
         ?string $documentationBadgeSlug
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
@@ -80,7 +77,6 @@ final class Project
         $this->hasDocumentation = $hasDocumentation;
         $this->hasTestKernel = $hasTestKernel;
         $this->excludedFiles = $excludedFiles;
-        $this->customDoctorRstWhitelistPart = $customDoctorRstWhitelistPart;
         $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
             ->lower()
             ->toString();
@@ -110,7 +106,6 @@ final class Project
             $excludedFiles,
             $config['has_documentation'],
             $config['has_test_kernel'],
-            $config['custom_doctor_rst_whitelist_part'],
             $config['documentation_badge_slug'],
         );
     }
@@ -213,11 +208,6 @@ final class Project
     public function hasTestKernel(): bool
     {
         return $this->hasTestKernel;
-    }
-
-    public function customDoctorRstWhitelistPart(): ?string
-    {
-        return $this->customDoctorRstWhitelistPart;
     }
 
     public function documentationBadgeSlug(): string
