@@ -25,7 +25,6 @@ final class ProjectTest extends TestCase
     public const DEFAULT_CONFIG = <<<CONFIG
         admin-bundle:
           excluded_files: []
-          custom_doctor_rst_whitelist_part: ~
           has_documentation: true
           has_test_kernel: true
           documentation_badge_slug: ~
@@ -122,7 +121,6 @@ final class ProjectTest extends TestCase
 <<<CONFIG
     admin-bundle:
       excluded_files: []
-      custom_doctor_rst_whitelist_part: ~
       has_documentation: true
       has_test_kernel: true
       documentation_badge_slug: 'sonataadminbundle2'
@@ -146,7 +144,6 @@ final class ProjectTest extends TestCase
 <<<CONFIG
     twig-extensions:
       excluded_files: []
-      custom_doctor_rst_whitelist_part: ~
       has_documentation: true
       has_test_kernel: true
       documentation_badge_slug: ~
@@ -434,7 +431,6 @@ final class ProjectTest extends TestCase
 <<<CONFIG
     admin-bundle:
       excluded_files: []
-      custom_doctor_rst_whitelist_part: ~
       has_documentation: true
       has_test_kernel: true
       documentation_badge_slug: ~
@@ -457,7 +453,6 @@ final class ProjectTest extends TestCase
 <<<CONFIG
     admin-bundle:
       excluded_files: []
-      custom_doctor_rst_whitelist_part: ~
       has_documentation: true
       has_test_kernel: true
       documentation_badge_slug: 'sonataadminbundle2'
@@ -511,7 +506,6 @@ final class ProjectTest extends TestCase
             <<<CONFIG
                 admin-bundle:
                   excluded_files: []
-                  custom_doctor_rst_whitelist_part: ~
                   has_documentation: true
                   has_test_kernel: true
                   documentation_badge_slug: ~
@@ -534,7 +528,6 @@ final class ProjectTest extends TestCase
             <<<CONFIG
                 admin-bundle:
                   excluded_files: []
-                  custom_doctor_rst_whitelist_part: ~
                   has_documentation: true
                   has_test_kernel: true
                   documentation_badge_slug: ~
@@ -567,7 +560,6 @@ final class ProjectTest extends TestCase
             <<<CONFIG
                 admin-bundle:
                   excluded_files: []
-                  custom_doctor_rst_whitelist_part: ~
                   has_documentation: true
                   has_test_kernel: true
                   documentation_badge_slug: ~

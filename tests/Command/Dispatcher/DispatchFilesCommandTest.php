@@ -77,7 +77,6 @@ final class DispatchFilesCommandTest extends TestCase
         $project = <<<CONFIG
             admin-bundle:
               excluded_files: []
-              custom_doctor_rst_whitelist_part: ~
               has_documentation: true
               has_test_kernel: true
               documentation_badge_slug: ~
