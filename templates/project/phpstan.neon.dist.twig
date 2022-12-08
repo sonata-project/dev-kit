@@ -14,6 +14,10 @@ parameters:
     symfony:
         console_application_loader: ./phpstan-console-application.php
 {% endif %}
+{% if has_dependency(project_dir, 'phpstan/phpstan-doctrine') %}
+    doctrine:
+        allowNullablePropertyForRequiredField: true
+{% endif %}
     paths:
         - src
         - tests
