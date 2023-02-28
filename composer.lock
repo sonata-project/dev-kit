@@ -3631,16 +3631,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v5.4.20",
+            "version": "v5.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "b4d936b657c7952a41e89efd0ddcea51f8c90f34"
+                "reference": "6b88914a7f1bf144df15904f60a19be78a67a3b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/b4d936b657c7952a41e89efd0ddcea51f8c90f34",
-                "reference": "b4d936b657c7952a41e89efd0ddcea51f8c90f34",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/6b88914a7f1bf144df15904f60a19be78a67a3b2",
+                "reference": "6b88914a7f1bf144df15904f60a19be78a67a3b2",
                 "shasum": ""
             },
             "require": {
@@ -3698,7 +3698,7 @@
             "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v5.4.20"
+                "source": "https://github.com/symfony/http-client/tree/v5.4.21"
             },
             "funding": [
                 {
@@ -3714,7 +3714,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-25T18:32:18+00:00"
+            "time": "2023-02-17T21:35:35+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -4149,16 +4149,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v5.4.19",
+            "version": "v5.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "7e38308b0bd35689bec8f45531f2110790035aa4"
+                "reference": "783ee4c8e78a6243c0a1333ff70e8eba41719f58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/7e38308b0bd35689bec8f45531f2110790035aa4",
-                "reference": "7e38308b0bd35689bec8f45531f2110790035aa4",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/783ee4c8e78a6243c0a1333ff70e8eba41719f58",
+                "reference": "783ee4c8e78a6243c0a1333ff70e8eba41719f58",
                 "shasum": ""
             },
             "require": {
@@ -4224,7 +4224,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v5.4.19"
+                "source": "https://github.com/symfony/notifier/tree/v5.4.21"
             },
             "funding": [
                 {
@@ -4240,7 +4240,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-01T08:32:19+00:00"
+            "time": "2023-02-17T09:54:29+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -5037,23 +5037,23 @@
         },
         {
             "name": "symfony/slack-notifier",
-            "version": "v5.4.19",
+            "version": "v5.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/slack-notifier.git",
-                "reference": "a881e2b9f1cc752bdf46d1c5b58f048639e5aff9"
+                "reference": "45ed24a546cff1b83239882e9922c62a033b5235"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/a881e2b9f1cc752bdf46d1c5b58f048639e5aff9",
-                "reference": "a881e2b9f1cc752bdf46d1c5b58f048639e5aff9",
+                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/45ed24a546cff1b83239882e9922c62a033b5235",
+                "reference": "45ed24a546cff1b83239882e9922c62a033b5235",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
                 "symfony/deprecation-contracts": "^2.1|^3",
                 "symfony/http-client": "^4.3|^5.0|^6.0",
-                "symfony/notifier": "^5.3|^6.0"
+                "symfony/notifier": "^5.4.21|^6.2.7"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -5085,7 +5085,7 @@
                 "slack"
             ],
             "support": {
-                "source": "https://github.com/symfony/slack-notifier/tree/v5.4.19"
+                "source": "https://github.com/symfony/slack-notifier/tree/v5.4.21"
             },
             "funding": [
                 {
@@ -5101,7 +5101,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-01T08:32:19+00:00"
+            "time": "2023-02-17T09:54:29+00:00"
         },
         {
             "name": "symfony/string",
