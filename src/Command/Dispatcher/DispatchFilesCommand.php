@@ -24,7 +24,7 @@ use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use App\Github\Domain\Value\Branch as GithubBranch;
 use Github\Exception\ExceptionInterface;
-use GitWrapper\GitWrapper;
+use Gitonomy\Git\Admin;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,7 +46,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private PullRequests $pullRequests;
     private Branches $branches;
     private Commits $commits;
-    private GitWrapper $git;
     private Filesystem $filesystem;
     private Environment $twig;
 
@@ -57,7 +56,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         PullRequests $pullRequests,
         Branches $branches,
         Commits $commits,
-        GitWrapper $git,
         Filesystem $filesystem,
         Environment $twig
     ) {
@@ -69,7 +67,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->pullRequests = $pullRequests;
         $this->branches = $branches;
         $this->commits = $commits;
-        $this->git = $git;
         $this->filesystem = $filesystem;
         $this->twig = $twig;
     }
@@ -137,19 +134,19 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             $this->filesystem->remove($clonePath);
         }
 
-        $git = $this->git->cloneRepository(
+        $gitRepository = Admin::cloneRepository(
+            $clonePath,
             sprintf(
                 'https://%s:%s@github.com/%s/%s',
                 $repository->username(),
                 $this->githubToken,
                 $repository->username(),
                 $repository->name()
-            ),
-            $clonePath
+            )
         );
 
-        $git->config('user.name', static::GITHUB_USER);
-        $git->config('user.email', static::GITHUB_EMAIL);
+        $gitRepository->run('config', ['--local', 'user.name', static::GITHUB_USER]);
+        $gitRepository->run('config', ['--local', 'user.email', static::GITHUB_EMAIL]);
 
         $previousBranch = null;
         $previousDevKitBranchName = null;
@@ -186,20 +183,20 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 }
             }
 
-            $git->reset(['hard' => true]);
+            $gitRepository->run('reset', ['--hard']);
 
             // Checkout the targeted branch
-            if (\in_array($branch->name(), $git->getBranches()->all(), true)) {
-                $git->checkout($branch->name());
+            if ($gitRepository->getReferences()->hasBranch($branch->name())) {
+                $gitRepository->run('checkout', [$branch->name()]);
             } else {
-                $git->checkout('-b', $branch->name(), '--track', 'origin/'.$branch->name());
+                $gitRepository->run('checkout', ['-b', $branch->name(), '--track', sprintf('origin/%s', $branch->name())]);
             }
 
             // Checkout the dev-kit branch
-            if (\in_array('remotes/origin/'.$devKitBranchName, $git->getBranches()->all(), true)) {
-                $git->checkout('-b', $devKitBranchName, '--track', 'origin/'.$devKitBranchName);
+            if ($gitRepository->getReferences()->hasRemoteBranch(sprintf('origin/%s', $devKitBranchName))) {
+                $gitRepository->run('checkout', ['-b', $devKitBranchName, '--track', sprintf('origin/%s', $devKitBranchName)]);
             } else {
-                $git->checkout('-b', $devKitBranchName);
+                $gitRepository->run('checkout', ['-b', $devKitBranchName]);
             }
 
             $this->renderFile(
@@ -215,16 +212,19 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 $clonePath
             );
 
-            $git->add('.', ['all' => true]);
-            $diff = $git->diff('--color', '--cached', 'origin/'.$branch->name());
+            $gitRepository->run('add', ['.', '--all']);
+
+            $diff = $gitRepository->run('diff', ['--color', '--cached', sprintf('origin/%s', $branch->name())]);
 
             if ('' !== $diff) {
                 $this->io->writeln($diff);
 
                 if ($this->apply) {
-                    if ($git->hasChanges()) {
-                        $git->commit('DevKit updates');
-                        $git->push('-u', 'origin', $devKitBranchName);
+                    $changes = $gitRepository->run('status', ['-s']);
+
+                    if ('' !== $changes) {
+                        $gitRepository->run('commit', ['-m', "'DevKit updates'"]);
+                        $gitRepository->run('push', ['-u', 'origin', $devKitBranchName]);
                     }
 
                     $currentHead = u('sonata-project:')->append($devKitBranchName)->toString();
