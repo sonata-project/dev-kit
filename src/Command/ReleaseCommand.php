@@ -23,6 +23,7 @@ use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -93,7 +94,7 @@ final class ReleaseCommand extends AbstractCommand
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
     {
-        $helper = $this->getHelper('question');
+        $helper = $this->getQuestionHelper();
 
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
         $question->setAutocompleterValues(array_keys($this->projects->all()));
@@ -109,7 +110,7 @@ final class ReleaseCommand extends AbstractCommand
 
     private function selectBranch(InputInterface $input, OutputInterface $output, Project $project): Branch
     {
-        $helper = $this->getHelper('question');
+        $helper = $this->getQuestionHelper();
 
         $default = ($project->stableBranch() ?? $project->unstableBranch())->name();
 
@@ -281,5 +282,13 @@ final class ReleaseCommand extends AbstractCommand
         }
 
         $table->render();
+    }
+
+    /**
+     * @psalm-suppress LessSpecificReturnStatement, MoreSpecificReturnType
+     */
+    private function getQuestionHelper(): QuestionHelper
+    {
+        return $this->getHelper('question');
     }
 }
