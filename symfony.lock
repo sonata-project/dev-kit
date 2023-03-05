@@ -5,18 +5,6 @@
     "amphp/byte-stream": {
         "version": "v1.8.1"
     },
-    "cache/adapter-common": {
-        "version": "1.1.0"
-    },
-    "cache/hierarchical-cache": {
-        "version": "1.0.0"
-    },
-    "cache/redis-adapter": {
-        "version": "1.0.0"
-    },
-    "cache/tag-interop": {
-        "version": "1.0.0"
-    },
     "clue/stream-filter": {
         "version": "v1.5.0"
     },
@@ -273,9 +261,6 @@
     },
     "psr/log": {
         "version": "1.1.3"
-    },
-    "psr/simple-cache": {
-        "version": "1.0.1"
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"

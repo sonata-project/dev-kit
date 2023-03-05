@@ -32,7 +32,7 @@ final class Checks
 
     public function all(Repository $repository, Sha $sha): CheckRuns
     {
-        $response = $this->github->repo()->checks()->all(
+        $response = $this->github->repo()->checkRuns()->allForReference(
             $repository->username(),
             $repository->name(),
             $sha->toString()
