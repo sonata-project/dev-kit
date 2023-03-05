@@ -27,6 +27,7 @@ class GithubSponsorsExtension extends AbstractExtension
         'VincentLanglet',
         'wbloszyk',
         'jordisala1991',
+        'phansys',
     ];
 
     private GithubClient $github;

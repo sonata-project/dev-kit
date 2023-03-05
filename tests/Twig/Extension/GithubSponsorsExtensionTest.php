@@ -82,6 +82,8 @@ final class GithubSponsorsExtensionTest extends TestCase
                 ['login' => 'core23'],
                 ['login' => 'wbloszyk'],
                 ['login' => 'greg0ire'],
+                ['login' => 'jordisala1991'],
+                ['login' => 'phansys'],
             ]);
 
         $this->github
