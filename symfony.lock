@@ -32,18 +32,6 @@
     "composer/xdebug-handler": {
         "version": "2.0.2"
     },
-    "cpliakas/git-wrapper": {
-        "version": "3.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "3.0",
-            "ref": "c99fcfe7e2e637834e3136dfe8fd671dd5d9163a"
-        },
-        "files": [
-            "config/packages/cpliakas_git_wrapper.yaml"
-        ]
-    },
     "dnoegel/php-xdg-base-dir": {
         "version": "v0.1.1"
     },
@@ -139,9 +127,6 @@
     },
     "netresearch/jsonmapper": {
         "version": "v4.0.0"
-    },
-    "nette/utils": {
-        "version": "v3.1.3"
     },
     "nikic/php-parser": {
         "version": "v4.13.0"
