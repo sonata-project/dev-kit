@@ -8,7 +8,7 @@ runtime:
         - sodium
         - ctype
         - iconv
-        - json
+        - redis
 
 variables:
     php:
