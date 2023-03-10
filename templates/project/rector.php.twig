@@ -21,9 +21,9 @@ use Rector\Config\RectorConfig;
 use Rector\Php70\Rector\FunctionLike\ExceptionHandlerTypehintRector;
 use Rector\Php71\Rector\FuncCall\CountOnNullRector;
 use Rector\Set\ValueObject\LevelSetList;
-{% if project.name == 'block-bundle' && branch.name == '4.x' %}
+{% if project.name == 'block-bundle' and branch.name == '4.x' -%}
 use Rector\TypeDeclaration\Rector\FunctionLike\UnionTypesRector;
-{% endif %}
+{%- endif %}
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
@@ -35,13 +35,13 @@ return static function (RectorConfig $rectorConfig): void {
         LevelSetList::UP_TO_PHP_{{ branch.lowestPhpVersion.rectorFormat }},
     ]);
 
-    {% if project.name == 'block-bundle' && branch.name == '4.x' %}
+    {% if project.name == 'block-bundle' and branch.name == '4.x' -%}
     $rectorConfig->skip([
         UnionTypesRector::class => [
-            __DIR__ . '/src/ComplicatedFile.php',
+            __DIR__ . '/src/Templating/Helper/BlockHelper.php',
         ],
     ]);
-    {% endif %}
+    {%- endif %}
 
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses(false);
