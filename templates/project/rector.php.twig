@@ -35,18 +35,15 @@ return static function (RectorConfig $rectorConfig): void {
         LevelSetList::UP_TO_PHP_{{ branch.lowestPhpVersion.rectorFormat }},
     ]);
 
-    {% if project.name == 'block-bundle' and branch.name == '4.x' -%}
-    $rectorConfig->skip([
-        UnionTypesRector::class => [
-            __DIR__ . '/src/Templating/Helper/BlockHelper.php',
-        ],
-    ]);
-    {%- endif %}
-
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses(false);
     $rectorConfig->skip([
         CountOnNullRector::class,
         ExceptionHandlerTypehintRector::class,
+        {% if project.name == 'block-bundle' and branch.name == '4.x' -%}
+        UnionTypesRector::class => [
+            __DIR__ . '/src/Templating/Helper/BlockHelper.php',
+        ],
+        {%- endif %}
     ]);
 };
