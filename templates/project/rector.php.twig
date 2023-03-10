@@ -42,7 +42,7 @@ return static function (RectorConfig $rectorConfig): void {
         ExceptionHandlerTypehintRector::class,
         {% if project.name == 'block-bundle' and branch.name == '4.x' -%}
         UnionTypesRector::class => [
-            __DIR__ . '/src/Templating/Helper/BlockHelper.php',
+            __DIR__.'/src/Templating/Helper/BlockHelper.php',
         ],
         {%- endif %}
     ]);
