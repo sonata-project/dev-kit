@@ -223,7 +223,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     $changes = $gitRepository->run('status', ['-s']);
 
                     if ('' !== $changes) {
-                        $gitRepository->run('commit', ['-m', "'DevKit updates'"]);
+                        $gitRepository->run('commit', ['-m', 'DevKit updates']);
                         $gitRepository->run('push', ['-u', 'origin', $devKitBranchName]);
                     }
 
