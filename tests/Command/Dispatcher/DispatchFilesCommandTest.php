@@ -191,9 +191,9 @@ final class DispatchFilesCommandTest extends TestCase
                           run: make coverage
 
                         - name: Send coverage to Codecov
-                          uses: codecov/codecov-action@v2
+                          uses: codecov/codecov-action@v3
                           with:
-                              file: build/logs/clover.xml
+                              files: build/logs/clover.xml
 
             OUTPUT;
 

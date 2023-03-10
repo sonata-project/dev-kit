@@ -48,7 +48,7 @@ jobs:
             - name: Send coverage to Codecov
               uses: codecov/codecov-action@v3
               with:
-                  file: build/logs/clover.xml
+                  files: build/logs/clover.xml
 
     twig:
         name: Check Twig syntax
