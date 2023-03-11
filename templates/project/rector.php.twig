@@ -20,6 +20,9 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Php70\Rector\FunctionLike\ExceptionHandlerTypehintRector;
 use Rector\Php71\Rector\FuncCall\CountOnNullRector;
+{%- if project.name == 'block-bundle' and branch.name == '4.x' %}
+use Rector\Php80\Rector\FunctionLike\UnionTypesRector;
+{%- endif %}
 use Rector\Set\ValueObject\LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -37,5 +40,10 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         CountOnNullRector::class,
         ExceptionHandlerTypehintRector::class,
+{%- if project.name == 'block-bundle' and branch.name == '4.x' %}
+        UnionTypesRector::class => [
+            __DIR__.'/src/Templating/Helper/BlockHelper.php',
+        ],
+{%- endif %}
     ]);
 };
