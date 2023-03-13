@@ -73,6 +73,10 @@ final class CombinedStatus
         }
 
         $statuses = [];
+
+        /**
+         * @psalm-suppress PossiblyUndefinedArrayOffset
+         */
         foreach ($response['statuses'] as $status) {
             $statuses[] = Status::fromResponse($status);
         }

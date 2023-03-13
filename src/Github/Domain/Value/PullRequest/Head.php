@@ -52,6 +52,9 @@ final class Head
             Assert::notEmpty($config['repo']);
         }
 
+        /**
+         * @psalm-suppress PossiblyUndefinedArrayOffset
+         */
         if (null === $config['repo']) {
             $repo = null;
         } else {

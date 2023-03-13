@@ -79,8 +79,11 @@ final class ProjectTest extends TestCase
         static::assertSame(['master', '3.x'], $project->branchNames());
         static::assertSame(['3.x', 'master'], $project->branchNamesReverse());
         static::assertSame('master', $project->unstableBranch()->name());
-        static::assertNotNull($project->stableBranch());
-        static::assertSame('3.x', $project->stableBranch()->name());
+
+        $stableBranch = $project->stableBranch();
+
+        static::assertNotNull($stableBranch);
+        static::assertSame('3.x', $stableBranch->name());
         static::assertTrue($project->hasDocumentation());
         static::assertTrue($project->hasTestKernel());
         static::assertTrue($project->isBundle());
