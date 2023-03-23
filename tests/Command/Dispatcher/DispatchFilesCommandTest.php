@@ -173,7 +173,7 @@ final class DispatchFilesCommandTest extends TestCase
 
                         - name: Use older Flex endpoint for Symfony 4.4
                           if: matrix.symfony-require == '4.4.*'
-                          run: composer config extra.symfony.endpoint https://raw.githubusercontent.com/symfony/recipes/c8d90298241f176a261dadc4814d7058415a4c1f/index.jso
+                          run: composer config extra.symfony.endpoint https://raw.githubusercontent.com/symfony/recipes/c8d90298241f176a261dadc4814d7058415a4c1f/index.json
 
                         - name: Globally install symfony/flex
                           if: matrix.symfony-require != ''
