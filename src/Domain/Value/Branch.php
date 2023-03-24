@@ -159,6 +159,20 @@ final class Branch
         return $this->variants;
     }
 
+    public function hasVariant(string $package, string $version): bool
+    {
+        foreach ($this->variants() as $variant) {
+            if (
+                $variant->package() === $package
+                && $variant->version() === $version
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function hasFrontend(): bool
     {
         return $this->frontend;
