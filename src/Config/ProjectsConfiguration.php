@@ -22,7 +22,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class ProjectsConfiguration implements ConfigurationInterface
 {
     /**
-     * @psalm-suppress PossiblyNullReference, PossiblyUndefinedMethod
+     * @psalm-suppress PossiblyNullReference, UndefinedInterfaceMethod
      *
      * @see https://github.com/psalm/psalm-plugin-symfony/issues/174
      */
