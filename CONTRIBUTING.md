@@ -234,8 +234,8 @@ Also, the following files MUST be created/updated on the new stable branch:
 
 Finally, a signed tag SHOULD be created on the newly-created stable branch and the release note MUST be filled.
 
-[sphinx_install]: http://www.sphinx-doc.org/en/stable/
+[sphinx_install]: https://www.sphinx-doc.org/en/stable/
 [pip_install]: https://pip.pypa.io/en/stable/installing/
 [sf_docs_standards]: https://symfony.com/doc/current/contributing/documentation/standards.html
-[semver_dependencies_update]: http://semver.org/#what-should-i-do-if-i-update-my-own-dependencies-without-changing-the-public-api
-[php_supported_versions]: http://php.net/supported-versions.php
+[semver_dependencies_update]: https://semver.org/#what-should-i-do-if-i-update-my-own-dependencies-without-changing-the-public-api
+[php_supported_versions]: https://php.net/supported-versions.php
