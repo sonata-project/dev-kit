@@ -14,7 +14,7 @@ fi
 ##
 
 # Sed commands were not working on mac osx
-# http://stackoverflow.com/questions/34596156/sed-commands-working-on-ubuntu-but-not-on-osx
+# https://stackoverflow.com/questions/34596156/sed-commands-working-on-ubuntu-but-not-on-osx
 # Note: -i "" does not work on Ubuntu Linux.
 if [ "${OS}" == 'Darwin' ]; then
     sed -i "" -e "s/{unix_username}/$(id -un)/" .env
