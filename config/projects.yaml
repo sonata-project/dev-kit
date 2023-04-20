@@ -5,12 +5,12 @@ admin-bundle:
             php: ['8.0', '8.1', '8.2']
             frontend: true
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.2.*']
+                symfony/symfony: ['5.4.*', '6.2.*']
         4.x:
             php: ['8.0', '8.1', '8.2']
             frontend: true
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.2.*']
+                symfony/symfony: ['5.4.*', '6.2.*']
                 sonata-project/block-bundle: ['5.x-dev as 4.999']
                 sonata-project/form-extensions: ['2.x-dev as 1.999']
 
