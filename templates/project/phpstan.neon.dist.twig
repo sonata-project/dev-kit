@@ -35,3 +35,11 @@ parameters:
     checkMissingVarTagTypehint: true
     checkMissingTypehints: true
     checkUninitializedProperties: true
+{% if has_dependency(project_dir, 'phpstan/phpstan-symfony') %}
+    featureToggles:
+        skipCheckGenericClasses:
+            - Symfony\Component\Form\AbstractType
+            - Symfony\Component\Form\FormInterface
+            - Symfony\Component\Form\FormTypeExtensionInterface
+            - Symfony\Component\Form\FormTypeInterface
+{% endif %}
