@@ -31,12 +31,12 @@ classification-bundle:
             php: ['8.0', '8.1', '8.2']
             php_extensions: ['mongodb']
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.2.*']
+                symfony/symfony: ['5.4.*', '6.2.*']
         4.x:
             php: ['8.0', '8.1', '8.2']
             php_extensions: ['mongodb']
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.2.*']
+                symfony/symfony: ['5.4.*', '6.2.*']
 
 doctrine-extensions:
     has_documentation: false
