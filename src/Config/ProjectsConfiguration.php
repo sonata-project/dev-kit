@@ -42,6 +42,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                             ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->booleanNode('has_documentation')->defaultTrue()->end()
                             ->booleanNode('has_test_kernel')->defaultTrue()->end()
+                            ->booleanNode('has_platform_tests')->defaultFalse()->end()
                             ->scalarNode('documentation_badge_slug')->defaultNull()->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)

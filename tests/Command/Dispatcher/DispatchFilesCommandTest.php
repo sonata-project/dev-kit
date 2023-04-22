@@ -79,6 +79,7 @@ final class DispatchFilesCommandTest extends TestCase
               excluded_files: []
               has_documentation: true
               has_test_kernel: true
+              has_platform_tests: true
               documentation_badge_slug: ~
               branches:
                 master:

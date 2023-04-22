@@ -64,6 +64,7 @@ doctrine-mongodb-admin-bundle:
 
 doctrine-orm-admin-bundle:
     documentation_badge_slug: sonata-project-doctrineormadminbundle
+    has_platform_tests: true
     branches:
         5.x:
             php: ['8.0', '8.1', '8.2']
@@ -79,6 +80,7 @@ entity-audit-bundle:
         - README.md
     has_documentation: false
     has_test_kernel: false
+    has_platform_tests: true
     branches:
         2.x:
             php: ['8.0', '8.1', '8.2']

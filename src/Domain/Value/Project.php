@@ -30,6 +30,7 @@ use function Symfony\Component\String\u;
  *     excluded_files: array<string>,
  *     has_documentation: bool,
  *     has_test_kernel: bool,
+ *     has_platform_tests: bool,
  *     documentation_badge_slug: string|null,
  * }
  */
@@ -51,6 +52,8 @@ final class Project
 
     private bool $hasDocumentation;
     private bool $hasTestKernel;
+    private bool $hasPlatformTests;
+
     private string $documentationBadgeSlug;
 
     private Repository $repository;
@@ -66,6 +69,7 @@ final class Project
         array $excludedFiles,
         bool $hasDocumentation,
         bool $hasTestKernel,
+        bool $hasPlatformTests,
         ?string $documentationBadgeSlug
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
@@ -76,6 +80,7 @@ final class Project
         $this->branches = $branches;
         $this->hasDocumentation = $hasDocumentation;
         $this->hasTestKernel = $hasTestKernel;
+        $this->hasPlatformTests = $hasPlatformTests;
         $this->excludedFiles = $excludedFiles;
         $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
             ->lower()
@@ -106,6 +111,7 @@ final class Project
             $excludedFiles,
             $config['has_documentation'],
             $config['has_test_kernel'],
+            $config['has_platform_tests'],
             $config['documentation_badge_slug'],
         );
     }
@@ -208,6 +214,11 @@ final class Project
     public function hasTestKernel(): bool
     {
         return $this->hasTestKernel;
+    }
+
+    public function hasPlatformTests(): bool
+    {
+        return $this->hasPlatformTests;
     }
 
     public function documentationBadgeSlug(): string
