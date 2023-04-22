@@ -25,6 +25,7 @@ use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -79,7 +80,9 @@ final class ReleaseCommand extends AbstractCommand
         $this
             ->setName('release')
             ->setDescription('Helps with a project release.')
-            ->setHelp($help);
+            ->setHelp($help)
+            ->addArgument('project', InputArgument::OPTIONAL, 'Name of the project to release', null)
+            ->addArgument('branch', InputArgument::OPTIONAL, 'Branch of the project to release', null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -94,6 +97,12 @@ final class ReleaseCommand extends AbstractCommand
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
     {
+        $argumentProject = $input->getArgument('project');
+
+        if (null !== $argumentProject) {
+            return $this->projects->byName($argumentProject);
+        }
+
         $helper = $this->getQuestionHelper();
 
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
@@ -110,6 +119,12 @@ final class ReleaseCommand extends AbstractCommand
 
     private function selectBranch(InputInterface $input, OutputInterface $output, Project $project): Branch
     {
+        $argumentBranch = $input->getArgument('branch');
+
+        if (null !== $argumentBranch) {
+            return $project->branch($argumentBranch);
+        }
+
         $helper = $this->getQuestionHelper();
 
         $default = ($project->stableBranch() ?? $project->unstableBranch())->name();
