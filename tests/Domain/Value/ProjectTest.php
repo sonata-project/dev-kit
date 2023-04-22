@@ -27,6 +27,7 @@ final class ProjectTest extends TestCase
           excluded_files: []
           has_documentation: true
           has_test_kernel: true
+          has_platform_tests: true
           documentation_badge_slug: ~
           branches:
             master:
@@ -126,6 +127,7 @@ final class ProjectTest extends TestCase
       excluded_files: []
       has_documentation: true
       has_test_kernel: true
+      has_platform_tests: true
       documentation_badge_slug: 'sonataadminbundle2'
       branches:
         master:
@@ -149,6 +151,7 @@ final class ProjectTest extends TestCase
       excluded_files: []
       has_documentation: true
       has_test_kernel: true
+      has_platform_tests: true
       documentation_badge_slug: ~
       branches:
         master:
@@ -436,6 +439,7 @@ final class ProjectTest extends TestCase
       excluded_files: []
       has_documentation: true
       has_test_kernel: true
+      has_platform_tests: true
       documentation_badge_slug: ~
       branches:
         master:
@@ -458,6 +462,7 @@ final class ProjectTest extends TestCase
       excluded_files: []
       has_documentation: true
       has_test_kernel: true
+      has_platform_tests: true
       documentation_badge_slug: 'sonataadminbundle2'
       branches:
         master:
@@ -511,6 +516,7 @@ final class ProjectTest extends TestCase
                   excluded_files: []
                   has_documentation: true
                   has_test_kernel: true
+                  has_platform_tests: true
                   documentation_badge_slug: ~
                   branches:
                     master:
@@ -533,6 +539,7 @@ final class ProjectTest extends TestCase
                   excluded_files: []
                   has_documentation: true
                   has_test_kernel: true
+                  has_platform_tests: true
                   documentation_badge_slug: ~
                   branches:
                     master:
@@ -565,6 +572,7 @@ final class ProjectTest extends TestCase
                   excluded_files: []
                   has_documentation: true
                   has_test_kernel: true
+                  has_platform_tests: true
                   documentation_badge_slug: ~
                   branches:
                     master:
