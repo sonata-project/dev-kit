@@ -68,4 +68,4 @@ jobs:
               run: composer dump-env prod
 
             - name: Release
-              run: bin/console release ${{ github.event.inputs.project }} ${{ github.event.inputs.branch }}
+              run: bin/console release ${{ github.event.inputs.project }} ${{ github.event.inputs.branch }} --pr

@@ -19,12 +19,12 @@ use App\Domain\Value\Branch;
 use App\Domain\Value\ExcludedFile;
 use App\Domain\Value\Project;
 use App\Domain\Value\Repository;
+use App\Git\GitManipulator;
 use App\Github\Api\Branches;
 use App\Github\Api\Commits;
 use App\Github\Api\PullRequests;
 use App\Github\Domain\Value\Branch as GithubBranch;
 use Github\Exception\ExceptionInterface;
-use Gitonomy\Git\Admin;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,8 +41,8 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private const FILES_DIR = 'project';
 
     private string $appDir;
-    private string $githubToken;
     private Projects $projects;
+    private GitManipulator $gitManipulator;
     private PullRequests $pullRequests;
     private Branches $branches;
     private Commits $commits;
@@ -51,8 +51,8 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     public function __construct(
         string $appDir,
-        string $githubToken,
         Projects $projects,
+        GitManipulator $gitManipulator,
         PullRequests $pullRequests,
         Branches $branches,
         Commits $commits,
@@ -62,8 +62,8 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         parent::__construct();
 
         $this->appDir = $appDir;
-        $this->githubToken = $githubToken;
         $this->projects = $projects;
+        $this->gitManipulator = $gitManipulator;
         $this->pullRequests = $pullRequests;
         $this->branches = $branches;
         $this->commits = $commits;
@@ -123,30 +123,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             return;
         }
 
-        // Clone the repository.
-        $clonePath = sprintf(
-            '%s/%s',
-            sys_get_temp_dir(),
-            $repository->toString()
-        );
-
-        if ($this->filesystem->exists($clonePath)) {
-            $this->filesystem->remove($clonePath);
-        }
-
-        $gitRepository = Admin::cloneRepository(
-            $clonePath,
-            sprintf(
-                'https://%s:%s@github.com/%s/%s',
-                $repository->username(),
-                $this->githubToken,
-                $repository->username(),
-                $repository->name()
-            )
-        );
-
-        $gitRepository->run('config', ['--local', 'user.name', static::GITHUB_USER]);
-        $gitRepository->run('config', ['--local', 'user.email', static::GITHUB_EMAIL]);
+        $gitRepository = $this->gitManipulator->gitCloneProject($project);
 
         $previousBranch = null;
         $previousDevKitBranchName = null;
@@ -156,8 +133,6 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 static fn (GithubBranch $branch): string => $branch->name(),
                 $this->branches->all($repository)
             );
-
-            $devKitBranchName = u($branch->name())->append('-dev-kit')->toString();
 
             // A PR is already here for previous branch, do nothing on the current one.
             if (\in_array($previousDevKitBranchName, $remoteBranchNames, true)) {
@@ -183,33 +158,19 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                 }
             }
 
-            $gitRepository->run('reset', ['--hard']);
-
-            // Checkout the targeted branch
-            if ($gitRepository->getReferences()->hasBranch($branch->name())) {
-                $gitRepository->run('checkout', [$branch->name()]);
-            } else {
-                $gitRepository->run('checkout', ['-b', $branch->name(), '--track', sprintf('origin/%s', $branch->name())]);
-            }
-
-            // Checkout the dev-kit branch
-            if ($gitRepository->getReferences()->hasRemoteBranch(sprintf('origin/%s', $devKitBranchName))) {
-                $gitRepository->run('checkout', ['-b', $devKitBranchName, '--track', sprintf('origin/%s', $devKitBranchName)]);
-            } else {
-                $gitRepository->run('checkout', ['-b', $devKitBranchName]);
-            }
+            $devKitBranchName = $this->gitManipulator->prepareBranch($gitRepository, $branch);
 
             $this->renderFile(
                 $project,
                 $repository,
                 $branch,
-                $clonePath
+                $gitRepository->getPath()
             );
 
             $this->deleteNotNeededFilesAndDirs(
                 $project,
                 $branch,
-                $clonePath
+                $gitRepository->getPath()
             );
 
             $gitRepository->run('add', ['.', '--all']);
