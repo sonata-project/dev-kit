@@ -22,6 +22,7 @@ use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
 use App\Git\GitManipulator;
 use App\Github\Api\PullRequests;
+use App\Github\Api\Releases;
 use App\Github\Domain\Value\CheckRuns;
 use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
@@ -49,12 +50,14 @@ final class ReleaseCommand extends AbstractCommand
     private DetermineNextRelease $determineNextRelease;
     private GitManipulator $gitManipulator;
     private PullRequests $pullRequests;
+    private Releases $releases;
 
     public function __construct(
         Projects $projects,
         DetermineNextRelease $determineNextRelease,
         GitManipulator $gitManipulator,
-        PullRequests $pullRequests
+        PullRequests $pullRequests,
+        Releases $releases
     ) {
         parent::__construct();
 
@@ -62,6 +65,7 @@ final class ReleaseCommand extends AbstractCommand
         $this->determineNextRelease = $determineNextRelease;
         $this->gitManipulator = $gitManipulator;
         $this->pullRequests = $pullRequests;
+        $this->releases = $releases;
     }
 
     protected function configure(): void
@@ -371,10 +375,8 @@ final class ReleaseCommand extends AbstractCommand
                     $nextRelease->branch()->name(),
                     "This PR was created automatically by the `sonata-project/dev-kit` project.\nMake sure to manually replace the `@deprecated` comments with the appropriate version before merging."
                 );
+                $this->releases->createDraft($nextRelease);
             }
-
-            // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
-            usleep(200000);
         }
     }
 

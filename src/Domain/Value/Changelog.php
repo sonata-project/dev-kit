@@ -102,9 +102,14 @@ final class Changelog
         return $this->sections;
     }
 
-    public function asMarkdown(): string
+    public function asMarkdown(bool $withHeadline = true): string
     {
-        $markdown = [$this->headline];
+        $markdown = [];
+
+        if ($withHeadline) {
+            $markdown[] = $this->headline;
+        }
+
         foreach ($this->sections as $section) {
             $markdown[] = $section->asMarkdown();
             $markdown[] = '';
