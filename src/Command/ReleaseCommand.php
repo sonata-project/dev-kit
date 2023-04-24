@@ -369,7 +369,7 @@ final class ReleaseCommand extends AbstractCommand
                     ),
                     $currentHead,
                     $nextRelease->branch()->name(),
-                    'This PR was created automatically by the `sonata-project/dev-kit` project.'
+                    'This PR was created automatically by the `sonata-project/dev-kit` project.\nMake sure to manually replace the `@deprecated` comments with the appropriate version before merging.\n'
                 );
             }
 
