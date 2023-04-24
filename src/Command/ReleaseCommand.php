@@ -28,6 +28,7 @@ use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\PullRequest;
 use Gitonomy\Git\Repository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -117,7 +118,7 @@ final class ReleaseCommand extends AbstractCommand
             $this->prepareReleasePR($nextRelease);
         }
 
-        return null !== $nextRelease ? 0 : 1;
+        return Command::SUCCESS;
     }
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
@@ -219,15 +220,13 @@ final class ReleaseCommand extends AbstractCommand
             ));
             $notificationStyle->warning('Please check labels and changelogs of the pull requests!');
 
-            return null;
+            throw new \RuntimeException('Fix labels and changelogs on merged pull requests.');
         }
 
         $notificationStyle->success(sprintf(
             'Next release will be: %s',
             $nextRelease->nextTag()->toString()
         ));
-
-        $notificationStyle->section('Changelog as Markdown');
 
         // Send markdown to stdout and only that
         $this->io->writeln($nextRelease->changelog()->asMarkdown());
