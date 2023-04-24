@@ -228,6 +228,8 @@ final class ReleaseCommand extends AbstractCommand
             $nextRelease->nextTag()->toString()
         ));
 
+        $notificationStyle->section('Changelog as Markdown');
+
         // Send markdown to stdout and only that
         $this->io->writeln($nextRelease->changelog()->asMarkdown());
 
