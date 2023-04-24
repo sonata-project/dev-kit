@@ -189,11 +189,11 @@ translation-bundle:
         4.x:
             php: ['8.0', '8.1', '8.2']
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.2.*']
+                symfony/symfony: ['5.4.*', '6.2.*']
         3.x:
             php: ['8.0', '8.1', '8.2']
             variants:
-                symfony/symfony: ['4.4.*', '5.4.*', '6.2.*']
+                symfony/symfony: ['5.4.*', '6.2.*']
 
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
