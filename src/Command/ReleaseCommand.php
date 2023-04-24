@@ -109,7 +109,7 @@ final class ReleaseCommand extends AbstractCommand
 
         $nextRelease = $this->renderNextRelease($project, $branch);
 
-        if ($nextRelease && $this->createPR($input, $output)) {
+        if (null !== $nextRelease && $this->createPR($input, $output)) {
             $this->prepareReleasePR($nextRelease);
         }
 
@@ -215,7 +215,7 @@ final class ReleaseCommand extends AbstractCommand
             ));
             $notificationStyle->warning('Please check labels and changelogs of the pull requests!');
 
-            return 1;
+            return null;
         }
 
         $notificationStyle->success(sprintf(
@@ -383,6 +383,14 @@ final class ReleaseCommand extends AbstractCommand
         $changelogFilePath = $gitRepository->getPath().'/CHANGELOG.md';
 
         $changelogFileContents = file_get_contents($changelogFilePath);
+
+        if (false === $changelogFileContents) {
+            throw new \RuntimeException(sprintf(
+                'Cannot read "%s" file',
+                $changelogFilePath
+            ));
+        }
+
         $replaced = preg_replace('/(This project adheres to \[Semantic Versioning\]\(http:\/\/semver.org\/\)\.)\n/', '$1'.\PHP_EOL.\PHP_EOL.$nextRelease->changelog()->asMarkdown(), $changelogFileContents);
 
         $res = file_put_contents($changelogFilePath, $replaced);
