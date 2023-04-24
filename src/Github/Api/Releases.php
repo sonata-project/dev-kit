@@ -92,6 +92,6 @@ final class Releases
             ]
         );
 
-        return Release::fromResponse($release);
+        return Release::fromDraftResponse($release);
     }
 }

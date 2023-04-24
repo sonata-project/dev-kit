@@ -22,9 +22,9 @@ use Webmozart\Assert\Assert;
 final class Release
 {
     private Tag $tag;
-    private \DateTimeImmutable $publishedAt;
+    private ?\DateTimeImmutable $publishedAt;
 
-    private function __construct(Tag $tag, \DateTimeImmutable $publishedAt)
+    private function __construct(Tag $tag, ?\DateTimeImmutable $publishedAt)
     {
         $this->tag = $tag;
         $this->publishedAt = $publishedAt;
@@ -49,12 +49,28 @@ final class Release
         );
     }
 
+    /**
+     * @param mixed[] $response
+     */
+    public static function fromDraftResponse(array $response): self
+    {
+        Assert::notEmpty($response);
+
+        Assert::keyExists($response, 'tag_name');
+        Assert::stringNotEmpty($response['tag_name']);
+
+        return new self(
+            Tag::fromString($response['tag_name']),
+            null
+        );
+    }
+
     public function tag(): Tag
     {
         return $this->tag;
     }
 
-    public function publishedAt(): \DateTimeImmutable
+    public function publishedAt(): ?\DateTimeImmutable
     {
         return $this->publishedAt;
     }
