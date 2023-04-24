@@ -113,7 +113,7 @@ final class ReleaseCommand extends AbstractCommand
             $this->prepareReleasePR($nextRelease);
         }
 
-        return $nextRelease !== null ? 0 : 1;
+        return null !== $nextRelease ? 0 : 1;
     }
 
     private function selectProject(InputInterface $input, OutputInterface $output): Project
@@ -340,7 +340,7 @@ final class ReleaseCommand extends AbstractCommand
 
         $gitRepository = $this->gitManipulator->gitCloneProject($nextRelease->project());
 
-        $devKitBranchName = $this->gitManipulator->prepareBranch($gitRepository, $nextRelease->branch(), '-release-' . $nextRelease->nextTag()->toString());
+        $devKitBranchName = $this->gitManipulator->prepareBranch($gitRepository, $nextRelease->branch(), '-release-'.$nextRelease->nextTag()->toString());
 
         $this->updateChangelog($gitRepository, $nextRelease);
 
@@ -383,7 +383,7 @@ final class ReleaseCommand extends AbstractCommand
         $changelogFilePath = $gitRepository->getPath().'/CHANGELOG.md';
 
         $changelogFileContents = file_get_contents($changelogFilePath);
-        $replaced = preg_replace('/(This project adheres to \[Semantic Versioning\]\(http:\/\/semver.org\/\)\.)\n/', '$1' . PHP_EOL . PHP_EOL . $nextRelease->changelog()->asMarkdown(), $changelogFileContents);
+        $replaced = preg_replace('/(This project adheres to \[Semantic Versioning\]\(http:\/\/semver.org\/\)\.)\n/', '$1'.\PHP_EOL.\PHP_EOL.$nextRelease->changelog()->asMarkdown(), $changelogFileContents);
 
         $res = file_put_contents($changelogFilePath, $replaced);
 
