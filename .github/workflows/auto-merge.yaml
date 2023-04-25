@@ -1,10 +1,10 @@
-name: Dispatch files and branches protection
+name: Auto merge
 
 on:
     schedule:
-        # At minute 5 past every 4th hour
-        # https://crontab.guru/#5_*/4_*_*_*
-        - cron: '5 */4 * * *'
+        # At 02:00
+        # https://crontab.guru/#0_2_*_*_*
+        - cron: '0 2 * * *'
     workflow_dispatch:
         inputs:
             projects:
@@ -68,7 +68,4 @@ jobs:
               run: composer dump-env prod
 
             - name: Dispatch files
-              run: bin/console dispatch:files ${{ github.event.inputs.projects }} --apply
-
-            - name: Dispatch branches protection
-              run: bin/console dispatch:branches-protection ${{ github.event.inputs.projects }} --apply
+              run: bin/console auto-merge ${{ github.event.inputs.projects }} --apply
