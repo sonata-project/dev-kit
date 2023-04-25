@@ -65,5 +65,3 @@ crons:
             if [ "$PLATFORM_BRANCH" = master ]; then
                 croncape bin/console pull-request-auto-merge --apply
             fi
-                croncape bin/console auto-merge --apply
-            fi
