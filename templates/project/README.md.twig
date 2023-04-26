@@ -64,10 +64,10 @@ This package is available under the [MIT license](LICENSE).
 [test_unstable_link]: https://github.com/sonata-project/{{ project.repository.name }}/actions?query=workflow:test+branch:{{ project.unstableBranch.name }}
 {% if project.stableBranch is not null %}
 [coverage_stable_badge]: https://codecov.io/gh/sonata-project/{{ project.repository.name }}/branch/{{ project.stableBranch.name }}/graph/badge.svg
-[coverage_stable_link]: https://app.codecov.io/gh/sonata-project/{{ project.repository.name }}/branch/{{ project.stableBranch.name }}
+[coverage_stable_link]: https://app.codecov.io/gh/sonata-project/{{ project.repository.name }}/tree/{{ project.stableBranch.name }}
 {% endif %}
 [coverage_unstable_badge]: https://codecov.io/gh/sonata-project/{{ project.repository.name }}/branch/{{ project.unstableBranch.name }}/graph/badge.svg
-[coverage_unstable_link]: https://app.codecov.io/gh/sonata-project/{{ project.repository.name }}/branch/{{ project.unstableBranch.name }}
+[coverage_unstable_link]: https://app.codecov.io/gh/sonata-project/{{ project.repository.name }}/tree/{{ project.unstableBranch.name }}
 [shepherd_stable_badge]: https://shepherd.dev/github/sonata-project/{{ project.repository.name }}/coverage.svg
 [shepherd_stable_link]: https://shepherd.dev/github/sonata-project/{{ project.repository.name }}
 {% if project.hasDocumentation %}
