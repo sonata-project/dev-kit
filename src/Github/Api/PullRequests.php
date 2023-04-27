@@ -56,9 +56,9 @@ final class PullRequests
         }, $this->github->pullRequests()->all($repository->username(), $repository->name(), $params));
     }
 
-    public function create(Repository $repository, string $title, string $head, string $base, string $body = ''): void
+    public function create(Repository $repository, string $title, string $head, string $base, string $body = ''): PullRequest
     {
-        $this->github->pullRequests()->create(
+        $response = $this->github->pullRequests()->create(
             $repository->username(),
             $repository->name(),
             [
@@ -68,6 +68,8 @@ final class PullRequests
                 'body' => $body,
             ]
         );
+
+        return PullRequest::fromResponse($response);
     }
 
     public function merge(Repository $repository, PullRequest $pullRequest, bool $squash, ?string $title = null): void

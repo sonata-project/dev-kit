@@ -73,6 +73,14 @@ final class Label
         );
     }
 
+    public static function AutoMerge(): self
+    {
+        return self::fromValues(
+            'automerge',
+            Color::fromString('6dfd06')
+        );
+    }
+
     public function equals(self $other): bool
     {
         return u($this->name)->ignoreCase()->equalsTo($other->name())
