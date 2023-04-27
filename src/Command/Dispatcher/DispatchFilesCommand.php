@@ -22,8 +22,10 @@ use App\Domain\Value\Repository;
 use App\Git\GitManipulator;
 use App\Github\Api\Branches;
 use App\Github\Api\Commits;
+use App\Github\Api\Issues;
 use App\Github\Api\PullRequests;
 use App\Github\Domain\Value\Branch as GithubBranch;
+use App\Github\Domain\Value\Label;
 use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,6 +46,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private Projects $projects;
     private GitManipulator $gitManipulator;
     private PullRequests $pullRequests;
+    private Issues $issues;
     private Branches $branches;
     private Commits $commits;
     private Filesystem $filesystem;
@@ -54,6 +57,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         Projects $projects,
         GitManipulator $gitManipulator,
         PullRequests $pullRequests,
+        Issues $issues,
         Branches $branches,
         Commits $commits,
         Filesystem $filesystem,
@@ -65,6 +69,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $this->projects = $projects;
         $this->gitManipulator = $gitManipulator;
         $this->pullRequests = $pullRequests;
+        $this->issues = $issues;
         $this->branches = $branches;
         $this->commits = $commits;
         $this->filesystem = $filesystem;
@@ -192,7 +197,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
                     // If the Pull Request does not exists yet, create it.
                     if (!$this->pullRequests->hasOpenPullRequest($repository, $currentHead)) {
-                        $this->pullRequests->create(
+                        $pullRequest = $this->pullRequests->create(
                             $repository,
                             sprintf(
                                 'DevKit updates for %s branch',
@@ -201,10 +206,12 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                             $currentHead,
                             $branch->name()
                         );
-                    }
 
-                    // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
-                    usleep(200000);
+                        // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
+                        usleep(200000);
+
+                        $this->issues->addLabel($repository, $pullRequest->issue(), Label::AutoMerge());
+                    }
                 }
             } else {
                 $this->io->comment(static::LABEL_NOTHING_CHANGED);
