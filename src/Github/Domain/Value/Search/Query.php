@@ -59,7 +59,7 @@ final class Query
     {
         return new self(
             sprintf(
-                'repo:%s type:pr is:merged base:%s merged:>%s -author:%s',
+                'repo:%s type:pr is:merged base:%s merged:>%s -label:%s',
                 $repository->toString(),
                 $branch->name(),
                 $date->format('Y-m-d\TH:i:s\Z'), // @todo check if there is a better way to format the datetime like this

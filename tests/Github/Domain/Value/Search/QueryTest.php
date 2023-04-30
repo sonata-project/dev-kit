@@ -91,7 +91,7 @@ final class QueryTest extends TestCase
         );
 
         static::assertSame(
-            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master -author:SonataCI',
+            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master -label:dev-kit',
             $query->toString()
         );
     }
@@ -137,7 +137,7 @@ final class QueryTest extends TestCase
         );
 
         static::assertSame(
-            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master merged:>2020-01-01T10:00:00Z -author:SonataCI',
+            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master merged:>2020-01-01T10:00:00Z -label:dev-kit',
             $query->toString()
         );
     }

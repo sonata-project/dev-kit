@@ -55,15 +55,7 @@ final class NextRelease
 
         $this->combinedStatus = $combinedStatus;
         $this->checkRuns = $checkRuns;
-        $this->pullRequests = array_reduce($pullRequests, static function (array $pullRequests, PullRequest $pullRequest): array {
-            if ($pullRequest->createdAutomatically()) {
-                return $pullRequests;
-            }
-
-            $pullRequests[] = $pullRequest;
-
-            return $pullRequests;
-        }, []);
+        $this->pullRequests = $pullRequests;
 
         $this->nextTag = DetermineNextReleaseVersion::forTagAndPullRequests(
             $currentTag,
