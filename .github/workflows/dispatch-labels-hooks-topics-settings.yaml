@@ -5,6 +5,7 @@ on:
         # At 05:00
         # https://crontab.guru/#0_5_*_*_*
         - cron: '0 5 * * *'
+    workflow_dispatch:
 
 env:
     REQUIRED_PHP_EXTENSIONS: redis
