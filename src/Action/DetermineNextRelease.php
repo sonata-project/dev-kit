@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Action;
 
 use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
-use App\Command\AbstractCommand;
 use App\Domain\Value\Branch;
 use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
@@ -23,6 +22,7 @@ use App\Github\Api\Checks;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Api\Statuses;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Release\Tag;
 use App\Github\Domain\Value\Search\Query;
 use App\Github\Exception\LatestReleaseNotFound;
@@ -67,12 +67,12 @@ final class DetermineNextRelease
         if (null === $releaseDate) {
             $pullRequests = $this->pullRequests->search(
                 $repository,
-                Query::pullRequests($repository, $branch, AbstractCommand::SONATA_CI_BOT)
+                Query::pullRequests($repository, $branch, Label::DevKit())
             );
         } else {
             $pullRequests = $this->pullRequests->search(
                 $repository,
-                Query::pullRequestsSince($repository, $branch, $releaseDate, AbstractCommand::SONATA_CI_BOT)
+                Query::pullRequestsSince($repository, $branch, $releaseDate, Label::DevKit())
             );
         }
 

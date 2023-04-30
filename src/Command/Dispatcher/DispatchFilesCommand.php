@@ -210,7 +210,10 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                         // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
                         usleep(200000);
 
-                        $this->issues->addLabel($repository, $pullRequest->issue(), Label::AutoMerge());
+                        $this->issues->addLabels($repository, $pullRequest->issue(), [
+                            Label::DevKit(),
+                            Label::AutoMerge(),
+                        ]);
                     }
                 }
             } else {

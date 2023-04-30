@@ -21,6 +21,7 @@ use App\Domain\Value\NextRelease;
 use App\Domain\Value\Project;
 use App\Domain\Value\Stability;
 use App\Git\GitManipulator;
+use App\Github\Api\Issues;
 use App\Github\Api\PullRequests;
 use App\Github\Api\Releases;
 use App\Github\Domain\Value\CheckRuns;
@@ -52,13 +53,15 @@ final class ReleaseCommand extends AbstractCommand
     private GitManipulator $gitManipulator;
     private PullRequests $pullRequests;
     private Releases $releases;
+    private Issues $issues;
 
     public function __construct(
         Projects $projects,
         DetermineNextRelease $determineNextRelease,
         GitManipulator $gitManipulator,
         PullRequests $pullRequests,
-        Releases $releases
+        Releases $releases,
+        Issues $issues
     ) {
         parent::__construct();
 
@@ -67,6 +70,7 @@ final class ReleaseCommand extends AbstractCommand
         $this->gitManipulator = $gitManipulator;
         $this->pullRequests = $pullRequests;
         $this->releases = $releases;
+        $this->issues = $issues;
     }
 
     protected function configure(): void
@@ -368,7 +372,7 @@ final class ReleaseCommand extends AbstractCommand
 
             // If the Pull Request does not exists yet, create it.
             if (!$this->pullRequests->hasOpenPullRequest($nextRelease->project()->repository(), $currentHead)) {
-                $this->pullRequests->create(
+                $pullRequest = $this->pullRequests->create(
                     $nextRelease->project()->repository(),
                     sprintf(
                         'Release %s',
@@ -378,6 +382,14 @@ final class ReleaseCommand extends AbstractCommand
                     $nextRelease->branch()->name(),
                     "This PR was created automatically by the `sonata-project/dev-kit` project.\nMake sure to manually replace the `@deprecated` comments with the appropriate version before merging."
                 );
+
+                // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
+                usleep(200000);
+
+                $this->issues->addLabels($nextRelease->project()->repository(), $pullRequest->issue(), [
+                    Label::DevKit(),
+                ]);
+
                 $this->releases->createDraft($nextRelease);
             }
         }

@@ -15,6 +15,7 @@ namespace App\Tests\Github\Domain\Value\Search;
 
 use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Search\Query;
 use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
@@ -86,11 +87,11 @@ final class QueryTest extends TestCase
         $query = Query::pullRequests(
             $repository,
             $branch,
-            'SonataCI'
+            Label::DevKit()
         );
 
         static::assertSame(
-            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master -author:SonataCI',
+            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master -label:dev-kit',
             $query->toString()
         );
     }
@@ -132,11 +133,11 @@ final class QueryTest extends TestCase
             $repository,
             $branch,
             new \DateTimeImmutable('2020-01-01 10:00:00'),
-            'SonataCI'
+            Label::DevKit()
         );
 
         static::assertSame(
-            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master merged:>2020-01-01T10:00:00Z -author:SonataCI',
+            'repo:sonata-project/SonataAdminBundle type:pr is:merged base:master merged:>2020-01-01T10:00:00Z -label:dev-kit',
             $query->toString()
         );
     }

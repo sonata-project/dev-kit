@@ -73,6 +73,14 @@ final class Label
         );
     }
 
+    public static function DevKit(): self
+    {
+        return self::fromValues(
+            'dev-kit',
+            Color::fromString('930bcf')
+        );
+    }
+
     public static function AutoMerge(): self
     {
         return self::fromValues(

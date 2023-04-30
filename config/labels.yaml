@@ -49,3 +49,5 @@ labels:
       color: '0366d6'
     - name: 'automerge'
       color: '6dfd06'
+    - name: 'dev-kit'
+      color: '930bcf'
