@@ -130,10 +130,10 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                             $message
                         );
 
-                        $this->issues->addLabel(
+                        $this->issues->addLabels(
                             $repository,
                             $pr->issue(),
-                            $label
+                            [$label]
                         );
                     }
 

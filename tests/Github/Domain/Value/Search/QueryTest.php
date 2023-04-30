@@ -15,6 +15,7 @@ namespace App\Tests\Github\Domain\Value\Search;
 
 use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
+use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Search\Query;
 use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
@@ -86,7 +87,7 @@ final class QueryTest extends TestCase
         $query = Query::pullRequests(
             $repository,
             $branch,
-            'SonataCI'
+            Label::DevKit()
         );
 
         static::assertSame(
@@ -132,7 +133,7 @@ final class QueryTest extends TestCase
             $repository,
             $branch,
             new \DateTimeImmutable('2020-01-01 10:00:00'),
-            'SonataCI'
+            Label::DevKit()
         );
 
         static::assertSame(

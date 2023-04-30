@@ -31,13 +31,19 @@ final class Issues
         $this->github = $github;
     }
 
-    public function addLabel(Repository $repository, Issue $issue, Label $label): void
+    /**
+     * @param array<Label> $labels
+     */
+    public function addLabels(Repository $repository, Issue $issue, array $labels): void
     {
         $this->github->issues()->labels()->add(
             $repository->username(),
             $repository->name(),
             $issue->toInt(),
-            $label->name()
+            array_map(
+                static fn (Label $label): string => $label->name(),
+                $labels
+            )
         );
     }
 
