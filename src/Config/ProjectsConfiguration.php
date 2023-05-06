@@ -53,6 +53,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->arrayNode('php_extensions')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->scalarNode('frontend')->defaultFalse()->end()
+                                        ->scalarNode('frontend_tests')->defaultFalse()->end()
                                         ->arrayNode('variants')
                                             ->normalizeKeys(false)
                                             ->useAttributeAsKey('name')

@@ -25,6 +25,7 @@ final class BranchTest extends TestCase
           php: ['7.3', '7.4', '8.0']
           target_php: '7.4'
           frontend: true
+          frontend_tests: true
           variants:
             symfony/symfony: ['4.4']
             sonata-project/block-bundle: ['4']
