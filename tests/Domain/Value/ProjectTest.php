@@ -34,6 +34,7 @@ final class ProjectTest extends TestCase
               php: ['7.3', '7.4']
               target_php: ~
               frontend: true
+              frontend_tests: true
               variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['4']
@@ -44,6 +45,7 @@ final class ProjectTest extends TestCase
               php: ['7.2', '7.3', '7.4']
               target_php: ~
               frontend: false
+              frontend_tests: false
               variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['3']
@@ -134,6 +136,7 @@ final class ProjectTest extends TestCase
           php: ['7.3', '7.4']
           target_php: ~
           frontend: true
+          frontend_tests: true
           variants:
             symfony/symfony: ['4.4']
             sonata-project/block-bundle: ['4']
@@ -158,6 +161,7 @@ final class ProjectTest extends TestCase
           php: ['7.3', '7.4']
           target_php: ~
           frontend: true
+          frontend_tests: true
           variants:
             symfony/symfony: ['4.4']
             sonata-project/block-bundle: ['4']
@@ -446,6 +450,7 @@ final class ProjectTest extends TestCase
           php: ['7.3', '7.4']
           target_php: ~
           frontend: true
+          frontend_tests: true
           variants:
             symfony/symfony: ['4.4']
             sonata-project/block-bundle: ['4']
@@ -469,6 +474,7 @@ final class ProjectTest extends TestCase
           php: ['7.3', '7.4']
           target_php: ~
           frontend: true
+          frontend_tests: true
           variants:
             symfony/symfony: ['4.4']
             sonata-project/block-bundle: ['4']
@@ -523,6 +529,7 @@ final class ProjectTest extends TestCase
                       php: ['7.3', '7.4']
                       target_php: ~
                       frontend: true
+                      frontend_tests: true
                       variants:
                         symfony/symfony: ['4.4']
                         sonata-project/block-bundle: ['4']
@@ -546,6 +553,7 @@ final class ProjectTest extends TestCase
                       php: ['7.3', '7.4']
                       target_php: ~
                       frontend: true
+                      frontend_tests: true
                       variants:
                         symfony/symfony: ['4.4']
                         sonata-project/block-bundle: ['4']
@@ -556,6 +564,7 @@ final class ProjectTest extends TestCase
                       php: ['7.3', '7.4']
                       target_php: ~
                       frontend: true
+                      frontend_tests: true
                       variants:
                         symfony/symfony: ['4.4']
                         sonata-project/block-bundle: ['4']
@@ -579,6 +588,7 @@ final class ProjectTest extends TestCase
                       php: ['7.3', '7.4']
                       target_php: ~
                       frontend: true
+                      frontend_tests: true
                       variants:
                         symfony/symfony: ['4.4']
                         sonata-project/block-bundle: ['4']
@@ -589,6 +599,7 @@ final class ProjectTest extends TestCase
                       php: ['7.3', '7.4']
                       target_php: ~
                       frontend: true
+                      frontend_tests: true
                       variants:
                         symfony/symfony: ['4.4']
                         sonata-project/block-bundle: ['4']
@@ -599,6 +610,7 @@ final class ProjectTest extends TestCase
                       php: ['7.3', '7.4']
                       target_php: ~
                       frontend: true
+                      frontend_tests: true
                       variants:
                         symfony/symfony: ['4.4']
                         sonata-project/block-bundle: ['4']

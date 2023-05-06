@@ -160,6 +160,10 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         if ($branch->hasFrontend()) {
             $requiredStatusChecks[] = 'Webpack Encore';
+
+            if ($branch->hasFrontendTests()) {
+                $requiredStatusChecks[] = 'Vitest';
+            }
         }
 
         if ($project->hasTestKernel()) {

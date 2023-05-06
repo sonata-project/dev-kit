@@ -123,6 +123,7 @@ form-extensions:
         2.x:
             php: ['8.0', '8.1', '8.2']
             frontend: true
+            frontend_tests: true
             variants:
                 symfony/symfony: ['5.4.*', '6.2.*']
         1.x:

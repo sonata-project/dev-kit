@@ -65,6 +65,7 @@ final class QueryTest extends TestCase
               php: ['7.3', '7.4']
               target_php: ~
               frontend: true
+              frontend_tests: true
               variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['4']
@@ -111,6 +112,7 @@ final class QueryTest extends TestCase
               php: ['7.3', '7.4']
               target_php: ~
               frontend: true
+              frontend_tests: true
               variants:
                 symfony/symfony: ['4.4']
                 sonata-project/block-bundle: ['4']
