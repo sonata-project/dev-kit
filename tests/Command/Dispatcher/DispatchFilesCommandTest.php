@@ -186,7 +186,6 @@ final class DispatchFilesCommandTest extends TestCase
                           uses: ramsey/composer-install@v2
                           with:
                               dependency-versions: ${{ matrix.dependencies }}
-                              composer-options: --prefer-dist --prefer-stable
 
                         - name: Run Tests with coverage
                           run: make coverage
