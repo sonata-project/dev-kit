@@ -26,10 +26,8 @@ jobs:
                   coverage: none
                   tools: composer:v2
 
-            - name: Install Composer dependencies (${{ matrix.dependencies }})
+            - name: Install Composer dependencies (locked)
               uses: ramsey/composer-install@v2
-              with:
-                  dependency-versions: ${{ matrix.dependencies }}
 
             - name: Lint PHP files
               run: make lint-php

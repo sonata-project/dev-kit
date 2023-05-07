@@ -38,7 +38,6 @@ jobs:
               uses: ramsey/composer-install@v2
               with:
                   dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable
 
             - name: Lint container
               run: make lint-symfony-container
@@ -63,7 +62,6 @@ jobs:
               uses: ramsey/composer-install@v2
               with:
                   dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable
 
             - name: Lint twig files
               run: make lint-symfony-twig
@@ -88,7 +86,6 @@ jobs:
               uses: ramsey/composer-install@v2
               with:
                   dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable
 
             - name: Lint xliff files
               run: make lint-symfony-xliff
@@ -113,7 +110,6 @@ jobs:
               uses: ramsey/composer-install@v2
               with:
                   dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable
 
             - name: Lint yaml files
               run: make lint-symfony-yaml
