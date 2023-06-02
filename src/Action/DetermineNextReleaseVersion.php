@@ -38,7 +38,7 @@ final class DetermineNextReleaseVersion
         $parts = explode('.', $currentTag);
 
         if (isset($parts[3])) {
-            if (false !== strpos($parts[3], 'alpha')) {
+            if (str_contains($parts[3], 'alpha')) {
                 return Tag::fromString(implode('.', [$parts[0], $parts[1], sprintf('%s-rc-1', $parts[2])]));
             }
 

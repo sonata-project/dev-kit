@@ -228,7 +228,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
     private function deleteNotNeededFilesAndDirs(Project $project, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
-        if (static::FILES_DIR !== $localPath && 0 !== strpos($localPath, static::FILES_DIR.'/')) {
+        if (static::FILES_DIR !== $localPath && !str_starts_with($localPath, static::FILES_DIR.'/')) {
             throw new \LogicException(sprintf(
                 'This method only supports files inside the "%s" directory',
                 static::FILES_DIR
@@ -281,7 +281,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private function renderFile(Project $project, Repository $repository, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath) {
-            if (0 !== strpos($localPath, static::FILES_DIR.'/')) {
+            if (!str_starts_with($localPath, static::FILES_DIR.'/')) {
                 throw new \LogicException(sprintf(
                     'This method only supports files inside the "%s" directory',
                     static::FILES_DIR
