@@ -289,7 +289,7 @@ final class PullRequest
                     continue;
                 }
 
-                if (0 === strpos($line, '#')) {
+                if (str_starts_with($line, '#')) {
                     $section = preg_replace('/^#* /i', '', $line) ?? '';
                 } elseif ('' !== $section) {
                     $line = preg_replace('/^- /i', '', $line) ?? '';
