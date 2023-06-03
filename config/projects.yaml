@@ -17,6 +17,11 @@ admin-bundle:
 
 block-bundle:
     branches:
+        6.x:
+            php: ['8.0', '8.1', '8.2']
+            variants:
+                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                sonata-project/form-extensions: ['2.0.0-alpha-1']
         5.x:
             php: ['8.0', '8.1', '8.2']
             variants:
@@ -131,6 +136,12 @@ formatter-bundle:
 form-extensions:
     has_test_kernel: false
     branches:
+        3.x:
+            php: ['8.0', '8.1', '8.2']
+            frontend: true
+            frontend_tests: true
+            variants:
+                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
         2.x:
             php: ['8.0', '8.1', '8.2']
             frontend: true
