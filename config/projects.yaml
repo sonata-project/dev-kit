@@ -178,12 +178,14 @@ media-bundle:
             variants:
                 symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
                 sonata-project/form-extensions: ['2.0.0-alpha-1']
+                sonata-project/block-bundle: ['5.0.0-alpha-1']
         4.x:
             php: ['8.0', '8.1', '8.2']
             php_extensions: ['mongodb', 'gd']
             variants:
                 symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
                 sonata-project/form-extensions: ['2.0.0-alpha-1']
+                sonata-project/block-bundle: ['5.0.0-alpha-1']
 
 page-bundle:
     branches:
