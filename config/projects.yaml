@@ -226,10 +226,12 @@ translation-bundle:
             php: ['8.0', '8.1', '8.2']
             variants:
                 symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                sonata-project/block-bundle: ['5.0.0-alpha-1']
         3.x:
             php: ['8.0', '8.1', '8.2']
             variants:
                 symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                sonata-project/block-bundle: ['5.0.0-alpha-1']
 
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
