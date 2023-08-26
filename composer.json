@@ -63,7 +63,7 @@
         "vimeo/psalm": "^5.8"
     },
     "replace": {
-        "paragonie/random_compat": "2.*",
+        "paragonie/random_compat": "^2.0",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php56": "*",
