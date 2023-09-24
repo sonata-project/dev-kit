@@ -57,7 +57,7 @@ final class ActionTest extends TestCase
     }
 
     /**
-     * @dataProvider equalsProvider
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(bool $expected, Action $action, Action $other): void
     {
@@ -70,7 +70,7 @@ final class ActionTest extends TestCase
     /**
      * @return iterable<array{bool, Action, Action}>
      */
-    public function equalsProvider(): iterable
+    public function provideEqualsCases(): iterable
     {
         yield [
             true,
@@ -88,7 +88,7 @@ final class ActionTest extends TestCase
     /**
      * @param array<Action> $others
      *
-     * @dataProvider equalsOneOfProvider
+     * @dataProvider provideEqualsOneOfCases
      */
     public function testEqualsOneOf(bool $expected, Action $action, array $others): void
     {
@@ -101,7 +101,7 @@ final class ActionTest extends TestCase
     /**
      * @return iterable<array{bool, Action, array<Action>}>
      */
-    public function equalsOneOfProvider(): iterable
+    public function provideEqualsOneOfCases(): iterable
     {
         yield [
             true,

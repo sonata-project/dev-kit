@@ -59,7 +59,7 @@ final class VariantTest extends TestCase
     }
 
     /**
-     * @dataProvider validProvider
+     * @dataProvider provideValidCases
      */
     public function testValid(string $expected, string $package, string $version): void
     {
@@ -73,7 +73,7 @@ final class VariantTest extends TestCase
     /**
      * @return iterable<array{string, string, string}>
      */
-    public function validProvider(): iterable
+    public function provideValidCases(): iterable
     {
         yield [
             'sonata-project/dev-kit:"1.*"',

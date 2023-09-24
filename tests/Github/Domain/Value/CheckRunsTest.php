@@ -35,7 +35,7 @@ final class CheckRunsTest extends TestCase
     }
 
     /**
-     * @dataProvider isSuccessfulProvider
+     * @dataProvider provideIsSuccessfulCases
      */
     public function testIsSuccessful(bool $expected, string $conclusion): void
     {
@@ -56,7 +56,7 @@ final class CheckRunsTest extends TestCase
     /**
      * @return iterable<string, array{bool, string}>
      */
-    public function isSuccessfulProvider(): iterable
+    public function provideIsSuccessfulCases(): iterable
     {
         yield 'action_required' => [false, 'action_required'];
         yield 'cancelled' => [false, 'cancelled'];

@@ -53,7 +53,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @param array<PullRequest> $pullRequests
      *
-     * @dataProvider determineProvider
+     * @dataProvider provideDetermineCases
      */
     public function testDetermine(string $expected, string $current, array $pullRequests): void
     {
@@ -70,7 +70,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @return iterable<array{string, string, array<PullRequest>}>
      */
-    public function determineProvider(): iterable
+    public function provideDetermineCases(): iterable
     {
         yield [
             '2.0.0-alpha-1',

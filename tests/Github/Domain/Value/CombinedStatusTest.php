@@ -114,7 +114,7 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @dataProvider stateProvider
+     * @dataProvider provideUsesStateFromResponseCases
      */
     public function testUsesStateFromResponse(string $state): void
     {
@@ -131,7 +131,7 @@ final class CombinedStatusTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public function stateProvider(): iterable
+    public function provideUsesStateFromResponseCases(): iterable
     {
         yield 'failure' => ['failure'];
         yield 'pending' => ['pending'];
@@ -139,7 +139,7 @@ final class CombinedStatusTest extends TestCase
     }
 
     /**
-     * @dataProvider isSuccessfulProvider
+     * @dataProvider provideIsSuccessfulCases
      */
     public function testIsSuccessful(bool $expected, string $state): void
     {
@@ -156,7 +156,7 @@ final class CombinedStatusTest extends TestCase
     /**
      * @return iterable<string, array{bool, string}>
      */
-    public function isSuccessfulProvider(): iterable
+    public function provideIsSuccessfulCases(): iterable
     {
         yield 'failure' => [false, 'failure'];
         yield 'pending' => [false, 'pending'];

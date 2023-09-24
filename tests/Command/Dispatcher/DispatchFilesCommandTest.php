@@ -40,7 +40,7 @@ final class DispatchFilesCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider projectProvider
+     * @dataProvider provideTestFileRenderingCases
      */
     public function testTestFileRendering(string $expected, string $project): void
     {
@@ -72,7 +72,7 @@ final class DispatchFilesCommandTest extends TestCase
     /**
      * @return iterable<string, array{string, string}>
      */
-    public function projectProvider(): iterable
+    public function provideTestFileRenderingCases(): iterable
     {
         $project = <<<CONFIG
             admin-bundle:
