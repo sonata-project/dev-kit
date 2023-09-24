@@ -67,7 +67,7 @@ final class LabelTest extends TestCase
     }
 
     /**
-     * @dataProvider equalsProvider
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(bool $expected, Label $label, Label $other): void
     {
@@ -80,7 +80,7 @@ final class LabelTest extends TestCase
     /**
      * @return iterable<array{bool, Label, Label}>
      */
-    public function equalsProvider(): iterable
+    public function provideEqualsCases(): iterable
     {
         yield [
             true,

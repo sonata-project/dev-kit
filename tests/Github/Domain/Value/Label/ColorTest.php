@@ -56,7 +56,7 @@ final class ColorTest extends TestCase
     }
 
     /**
-     * @dataProvider equalsProvider
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(bool $expected, Color $color, Color $other): void
     {
@@ -69,7 +69,7 @@ final class ColorTest extends TestCase
     /**
      * @return iterable<array{bool, Label\Color, Label\Color}>
      */
-    public function equalsProvider(): iterable
+    public function provideEqualsCases(): iterable
     {
         yield [
             true,

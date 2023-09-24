@@ -101,7 +101,7 @@ final class StatusTest extends TestCase
     }
 
     /**
-     * @dataProvider stateProvider
+     * @dataProvider provideUsesStateFromResponseCases
      */
     public function testUsesStateFromResponse(string $state): void
     {
@@ -118,7 +118,7 @@ final class StatusTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public function stateProvider(): iterable
+    public function provideUsesStateFromResponseCases(): iterable
     {
         yield 'error' => ['error'];
         yield 'failure' => ['failure'];

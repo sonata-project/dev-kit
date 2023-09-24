@@ -296,7 +296,7 @@ final class PullRequestTest extends TestCase
     /**
      * @param array<mixed> $labels
      *
-     * @dataProvider stabilityProvider
+     * @dataProvider provideStabilityCases
      */
     public function testStability(Stability $expected, array $labels): void
     {
@@ -315,7 +315,7 @@ final class PullRequestTest extends TestCase
     /**
      * @return iterable<array{Stability, array<mixed>}>
      */
-    public function stabilityProvider(): iterable
+    public function provideStabilityCases(): iterable
     {
         yield [
             Stability::unknown(),

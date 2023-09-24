@@ -41,7 +41,7 @@ final class EventTest extends TestCase
     }
 
     /**
-     * @dataProvider equalsProvider
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(bool $expected, Event $event, Event $other): void
     {
@@ -54,7 +54,7 @@ final class EventTest extends TestCase
     /**
      * @return iterable<array{bool, Event, Event}>
      */
-    public function equalsProvider(): iterable
+    public function provideEqualsCases(): iterable
     {
         yield [
             true,
@@ -72,7 +72,7 @@ final class EventTest extends TestCase
     /**
      * @param array<Event> $others
      *
-     * @dataProvider equalsOneOfProvider
+     * @dataProvider provideEqualsOneOfCases
      */
     public function testEqualsOneOf(bool $expected, Event $event, array $others): void
     {
@@ -85,7 +85,7 @@ final class EventTest extends TestCase
     /**
      * @return iterable<array{bool, Event, array<Event>}>
      */
-    public function equalsOneOfProvider(): iterable
+    public function provideEqualsOneOfCases(): iterable
     {
         yield [
             true,

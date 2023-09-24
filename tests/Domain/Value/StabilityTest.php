@@ -57,7 +57,7 @@ final class StabilityTest extends TestCase
     }
 
     /**
-     * @dataProvider validProvider
+     * @dataProvider provideValidCases
      */
     public function testValid(string $value): void
     {
@@ -69,7 +69,7 @@ final class StabilityTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public function validProvider(): iterable
+    public function provideValidCases(): iterable
     {
         yield 'unknown' => ['unknown'];
         yield 'minor' => ['minor'];
@@ -109,7 +109,7 @@ final class StabilityTest extends TestCase
     }
 
     /**
-     * @dataProvider equalsProvider
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(bool $expected, Stability $stability, Stability $other): void
     {
@@ -127,7 +127,7 @@ final class StabilityTest extends TestCase
     /**
      * @return iterable<array{bool, Stability, Stability}>
      */
-    public function equalsProvider(): iterable
+    public function provideEqualsCases(): iterable
     {
         yield [
             true,

@@ -93,7 +93,7 @@ final class ProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider isBundleProvider
+     * @dataProvider provideIsBundleCases
      */
     public function testIsBundle(bool $expected, string $yamlConfig, string $name): void
     {
@@ -120,7 +120,7 @@ final class ProjectTest extends TestCase
     /**
      * @return iterable<string, array{bool, string, string}>
      */
-    public function isBundleProvider(): iterable
+    public function provideIsBundleCases(): iterable
     {
         yield 'true - admin-bundle' => [
             true,
@@ -174,7 +174,7 @@ final class ProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider homepageProvider
+     * @dataProvider provideHomepageCases
      */
     public function testHomepage(string $expected, string $value): void
     {
@@ -209,7 +209,7 @@ final class ProjectTest extends TestCase
     /**
      * @return iterable<string, array{string, string}>
      */
-    public function homepageProvider(): iterable
+    public function provideHomepageCases(): iterable
     {
         yield 'empty string' => [
             'https://sonata-project.org',
@@ -223,7 +223,7 @@ final class ProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider descriptionProvider
+     * @dataProvider provideDescriptionCases
      */
     public function testDescription(string $expected, string $value, bool $abandoned): void
     {
@@ -259,7 +259,7 @@ final class ProjectTest extends TestCase
     /**
      * @return iterable<string, array{string, string, bool}>
      */
-    public function descriptionProvider(): iterable
+    public function provideDescriptionCases(): iterable
     {
         yield 'empty string' => [
             '',
@@ -407,7 +407,7 @@ final class ProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider documentationBadgeSlugProvider
+     * @dataProvider provideDocumentationBadgeSlugCases
      */
     public function testDocumentationBadgeSlug(string $expected, string $yamlConfig): void
     {
@@ -434,7 +434,7 @@ final class ProjectTest extends TestCase
     /**
      * @return iterable<string, array{string, string}>
      */
-    public function documentationBadgeSlugProvider(): iterable
+    public function provideDocumentationBadgeSlugCases(): iterable
     {
         yield 'null - admin-bundle' => [
             'sonataadminbundle',
@@ -486,7 +486,7 @@ final class ProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider defaultBranchProvider
+     * @dataProvider provideDefaultBranchCases
      */
     public function testDefaultBranch(string $expected, string $yamlConfig): void
     {
@@ -513,7 +513,7 @@ final class ProjectTest extends TestCase
     /**
      * @return iterable<string, array{string, string}>
      */
-    public function defaultBranchProvider(): iterable
+    public function provideDefaultBranchCases(): iterable
     {
         yield 'master' => [
             'master',
