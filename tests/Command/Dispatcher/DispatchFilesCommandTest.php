@@ -169,16 +169,10 @@ final class DispatchFilesCommandTest extends TestCase
                           with:
                               php-version: ${{ matrix.php-version }}
                               coverage: pcov
-                              tools: composer:v2
+                              tools: composer:v2, flex
 
                         - name: Add PHPUnit matcher
                           run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-                        - name: Globally install symfony/flex
-                          if: matrix.symfony-require != ''
-                          run: |
-                              composer global config --no-plugins allow-plugins.symfony/flex true
-                              composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
                         - name: Install variant
                           if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
