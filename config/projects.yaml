@@ -17,11 +17,11 @@ block-bundle:
         6.x:
             php: ['8.0', '8.1', '8.2']
             variants:
-                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*', '7.0.*']
         5.x:
             php: ['8.0', '8.1', '8.2']
             variants:
-                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*', '7.0.*']
 
 classification-bundle:
     branches:
