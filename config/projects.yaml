@@ -83,11 +83,11 @@ entity-audit-bundle:
         2.x:
             php: ['8.0', '8.1', '8.2']
             variants:
-                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*', '7.0.*']
         1.x:
             php: ['8.0', '8.1', '8.2']
             variants:
-                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*']
+                symfony/symfony: ['5.4.*', '6.2.*', '6.3.*', '7.0.*']
 
 exporter:
     documentation_badge_slug: sonata-project-exporter
