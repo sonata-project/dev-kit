@@ -4362,16 +4362,16 @@
         },
         {
             "name": "symfony/slack-notifier",
-            "version": "v6.4.0",
+            "version": "v6.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/slack-notifier.git",
-                "reference": "91dd39c673ca2e4379b3e73dcf3593fa0d4dbbc8"
+                "reference": "6e0d682b5019cf91f06c1d66171b32a6603608aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/91dd39c673ca2e4379b3e73dcf3593fa0d4dbbc8",
-                "reference": "91dd39c673ca2e4379b3e73dcf3593fa0d4dbbc8",
+                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/6e0d682b5019cf91f06c1d66171b32a6603608aa",
+                "reference": "6e0d682b5019cf91f06c1d66171b32a6603608aa",
                 "shasum": ""
             },
             "require": {
@@ -4409,7 +4409,7 @@
                 "slack"
             ],
             "support": {
-                "source": "https://github.com/symfony/slack-notifier/tree/v6.4.0"
+                "source": "https://github.com/symfony/slack-notifier/tree/v6.4.2"
             },
             "funding": [
                 {
@@ -4425,7 +4425,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-01T16:44:00+00:00"
+            "time": "2023-12-19T14:55:47+00:00"
         },
         {
             "name": "symfony/string",
