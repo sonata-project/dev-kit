@@ -109,11 +109,11 @@ formatter-bundle:
         6.x:
             php: ['8.0', '8.1', '8.2', '8.3']
             variants:
-                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*']
+                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*', '7.0.*']
         5.x:
             php: ['8.0', '8.1', '8.2', '8.3']
             variants:
-                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*']
+                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*', '7.0.*']
 
 form-extensions:
     has_test_kernel: false
