@@ -124,51 +124,51 @@ final class ProjectTest extends TestCase
     {
         yield 'true - admin-bundle' => [
             true,
-<<<CONFIG
-    admin-bundle:
-      excluded_files: []
-      has_documentation: true
-      has_test_kernel: true
-      has_platform_tests: true
-      documentation_badge_slug: 'sonataadminbundle2'
-      branches:
-        master:
-          php: ['7.3', '7.4']
-          target_php: ~
-          frontend: true
-          frontend_tests: true
-          variants:
-            symfony/symfony: ['4.4']
-            sonata-project/block-bundle: ['4']
-          php_extensions: []
-          docs_path: docs
-          tests_path: tests
-    CONFIG,
+            <<<CONFIG
+                admin-bundle:
+                  excluded_files: []
+                  has_documentation: true
+                  has_test_kernel: true
+                  has_platform_tests: true
+                  documentation_badge_slug: 'sonataadminbundle2'
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      frontend_tests: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
             'admin-bundle',
         ];
 
         yield 'false - twig-extensions' => [
             false,
-<<<CONFIG
-    twig-extensions:
-      excluded_files: []
-      has_documentation: true
-      has_test_kernel: true
-      has_platform_tests: true
-      documentation_badge_slug: ~
-      branches:
-        master:
-          php: ['7.3', '7.4']
-          target_php: ~
-          frontend: true
-          frontend_tests: true
-          variants:
-            symfony/symfony: ['4.4']
-            sonata-project/block-bundle: ['4']
-          php_extensions: []
-          docs_path: docs
-          tests_path: tests
-    CONFIG,
+            <<<CONFIG
+                twig-extensions:
+                  excluded_files: []
+                  has_documentation: true
+                  has_test_kernel: true
+                  has_platform_tests: true
+                  documentation_badge_slug: ~
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      frontend_tests: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
             'twig-extensions',
         ];
     }
@@ -438,50 +438,50 @@ final class ProjectTest extends TestCase
     {
         yield 'null - admin-bundle' => [
             'sonataadminbundle',
-<<<CONFIG
-    admin-bundle:
-      excluded_files: []
-      has_documentation: true
-      has_test_kernel: true
-      has_platform_tests: true
-      documentation_badge_slug: ~
-      branches:
-        master:
-          php: ['7.3', '7.4']
-          target_php: ~
-          frontend: true
-          frontend_tests: true
-          variants:
-            symfony/symfony: ['4.4']
-            sonata-project/block-bundle: ['4']
-          php_extensions: []
-          docs_path: docs
-          tests_path: tests
-    CONFIG,
+            <<<CONFIG
+                admin-bundle:
+                  excluded_files: []
+                  has_documentation: true
+                  has_test_kernel: true
+                  has_platform_tests: true
+                  documentation_badge_slug: ~
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      frontend_tests: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
         ];
 
         yield 'custom - admin-bundle' => [
             'sonataadminbundle2',
-<<<CONFIG
-    admin-bundle:
-      excluded_files: []
-      has_documentation: true
-      has_test_kernel: true
-      has_platform_tests: true
-      documentation_badge_slug: 'sonataadminbundle2'
-      branches:
-        master:
-          php: ['7.3', '7.4']
-          target_php: ~
-          frontend: true
-          frontend_tests: true
-          variants:
-            symfony/symfony: ['4.4']
-            sonata-project/block-bundle: ['4']
-          php_extensions: []
-          docs_path: docs
-          tests_path: tests
-    CONFIG,
+            <<<CONFIG
+                admin-bundle:
+                  excluded_files: []
+                  has_documentation: true
+                  has_test_kernel: true
+                  has_platform_tests: true
+                  documentation_badge_slug: 'sonataadminbundle2'
+                  branches:
+                    master:
+                      php: ['7.3', '7.4']
+                      target_php: ~
+                      frontend: true
+                      frontend_tests: true
+                      variants:
+                        symfony/symfony: ['4.4']
+                        sonata-project/block-bundle: ['4']
+                      php_extensions: []
+                      docs_path: docs
+                      tests_path: tests
+                CONFIG,
         ];
     }
 
