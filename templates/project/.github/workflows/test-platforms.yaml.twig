@@ -61,7 +61,7 @@ jobs:
               run: echo "::add-matcher::{% verbatim %}${{ runner.tool_cache }}{% endverbatim %}/phpunit.json"
 
             - name: Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})
-              uses: ramsey/composer-install@v2
+              uses: ramsey/composer-install@v3
               with:
                   dependency-versions: {% verbatim %}${{ matrix.dependencies }}{% endverbatim %}
 
@@ -114,7 +114,7 @@ jobs:
               run: echo "::add-matcher::{% verbatim %}${{ runner.tool_cache }}{% endverbatim %}/phpunit.json"
 
             - name: Install Composer dependencies ({% verbatim %}${{ matrix.dependencies }}{% endverbatim %})
-              uses: ramsey/composer-install@v2
+              uses: ramsey/composer-install@v3
               with:
                   dependency-versions: {% verbatim %}${{ matrix.dependencies }}{% endverbatim %}
 
