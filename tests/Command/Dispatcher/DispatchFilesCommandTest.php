@@ -179,7 +179,7 @@ final class DispatchFilesCommandTest extends TestCase
                           run: composer require ${{ matrix.variant }} --no-update
 
                         - name: Install Composer dependencies (${{ matrix.dependencies }})
-                          uses: ramsey/composer-install@v2
+                          uses: ramsey/composer-install@v3
                           with:
                               dependency-versions: ${{ matrix.dependencies }}
 
@@ -187,7 +187,7 @@ final class DispatchFilesCommandTest extends TestCase
                           run: make coverage
 
                         - name: Send coverage to Codecov
-                          uses: codecov/codecov-action@v3
+                          uses: codecov/codecov-action@v4
                           with:
                               files: build/logs/clover.xml
 
