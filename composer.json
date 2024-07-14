@@ -102,7 +102,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "6.3.*"
+            "require": "6.4.*"
         }
     },
     "scripts": {
