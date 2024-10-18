@@ -163,12 +163,12 @@ page-bundle:
             php: ['8.0', '8.1', '8.2', '8.3']
             frontend: true
             variants:
-                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*']
+                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*', '7.0.*']
         4.x:
             php: ['8.0', '8.1', '8.2', '8.3']
             frontend: true
             variants:
-                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*']
+                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*', '7.0.*']
 
 seo-bundle:
     has_test_kernel: false
