@@ -165,16 +165,16 @@
         },
         {
             "name": "gitonomy/gitlib",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gitonomy/gitlib.git",
-                "reference": "2c7fbbd9814178474d0bb1b6292701cb4ab508f9"
+                "reference": "ac17834888bf399a4ecae5e108be52c8c5f93958"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gitonomy/gitlib/zipball/2c7fbbd9814178474d0bb1b6292701cb4ab508f9",
-                "reference": "2c7fbbd9814178474d0bb1b6292701cb4ab508f9",
+                "url": "https://api.github.com/repos/gitonomy/gitlib/zipball/ac17834888bf399a4ecae5e108be52c8c5f93958",
+                "reference": "ac17834888bf399a4ecae5e108be52c8c5f93958",
                 "shasum": ""
             },
             "require": {
@@ -224,7 +224,7 @@
             "description": "Library for accessing git",
             "support": {
                 "issues": "https://github.com/gitonomy/gitlib/issues",
-                "source": "https://github.com/gitonomy/gitlib/tree/v1.4.0"
+                "source": "https://github.com/gitonomy/gitlib/tree/v1.5.0"
             },
             "funding": [
                 {
@@ -232,7 +232,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-20T13:02:08+00:00"
+            "time": "2024-11-03T15:59:21+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4151,16 +4151,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v6.4.8",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "8d92dd79149f29e89ee0f480254db595f6a6a2c5"
+                "reference": "1f9f59b46880201629df3bd950fc5ae8c55b960f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/8d92dd79149f29e89ee0f480254db595f6a6a2c5",
-                "reference": "8d92dd79149f29e89ee0f480254db595f6a6a2c5",
+                "url": "https://api.github.com/repos/symfony/process/zipball/1f9f59b46880201629df3bd950fc5ae8c55b960f",
+                "reference": "1f9f59b46880201629df3bd950fc5ae8c55b960f",
                 "shasum": ""
             },
             "require": {
@@ -4192,7 +4192,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v6.4.8"
+                "source": "https://github.com/symfony/process/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -4208,7 +4208,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-25T14:18:03+00:00"
         },
         {
             "name": "symfony/routing",
