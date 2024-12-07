@@ -187,11 +187,11 @@ translation-bundle:
         4.x:
             php: ['8.1', '8.2', '8.3']
             variants:
-                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*']
+                symfony/symfony: ['6.4.*', '7.1.*', '7.2.*']
         3.x:
             php: ['8.1', '8.2', '8.3']
             variants:
-                symfony/symfony: ['5.4.*', '6.3.*', '6.4.*']
+                symfony/symfony: ['6.4.*', '7.1.*', '7.2.*']
 
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
