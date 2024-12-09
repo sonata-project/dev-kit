@@ -39,5 +39,6 @@ module.exports = {
     ],
     'import/no-webpack-loader-syntax': 'off',
     'lines-between-class-members': { 'properties': 'off', 'methods': 'always' },
+    'arrow-body-style': 'off',
   },
 };
