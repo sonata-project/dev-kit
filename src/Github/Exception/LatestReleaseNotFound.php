@@ -24,7 +24,7 @@ final class LatestReleaseNotFound extends \RuntimeException
     public static function forRepository(Repository $repository, ?\Throwable $previous = null): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Could not find latest Release for "%s".',
                 $repository->toString()
             ),
@@ -36,7 +36,7 @@ final class LatestReleaseNotFound extends \RuntimeException
     public static function forRepositoryAndBranch(Repository $repository, Branch $branch, ?\Throwable $previous = null): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Could not find latest Release for the branch "%s" of "%s".',
                 $branch->name(),
                 $repository->toString()

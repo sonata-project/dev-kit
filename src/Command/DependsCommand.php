@@ -69,7 +69,7 @@ final class DependsCommand extends AbstractCommand
                 continue;
             }
 
-            $this->io->writeln(sprintf(
+            $this->io->writeln(\sprintf(
                 '    <info>%s</info>',
                 $version->getVersion()
             ));
@@ -80,7 +80,7 @@ final class DependsCommand extends AbstractCommand
                     continue;
                 }
 
-                $this->io->writeln(sprintf(
+                $this->io->writeln(\sprintf(
                     '        %s:%s',
                     $packageName,
                     $constraint

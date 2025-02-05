@@ -54,7 +54,7 @@ final class PullRequest
         ?bool $mergeable,
         string $body,
         string $htmlUrl,
-        array $labels
+        array $labels,
     ) {
         $this->issue = $issue;
         $this->title = TrimmedNonEmptyString::fromString($title)->toString();
@@ -293,7 +293,7 @@ final class PullRequest
                     $section = preg_replace('/^#* /i', '', $line) ?? '';
                 } elseif ('' !== $section) {
                     $line = preg_replace('/^- /i', '', $line) ?? '';
-                    $changelog[$section][] = sprintf(
+                    $changelog[$section][] = \sprintf(
                         '- [[#%s](%s)] %s ([@%s](%s))',
                         $this->issue->toInt(),
                         $this->htmlUrl,

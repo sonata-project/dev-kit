@@ -78,7 +78,7 @@ final class Section
     {
         return implode(\PHP_EOL, array_merge(
             [
-                sprintf(
+                \sprintf(
                     '### %s',
                     $this->headline
                 ),

@@ -42,7 +42,7 @@ final class IssueTest extends TestCase
         );
 
         static::assertSame(
-            sprintf(
+            \sprintf(
                 '#%s',
                 $value
             ),

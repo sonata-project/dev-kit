@@ -26,7 +26,7 @@ final class NoPullRequestsMergedSinceLastRelease extends \RuntimeException
         $since = null !== $lastRelease ? $lastRelease->format('Y-m-d H:i:s') : 'never';
 
         return new self(
-            sprintf(
+            \sprintf(
                 'No pull requests merged since last release "%s" for branch "%s" of project "%s".',
                 $since,
                 $branch->name(),

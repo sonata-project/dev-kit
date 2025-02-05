@@ -40,7 +40,7 @@ final class LatestReleaseNotFoundTest extends TestCase
             $latestReleaseNotFound
         );
         static::assertSame(
-            sprintf(
+            \sprintf(
                 'Could not find latest Release for "%s".',
                 $repository->toString()
             ),

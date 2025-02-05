@@ -51,7 +51,7 @@ final class NoBranchesAvaillableTest extends TestCase
             $noBranchesAvailable
         );
         static::assertSame(
-            sprintf(
+            \sprintf(
                 'Project "%s" has no branches configured.',
                 $project->name()
             ),

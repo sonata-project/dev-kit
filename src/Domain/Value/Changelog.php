@@ -52,7 +52,7 @@ final class Changelog
      */
     public static function fromPullRequests(array $pullRequests, Tag $next, Tag $current, Package $package): self
     {
-        $headline = sprintf(
+        $headline = \sprintf(
             '## [%s](%s/compare/%s...%s) - %s',
             $next->toString(),
             $package->getRepository(),

@@ -61,7 +61,7 @@ final class ReleaseCommand extends AbstractCommand
         GitManipulator $gitManipulator,
         PullRequests $pullRequests,
         Releases $releases,
-        Issues $issues
+        Issues $issues,
     ) {
         parent::__construct();
 
@@ -160,7 +160,7 @@ final class ReleaseCommand extends AbstractCommand
         $default = ($project->stableBranch() ?? $project->unstableBranch())->name();
 
         $question = new ChoiceQuestion(
-            sprintf('<info>Please select the branch of the project to release:</info> (Default: "%s")', $default),
+            \sprintf('<info>Please select the branch of the project to release:</info> (Default: "%s")', $default),
             $project->branchNamesReverse(),
             $default
         );
@@ -218,7 +218,7 @@ final class ReleaseCommand extends AbstractCommand
         $notificationStyle->section('Release');
 
         if (!$nextRelease->canBeReleased()) {
-            $notificationStyle->error(sprintf(
+            $notificationStyle->error(\sprintf(
                 'Next release would be: %s, but cannot be released yet!',
                 $nextRelease->nextTag()->toString()
             ));
@@ -227,7 +227,7 @@ final class ReleaseCommand extends AbstractCommand
             throw new \RuntimeException('Fix labels and changelogs on merged pull requests.');
         }
 
-        $notificationStyle->success(sprintf(
+        $notificationStyle->success(\sprintf(
             'Next release will be: %s',
             $nextRelease->nextTag()->toString()
         ));
@@ -244,22 +244,22 @@ final class ReleaseCommand extends AbstractCommand
     {
         $notificationStyle = $this->io->getErrorStyle();
 
-        $notificationStyle->writeln(sprintf(
+        $notificationStyle->writeln(\sprintf(
             '<info>%s</info>',
             $pr->title()
         ));
         $notificationStyle->writeln($pr->htmlUrl());
 
         $stability = $pr->stability();
-        $notificationStyle->writeln(sprintf(
+        $notificationStyle->writeln(\sprintf(
             '   Stability: %s',
-            $stability->equals(Stability::unknown()) ? sprintf('<error>%s</error>', $stability->toUppercaseString()) : $pr->stability()->toUppercaseString()
+            $stability->equals(Stability::unknown()) ? \sprintf('<error>%s</error>', $stability->toUppercaseString()) : $pr->stability()->toUppercaseString()
         ));
-        $notificationStyle->writeln(sprintf(
+        $notificationStyle->writeln(\sprintf(
             '      Labels: %s',
             $this->renderLabels($pr)
         ));
-        $notificationStyle->writeln(sprintf(
+        $notificationStyle->writeln(\sprintf(
             '   Changelog: %s',
             $pr->fulfilledChangelog() ? '<info>yes</info>' : '<error>no</error>'
         ));
@@ -279,7 +279,7 @@ final class ReleaseCommand extends AbstractCommand
         }
 
         $renderedLabels = array_map(
-            static fn (Label $label): string => sprintf(
+            static fn (Label $label): string => \sprintf(
                 '<fg=black;bg=%s>%s</>',
                 $label->color()->asHexCode(),
                 $label->name()
@@ -356,7 +356,7 @@ final class ReleaseCommand extends AbstractCommand
         $this->updateChangelog($gitRepository, $nextRelease);
 
         $gitRepository->run('add', ['.', '--all']);
-        $diff = $gitRepository->run('diff', ['--color', '--cached', sprintf('origin/%s', $nextRelease->branch()->name())]);
+        $diff = $gitRepository->run('diff', ['--color', '--cached', \sprintf('origin/%s', $nextRelease->branch()->name())]);
 
         if ('' !== $diff) {
             $this->io->writeln($diff);
@@ -374,7 +374,7 @@ final class ReleaseCommand extends AbstractCommand
             if (!$this->pullRequests->hasOpenPullRequest($nextRelease->project()->repository(), $currentHead)) {
                 $pullRequest = $this->pullRequests->create(
                     $nextRelease->project()->repository(),
-                    sprintf(
+                    \sprintf(
                         'Release %s',
                         $nextRelease->nextTag()->toString()
                     ),
@@ -402,7 +402,7 @@ final class ReleaseCommand extends AbstractCommand
         $changelogFileContents = file_get_contents($changelogFilePath);
 
         if (false === $changelogFileContents) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Cannot read "%s" file',
                 $changelogFilePath
             ));
@@ -413,7 +413,7 @@ final class ReleaseCommand extends AbstractCommand
         $res = file_put_contents($changelogFilePath, $replaced);
 
         if (false === $res) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Cannot write "%s" file',
                 $changelogFilePath
             ));

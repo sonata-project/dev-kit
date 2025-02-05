@@ -60,7 +60,7 @@ final class ConfiguredLabels
         Assert::keyExists(
             $this->labels,
             $name,
-            sprintf(
+            \sprintf(
                 'Unknown label: %s',
                 $name
             )

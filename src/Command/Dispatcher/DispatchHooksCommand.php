@@ -48,7 +48,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
     public function __construct(
         Projects $projects,
         Hooks $hooks,
-        string $devKitToken
+        string $devKitToken,
     ) {
         parent::__construct();
 
@@ -79,7 +79,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
                 $this->updateDevKitHook($project);
                 $this->deleteHooks($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -98,7 +98,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         $devKitHookBaseUrl = 'https://master-7rqtwti-ptm4dx6rjpjko.eu-5.platformsh.site/github';
 
         $config = [
-            'url' => sprintf(
+            'url' => \sprintf(
                 '%s?%s',
                 $devKitHookBaseUrl,
                 http_build_query([
@@ -165,7 +165,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
                 $this->io->writeln('        <info>Hook updated.</info>');
             }
         } else {
-            $this->io->writeln(sprintf(
+            $this->io->writeln(\sprintf(
                 '        <comment>%s</comment>',
                 static::LABEL_NOTHING_CHANGED
             ));
@@ -184,7 +184,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         // Check if a Hook should be deleted.
         foreach ($this->hooks->all($repository) as $hook) {
             foreach (self::HOOK_URLS_TO_BE_DELETED as $url) {
-                $this->io->writeln(sprintf(
+                $this->io->writeln(\sprintf(
                     '        Check if %s starts with %s',
                     $hook->config()->url()->toString(),
                     $url,
@@ -192,7 +192,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
 
                 if (u($hook->url()->toString())->startsWith($url)) {
                     $deleted = true;
-                    $this->io->writeln(sprintf(
+                    $this->io->writeln(\sprintf(
                         '        Hook "%s" will be deleted',
                         $hook->url()->toString()
                     ));
@@ -200,7 +200,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
                     if ($this->apply) {
                         $this->hooks->remove($repository, $hook);
 
-                        $this->io->writeln(sprintf(
+                        $this->io->writeln(\sprintf(
                             '        <info>Hook "%s" with ID %s deleted.</info>',
                             $hook->url()->toString(),
                             $hook->id()
@@ -211,7 +211,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         }
 
         if (!$deleted) {
-            $this->io->writeln(sprintf(
+            $this->io->writeln(\sprintf(
                 '        <comment>%s</comment>',
                 static::LABEL_NOTHING_CHANGED
             ));

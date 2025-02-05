@@ -371,7 +371,7 @@ final class PullRequestTest extends TestCase
     public function testBody(): void
     {
         $response = PullRequestFactory::create([
-            'body' => sprintf(
+            'body' => \sprintf(
                 <<<BODY
                     <!-- %s -->
 

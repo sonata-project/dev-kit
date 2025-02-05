@@ -71,7 +71,7 @@ final class User
      */
     public function handle(): string
     {
-        return sprintf(
+        return \sprintf(
             '@%s',
             $this->login
         );

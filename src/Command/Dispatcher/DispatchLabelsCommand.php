@@ -35,7 +35,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     public function __construct(
         Projects $projects,
         ConfiguredLabels $configuredLabels,
-        Labels $labels
+        Labels $labels,
     ) {
         parent::__construct();
 
@@ -63,7 +63,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 
                 $this->updateLabels($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));

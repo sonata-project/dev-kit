@@ -56,7 +56,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 
                 $this->updateTopics($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -73,7 +73,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
         $topics = $this->topics->get($repository);
 
         if ([] === $topics && [] === $project->topics()) {
-            $this->io->writeln(sprintf(
+            $this->io->writeln(\sprintf(
                 '    <comment>%s</comment>',
                 'No topics are currently set on the repository, nor new ones are configured!'
             ));
@@ -83,11 +83,11 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 
         if ($topics !== $project->topics()) {
             $this->io->writeln('    Topics would be changed...');
-            $this->io->writeln(sprintf(
+            $this->io->writeln(\sprintf(
                 '        from <comment>%s</comment>',
                 [] === $topics ? '[]' : implode(', ', $topics),
             ));
-            $this->io->writeln(sprintf(
+            $this->io->writeln(\sprintf(
                 '        to   <info>%s</info>',
                 [] === $project->topics() ? '[]' : implode(', ', $project->topics()),
             ));

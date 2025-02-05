@@ -45,7 +45,7 @@ final class Projects
         foreach ($projectsConfigs['projects'] as $name => $config) {
             Assert::string($name);
 
-            $package = $this->packagist->get(sprintf(
+            $package = $this->packagist->get(\sprintf(
                 'sonata-project/%s',
                 $name
             ));

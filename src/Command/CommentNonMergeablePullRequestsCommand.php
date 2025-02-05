@@ -42,7 +42,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
         PullRequests $pullRequests,
         Comments $comments,
         Commits $commits,
-        Issues $issues
+        Issues $issues,
     ) {
         parent::__construct();
 
@@ -72,7 +72,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
 
                 $this->checkPullRequests($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -93,7 +93,7 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
         }
 
         foreach ($pullRequests as $pr) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 '%s %s (%s)',
                 $pr->issue()->toString(),
                 $pr->title(),
@@ -137,11 +137,11 @@ final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyComm
                         );
                     }
 
-                    $this->io->text(sprintf(
+                    $this->io->text(\sprintf(
                         '    Comment: <info>%s</info>',
                         $message
                     ));
-                    $this->io->text(sprintf(
+                    $this->io->text(\sprintf(
                         '    Label:   <info>%s</info>',
                         $label->name()
                     ));

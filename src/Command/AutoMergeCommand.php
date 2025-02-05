@@ -35,7 +35,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
     public function __construct(
         Projects $projects,
         Repositories $repositories,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         parent::__construct();
 
@@ -63,7 +63,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
         $projectNames = $input->getArgument('projects');
         if ([] !== $projectNames) {
             $projects = $this->projects->byNames($projectNames);
-            $title = sprintf(
+            $title = \sprintf(
                 '%s for: %s',
                 $title,
                 implode(', ', $projectNames)
@@ -78,7 +78,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
                 $this->mergeBranches($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -112,20 +112,20 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 );
 
                 if ($successful) {
-                    $this->io->success(sprintf(
+                    $this->io->success(\sprintf(
                         'Merged %s into %s',
                         $head,
                         $base
                     ));
                 } else {
-                    $this->io->comment(sprintf(
+                    $this->io->comment(\sprintf(
                         'Nothing to merge on %s',
                         $base
                     ));
                 }
             } catch (RuntimeException $e) {
                 if (409 === $e->getCode()) {
-                    $message = sprintf(
+                    $message = \sprintf(
                         '%s: Merging of %s into %s contains conflicts. Skipped.',
                         $repository->name(),
                         $head,
