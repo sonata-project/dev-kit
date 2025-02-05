@@ -70,7 +70,7 @@ final class Project
         bool $hasDocumentation,
         bool $hasTestKernel,
         bool $hasPlatformTests,
-        ?string $documentationBadgeSlug
+        ?string $documentationBadgeSlug,
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->bundle = u($this->name)->endsWith('bundle') ? true : false;

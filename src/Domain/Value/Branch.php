@@ -66,7 +66,7 @@ final class Branch
         bool $frontendTests,
         Path $docsPath,
         Path $testsPath,
-        ?PhpVersion $targetPhpVersion
+        ?PhpVersion $targetPhpVersion,
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->phpVersions = $phpVersions;

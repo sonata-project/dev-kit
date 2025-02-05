@@ -59,7 +59,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         $projectNames = $input->getArgument('projects');
         if ([] !== $projectNames) {
             $projects = $this->projects->byNames($projectNames);
-            $title = sprintf(
+            $title = \sprintf(
                 'Dispatch branches protection for: %s',
                 implode(', ', $projectNames)
             );
@@ -73,7 +73,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
                 $this->updateBranchesProtection($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -147,7 +147,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             'PHPStan',
             'Psalm',
             'Rector',
-            sprintf(
+            \sprintf(
                 'PHP %s + lowest + normal',
                 $lowestPhpVersion->toString()
             ),
@@ -174,7 +174,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         }
 
         foreach ($branch->phpVersions() as $phpVersion) {
-            $requiredStatusChecks[] = sprintf(
+            $requiredStatusChecks[] = \sprintf(
                 'PHP %s + highest + normal',
                 $phpVersion->toString()
             );
@@ -182,7 +182,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         $targetPhp = $branch->targetPhpVersion();
         foreach ($branch->variants() as $variant) {
-            $requiredStatusChecks[] = sprintf(
+            $requiredStatusChecks[] = \sprintf(
                 'PHP %s + highest + %s',
                 $targetPhp->toString(),
                 $variant->toString()
@@ -190,14 +190,14 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         }
 
         if ($project->hasPlatformTests()) {
-            $requiredStatusChecks[] = sprintf('PHP %s + MySQL 5.7 + highest', $targetPhp->toString());
-            $requiredStatusChecks[] = sprintf('PHP %s + MySQL 8.0 + highest', $targetPhp->toString());
-            $requiredStatusChecks[] = sprintf('PHP %s + PostgreSQL 13 + highest', $targetPhp->toString());
-            $requiredStatusChecks[] = sprintf('PHP %s + PostgreSQL 14 + highest', $targetPhp->toString());
-            $requiredStatusChecks[] = sprintf('PHP %s + PostgreSQL 15 + highest', $targetPhp->toString());
+            $requiredStatusChecks[] = \sprintf('PHP %s + MySQL 5.7 + highest', $targetPhp->toString());
+            $requiredStatusChecks[] = \sprintf('PHP %s + MySQL 8.0 + highest', $targetPhp->toString());
+            $requiredStatusChecks[] = \sprintf('PHP %s + PostgreSQL 13 + highest', $targetPhp->toString());
+            $requiredStatusChecks[] = \sprintf('PHP %s + PostgreSQL 14 + highest', $targetPhp->toString());
+            $requiredStatusChecks[] = \sprintf('PHP %s + PostgreSQL 15 + highest', $targetPhp->toString());
         }
 
-        $this->io->writeln(sprintf(
+        $this->io->writeln(\sprintf(
             'Required Status-Checks for <info>%s</info>:',
             $branch->name()
         ));

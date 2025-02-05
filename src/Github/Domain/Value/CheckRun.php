@@ -125,20 +125,20 @@ final class CheckRun
     public function nameFormatted(): string
     {
         if (self::CONCLUSION_SUCCESS === $this->conclusion) {
-            return sprintf(
+            return \sprintf(
                 '<info>%s</info>',
                 $this->name
             );
         }
 
         if (self::CONCLUSION_NEUTRAL === $this->conclusion) {
-            return sprintf(
+            return \sprintf(
                 '<comment>%s</comment>',
                 $this->name
             );
         }
 
-        return sprintf(
+        return \sprintf(
             '<error>%s</error>',
             $this->name
         );

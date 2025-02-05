@@ -30,7 +30,7 @@ final class GitManipulator
 
     public function __construct(
         Filesystem $filesystem,
-        string $githubToken
+        string $githubToken,
     ) {
         $this->filesystem = $filesystem;
         $this->githubToken = $githubToken;
@@ -40,7 +40,7 @@ final class GitManipulator
     {
         $repository = $project->repository();
 
-        $clonePath = sprintf(
+        $clonePath = \sprintf(
             '%s/%s',
             sys_get_temp_dir(),
             $repository->toString()
@@ -52,7 +52,7 @@ final class GitManipulator
 
         $repository = Admin::cloneRepository(
             $clonePath,
-            sprintf(
+            \sprintf(
                 'https://%s:%s@github.com/%s/%s',
                 $repository->username(),
                 $this->githubToken,
@@ -77,12 +77,12 @@ final class GitManipulator
         if ($repository->getReferences()->hasBranch($branch->name())) {
             $repository->run('checkout', [$branch->name()]);
         } else {
-            $repository->run('checkout', ['-b', $branch->name(), '--track', sprintf('origin/%s', $branch->name())]);
+            $repository->run('checkout', ['-b', $branch->name(), '--track', \sprintf('origin/%s', $branch->name())]);
         }
 
         // Checkout the dev-kit branch
-        if ($repository->getReferences()->hasRemoteBranch(sprintf('origin/%s', $devKitBranchName))) {
-            $repository->run('checkout', ['-b', $devKitBranchName, '--track', sprintf('origin/%s', $devKitBranchName)]);
+        if ($repository->getReferences()->hasRemoteBranch(\sprintf('origin/%s', $devKitBranchName))) {
+            $repository->run('checkout', ['-b', $devKitBranchName, '--track', \sprintf('origin/%s', $devKitBranchName)]);
         } else {
             $repository->run('checkout', ['-b', $devKitBranchName]);
         }

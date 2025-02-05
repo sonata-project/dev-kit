@@ -68,7 +68,7 @@ final class GithubController
             default:
                 return new JsonResponse(
                     [
-                        'message' => sprintf(
+                        'message' => \sprintf(
                             'Nothing to do for: %s',
                             $event->toString()
                         ),

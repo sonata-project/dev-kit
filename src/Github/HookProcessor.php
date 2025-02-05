@@ -132,7 +132,7 @@ final class HookProcessor
 
         foreach ($magicActions as $body => $filename) {
             if ($body !== $comment->body()) {
-                $this->logger->debug(sprintf(
+                $this->logger->debug(\sprintf(
                     'Comment is not "%s", skipping!',
                     $body
                 ));
@@ -142,14 +142,14 @@ final class HookProcessor
 
             $repository = Repository::fromIncomingWebhookPayload($payload);
 
-            $filepath = sprintf(
+            $filepath = \sprintf(
                 '%s/../../templates/github/%s',
                 __DIR__,
                 $filename
             );
 
             if (!file_exists($filepath)) {
-                $this->logger->debug(sprintf(
+                $this->logger->debug(\sprintf(
                     'Could not find file "%s" for "%s", skipping!',
                     $filepath,
                     $body
@@ -178,7 +178,7 @@ final class HookProcessor
             );
 
             if ('/request-release' === $body) {
-                $message = sprintf(
+                $message = \sprintf(
                     '%s requested a release for %s in %s',
                     $comment->author()->handle(),
                     $payload->repository()->name(),
@@ -241,7 +241,7 @@ final class HookProcessor
 
         foreach ($magicComments as $body => $filename) {
             if ($body !== $comment->body()) {
-                $this->logger->debug(sprintf(
+                $this->logger->debug(\sprintf(
                     'Comment is not "%s", skipping!',
                     $body
                 ));
@@ -251,14 +251,14 @@ final class HookProcessor
 
             $repository = Repository::fromIncomingWebhookPayload($payload);
 
-            $filepath = sprintf(
+            $filepath = \sprintf(
                 '%s/../../templates/github/%s',
                 __DIR__,
                 $filename
             );
 
             if (!file_exists($filepath)) {
-                $this->logger->debug(sprintf(
+                $this->logger->debug(\sprintf(
                     'Could not find file "%s" for "%s", skipping!',
                     $filepath,
                     $body

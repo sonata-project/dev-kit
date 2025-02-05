@@ -32,7 +32,7 @@ final class UnknownProjectTest extends TestCase
             $unknownProject
         );
         static::assertSame(
-            sprintf(
+            \sprintf(
                 'Could not find project with name "%s".',
                 $name
             ),

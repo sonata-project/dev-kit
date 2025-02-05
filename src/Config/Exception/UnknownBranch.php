@@ -22,7 +22,7 @@ final class UnknownBranch extends \InvalidArgumentException
 {
     public static function forName(Project $project, string $name): self
     {
-        return new self(sprintf(
+        return new self(\sprintf(
             'Could not find branch with name "%s" for project "%s".',
             $name,
             $project->name()

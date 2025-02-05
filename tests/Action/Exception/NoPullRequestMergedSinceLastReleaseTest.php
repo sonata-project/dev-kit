@@ -58,7 +58,7 @@ final class NoPullRequestMergedSinceLastReleaseTest extends TestCase
             $cannotDetermineNextRelease
         );
         static::assertSame(
-            sprintf(
+            \sprintf(
                 'No pull requests merged since last release "%s" for branch "%s" of project "%s".',
                 $datetime,
                 $branch->name(),

@@ -47,7 +47,7 @@ final class NextRelease
         Tag $currentTag,
         CombinedStatus $combinedStatus,
         CheckRuns $checkRuns,
-        array $pullRequests
+        array $pullRequests,
     ) {
         $this->project = $project;
         $this->branch = $branch;
@@ -72,7 +72,7 @@ final class NextRelease
         Tag $currentTag,
         CombinedStatus $combinedStatus,
         CheckRuns $checkRuns,
-        array $pullRequests
+        array $pullRequests,
     ): self {
         return new self(
             $project,

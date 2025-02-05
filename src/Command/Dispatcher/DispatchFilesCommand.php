@@ -61,7 +61,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         Branches $branches,
         Commits $commits,
         Filesystem $filesystem,
-        Environment $twig
+        Environment $twig,
     ) {
         parent::__construct();
 
@@ -95,7 +95,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $projectNames = $input->getArgument('projects');
         if ([] !== $projectNames) {
             $projects = $this->projects->byNames($projectNames);
-            $title = sprintf(
+            $title = \sprintf(
                 'Dispatch files for: %s',
                 implode(', ', $projectNames)
             );
@@ -109,7 +109,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
                 $this->dispatchFiles($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -145,7 +145,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
 
             // Diff application
-            $this->io->section(sprintf(
+            $this->io->section(\sprintf(
                 'Files for %s',
                 $branch->name()
             ));
@@ -180,7 +180,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
             $gitRepository->run('add', ['.', '--all']);
 
-            $diff = $gitRepository->run('diff', ['--color', '--cached', sprintf('origin/%s', $branch->name())]);
+            $diff = $gitRepository->run('diff', ['--color', '--cached', \sprintf('origin/%s', $branch->name())]);
 
             if ('' !== $diff) {
                 $this->io->writeln($diff);
@@ -199,7 +199,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
                     if (!$this->pullRequests->hasOpenPullRequest($repository, $currentHead)) {
                         $pullRequest = $this->pullRequests->create(
                             $repository,
-                            sprintf(
+                            \sprintf(
                                 'DevKit updates for %s branch',
                                 $branch->name()
                             ),
@@ -229,7 +229,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     private function deleteNotNeededFilesAndDirs(Project $project, Branch $branch, string $distPath, string $localPath = self::FILES_DIR): void
     {
         if (static::FILES_DIR !== $localPath && !str_starts_with($localPath, static::FILES_DIR.'/')) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'This method only supports files inside the "%s" directory',
                 static::FILES_DIR
             ));
@@ -282,7 +282,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
     {
         if (static::FILES_DIR !== $localPath) {
             if (!str_starts_with($localPath, static::FILES_DIR.'/')) {
-                throw new \LogicException(sprintf(
+                throw new \LogicException(\sprintf(
                     'This method only supports files inside the "%s" directory',
                     static::FILES_DIR
                 ));
@@ -303,7 +303,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             }
         }
 
-        $localFullPath = sprintf(
+        $localFullPath = \sprintf(
             '%s/templates/%s',
             $this->appDir,
             $localPath
@@ -311,7 +311,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         $localFileType = filetype($localFullPath);
         if (false === $localFileType) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Cannot get "%s" file type',
                 $localFullPath
             ));
@@ -319,7 +319,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         $distFileType = $this->filesystem->exists($distPath) ? filetype($distPath) : false;
         if ($localFileType !== $distFileType && false !== $distFileType) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'File type mismatch between "%s" and "%s"',
                 $localPath,
                 $distPath
@@ -329,7 +329,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             if (false === $localDirectory) {
-                throw new \RuntimeException(sprintf(
+                throw new \RuntimeException(\sprintf(
                     'Cannot read "%s" dir',
                     $localFullPath
                 ));
@@ -352,7 +352,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         $localContent = file_get_contents($localFullPath);
         if (false === $localContent) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Cannot read "%s" file content',
                 $localFullPath
             ));
@@ -376,7 +376,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         }
 
         if (\array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
-            $distPath = sprintf(
+            $distPath = \sprintf(
                 '%s/%s',
                 $distDir,
                 basename($distPath, '.twig')
@@ -395,7 +395,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
         $res = file_put_contents($distPath, $localContent);
 
         if (false === $res) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Cannot write "%s" file',
                 $distPath
             ));
@@ -403,7 +403,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         $localPerms = fileperms($localFullPath);
         if (false === $localPerms) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Cannot read "%s" file perms',
                 $localFullPath
             ));

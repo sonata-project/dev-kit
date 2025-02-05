@@ -50,7 +50,7 @@ final class PullRequestFactory
             ],
             'user' => UserFactory::create(),
             'mergeable' => $faker->boolean(),
-            'body' => sprintf(
+            'body' => \sprintf(
                 <<<'BODY'
                     <!-- %s -->
 

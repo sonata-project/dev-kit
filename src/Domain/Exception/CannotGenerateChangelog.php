@@ -23,7 +23,7 @@ final class CannotGenerateChangelog extends \LogicException
     public static function forRelease(NextRelease $nextRelease, ?\Throwable $previous = null): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Release "%s" cannot be released yet. Please check labels and changelogs of the pull requests.',
                 $nextRelease->nextTag()->toString()
             ),

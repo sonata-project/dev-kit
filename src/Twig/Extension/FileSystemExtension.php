@@ -48,7 +48,7 @@ final class FileSystemExtension extends AbstractExtension
         $composerPath = $projectDir.'/composer.json';
         $composerContent = file_get_contents($composerPath);
         if (false === $composerContent) {
-            throw new IOException(sprintf('Cannot read composer.json at path "%s"', $composerPath));
+            throw new IOException(\sprintf('Cannot read composer.json at path "%s"', $composerPath));
         }
 
         return str_contains($composerContent, $dependency);

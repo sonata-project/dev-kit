@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Github\Domain\Value\Label;
 
-use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Label\Color;
 use PHPUnit\Framework\TestCase;
 
@@ -67,7 +66,7 @@ final class ColorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, Label\Color, Label\Color}>
+     * @return iterable<array{bool, Color, Color}>
      */
     public function provideEqualsCases(): iterable
     {

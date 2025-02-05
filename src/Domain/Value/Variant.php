@@ -51,7 +51,7 @@ final class Variant
 
     public function toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s:"%s"',
             $this->package,
             $this->version

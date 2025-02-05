@@ -65,7 +65,7 @@ final class CombinedStatus
         if (self::PENDING !== $state) {
             Assert::notEmpty(
                 $response['statuses'],
-                sprintf(
+                \sprintf(
                     'Status is "%s", no empty statuses array allowed for CominedStatus!',
                     $state
                 )

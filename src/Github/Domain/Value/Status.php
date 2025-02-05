@@ -93,20 +93,20 @@ final class Status
     public function contextFormatted(): string
     {
         if (self::SUCCESS === $this->state) {
-            return sprintf(
+            return \sprintf(
                 '<info>%s</info>',
                 $this->context
             );
         }
 
         if (self::PENDING === $this->state) {
-            return sprintf(
+            return \sprintf(
                 '<comment>%s</comment>',
                 $this->context
             );
         }
 
-        return sprintf(
+        return \sprintf(
             '<error>%s</error>',
             $this->context
         );

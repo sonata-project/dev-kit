@@ -59,7 +59,7 @@ final class Repository
 
     public function toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s/%s',
             $this->username,
             $this->name

@@ -23,7 +23,7 @@ final class NoBranchesAvailable extends \InvalidArgumentException
     public static function forProject(Project $project, ?\Throwable $previous = null): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Project "%s" has no branches configured.',
                 $project->name()
             ),

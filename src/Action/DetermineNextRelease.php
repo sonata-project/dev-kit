@@ -40,7 +40,7 @@ final class DetermineNextRelease
         Branches $branches,
         Statuses $statuses,
         Checks $checks,
-        PullRequests $pullRequests
+        PullRequests $pullRequests,
     ) {
         $this->releases = $releases;
         $this->branches = $branches;

@@ -46,7 +46,7 @@ final class Query
     public static function pullRequests(Repository $repository, Branch $branch, Label $excludedLabel): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'repo:%s type:pr is:merged base:%s -label:%s',
                 $repository->toString(),
                 $branch->name(),
@@ -58,7 +58,7 @@ final class Query
     public static function pullRequestsSince(Repository $repository, Branch $branch, \DateTimeImmutable $date, Label $excludedLabel): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'repo:%s type:pr is:merged base:%s merged:>%s -label:%s',
                 $repository->toString(),
                 $branch->name(),

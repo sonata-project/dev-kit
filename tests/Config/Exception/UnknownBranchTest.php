@@ -53,7 +53,7 @@ final class UnknownBranchTest extends TestCase
             $unknownBranch
         );
         static::assertSame(
-            sprintf(
+            \sprintf(
                 'Could not find branch with name "%s" for project "%s".',
                 $name,
                 $project->name()

@@ -57,7 +57,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 
                 $this->updateRepositories($project);
             } catch (ExceptionInterface $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Failed with message: %s',
                     $e->getMessage()
                 ));
@@ -101,7 +101,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
             $this->io->writeln('    Following info have to be changed:');
 
             foreach ($infoToUpdate as $info => $value) {
-                $this->io->writeln(sprintf(
+                $this->io->writeln(\sprintf(
                     '        %s: <info>%s</info>',
                     $info,
                     \is_bool($value) ? ($value ? 'true' : 'false') : $value
