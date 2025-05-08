@@ -12,7 +12,7 @@ parameters:
     level: 8
 {% if file_exists(project_dir ~ '/phpstan-console-application.php') %}
     symfony:
-        console_application_loader: ./phpstan-console-application.php
+        consoleApplicationLoader: ./phpstan-console-application.php
 {% endif %}
 {% if has_dependency(project_dir, 'phpstan/phpstan-doctrine') %}
     doctrine:
