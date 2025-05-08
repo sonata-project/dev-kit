@@ -10,7 +10,7 @@ parameters:
         - src
         - tests
     treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: true
-    checkMissingIterableValueType: true
+    checkInternalClassCaseSensitivity: true
     checkMissingVarTagTypehint: true
     checkMissingTypehints: true
+    checkUninitializedProperties: true

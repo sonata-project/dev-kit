@@ -29,7 +29,7 @@ abstract class AbstractCommand extends Command
 
     protected const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
 
-    protected SymfonyStyle $io;
+    protected SymfonyStyle $io; // @phpstan-ignore-line
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
