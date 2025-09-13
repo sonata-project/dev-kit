@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\Release;
 
 use App\Github\Domain\Value\Release\Tag;
+use Ergebnis\Test\Util\DataProvider\StringProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 final class TagTest extends TestCase
 {
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);

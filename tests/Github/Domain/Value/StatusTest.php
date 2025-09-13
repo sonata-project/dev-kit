@@ -15,6 +15,7 @@ namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Status;
 use App\Tests\Util\Factory\Github\Response\StatusFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class StatusTest extends TestCase
@@ -100,9 +101,7 @@ final class StatusTest extends TestCase
         Status::fromResponse($response);
     }
 
-    /**
-     * @dataProvider provideUsesStateFromResponseCases
-     */
+    #[DataProvider('provideUsesStateFromResponseCases')]
     public function testUsesStateFromResponse(string $state): void
     {
         $response = StatusFactory::create([
@@ -118,7 +117,7 @@ final class StatusTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public function provideUsesStateFromResponseCases(): iterable
+    public static function provideUsesStateFromResponseCases(): iterable
     {
         yield 'error' => ['error'];
         yield 'failure' => ['failure'];

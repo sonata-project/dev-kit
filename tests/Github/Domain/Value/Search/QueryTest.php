@@ -17,8 +17,10 @@ use App\Domain\Value\Branch;
 use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Search\Query;
+use App\Tests\Util\DataProvider\StringProvider;
 use Ergebnis\Test\Util\Helper;
 use Packagist\Api\Result\Package;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
@@ -33,9 +35,7 @@ final class QueryTest extends TestCase
         Query::fromString('');
     }
 
-    /**
-     * @dataProvider \App\Tests\Util\DataProvider\StringProvider::lengthGreaterThan256Characters()
-     */
+    #[DataProviderExternal(StringProvider::class, 'lengthGreaterThan256Characters')]
     public function testThrowsExceptionIfValueIsGreaterThan256Characters(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);

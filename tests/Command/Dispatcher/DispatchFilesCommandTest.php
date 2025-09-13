@@ -16,6 +16,7 @@ namespace App\Tests\Command\Dispatcher;
 use App\Domain\Value\Project;
 use App\Tests\Domain\Value\ProjectTest;
 use Packagist\Api\Result\Package;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
@@ -39,9 +40,7 @@ final class DispatchFilesCommandTest extends TestCase
         ]);
     }
 
-    /**
-     * @dataProvider provideTestFileRenderingCases
-     */
+    #[DataProvider('provideTestFileRenderingCases')]
     public function testTestFileRendering(string $expected, string $project): void
     {
         $config = Yaml::parse($project);
@@ -72,7 +71,7 @@ final class DispatchFilesCommandTest extends TestCase
     /**
      * @return iterable<string, array{string, string}>
      */
-    public function provideTestFileRenderingCases(): iterable
+    public static function provideTestFileRenderingCases(): iterable
     {
         $project = <<<CONFIG
             admin-bundle:

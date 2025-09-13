@@ -15,7 +15,10 @@ namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\User;
 use App\Tests\Util\Factory\Github\Response\UserFactory;
+use Ergebnis\Test\Util\DataProvider\IntProvider;
+use Ergebnis\Test\Util\DataProvider\StringProvider;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 final class UserTest extends TestCase
@@ -39,10 +42,8 @@ final class UserTest extends TestCase
         User::fromResponse($response);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::zero()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\IntProvider::lessThanZero()
-     */
+    #[DataProviderExternal(IntProvider::class, 'zero')]
+    #[DataProviderExternal(IntProvider::class, 'lessThanZero')]
     public function testThrowsExceptionIfIdIs(int $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -78,10 +79,8 @@ final class UserTest extends TestCase
         User::fromResponse($response);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionIfLoginIs(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -131,10 +130,8 @@ final class UserTest extends TestCase
         User::fromResponse($response);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionIfHtmlUrlIs(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);

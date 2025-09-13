@@ -18,6 +18,7 @@ use App\Github\Domain\Value\CheckRuns;
 use App\Tests\Util\Factory\Github\Response\CheckRunFactory;
 use App\Tests\Util\Factory\Github\Response\CheckRunsFactory;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CheckRunsTest extends TestCase
@@ -34,9 +35,7 @@ final class CheckRunsTest extends TestCase
         CheckRuns::fromResponse($response);
     }
 
-    /**
-     * @dataProvider provideIsSuccessfulCases
-     */
+    #[DataProvider('provideIsSuccessfulCases')]
     public function testIsSuccessful(bool $expected, string $conclusion): void
     {
         $response = CheckRunsFactory::create([
@@ -56,7 +55,7 @@ final class CheckRunsTest extends TestCase
     /**
      * @return iterable<string, array{bool, string}>
      */
-    public function provideIsSuccessfulCases(): iterable
+    public static function provideIsSuccessfulCases(): iterable
     {
         yield 'action_required' => [false, 'action_required'];
         yield 'cancelled' => [false, 'cancelled'];

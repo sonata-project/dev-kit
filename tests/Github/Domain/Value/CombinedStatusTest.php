@@ -18,6 +18,7 @@ use App\Github\Domain\Value\Status;
 use App\Tests\Util\Factory\Github\Response\CombinedStatusFactory;
 use App\Tests\Util\Factory\Github\Response\StatusFactory;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CombinedStatusTest extends TestCase
@@ -113,9 +114,7 @@ final class CombinedStatusTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideUsesStateFromResponseCases
-     */
+    #[DataProvider('provideUsesStateFromResponseCases')]
     public function testUsesStateFromResponse(string $state): void
     {
         $response = CombinedStatusFactory::create([
@@ -131,16 +130,14 @@ final class CombinedStatusTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public function provideUsesStateFromResponseCases(): iterable
+    public static function provideUsesStateFromResponseCases(): iterable
     {
         yield 'failure' => ['failure'];
         yield 'pending' => ['pending'];
         yield 'success' => ['success'];
     }
 
-    /**
-     * @dataProvider provideIsSuccessfulCases
-     */
+    #[DataProvider('provideIsSuccessfulCases')]
     public function testIsSuccessful(bool $expected, string $state): void
     {
         $response = CombinedStatusFactory::create([
@@ -156,7 +153,7 @@ final class CombinedStatusTest extends TestCase
     /**
      * @return iterable<string, array{bool, string}>
      */
-    public function provideIsSuccessfulCases(): iterable
+    public static function provideIsSuccessfulCases(): iterable
     {
         yield 'failure' => [false, 'failure'];
         yield 'pending' => [false, 'pending'];
