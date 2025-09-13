@@ -14,25 +14,19 @@ declare(strict_types=1);
 namespace App\Tests\Twig\Extension;
 
 use App\Twig\Extension\FileSystemExtension;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class FileSystemExtensionTest extends TestCase
 {
-    /**
-     * @var Filesystem&MockObject
-     */
-    private Filesystem $fileSystem;
-
     private FileSystemExtension $fileSystemExtension;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fileSystem = $this->createMock(Filesystem::class);
-        $this->fileSystemExtension = new FileSystemExtension($this->fileSystem);
+        $fileSystem = $this->createMock(Filesystem::class);
+        $this->fileSystemExtension = new FileSystemExtension($fileSystem);
     }
 
     public function testHasDependency(): void
