@@ -20,6 +20,7 @@ use App\Github\Domain\Value\Release\Tag;
 use App\Tests\Util\Factory\Github\Response\LabelFactory;
 use App\Tests\Util\Factory\Github\Response\PullRequestFactory;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DetermineNextReleaseVersionTest extends TestCase
@@ -52,9 +53,8 @@ final class DetermineNextReleaseVersionTest extends TestCase
 
     /**
      * @param array<PullRequest> $pullRequests
-     *
-     * @dataProvider provideDetermineCases
      */
+    #[DataProvider('provideDetermineCases')]
     public function testDetermine(string $expected, string $current, array $pullRequests): void
     {
         $tag = Tag::fromString($current);
@@ -70,7 +70,7 @@ final class DetermineNextReleaseVersionTest extends TestCase
     /**
      * @return iterable<array{string, string, array<PullRequest>}>
      */
-    public function provideDetermineCases(): iterable
+    public static function provideDetermineCases(): iterable
     {
         yield [
             '2.0.0-alpha-1',

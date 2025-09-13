@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Url;
+use Ergebnis\Test\Util\DataProvider\StringProvider;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 final class UrlTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);

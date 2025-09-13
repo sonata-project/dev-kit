@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\IncomingWebhook\Event;
+use Ergebnis\Test\Util\DataProvider\StringProvider;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 final class EventTest extends TestCase
 {
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -29,9 +30,7 @@ final class EventTest extends TestCase
         Event::fromString($value);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::untrimmed()
-     */
+    #[DataProviderExternal(StringProvider::class, 'untrimmed')]
     public function testFromString(string $value): void
     {
         static::assertSame(
@@ -40,9 +39,7 @@ final class EventTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideEqualsCases
-     */
+    #[DataProvider('provideEqualsCases')]
     public function testEquals(bool $expected, Event $event, Event $other): void
     {
         static::assertSame(
@@ -54,7 +51,7 @@ final class EventTest extends TestCase
     /**
      * @return iterable<array{bool, Event, Event}>
      */
-    public function provideEqualsCases(): iterable
+    public static function provideEqualsCases(): iterable
     {
         yield [
             true,
@@ -71,9 +68,8 @@ final class EventTest extends TestCase
 
     /**
      * @param array<Event> $others
-     *
-     * @dataProvider provideEqualsOneOfCases
      */
+    #[DataProvider('provideEqualsOneOfCases')]
     public function testEqualsOneOf(bool $expected, Event $event, array $others): void
     {
         static::assertSame(
@@ -85,7 +81,7 @@ final class EventTest extends TestCase
     /**
      * @return iterable<array{bool, Event, array<Event>}>
      */
-    public function provideEqualsOneOfCases(): iterable
+    public static function provideEqualsOneOfCases(): iterable
     {
         yield [
             true,

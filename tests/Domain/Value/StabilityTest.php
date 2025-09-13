@@ -14,17 +14,18 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Value;
 
 use App\Domain\Value\Stability;
+use Ergebnis\Test\Util\DataProvider\StringProvider;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 final class StabilityTest extends TestCase
 {
     use Helper;
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionFor(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -56,9 +57,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideValidCases
-     */
+    #[DataProvider('provideValidCases')]
     public function testValid(string $value): void
     {
         $stability = Stability::fromString($value);
@@ -69,7 +68,7 @@ final class StabilityTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public function provideValidCases(): iterable
+    public static function provideValidCases(): iterable
     {
         yield 'unknown' => ['unknown'];
         yield 'minor' => ['minor'];
@@ -108,9 +107,7 @@ final class StabilityTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideEqualsCases
-     */
+    #[DataProvider('provideEqualsCases')]
     public function testEquals(bool $expected, Stability $stability, Stability $other): void
     {
         static::assertSame(
@@ -127,7 +124,7 @@ final class StabilityTest extends TestCase
     /**
      * @return iterable<array{bool, Stability, Stability}>
      */
-    public function provideEqualsCases(): iterable
+    public static function provideEqualsCases(): iterable
     {
         yield [
             true,

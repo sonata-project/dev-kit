@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Value;
 
 use App\Domain\Value\Variant;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class VariantTest extends TestCase
@@ -58,9 +59,7 @@ final class VariantTest extends TestCase
         Variant::fromValues('sonata-project/dev-kit', '');
     }
 
-    /**
-     * @dataProvider provideValidCases
-     */
+    #[DataProvider('provideValidCases')]
     public function testValid(string $expected, string $package, string $version): void
     {
         $variant = Variant::fromValues($package, $version);
@@ -73,7 +72,7 @@ final class VariantTest extends TestCase
     /**
      * @return iterable<array{string, string, string}>
      */
-    public function provideValidCases(): iterable
+    public static function provideValidCases(): iterable
     {
         yield [
             'sonata-project/dev-kit:"1.*"',

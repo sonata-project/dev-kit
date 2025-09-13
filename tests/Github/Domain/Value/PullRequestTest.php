@@ -17,7 +17,10 @@ use App\Domain\Value\Stability;
 use App\Github\Domain\Value\PullRequest;
 use App\Tests\Util\Factory\Github\Response\LabelFactory;
 use App\Tests\Util\Factory\Github\Response\PullRequestFactory;
+use Ergebnis\Test\Util\DataProvider\StringProvider;
 use Ergebnis\Test\Util\Helper;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 final class PullRequestTest extends TestCase
@@ -95,10 +98,8 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionIfTitleIs(string $value): void
     {
         $response = PullRequestFactory::create([
@@ -134,10 +135,8 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionIfUpdatedAtIs(string $value): void
     {
         $response = PullRequestFactory::create([
@@ -187,10 +186,8 @@ final class PullRequestTest extends TestCase
         PullRequest::fromResponse($response);
     }
 
-    /**
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::blank()
-     * @dataProvider \Ergebnis\Test\Util\DataProvider\StringProvider::empty()
-     */
+    #[DataProviderExternal(StringProvider::class, 'blank')]
+    #[DataProviderExternal(StringProvider::class, 'empty')]
     public function testThrowsExceptionIfMergedAtIs(string $value): void
     {
         $response = PullRequestFactory::create([
@@ -295,9 +292,8 @@ final class PullRequestTest extends TestCase
 
     /**
      * @param array<mixed> $labels
-     *
-     * @dataProvider provideStabilityCases
      */
+    #[DataProvider('provideStabilityCases')]
     public function testStability(Stability $expected, array $labels): void
     {
         $response = PullRequestFactory::create([
@@ -315,7 +311,7 @@ final class PullRequestTest extends TestCase
     /**
      * @return iterable<array{Stability, array<mixed>}>
      */
-    public function provideStabilityCases(): iterable
+    public static function provideStabilityCases(): iterable
     {
         yield [
             Stability::unknown(),
