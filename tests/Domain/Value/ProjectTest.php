@@ -20,6 +20,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @phpstan-import-type ProjectConfig from Project
+ */
 final class ProjectTest extends TestCase
 {
     public const DEFAULT_CONFIG_NAME = 'admin-bundle';
@@ -107,11 +110,9 @@ final class ProjectTest extends TestCase
         static::assertIsArray($config);
         static::assertArrayHasKey($name, $config);
 
-        $project = Project::fromValues(
-            $name,
-            $config[$name],
-            $package
-        );
+        /** @var ProjectConfig $projectConfig */
+        $projectConfig = $config[$name];
+        $project = Project::fromValues($name, $projectConfig, $package);
 
         static::assertSame($expected, $project->isBundle());
     }

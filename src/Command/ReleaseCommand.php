@@ -410,6 +410,13 @@ final class ReleaseCommand extends AbstractCommand
 
         $replaced = preg_replace('/(This project adheres to \[Semantic Versioning\]\(http:\/\/semver.org\/\)\.)\n/', '$1'.\PHP_EOL.\PHP_EOL.$nextRelease->changelog()->asMarkdown(), $changelogFileContents);
 
+        if (null === $replaced) {
+            throw new \RuntimeException(\sprintf(
+                'Cannot generate content for "%s" file',
+                $changelogFilePath
+            ));
+        }
+
         $res = file_put_contents($changelogFilePath, $replaced);
 
         if (false === $res) {

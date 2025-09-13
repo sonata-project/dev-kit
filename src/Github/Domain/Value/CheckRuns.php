@@ -45,6 +45,7 @@ final class CheckRuns
 
         $checkRuns = [];
         foreach ($response['check_runs'] as $checkRun) {
+            Assert::isArray($checkRun);
             Assert::keyExists($checkRun, 'name');
             Assert::string($checkRun['name']);
 
