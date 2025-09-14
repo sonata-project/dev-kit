@@ -26,7 +26,7 @@ final class Commit
     private function __construct(
         private Sha $sha,
         string $message,
-        private \DateTimeImmutable $date
+        private \DateTimeImmutable $date,
     ) {
         $this->message = TrimmedNonEmptyString::fromString($message)->toString();
     }

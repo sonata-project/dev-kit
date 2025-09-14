@@ -26,7 +26,7 @@ final class Comment
         private int $id,
         string $body,
         private \DateTimeImmutable $createdAt,
-        private User $author
+        private User $author,
     ) {
         $this->body = trim($body);
     }

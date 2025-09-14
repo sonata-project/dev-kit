@@ -34,7 +34,7 @@ final class DetermineNextRelease
         private Branches $branches,
         private Statuses $statuses,
         private Checks $checks,
-        private PullRequests $pullRequests
+        private PullRequests $pullRequests,
     ) {
     }
 

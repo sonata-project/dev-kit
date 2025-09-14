@@ -29,7 +29,7 @@ final class NextReleaseForProjectController
     public function __construct(
         private Projects $projects,
         DetermineNextRelease $determineNextRelease,
-        private Environment $twig
+        private Environment $twig,
     ) {
         $this->determineNextRelease = $determineNextRelease;
     }

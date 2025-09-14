@@ -28,7 +28,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 {
     public function __construct(
         private Projects $projects,
-        private Topics $topics
+        private Topics $topics,
     ) {
         parent::__construct();
     }

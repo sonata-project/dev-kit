@@ -26,7 +26,7 @@ final class GitManipulator
 {
     public function __construct(
         private Filesystem $filesystem,
-        private string $githubToken
+        private string $githubToken,
     ) {
     }
 

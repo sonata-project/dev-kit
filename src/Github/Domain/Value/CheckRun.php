@@ -40,7 +40,7 @@ final class CheckRun
         private string $status,
         private ?string $conclusion,
         string $name,
-        string $detailsUrl
+        string $detailsUrl,
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->detailsUrl = TrimmedNonEmptyString::fromString($detailsUrl)->toString();
