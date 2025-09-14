@@ -29,7 +29,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 {
     public function __construct(
         private Projects $projects,
-        private Repositories $repositories
+        private Repositories $repositories,
     ) {
         parent::__construct();
     }

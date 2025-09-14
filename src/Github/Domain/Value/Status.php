@@ -33,7 +33,7 @@ final class Status
         private string $state,
         string $context,
         string $description,
-        string $targetUrl
+        string $targetUrl,
     ) {
         $this->context = TrimmedNonEmptyString::fromString($context)->toString();
         $this->description = TrimmedNonEmptyString::fromString($description)->toString();

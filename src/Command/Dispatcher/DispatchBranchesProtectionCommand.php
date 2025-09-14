@@ -31,7 +31,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 {
     public function __construct(
         private Projects $projects,
-        private BranchProtections $branchProtections
+        private BranchProtections $branchProtections,
     ) {
         parent::__construct();
     }

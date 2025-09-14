@@ -32,7 +32,7 @@ final class Payload
         private Url $htmlUrl,
         private User $issueAuthor,
         private ?Comment $comment,
-        private Repository $repository
+        private Repository $repository,
     ) {
     }
 

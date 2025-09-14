@@ -29,7 +29,7 @@ final class Hook
         private Url $url,
         private bool $active,
         private Config $config,
-        private Events $events
+        private Events $events,
     ) {
         Assert::greaterThan($id, 0);
 
