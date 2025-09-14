@@ -22,14 +22,13 @@ use Webmozart\Assert\Assert;
 final class Commit
 {
     private string $message;
-    private Sha $sha;
-    private \DateTimeImmutable $date;
 
-    private function __construct(Sha $sha, string $message, \DateTimeImmutable $date)
-    {
-        $this->sha = $sha;
+    private function __construct(
+        private Sha $sha,
+        string $message,
+        private \DateTimeImmutable $date
+    ) {
         $this->message = TrimmedNonEmptyString::fromString($message)->toString();
-        $this->date = $date;
     }
 
     /**

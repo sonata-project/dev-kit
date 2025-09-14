@@ -23,15 +23,14 @@ use Twig\Environment;
 
 final class NextReleaseOverviewController
 {
-    private Projects $projects;
     private DetermineNextRelease $determineNextRelease;
-    private Environment $twig;
 
-    public function __construct(Projects $projects, DetermineNextRelease $determineNextRelease, Environment $twig)
-    {
-        $this->projects = $projects;
+    public function __construct(
+        private Projects $projects,
+        DetermineNextRelease $determineNextRelease,
+        private Environment $twig
+    ) {
         $this->determineNextRelease = $determineNextRelease;
-        $this->twig = $twig;
     }
 
     /**
@@ -55,9 +54,9 @@ final class NextReleaseOverviewController
 
                 try {
                     $release = $this->determineNextRelease->__invoke($project, $branch);
-                } catch (NoPullRequestsMergedSinceLastRelease $e) {
+                } catch (NoPullRequestsMergedSinceLastRelease) {
                     continue;
-                } catch (\RuntimeException $e) {
+                } catch (\RuntimeException) {
                     // API rate limit, we display what we can
                     $apiRateLimitReachedWith = $project->name();
                     break 2;

@@ -23,20 +23,17 @@ use Webmozart\Assert\Assert;
 final class Hook
 {
     private int $id;
-    private Url $url;
-    private bool $active;
-    private Config $config;
-    private Events $events;
 
-    private function __construct(int $id, Url $url, bool $active, Config $config, Events $events)
-    {
+    private function __construct(
+        int $id,
+        private Url $url,
+        private bool $active,
+        private Config $config,
+        private Events $events
+    ) {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
-        $this->url = $url;
-        $this->active = $active;
-        $this->config = $config;
-        $this->events = $events;
     }
 
     /**

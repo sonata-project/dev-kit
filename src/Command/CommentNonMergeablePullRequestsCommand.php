@@ -31,26 +31,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class CommentNonMergeablePullRequestsCommand extends AbstractNeedApplyCommand
 {
-    private Projects $projects;
-    private PullRequests $pullRequests;
-    private Comments $comments;
-    private Commits $commits;
-    private Issues $issues;
-
     public function __construct(
-        Projects $projects,
-        PullRequests $pullRequests,
-        Comments $comments,
-        Commits $commits,
-        Issues $issues,
+        private Projects $projects,
+        private PullRequests $pullRequests,
+        private Comments $comments,
+        private Commits $commits,
+        private Issues $issues,
     ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->pullRequests = $pullRequests;
-        $this->comments = $comments;
-        $this->commits = $commits;
-        $this->issues = $issues;
     }
 
     protected function configure(): void

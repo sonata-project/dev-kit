@@ -20,17 +20,15 @@ use Webmozart\Assert\Assert;
  */
 final class Comment
 {
-    private int $id;
     private string $body;
-    private \DateTimeImmutable $createdAt;
-    private User $author;
 
-    private function __construct(int $id, string $body, \DateTimeImmutable $createdAt, User $author)
-    {
-        $this->id = $id;
+    private function __construct(
+        private int $id,
+        string $body,
+        private \DateTimeImmutable $createdAt,
+        private User $author
+    ) {
         $this->body = trim($body);
-        $this->createdAt = $createdAt;
-        $this->author = $author;
     }
 
     /**

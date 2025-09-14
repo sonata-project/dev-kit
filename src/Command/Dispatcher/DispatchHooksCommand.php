@@ -40,20 +40,14 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
         'https://notify.travis-ci.org',
         'https://d5zda2diva-x6miu6vkqhzpi.eu.s5y.io',
     ];
-
-    private Projects $projects;
-    private Hooks $hooks;
     private string $devKitToken;
 
     public function __construct(
-        Projects $projects,
-        Hooks $hooks,
+        private Projects $projects,
+        private Hooks $hooks,
         string $devKitToken,
     ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->hooks = $hooks;
 
         Assert::stringNotEmpty($devKitToken, '$devKitToken must not be an empty string!');
         $this->devKitToken = $devKitToken;

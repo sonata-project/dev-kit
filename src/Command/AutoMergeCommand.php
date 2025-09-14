@@ -28,20 +28,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class AutoMergeCommand extends AbstractNeedApplyCommand
 {
-    private Projects $projects;
-    private Repositories $repositories;
-    private LoggerInterface $logger;
-
     public function __construct(
-        Projects $projects,
-        Repositories $repositories,
-        LoggerInterface $logger,
+        private Projects $projects,
+        private Repositories $repositories,
+        private LoggerInterface $logger,
     ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->repositories = $repositories;
-        $this->logger = $logger;
     }
 
     protected function configure(): void

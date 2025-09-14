@@ -33,16 +33,15 @@ final class CheckRun
     private const STATUS_COMPLETED = 'completed';
     private const STATUS_IN_PROGRESS = 'in_progress';
     private const STATUS_QUEUED = 'queued';
-
-    private string $status;
-    private ?string $conclusion;
     private string $name;
     private string $detailsUrl;
 
-    private function __construct(string $status, ?string $conclusion, string $name, string $detailsUrl)
-    {
-        $this->status = $status;
-        $this->conclusion = $conclusion;
+    private function __construct(
+        private string $status,
+        private ?string $conclusion,
+        string $name,
+        string $detailsUrl
+    ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
         $this->detailsUrl = TrimmedNonEmptyString::fromString($detailsUrl)->toString();
     }

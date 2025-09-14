@@ -21,13 +21,8 @@ use Webmozart\Assert\Assert;
  */
 final class Release
 {
-    private Tag $tag;
-    private ?\DateTimeImmutable $publishedAt;
-
-    private function __construct(Tag $tag, ?\DateTimeImmutable $publishedAt)
+    private function __construct(private Tag $tag, private ?\DateTimeImmutable $publishedAt)
     {
-        $this->tag = $tag;
-        $this->publishedAt = $publishedAt;
     }
 
     /**

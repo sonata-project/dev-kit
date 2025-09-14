@@ -26,11 +26,8 @@ use Github\Exception\RuntimeException;
  */
 final class Releases
 {
-    private GithubClient $github;
-
-    public function __construct(GithubClient $github)
+    public function __construct(private GithubClient $github)
     {
-        $this->github = $github;
     }
 
     public function latest(Repository $repository): Release

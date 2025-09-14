@@ -24,20 +24,11 @@ final class CombinedStatus
     private const PENDING = 'pending';
     private const SUCCESS = 'success';
 
-    private string $state;
-
-    /**
-     * @var Status[]
-     */
-    private array $statuses;
-
     /**
      * @param Status[] $statuses
      */
-    private function __construct(string $state, array $statuses)
+    private function __construct(private string $state, private array $statuses)
     {
-        $this->state = $state;
-        $this->statuses = $statuses;
     }
 
     /**

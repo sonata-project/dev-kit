@@ -26,13 +26,8 @@ use Webmozart\Assert\Assert;
  */
 final class Comments
 {
-    private GithubClient $github;
-    private ResultPagerInterface $githubPager;
-
-    public function __construct(GithubClient $github, ResultPagerInterface $githubPager)
+    public function __construct(private GithubClient $github, private ResultPagerInterface $githubPager)
     {
-        $this->github = $github;
-        $this->githubPager = $githubPager;
     }
 
     /**

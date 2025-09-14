@@ -25,23 +25,15 @@ use Webmozart\Assert\Assert;
  */
 final class Payload
 {
-    private Action $action;
-    private Event $event;
-    private Issue $issue;
-    private Url $htmlUrl;
-    private User $issueAuthor;
-    private ?Comment $comment;
-    private Repository $repository;
-
-    private function __construct(Action $action, Event $event, Issue $issue, Url $htmlUrl, User $issueAuthor, ?Comment $comment, Repository $repository)
-    {
-        $this->action = $action;
-        $this->event = $event;
-        $this->issue = $issue;
-        $this->htmlUrl = $htmlUrl;
-        $this->issueAuthor = $issueAuthor;
-        $this->comment = $comment;
-        $this->repository = $repository;
+    private function __construct(
+        private Action $action,
+        private Event $event,
+        private Issue $issue,
+        private Url $htmlUrl,
+        private User $issueAuthor,
+        private ?Comment $comment,
+        private Repository $repository
+    ) {
     }
 
     /**

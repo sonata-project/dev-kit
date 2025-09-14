@@ -23,11 +23,8 @@ use Github\Client as GithubClient;
  */
 final class Statuses
 {
-    private GithubClient $github;
-
-    public function __construct(GithubClient $github)
+    public function __construct(private GithubClient $github)
     {
-        $this->github = $github;
     }
 
     public function combined(Repository $repository, Sha $sha): CombinedStatus

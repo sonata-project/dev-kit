@@ -30,26 +30,6 @@ namespace App\Domain\Value;
 final class Branch
 {
     private string $name;
-
-    /**
-     * @var non-empty-array<string, PhpVersion>
-     */
-    private array $phpVersions;
-
-    /**
-     * @var PhpExtension[]
-     */
-    private array $phpExtensions;
-
-    /**
-     * @var Variant[]
-     */
-    private array $variants;
-
-    private bool $frontend;
-    private bool $frontendTests;
-    private Path $docsPath;
-    private Path $testsPath;
     private PhpVersion $targetPhpVersion;
 
     /**
@@ -59,23 +39,16 @@ final class Branch
      */
     private function __construct(
         string $name,
-        array $phpVersions,
-        array $phpExtensions,
-        array $variants,
-        bool $frontend,
-        bool $frontendTests,
-        Path $docsPath,
-        Path $testsPath,
+        private array $phpVersions,
+        private array $phpExtensions,
+        private array $variants,
+        private bool $frontend,
+        private bool $frontendTests,
+        private Path $docsPath,
+        private Path $testsPath,
         ?PhpVersion $targetPhpVersion,
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
-        $this->phpVersions = $phpVersions;
-        $this->phpExtensions = $phpExtensions;
-        $this->variants = $variants;
-        $this->frontend = $frontend;
-        $this->frontendTests = $frontendTests;
-        $this->docsPath = $docsPath;
-        $this->testsPath = $testsPath;
         $this->targetPhpVersion = $targetPhpVersion ?? end($this->phpVersions);
     }
 

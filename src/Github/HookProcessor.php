@@ -36,17 +36,8 @@ use function Symfony\Component\String\u;
  */
 final class HookProcessor
 {
-    private Issues $issues;
-    private Comments $comments;
-    private NotifierInterface $notifier;
-    private LoggerInterface $logger;
-
-    public function __construct(Issues $issues, Comments $comments, NotifierInterface $notifier, LoggerInterface $logger)
+    public function __construct(private Issues $issues, private Comments $comments, private NotifierInterface $notifier, private LoggerInterface $logger)
     {
-        $this->issues = $issues;
-        $this->comments = $comments;
-        $this->notifier = $notifier;
-        $this->logger = $logger;
     }
 
     /**

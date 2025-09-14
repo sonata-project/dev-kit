@@ -21,13 +21,11 @@ use Webmozart\Assert\Assert;
  */
 final class User
 {
-    private int $id;
     private string $login;
     private string $htmlUrl;
 
-    private function __construct(int $id, string $login, string $htmlUrl)
+    private function __construct(private int $id, string $login, string $htmlUrl)
     {
-        $this->id = $id;
         $this->login = TrimmedNonEmptyString::fromString($login)->toString();
         $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
     }

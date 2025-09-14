@@ -22,12 +22,10 @@ use Webmozart\Assert\Assert;
 final class Branch
 {
     private string $name;
-    private Commit $commit;
 
-    private function __construct(string $name, Commit $commit)
+    private function __construct(string $name, private Commit $commit)
     {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
-        $this->commit = $commit;
     }
 
     /**

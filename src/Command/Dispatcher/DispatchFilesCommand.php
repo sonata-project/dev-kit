@@ -42,38 +42,18 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 {
     private const FILES_DIR = 'project';
 
-    private string $appDir;
-    private Projects $projects;
-    private GitManipulator $gitManipulator;
-    private PullRequests $pullRequests;
-    private Issues $issues;
-    private Branches $branches;
-    private Commits $commits;
-    private Filesystem $filesystem;
-    private Environment $twig;
-
     public function __construct(
-        string $appDir,
-        Projects $projects,
-        GitManipulator $gitManipulator,
-        PullRequests $pullRequests,
-        Issues $issues,
-        Branches $branches,
-        Commits $commits,
-        Filesystem $filesystem,
-        Environment $twig,
+        private string $appDir,
+        private Projects $projects,
+        private GitManipulator $gitManipulator,
+        private PullRequests $pullRequests,
+        private Issues $issues,
+        private Branches $branches,
+        private Commits $commits,
+        private Filesystem $filesystem,
+        private Environment $twig,
     ) {
         parent::__construct();
-
-        $this->appDir = $appDir;
-        $this->projects = $projects;
-        $this->gitManipulator = $gitManipulator;
-        $this->pullRequests = $pullRequests;
-        $this->issues = $issues;
-        $this->branches = $branches;
-        $this->commits = $commits;
-        $this->filesystem = $filesystem;
-        $this->twig = $twig;
     }
 
     protected function configure(): void
@@ -294,7 +274,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
             );
 
             $file = substr($localPath, \strlen(static::FILES_DIR.'/'));
-            if ('.twig' === substr($file, -5)) {
+            if (str_ends_with($file, '.twig')) {
                 $file = substr($file, 0, -5);
             }
 

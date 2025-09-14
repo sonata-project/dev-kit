@@ -21,11 +21,8 @@ use Webmozart\Assert\Assert;
  */
 final class Repo
 {
-    private User $owner;
-
-    private function __construct(User $owner)
+    private function __construct(private User $owner)
     {
-        $this->owner = $owner;
     }
 
     /**

@@ -21,16 +21,10 @@ use Webmozart\Assert\Assert;
 final class CheckRuns
 {
     /**
-     * @var array<string, CheckRun>
-     */
-    private array $checkRuns;
-
-    /**
      * @param array<string, CheckRun> $checkRuns
      */
-    private function __construct(array $checkRuns)
+    private function __construct(private array $checkRuns)
     {
-        $this->checkRuns = $checkRuns;
     }
 
     /**
