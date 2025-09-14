@@ -26,17 +26,13 @@ use Webmozart\Assert\Assert;
  */
 final class Projects
 {
-    private PackagistClient $packagist;
-
     /**
      * @var array<string, Project>
      */
     private array $projects = [];
 
-    public function __construct(PackagistClient $packagist)
+    public function __construct(private PackagistClient $packagist)
     {
-        $this->packagist = $packagist;
-
         $processor = new Processor();
         $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration(), [
             'sonata' => ['projects' => Yaml::parseFile(__DIR__.'/../../config/projects.yaml')],
@@ -68,7 +64,7 @@ final class Projects
         try {
             Assert::stringNotEmpty($name);
             Assert::keyExists($this->projects, $name);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             throw UnknownProject::forName($name);
         }
 
@@ -89,7 +85,7 @@ final class Projects
         foreach ($names as $name) {
             try {
                 Assert::keyExists($this->projects, $name);
-            } catch (\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException) {
                 throw UnknownProject::forName($name);
             }
 

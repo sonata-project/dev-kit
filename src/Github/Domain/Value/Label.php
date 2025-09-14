@@ -25,12 +25,10 @@ use function Symfony\Component\String\u;
 final class Label
 {
     private string $name;
-    private Color $color;
 
-    private function __construct(string $name, Color $color)
+    private function __construct(string $name, private Color $color)
     {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
-        $this->color = $color;
     }
 
     public static function fromValues(string $name, Color $color): self

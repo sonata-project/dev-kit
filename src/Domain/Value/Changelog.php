@@ -26,17 +26,11 @@ final class Changelog
     private string $headline;
 
     /**
-     * @var Section[]
-     */
-    private array $sections;
-
-    /**
      * @param Section[] $sections
      */
-    private function __construct(string $headline, array $sections)
+    private function __construct(string $headline, private array $sections)
     {
         $this->headline = TrimmedNonEmptyString::fromString($headline)->toString();
-        $this->sections = $sections;
     }
 
     /**

@@ -24,15 +24,14 @@ use Twig\Environment;
 
 final class NextReleaseForProjectController
 {
-    private Projects $projects;
     private DetermineNextRelease $determineNextRelease;
-    private Environment $twig;
 
-    public function __construct(Projects $projects, DetermineNextRelease $determineNextRelease, Environment $twig)
-    {
-        $this->projects = $projects;
+    public function __construct(
+        private Projects $projects,
+        DetermineNextRelease $determineNextRelease,
+        private Environment $twig
+    ) {
         $this->determineNextRelease = $determineNextRelease;
-        $this->twig = $twig;
     }
 
     /**

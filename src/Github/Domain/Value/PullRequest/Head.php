@@ -24,14 +24,10 @@ use Webmozart\Assert\Assert;
 final class Head
 {
     private string $ref;
-    private Sha $sha;
-    private ?Repo $repo;
 
-    private function __construct(string $ref, Sha $sha, ?Repo $repo)
+    private function __construct(string $ref, private Sha $sha, private ?Repo $repo)
     {
         $this->ref = TrimmedNonEmptyString::fromString($ref)->toString();
-        $this->sha = $sha;
-        $this->repo = $repo;
     }
 
     /**

@@ -28,20 +28,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DispatchLabelsCommand extends AbstractNeedApplyCommand
 {
-    private Projects $projects;
-    private ConfiguredLabels $configuredLabels;
-    private Labels $labels;
-
     public function __construct(
-        Projects $projects,
-        ConfiguredLabels $configuredLabels,
-        Labels $labels,
+        private Projects $projects,
+        private ConfiguredLabels $configuredLabels,
+        private Labels $labels,
     ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->configuredLabels = $configuredLabels;
-        $this->labels = $labels;
     }
 
     protected function configure(): void

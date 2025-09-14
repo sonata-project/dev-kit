@@ -40,20 +40,6 @@ final class Project
     private bool $bundle;
     private Package $package;
 
-    /**
-     * @var Branch[]
-     */
-    private array $branches;
-
-    /**
-     * @var ExcludedFile[]
-     */
-    private array $excludedFiles;
-
-    private bool $hasDocumentation;
-    private bool $hasTestKernel;
-    private bool $hasPlatformTests;
-
     private string $documentationBadgeSlug;
 
     private Repository $repository;
@@ -65,11 +51,11 @@ final class Project
     private function __construct(
         string $name,
         Package $package,
-        array $branches,
-        array $excludedFiles,
-        bool $hasDocumentation,
-        bool $hasTestKernel,
-        bool $hasPlatformTests,
+        private array $branches,
+        private array $excludedFiles,
+        private bool $hasDocumentation,
+        private bool $hasTestKernel,
+        private bool $hasPlatformTests,
         ?string $documentationBadgeSlug,
     ) {
         $this->name = TrimmedNonEmptyString::fromString($name)->toString();
@@ -77,11 +63,6 @@ final class Project
         $this->repository = Repository::fromPackage($package);
 
         $this->package = $package;
-        $this->branches = $branches;
-        $this->hasDocumentation = $hasDocumentation;
-        $this->hasTestKernel = $hasTestKernel;
-        $this->hasPlatformTests = $hasPlatformTests;
-        $this->excludedFiles = $excludedFiles;
         $this->documentationBadgeSlug = $documentationBadgeSlug ?? u($this->repository->name())
             ->lower()
             ->toString();

@@ -30,11 +30,8 @@ class GithubSponsorsExtension extends AbstractExtension
         'phansys',
     ];
 
-    private GithubClient $github;
-
-    public function __construct(GithubClient $github)
+    public function __construct(private GithubClient $github)
     {
-        $this->github = $github;
     }
 
     /**
@@ -43,7 +40,7 @@ class GithubSponsorsExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('list_sponsorisable', [$this, 'listSponsorisable']),
+            new TwigFunction('list_sponsorisable', $this->listSponsorisable(...)),
         ];
     }
 

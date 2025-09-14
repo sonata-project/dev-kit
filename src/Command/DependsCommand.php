@@ -28,13 +28,9 @@ use function Symfony\Component\String\u;
  */
 final class DependsCommand extends AbstractCommand
 {
-    private Projects $projects;
-
-    public function __construct(Projects $projects)
+    public function __construct(private Projects $projects)
     {
         parent::__construct();
-
-        $this->projects = $projects;
     }
 
     protected function configure(): void

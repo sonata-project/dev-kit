@@ -29,15 +29,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 {
-    private Projects $projects;
-    private BranchProtections $branchProtections;
-
-    public function __construct(Projects $projects, BranchProtections $branchProtections)
-    {
+    public function __construct(
+        private Projects $projects,
+        private BranchProtections $branchProtections
+    ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->branchProtections = $branchProtections;
     }
 
     protected function configure(): void

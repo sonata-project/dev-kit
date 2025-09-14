@@ -24,39 +24,27 @@ use Webmozart\Assert\Assert;
  */
 final class PullRequest
 {
-    private Issue $issue;
     private string $title;
     private \DateTimeImmutable $updatedAt;
     private ?\DateTimeImmutable $mergedAt;
-    private Base $base;
-    private Head $head;
-    private User $user;
-    private ?bool $mergeable;
-    private string $body;
     private string $htmlUrl;
-
-    /**
-     * @var Label[]
-     */
-    private array $labels;
 
     /**
      * @param Label[] $labels
      */
     private function __construct(
-        Issue $issue,
+        private Issue $issue,
         string $title,
         string $updatedAt,
         ?string $mergedAt,
-        Base $base,
-        Head $head,
-        User $user,
-        ?bool $mergeable,
-        string $body,
+        private Base $base,
+        private Head $head,
+        private User $user,
+        private ?bool $mergeable,
+        private string $body,
         string $htmlUrl,
-        array $labels,
+        private array $labels,
     ) {
-        $this->issue = $issue;
         $this->title = TrimmedNonEmptyString::fromString($title)->toString();
         $this->updatedAt = new \DateTimeImmutable(
             TrimmedNonEmptyString::fromString($updatedAt)->toString(),
@@ -70,14 +58,7 @@ final class PullRequest
                 new \DateTimeZone('UTC')
             );
         }
-
-        $this->base = $base;
-        $this->head = $head;
-        $this->user = $user;
-        $this->mergeable = $mergeable;
-        $this->body = $body;
         $this->htmlUrl = TrimmedNonEmptyString::fromString($htmlUrl)->toString();
-        $this->labels = $labels;
     }
 
     /**

@@ -20,11 +20,8 @@ use Twig\TwigFunction;
 
 final class FileSystemExtension extends AbstractExtension
 {
-    private Filesystem $filesystem;
-
-    public function __construct(Filesystem $filesystem)
+    public function __construct(private Filesystem $filesystem)
     {
-        $this->filesystem = $filesystem;
     }
 
     /**
@@ -33,8 +30,8 @@ final class FileSystemExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('file_exists', [$this, 'fileExists']),
-            new TwigFunction('has_dependency', [$this, 'hasDependency']),
+            new TwigFunction('file_exists', $this->fileExists(...)),
+            new TwigFunction('has_dependency', $this->hasDependency(...)),
         ];
     }
 

@@ -24,16 +24,10 @@ use function Symfony\Component\String\u;
 
 final class GitManipulator
 {
-    private Filesystem $filesystem;
-
-    private string $githubToken;
-
     public function __construct(
-        Filesystem $filesystem,
-        string $githubToken,
+        private Filesystem $filesystem,
+        private string $githubToken
     ) {
-        $this->filesystem = $filesystem;
-        $this->githubToken = $githubToken;
     }
 
     public function gitCloneProject(Project $project): Repository

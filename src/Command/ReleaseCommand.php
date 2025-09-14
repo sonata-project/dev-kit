@@ -48,29 +48,18 @@ use function Symfony\Component\String\u;
  */
 final class ReleaseCommand extends AbstractCommand
 {
-    private Projects $projects;
     private DetermineNextRelease $determineNextRelease;
-    private GitManipulator $gitManipulator;
-    private PullRequests $pullRequests;
-    private Releases $releases;
-    private Issues $issues;
 
     public function __construct(
-        Projects $projects,
+        private Projects $projects,
         DetermineNextRelease $determineNextRelease,
-        GitManipulator $gitManipulator,
-        PullRequests $pullRequests,
-        Releases $releases,
-        Issues $issues,
+        private GitManipulator $gitManipulator,
+        private PullRequests $pullRequests,
+        private Releases $releases,
+        private Issues $issues,
     ) {
         parent::__construct();
-
-        $this->projects = $projects;
         $this->determineNextRelease = $determineNextRelease;
-        $this->gitManipulator = $gitManipulator;
-        $this->pullRequests = $pullRequests;
-        $this->releases = $releases;
-        $this->issues = $issues;
     }
 
     protected function configure(): void

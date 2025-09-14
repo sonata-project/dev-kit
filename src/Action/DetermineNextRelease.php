@@ -29,24 +29,13 @@ use App\Github\Exception\LatestReleaseNotFound;
 
 final class DetermineNextRelease
 {
-    private Releases $releases;
-    private Branches $branches;
-    private Statuses $statuses;
-    private Checks $checks;
-    private PullRequests $pullRequests;
-
     public function __construct(
-        Releases $releases,
-        Branches $branches,
-        Statuses $statuses,
-        Checks $checks,
-        PullRequests $pullRequests,
+        private Releases $releases,
+        private Branches $branches,
+        private Statuses $statuses,
+        private Checks $checks,
+        private PullRequests $pullRequests
     ) {
-        $this->releases = $releases;
-        $this->branches = $branches;
-        $this->statuses = $statuses;
-        $this->checks = $checks;
-        $this->pullRequests = $pullRequests;
     }
 
     public function __invoke(Project $project, Branch $branch): NextRelease
@@ -57,7 +46,7 @@ final class DetermineNextRelease
             $currentRelease = $this->releases->latestForBranch($repository, $branch);
             $releaseDate = $currentRelease->publishedAt();
             $currentTag = $currentRelease->tag();
-        } catch (LatestReleaseNotFound $e) {
+        } catch (LatestReleaseNotFound) {
             $releaseDate = null;
 
             $parts = explode('.', $branch->name());

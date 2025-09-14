@@ -27,15 +27,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DispatchSettingsCommand extends AbstractNeedApplyCommand
 {
-    private Projects $projects;
-    private Repositories $repositories;
-
-    public function __construct(Projects $projects, Repositories $repositories)
-    {
+    public function __construct(
+        private Projects $projects,
+        private Repositories $repositories
+    ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->repositories = $repositories;
     }
 
     protected function configure(): void

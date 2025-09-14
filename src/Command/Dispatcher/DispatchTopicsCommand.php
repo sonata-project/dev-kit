@@ -26,15 +26,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DispatchTopicsCommand extends AbstractNeedApplyCommand
 {
-    private Projects $projects;
-    private Topics $topics;
-
-    public function __construct(Projects $projects, Topics $topics)
-    {
+    public function __construct(
+        private Projects $projects,
+        private Topics $topics
+    ) {
         parent::__construct();
-
-        $this->projects = $projects;
-        $this->topics = $topics;
     }
 
     protected function configure(): void

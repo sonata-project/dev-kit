@@ -25,15 +25,16 @@ final class Status
     private const FAILURE = 'failure';
     private const PENDING = 'pending';
     private const SUCCESS = 'success';
-
-    private string $state;
     private string $context;
     private string $description;
     private string $targetUrl;
 
-    private function __construct(string $state, string $context, string $description, string $targetUrl)
-    {
-        $this->state = $state;
+    private function __construct(
+        private string $state,
+        string $context,
+        string $description,
+        string $targetUrl
+    ) {
         $this->context = TrimmedNonEmptyString::fromString($context)->toString();
         $this->description = TrimmedNonEmptyString::fromString($description)->toString();
         $this->targetUrl = TrimmedNonEmptyString::fromString($targetUrl)->toString();

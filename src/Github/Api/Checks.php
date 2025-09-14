@@ -23,11 +23,8 @@ use Github\Client as GithubClient;
  */
 final class Checks
 {
-    private GithubClient $github;
-
-    public function __construct(GithubClient $github)
+    public function __construct(private GithubClient $github)
     {
-        $this->github = $github;
     }
 
     public function all(Repository $repository, Sha $sha): CheckRuns

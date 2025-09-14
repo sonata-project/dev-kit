@@ -25,41 +25,22 @@ use App\Github\Domain\Value\Release\Tag;
  */
 final class NextRelease
 {
-    private Project $project;
-    private Branch $branch;
-    private Tag $currentTag;
-    private CombinedStatus $combinedStatus;
-    private CheckRuns $checkRuns;
-
-    /**
-     * @var PullRequest[]
-     */
-    private array $pullRequests;
-
     private Tag $nextTag;
 
     /**
      * @param PullRequest[] $pullRequests
      */
     private function __construct(
-        Project $project,
-        Branch $branch,
-        Tag $currentTag,
-        CombinedStatus $combinedStatus,
-        CheckRuns $checkRuns,
-        array $pullRequests,
+        private Project $project,
+        private Branch $branch,
+        private Tag $currentTag,
+        private CombinedStatus $combinedStatus,
+        private CheckRuns $checkRuns,
+        private array $pullRequests,
     ) {
-        $this->project = $project;
-        $this->branch = $branch;
-        $this->currentTag = $currentTag;
-
-        $this->combinedStatus = $combinedStatus;
-        $this->checkRuns = $checkRuns;
-        $this->pullRequests = $pullRequests;
-
         $this->nextTag = DetermineNextReleaseVersion::forTagAndPullRequests(
-            $currentTag,
-            $pullRequests
+            $this->currentTag,
+            $this->pullRequests
         );
     }
 
