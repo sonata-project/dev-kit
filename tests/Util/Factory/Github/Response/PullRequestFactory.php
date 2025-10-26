@@ -70,7 +70,7 @@ final class PullRequestFactory
             ),
             'html_url' => $faker->url(),
             'labels' => array_map(
-                static fn ($item): array => LabelFactory::create(),
+                LabelFactory::create(...),
                 range(0, $faker->numberBetween(0, 5))
             ),
         ];

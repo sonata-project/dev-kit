@@ -65,7 +65,7 @@ final class Branch
         }
 
         $phpExtensions = array_map(
-            static fn (string $phpExtension): PhpExtension => PhpExtension::fromString($phpExtension),
+            PhpExtension::fromString(...),
             $config['php_extensions']
         );
 

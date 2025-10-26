@@ -127,7 +127,7 @@ final class ReleaseCommand extends AbstractCommand
         $question = new Question('<info>Please enter the name of the project to release:</info> ');
         $question->setAutocompleterValues(array_keys($this->projects->all()));
         $question->setTrimmable(true);
-        $question->setValidator(fn ($answer): Project => $this->projects->byName($answer));
+        $question->setValidator($this->projects->byName(...));
         $question->setMaxAttempts(3);
 
         $project = $helper->ask($input, $output, $question);
@@ -154,7 +154,7 @@ final class ReleaseCommand extends AbstractCommand
             $default
         );
         $question->setTrimmable(true);
-        $question->setValidator(static fn ($answer): Branch => $project->branch($answer));
+        $question->setValidator($project->branch(...));
         $question->setMaxAttempts(3);
 
         $branch = $helper->ask($input, $output, $question);

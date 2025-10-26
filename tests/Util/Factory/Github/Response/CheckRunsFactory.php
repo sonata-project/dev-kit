@@ -30,7 +30,7 @@ final class CheckRunsFactory
 
         $response = [
             'check_runs' => array_map(
-                static fn ($item): array => CheckRunFactory::create(),
+                CheckRunFactory::create(...),
                 range(0, $faker->numberBetween(2, 3))
             ),
         ];

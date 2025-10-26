@@ -36,7 +36,7 @@ final class Commits
     public function all(Repository $repository, PullRequest $pullRequest): array
     {
         return array_map(
-            static fn (array $response): Commit => Commit::fromResponse($response),
+            Commit::fromResponse(...),
             $this->githubPager->fetchAll($this->github->pullRequest(), 'commits', [
                 $repository->username(),
                 $repository->name(),
