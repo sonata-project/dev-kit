@@ -186,8 +186,8 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
         }
 
         if ($project->hasPlatformTests()) {
-            $requiredStatusChecks[] = \sprintf('PHP %s + MySQL 5.7 + highest', $targetPhp->toString());
             $requiredStatusChecks[] = \sprintf('PHP %s + MySQL 8.0 + highest', $targetPhp->toString());
+            $requiredStatusChecks[] = \sprintf('PHP %s + MySQL 8.4 + highest', $targetPhp->toString());
             $requiredStatusChecks[] = \sprintf('PHP %s + PostgreSQL 13 + highest', $targetPhp->toString());
             $requiredStatusChecks[] = \sprintf('PHP %s + PostgreSQL 14 + highest', $targetPhp->toString());
             $requiredStatusChecks[] = \sprintf('PHP %s + PostgreSQL 15 + highest', $targetPhp->toString());
