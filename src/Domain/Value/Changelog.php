@@ -62,7 +62,7 @@ final class Changelog
 
         $changelog = array_reduce(
             $changelogs,
-            'array_merge_recursive',
+            array_merge_recursive(...),
             []
         );
 
