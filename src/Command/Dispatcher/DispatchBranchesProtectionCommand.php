@@ -141,7 +141,6 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
             'XML files',
             'PHP-CS-Fixer',
             'PHPStan',
-            'Psalm',
             'Rector',
             \sprintf(
                 'PHP %s + lowest + normal',

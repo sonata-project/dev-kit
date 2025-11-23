@@ -45,33 +45,6 @@ jobs:
             - name: PHPStan
               run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse --error-format=github
 
-    psalm:
-        name: Psalm
-
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Install PHP with extensions
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '{{ branch.targetPhpVersion.toString }}'
-                  coverage: none
-                  tools: composer:v2
-{% if branch.phpExtensions is not empty %}
-                  extensions: {{ branch.phpExtensions|map(phpExtension => phpExtension.toString)|join(', ') }}
-{% endif %}
-
-            - name: Install Composer dependencies (highest)
-              uses: ramsey/composer-install@v3
-              with:
-                  dependency-versions: highest
-
-            - name: Psalm
-              run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version={{ branch.targetPhpVersion.toString }}
-
     rector:
         name: Rector
 
