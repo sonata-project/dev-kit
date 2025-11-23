@@ -36,7 +36,7 @@ final class Comments
     public function all(Repository $repository, PullRequest $pullRequest, ?string $username = null): array
     {
         $comments = array_map(
-            static fn (array $response): Comment => Comment::fromResponse($response),
+            Comment::fromResponse(...),
             $this->githubPager->fetchAll($this->github->issues()->comments(), 'all', [
                 $repository->username(),
                 $repository->name(),

@@ -32,7 +32,7 @@ final class Labels
     public function all(Repository $repository): array
     {
         return array_map(
-            static fn (array $response): Label => Label::fromResponse($response),
+            Label::fromResponse(...),
             $this->github->repo()->labels()->all($repository->username(), $repository->name())
         );
     }
