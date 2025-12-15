@@ -188,10 +188,12 @@ translation-bundle:
             php: ['8.2', '8.3', '8.4', '8.5']
             variants:
                 symfony/symfony: ['6.4.*', '7.3.*', '7.4.*', '8.0.*']
+                knplabs/doctrine-behaviors: ['^2.6.2', '^3.0']
         3.x:
             php: ['8.2', '8.3', '8.4', '8.5']
             variants:
                 symfony/symfony: ['6.4.*', '7.3.*', '7.4.*', '8.0.*']
+                knplabs/doctrine-behaviors: ['^2.6.2', '^3.0']
 
 twig-extensions:
     documentation_badge_slug: sonata-project-twig-extensions
