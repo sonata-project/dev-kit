@@ -186,11 +186,13 @@ translation-bundle:
     branches:
         4.x:
             php: ['8.2', '8.3', '8.4', '8.5']
+            target_php: '8.3' #due to knplabs/doctrine-behaviors variant
             variants:
                 symfony/symfony: ['6.4.*', '7.3.*', '7.4.*', '8.0.*']
                 knplabs/doctrine-behaviors: ['^2.6.2', '^3.0']
         3.x:
             php: ['8.2', '8.3', '8.4', '8.5']
+            target_php: '8.3' #due to knplabs/doctrine-behaviors variant
             variants:
                 symfony/symfony: ['6.4.*', '7.3.*', '7.4.*', '8.0.*']
                 knplabs/doctrine-behaviors: ['^2.6.2', '^3.0']
