@@ -136,6 +136,7 @@ final class DispatchFilesCommandTest extends TestCase
                         SYMFONY_REQUIRE: ${{matrix.symfony-require}}
 
                     strategy:
+                        fail-fast: false
                         matrix:
                             php-version:
                                 - '7.3'

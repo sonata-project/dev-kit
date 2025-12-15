@@ -37,6 +37,7 @@ jobs:
 
 {% endif %}
         strategy:
+            fail-fast: false
             matrix:
                 php-version:
 {% for phpVersion in branch.phpVersions %}
