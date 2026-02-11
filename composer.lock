@@ -8088,16 +8088,16 @@
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "2.0.13",
+            "version": "2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "6feadf70de5fa2c8a106c443bd04e16ed0b17d64"
+                "reference": "678136545a552a33b07f1a59a013f76df286cc34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/6feadf70de5fa2c8a106c443bd04e16ed0b17d64",
-                "reference": "6feadf70de5fa2c8a106c443bd04e16ed0b17d64",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/678136545a552a33b07f1a59a013f76df286cc34",
+                "reference": "678136545a552a33b07f1a59a013f76df286cc34",
                 "shasum": ""
             },
             "require": {
@@ -8156,9 +8156,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-symfony/issues",
-                "source": "https://github.com/phpstan/phpstan-symfony/tree/2.0.13"
+                "source": "https://github.com/phpstan/phpstan-symfony/tree/2.0.14"
             },
-            "time": "2026-02-10T08:55:32+00:00"
+            "time": "2026-02-11T12:27:30+00:00"
         },
         {
             "name": "phpstan/phpstan-webmozart-assert",
