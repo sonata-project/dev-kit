@@ -979,16 +979,16 @@
         },
         {
             "name": "oskarstark/env-var-extension",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OskarStark/env-var-extension.git",
-                "reference": "7b01f737391a7e895ad0519b30f8cdfee4772a8f"
+                "reference": "9ce8aa9a08db4a0df4a4d0c2e51ce447de535d2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/7b01f737391a7e895ad0519b30f8cdfee4772a8f",
-                "reference": "7b01f737391a7e895ad0519b30f8cdfee4772a8f",
+                "url": "https://api.github.com/repos/OskarStark/env-var-extension/zipball/9ce8aa9a08db4a0df4a4d0c2e51ce447de535d2f",
+                "reference": "9ce8aa9a08db4a0df4a4d0c2e51ce447de535d2f",
                 "shasum": ""
             },
             "require": {
@@ -998,8 +998,9 @@
             "require-dev": {
                 "ergebnis/test-util": "^1.4",
                 "friendsofphp/php-cs-fixer": "^2.18.3",
-                "phpstan/phpstan": "^0.12.82",
-                "phpunit/phpunit": "^8.5 || ^9.0"
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "rector/rector": "^2.3"
             },
             "type": "library",
             "autoload": {
@@ -1025,9 +1026,9 @@
             ],
             "support": {
                 "issues": "https://github.com/OskarStark/env-var-extension/issues",
-                "source": "https://github.com/OskarStark/env-var-extension/tree/1.2.0"
+                "source": "https://github.com/OskarStark/env-var-extension/tree/1.2.1"
             },
-            "time": "2026-02-05T10:09:02+00:00"
+            "time": "2026-02-05T10:12:46+00:00"
         },
         {
             "name": "php-http/cache-plugin",
@@ -11083,5 +11084,5 @@
     "platform-overrides": {
         "php": "8.1.31"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
