@@ -25,8 +25,7 @@ final class FileSystemExtensionTest extends TestCase
     {
         parent::setUp();
 
-        $fileSystem = $this->createMock(Filesystem::class);
-        $this->fileSystemExtension = new FileSystemExtension($fileSystem);
+        $this->fileSystemExtension = new FileSystemExtension(static::createStub(Filesystem::class));
     }
 
     public function testHasDependency(): void
