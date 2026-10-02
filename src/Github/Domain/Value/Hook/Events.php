@@ -46,7 +46,7 @@ final class Events
     }
 
     /**
-     * @param array<mixed> $events
+     * @param array<string> $events
      */
     public function equals(array $events): bool
     {

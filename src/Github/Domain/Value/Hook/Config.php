@@ -55,7 +55,7 @@ final class Config
     }
 
     /**
-     * @param array<mixed> $config
+     * @param array<string, string> $config
      */
     public function equals(array $config): bool
     {
