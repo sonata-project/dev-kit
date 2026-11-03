@@ -25,18 +25,18 @@
         "league/commonmark": "^2.10.1",
         "nyholm/psr7": "^1.2",
         "oskarstark/env-var-extension": "^1.0",
-        "symfony/cache": "^6.2",
-        "symfony/console": "^6.2",
-        "symfony/dotenv": "^6.2",
+        "symfony/cache": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/dotenv": "^7.4",
         "symfony/flex": "^2.2",
-        "symfony/framework-bundle": "^6.2",
-        "symfony/http-client": "^6.2",
+        "symfony/framework-bundle": "^7.4",
+        "symfony/http-client": "^7.4",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/notifier": "^6.2",
-        "symfony/slack-notifier": "^6.2",
-        "symfony/string": "^6.2",
-        "symfony/twig-bundle": "^6.2",
-        "symfony/yaml": "^6.2",
+        "symfony/notifier": "^7.4",
+        "symfony/slack-notifier": "^7.4",
+        "symfony/string": "^7.4",
+        "symfony/twig-bundle": "^7.4",
+        "symfony/yaml": "^7.4",
         "twig/extra-bundle": "^3.1",
         "twig/markdown-extra": "^3.1",
         "twig/twig": "^3.0",
@@ -55,10 +55,10 @@
         "psalm/plugin-phpunit": "^0.19",
         "psalm/plugin-symfony": "^5.0",
         "rector/rector": "^2.1",
-        "symfony/debug-bundle": "^6.2",
-        "symfony/stopwatch": "^6.2",
-        "symfony/var-dumper": "^6.2",
-        "symfony/web-profiler-bundle": "^6.2",
+        "symfony/debug-bundle": "^7.4",
+        "symfony/stopwatch": "^7.4",
+        "symfony/var-dumper": "^7.4",
+        "symfony/web-profiler-bundle": "^7.4",
         "vimeo/psalm": "^6.13"
     },
     "replace": {
@@ -101,7 +101,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "6.4.*"
+            "require": "7.4.*"
         }
     },
     "scripts": {

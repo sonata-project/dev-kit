@@ -18,7 +18,7 @@ use App\Action\Exception\NoPullRequestsMergedSinceLastRelease;
 use App\Config\Projects;
 use App\Domain\Value\NextRelease;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 final class NextReleaseOverviewController
@@ -33,9 +33,7 @@ final class NextReleaseOverviewController
         $this->determineNextRelease = $determineNextRelease;
     }
 
-    /**
-     * @Route("/next-releases", name="next_releases_overview")
-     */
+    #[Route('/next-releases', name: 'next_releases_overview')]
     public function __invoke(): Response
     {
         $projects = $this->projects->all();
