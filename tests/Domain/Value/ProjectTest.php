@@ -25,8 +25,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ProjectTest extends TestCase
 {
-    public const DEFAULT_CONFIG_NAME = 'admin-bundle';
-    public const DEFAULT_CONFIG = <<<CONFIG
+    public const string DEFAULT_CONFIG_NAME = 'admin-bundle';
+    public const string DEFAULT_CONFIG = <<<CONFIG
         admin-bundle:
           excluded_files: []
           has_documentation: true

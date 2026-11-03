@@ -40,7 +40,7 @@ use function Symfony\Component\String\u;
  */
 final class DispatchFilesCommand extends AbstractNeedApplyCommand
 {
-    private const FILES_DIR = 'project';
+    private const string FILES_DIR = 'project';
 
     public function __construct(
         private string $appDir,

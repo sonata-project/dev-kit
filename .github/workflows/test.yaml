@@ -21,7 +21,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '8.2'
+                    - '8.3'
 
         steps:
             - name: Checkout
@@ -61,7 +61,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.2'
+                  php-version: '8.3'
                   extensions: ${{ env.REQUIRED_PHP_EXTENSIONS }}
                   coverage: pcov
                   tools: composer:v2
