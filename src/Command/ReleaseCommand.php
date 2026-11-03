@@ -117,6 +117,7 @@ final class ReleaseCommand extends AbstractCommand
     private function selectProject(InputInterface $input, OutputInterface $output): Project
     {
         $argumentProject = $input->getArgument('project');
+        Assert::nullOrString($argumentProject);
 
         if (null !== $argumentProject) {
             return $this->projects->byName($argumentProject);
@@ -139,6 +140,7 @@ final class ReleaseCommand extends AbstractCommand
     private function selectBranch(InputInterface $input, OutputInterface $output, Project $project): Branch
     {
         $argumentBranch = $input->getArgument('branch');
+        Assert::nullOrString($argumentBranch);
 
         if (null !== $argumentBranch) {
             return $project->branch($argumentBranch);
@@ -165,7 +167,7 @@ final class ReleaseCommand extends AbstractCommand
 
     private function createPR(InputInterface $input, OutputInterface $output): bool
     {
-        if ($input->getOption('pr')) {
+        if (true === $input->getOption('pr')) {
             return true;
         }
 
@@ -416,11 +418,11 @@ final class ReleaseCommand extends AbstractCommand
         }
     }
 
-    /**
-     * @psalm-suppress LessSpecificReturnStatement, MoreSpecificReturnType
-     */
     private function getQuestionHelper(): QuestionHelper
     {
-        return $this->getHelper('question');
+        $helper = $this->getHelper('question');
+        Assert::isInstanceOf($helper, QuestionHelper::class);
+
+        return $helper;
     }
 }

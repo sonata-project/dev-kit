@@ -35,7 +35,7 @@ abstract class AbstractNeedApplyCommand extends AbstractCommand
     {
         parent::initialize($input, $output);
 
-        $this->apply = $input->getOption('apply');
+        $this->apply = true === $input->getOption('apply');
         if (!$this->apply) {
             $this->io->warning('This is a dry run execution. No change will be applied here.');
         }
