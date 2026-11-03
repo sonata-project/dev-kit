@@ -32,7 +32,7 @@ use function Symfony\Component\String\u;
 final class DispatchHooksCommand extends AbstractNeedApplyCommand
 {
     /** @var string[] */
-    private const HOOK_URLS_TO_BE_DELETED = [
+    private const array HOOK_URLS_TO_BE_DELETED = [
         'https://api.codacy.com',
         'https://www.flowdock.com',
         'http://scrutinizer-ci.com',

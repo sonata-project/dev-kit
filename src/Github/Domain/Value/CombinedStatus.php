@@ -20,9 +20,9 @@ use Webmozart\Assert\Assert;
  */
 final class CombinedStatus
 {
-    private const FAILURE = 'failure';
-    private const PENDING = 'pending';
-    private const SUCCESS = 'success';
+    private const string FAILURE = 'failure';
+    private const string PENDING = 'pending';
+    private const string SUCCESS = 'success';
 
     /**
      * @param Status[] $statuses

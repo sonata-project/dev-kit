@@ -19,7 +19,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class GithubSponsorsRuntime implements RuntimeExtensionInterface
 {
-    private const WITH_SPONSOR_DASHBOARD = [
+    private const array WITH_SPONSOR_DASHBOARD = [
         'core23',
         'greg0ire',
         'OskarStark',

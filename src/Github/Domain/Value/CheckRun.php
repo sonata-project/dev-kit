@@ -21,18 +21,18 @@ use Webmozart\Assert\Assert;
  */
 final class CheckRun
 {
-    private const CONCLUSION_ACTION_REQUIRED = 'action_required';
-    private const CONCLUSION_CANCELLED = 'cancelled';
-    private const CONCLUSION_FAILURE = 'failure';
-    private const CONCLUSION_NEUTRAL = 'neutral';
-    private const CONCLUSION_SKIPPED = 'skipped';
-    private const CONCLUSION_STALE = 'stale';
-    private const CONCLUSION_SUCCESS = 'success';
-    private const CONCLUSION_TIMED_OUT = 'timed_out';
+    private const string CONCLUSION_ACTION_REQUIRED = 'action_required';
+    private const string CONCLUSION_CANCELLED = 'cancelled';
+    private const string CONCLUSION_FAILURE = 'failure';
+    private const string CONCLUSION_NEUTRAL = 'neutral';
+    private const string CONCLUSION_SKIPPED = 'skipped';
+    private const string CONCLUSION_STALE = 'stale';
+    private const string CONCLUSION_SUCCESS = 'success';
+    private const string CONCLUSION_TIMED_OUT = 'timed_out';
 
-    private const STATUS_COMPLETED = 'completed';
-    private const STATUS_IN_PROGRESS = 'in_progress';
-    private const STATUS_QUEUED = 'queued';
+    private const string STATUS_COMPLETED = 'completed';
+    private const string STATUS_IN_PROGRESS = 'in_progress';
+    private const string STATUS_QUEUED = 'queued';
     private string $name;
     private string $detailsUrl;
 

@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -91,7 +91,7 @@
             "symfony/flex": true
         },
         "platform": {
-            "php": "8.2.35"
+            "php": "8.3.36"
         },
         "preferred-install": {
             "*": "dist"

@@ -19,8 +19,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class BranchTest extends TestCase
 {
-    public const DEFAULT_BRANCH_NAME = 'master';
-    public const DEFAULT_BRANCH_CONFIG = <<<CONFIG
+    public const string DEFAULT_BRANCH_NAME = 'master';
+    public const string DEFAULT_BRANCH_CONFIG = <<<CONFIG
         master:
           php: ['7.3', '7.4', '8.0']
           target_php: '7.4'

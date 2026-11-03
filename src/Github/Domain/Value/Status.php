@@ -21,10 +21,10 @@ use Webmozart\Assert\Assert;
  */
 final class Status
 {
-    private const ERROR = 'error';
-    private const FAILURE = 'failure';
-    private const PENDING = 'pending';
-    private const SUCCESS = 'success';
+    private const string ERROR = 'error';
+    private const string FAILURE = 'failure';
+    private const string PENDING = 'pending';
+    private const string SUCCESS = 'success';
     private string $context;
     private string $description;
     private string $targetUrl;

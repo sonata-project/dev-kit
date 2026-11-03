@@ -22,7 +22,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '8.2'
+                    - '8.3'
 
         services:
             redis:
