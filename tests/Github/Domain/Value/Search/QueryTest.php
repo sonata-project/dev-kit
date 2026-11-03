@@ -18,7 +18,7 @@ use App\Domain\Value\Repository;
 use App\Github\Domain\Value\Label;
 use App\Github\Domain\Value\Search\Query;
 use App\Tests\Util\DataProvider\StringProvider;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;

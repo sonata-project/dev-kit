@@ -16,7 +16,7 @@ namespace App\Tests\Config\Exception;
 use App\Config\Exception\UnknownBranch;
 use App\Domain\Value\Project;
 use App\Tests\Domain\Value\ProjectTest;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;

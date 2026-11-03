@@ -15,7 +15,7 @@ namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\IncomingWebhook\Event;
 use App\Github\Domain\Value\IncomingWebhook\Payload;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class PayloadTest extends TestCase

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\IncomingWebhook;
 
 use App\Github\Domain\Value\IncomingWebhook\Action;
-use Ergebnis\Test\Util\DataProvider\StringProvider;
+use Ergebnis\DataProvider\StringProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;

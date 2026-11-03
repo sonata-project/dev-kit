@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Value;
 
 use App\Domain\Value\TrimmedNonEmptyString;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\TestCase;
 
 final class TrimmedNonEmptyStringTest extends TestCase

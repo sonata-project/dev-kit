@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\Sha;
-use Ergebnis\Test\Util\DataProvider\StringProvider;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
+use Ergebnis\DataProvider\StringProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
