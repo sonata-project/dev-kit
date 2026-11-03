@@ -11,31 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Twig\Extension;
+namespace App\Tests\Twig\Runtime;
 
 use App\Domain\Value\Repository;
-use App\Twig\Extension\GithubSponsorsExtension;
+use App\Twig\Runtime\GithubSponsorsRuntime;
 use Github\Api\Repo;
 use Github\Client as GithubClient;
 use Packagist\Api\Result\Package;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GithubSponsorsExtensionTest extends TestCase
+final class GithubSponsorsRuntimeTest extends TestCase
 {
     /**
      * @var GithubClient&MockObject
      */
     private GithubClient $github;
 
-    private GithubSponsorsExtension $githubSponsorsExtension;
+    private GithubSponsorsRuntime $githubSponsorsRuntime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->github = $this->createMock(GithubClient::class);
-        $this->githubSponsorsExtension = new GithubSponsorsExtension($this->github);
+        $this->githubSponsorsRuntime = new GithubSponsorsRuntime($this->github);
     }
 
     public function testListSponsorisableIsFilteredAndOrdered(): void
@@ -62,7 +62,7 @@ final class GithubSponsorsExtensionTest extends TestCase
 
         static::assertSame(
             ['OskarStark', 'VincentLanglet', 'greg0ire'],
-            $this->githubSponsorsExtension->listSponsorisable(Repository::fromPackage($package)),
+            $this->githubSponsorsRuntime->listSponsorisable(Repository::fromPackage($package)),
         );
     }
 
@@ -94,7 +94,7 @@ final class GithubSponsorsExtensionTest extends TestCase
 
         static::assertSame(
             ['OskarStark', 'VincentLanglet', 'core23', 'wbloszyk'],
-            $this->githubSponsorsExtension->listSponsorisable(Repository::fromPackage($package)),
+            $this->githubSponsorsRuntime->listSponsorisable(Repository::fromPackage($package)),
         );
     }
 }

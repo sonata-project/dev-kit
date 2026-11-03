@@ -23,7 +23,7 @@ final class NoPullRequestsMergedSinceLastRelease extends \RuntimeException
 {
     public static function forBranch(Project $project, Branch $branch, ?\DateTimeImmutable $lastRelease, ?\Throwable $previous = null): self
     {
-        $since = null !== $lastRelease ? $lastRelease->format('Y-m-d H:i:s') : 'never';
+        $since = $lastRelease?->format('Y-m-d H:i:s') ?? 'never';
 
         return new self(
             \sprintf(
