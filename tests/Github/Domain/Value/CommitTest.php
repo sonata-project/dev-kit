@@ -42,7 +42,7 @@ final class CommitTest extends TestCase
         static::assertSame($sha, $commit->sha()->toString());
         static::assertSame($message, $commit->message());
         static::assertSame(
-            (new \DateTimeImmutable($date))->getTimestamp(),
+            new \DateTimeImmutable($date)->getTimestamp(),
             $commit->date()->getTimestamp()
         );
     }

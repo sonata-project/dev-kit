@@ -62,13 +62,7 @@ final class Event
      */
     public function equalsOneOf(array $others): bool
     {
-        foreach ($others as $other) {
-            if ($this->equals($other)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($others, fn ($other) => $this->equals($other));
     }
 
     public function toString(): string

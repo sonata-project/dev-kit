@@ -315,7 +315,7 @@ final class ProjectTest extends TestCase
             'symfony-bundle',
         ];
 
-        if ('10' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === new \DateTimeImmutable()->format('m')) {
             $expected[] = 'hacktoberfest';
 
             sort($expected);
@@ -390,7 +390,7 @@ final class ProjectTest extends TestCase
             'symfony-bundle',
         ];
 
-        if ('10' === (new \DateTimeImmutable())->format('m')) {
+        if ('10' === new \DateTimeImmutable()->format('m')) {
             $expected[] = 'hacktoberfest';
 
             sort($expected);
