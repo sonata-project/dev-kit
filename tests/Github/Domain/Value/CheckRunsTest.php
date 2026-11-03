@@ -67,6 +67,42 @@ final class CheckRunsTest extends TestCase
         yield 'timed_out' => [false, 'timed_out'];
     }
 
+    /**
+     * @param string[] $conclusions
+     */
+    #[DataProvider('provideIsSuccessfulWithMultipleCheckRunsCases')]
+    public function testIsSuccessfulWithMultipleCheckRuns(bool $expected, array $conclusions): void
+    {
+        $checkRuns = [];
+        foreach ($conclusions as $i => $conclusion) {
+            $checkRuns[] = CheckRunFactory::create([
+                'name' => \sprintf('check-run-%d', $i),
+                'conclusion' => $conclusion,
+            ]);
+        }
+
+        $response = CheckRunsFactory::create([
+            'check_runs' => $checkRuns,
+        ]);
+
+        static::assertSame(
+            $expected,
+            CheckRuns::fromResponse($response)->isSuccessful()
+        );
+    }
+
+    /**
+     * @return iterable<string, array{bool, string[]}>
+     */
+    public static function provideIsSuccessfulWithMultipleCheckRunsCases(): iterable
+    {
+        yield 'no check runs' => [true, []];
+        yield 'all successful' => [true, ['success', 'success', 'success']];
+        yield 'first failed' => [false, ['failure', 'success', 'success']];
+        yield 'last failed' => [false, ['success', 'success', 'failure']];
+        yield 'all failed' => [false, ['failure', 'cancelled', 'timed_out']];
+    }
+
     public function testUsesCheckRunsFromResponse(): void
     {
         $response = CheckRunsFactory::create([
