@@ -19,7 +19,7 @@ use App\Config\Exception\UnknownProject;
 use App\Config\Projects;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 final class NextReleaseForProjectController
@@ -34,9 +34,7 @@ final class NextReleaseForProjectController
         $this->determineNextRelease = $determineNextRelease;
     }
 
-    /**
-     * @Route("/next-release/{projectName}/{branchName}", name="next_release_project")
-     */
+    #[Route('/next-release/{projectName}/{branchName}', name: 'next_release_project')]
     public function __invoke(string $projectName, string $branchName): Response
     {
         try {

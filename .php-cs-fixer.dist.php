@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 $config = include 'templates/project/.php-cs-fixer.dist.php';
 
-$finder->in(__DIR__);
+$finder->in(__DIR__)->notPath('config/reference.php');
 
 return $config->setFinder($finder);
