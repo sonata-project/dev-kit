@@ -1,0 +1,6 @@
+twig_extra:
+    commonmark:
+        # Changelogs are parsed from pull request bodies written by external
+        # contributors, so never render raw HTML or unsafe links like "javascript:".
+        html_input: escape
+        allow_unsafe_links: false
