@@ -117,16 +117,8 @@ final class Branch
 
     public function hasPhpExtension(string $phpExtensionName): bool
     {
-        foreach ($this->phpExtensions() as $phpExtension) {
-            if (
-                $phpExtension->toString() === $phpExtensionName
-                || strstr($phpExtension->toString(), '-', true) === $phpExtensionName
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->phpExtensions(), static fn ($phpExtension) => $phpExtension->toString() === $phpExtensionName
+        || strstr($phpExtension->toString(), '-', true) === $phpExtensionName);
     }
 
     /**
@@ -139,16 +131,8 @@ final class Branch
 
     public function hasVariant(string $package, string $version): bool
     {
-        foreach ($this->variants() as $variant) {
-            if (
-                $variant->package() === $package
-                && $variant->version() === $version
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->variants(), static fn ($variant) => $variant->package() === $package
+        && $variant->version() === $version);
     }
 
     public function hasFrontend(): bool

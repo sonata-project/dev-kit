@@ -193,7 +193,7 @@ final class PullRequest
 
     public function updatedWithinTheLast60Seconds(): bool
     {
-        $diff = (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp()
+        $diff = new \DateTime('now', new \DateTimeZone('UTC'))->getTimestamp()
             - $this->updatedAt->getTimestamp();
 
         return $diff < 60;

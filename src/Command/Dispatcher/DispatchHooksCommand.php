@@ -108,16 +108,7 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
             'pull_request',
             'pull_request_review_comment',
         ];
-
-        // First, check if the DevKit Hook exists.
-        $devKitHook = null;
-        foreach ($this->hooks->all($repository) as $hook) {
-            if (u($hook->config()->url()->toString())->startsWith($devKitHookBaseUrl)) {
-                $devKitHook = $hook;
-
-                break;
-            }
-        }
+        $devKitHook = array_find($this->hooks->all($repository), static fn ($hook) => u($hook->config()->url()->toString())->startsWith($devKitHookBaseUrl));
 
         if (!$devKitHook instanceof Hook) {
             $this->io->writeln('        Has to be created.');
