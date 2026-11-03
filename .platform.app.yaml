@@ -1,6 +1,6 @@
 name: app
 
-type: php:8.4
+type: php:8.5
 
 runtime:
     extensions:
