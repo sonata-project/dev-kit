@@ -19,7 +19,7 @@ use App\Github\Domain\Value\PullRequest;
 use App\Github\Domain\Value\Release\Tag;
 use App\Tests\Util\Factory\Github\Response\LabelFactory;
 use App\Tests\Util\Factory\Github\Response\PullRequestFactory;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

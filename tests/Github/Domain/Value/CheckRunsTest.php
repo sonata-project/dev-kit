@@ -17,7 +17,7 @@ use App\Github\Domain\Value\CheckRun;
 use App\Github\Domain\Value\CheckRuns;
 use App\Tests\Util\Factory\Github\Response\CheckRunFactory;
 use App\Tests\Util\Factory\Github\Response\CheckRunsFactory;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

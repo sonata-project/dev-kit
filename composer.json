@@ -21,7 +21,7 @@
         "ext-redis": "*",
         "gitonomy/gitlib": "^1.3",
         "knplabs/github-api": "^3.9",
-        "knplabs/packagist-api": "^1.6.1",
+        "knplabs/packagist-api": "^3.0",
         "league/commonmark": "^2.10.1",
         "nyholm/psr7": "^1.2",
         "oskarstark/env-var-extension": "^1.0",
@@ -40,10 +40,11 @@
         "twig/extra-bundle": "^3.1",
         "twig/markdown-extra": "^3.1",
         "twig/twig": "^3.0",
-        "webmozart/assert": "^1.9"
+        "webmozart/assert": "^2.0"
     },
     "require-dev": {
-        "ergebnis/test-util": "^1.2",
+        "ergebnis/data-provider": "^3.0",
+        "fakerphp/faker": "^1.24",
         "friendsofphp/php-cs-fixer": "^3.8",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^2.0",
@@ -51,15 +52,15 @@
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
-        "phpunit/phpunit": "^10.5.63",
-        "psalm/plugin-phpunit": "^0.19",
-        "psalm/plugin-symfony": "^5.0",
+        "phpunit/phpunit": "^13.4",
+        "psalm/plugin-phpunit": "^0.21",
+        "psalm/plugin-symfony": "^5.9",
         "rector/rector": "^2.1",
         "symfony/debug-bundle": "^7.4",
         "symfony/stopwatch": "^7.4",
         "symfony/var-dumper": "^7.4",
         "symfony/web-profiler-bundle": "^7.4",
-        "vimeo/psalm": "^6.13"
+        "vimeo/psalm": "^7.0"
     },
     "replace": {
         "paragonie/random_compat": "^2.0",

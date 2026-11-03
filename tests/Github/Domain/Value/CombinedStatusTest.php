@@ -17,7 +17,7 @@ use App\Github\Domain\Value\CombinedStatus;
 use App\Github\Domain\Value\Status;
 use App\Tests\Util\Factory\Github\Response\CombinedStatusFactory;
 use App\Tests\Util\Factory\Github\Response\StatusFactory;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

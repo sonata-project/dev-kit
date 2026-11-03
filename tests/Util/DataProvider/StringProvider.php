@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Util\DataProvider;
 
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
 
 final class StringProvider
 {

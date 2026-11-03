@@ -15,9 +15,9 @@ namespace App\Tests\Github\Domain\Value;
 
 use App\Github\Domain\Value\User;
 use App\Tests\Util\Factory\Github\Response\UserFactory;
-use Ergebnis\Test\Util\DataProvider\IntProvider;
-use Ergebnis\Test\Util\DataProvider\StringProvider;
-use Ergebnis\Test\Util\Helper;
+use App\Tests\Util\Helper;
+use Ergebnis\DataProvider\IntProvider;
+use Ergebnis\DataProvider\StringProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Github\Domain\Value\Release;
 
 use App\Github\Domain\Value\Release\Tag;
-use Ergebnis\Test\Util\DataProvider\StringProvider;
+use Ergebnis\DataProvider\StringProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
