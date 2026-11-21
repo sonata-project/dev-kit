@@ -65,10 +65,13 @@ jobs:
                   composer-options: --no-dev --classmap-authoritative
 
             - name: Dump env
+              id: dump-env
               run: composer dump-env prod
 
             - name: Dispatch files
               run: bin/console dispatch:files ${{ github.event.inputs.projects }} --apply
 
             - name: Dispatch branches protection
+              # Run even if a previous dispatch step failed, as long as the setup succeeded
+              if: ${{ !cancelled() && steps.dump-env.outcome == 'success' }}
               run: bin/console dispatch:branches-protection ${{ github.event.inputs.projects }} --apply

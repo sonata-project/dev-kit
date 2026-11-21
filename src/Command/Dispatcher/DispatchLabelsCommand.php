@@ -18,7 +18,6 @@ use App\Config\ConfiguredLabels;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Labels;
-use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -49,20 +48,7 @@ final class DispatchLabelsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch labels for all sonata projects');
 
-        foreach ($this->projects->all() as $project) {
-            try {
-                $this->io->section($project->name());
-
-                $this->updateLabels($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($this->projects->all(), $this->updateLabels(...));
     }
 
     private function updateLabels(Project $project): void

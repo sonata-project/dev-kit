@@ -17,7 +17,6 @@ use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Topics;
-use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -46,20 +45,7 @@ final class DispatchTopicsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch repository topics for all sonata projects');
 
-        foreach ($this->projects->all() as $project) {
-            try {
-                $this->io->title($project->name());
-
-                $this->updateTopics($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($this->projects->all(), $this->updateTopics(...));
     }
 
     private function updateTopics(Project $project): void

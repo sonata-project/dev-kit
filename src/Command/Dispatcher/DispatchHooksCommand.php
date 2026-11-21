@@ -18,7 +18,6 @@ use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Hooks;
 use App\Github\Domain\Value\Hook;
-use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
@@ -66,21 +65,10 @@ final class DispatchHooksCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch hooks for all sonata projects');
 
-        foreach ($this->projects->all() as $project) {
-            try {
-                $this->io->section($project->name());
-
-                $this->updateDevKitHook($project);
-                $this->deleteHooks($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($this->projects->all(), function (Project $project): void {
+            $this->updateDevKitHook($project);
+            $this->deleteHooks($project);
+        });
     }
 
     private function updateDevKitHook(Project $project): void

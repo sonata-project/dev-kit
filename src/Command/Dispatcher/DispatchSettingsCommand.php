@@ -17,7 +17,6 @@ use App\Command\AbstractNeedApplyCommand;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Repositories;
-use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -47,20 +46,7 @@ final class DispatchSettingsCommand extends AbstractNeedApplyCommand
     {
         $this->io->title('Dispatch repository information and general settings for all sonata projects');
 
-        foreach ($this->projects->all() as $project) {
-            try {
-                $this->io->title($project->name());
-
-                $this->updateRepositories($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($this->projects->all(), $this->updateRepositories(...));
     }
 
     private function updateRepositories(Project $project): void
