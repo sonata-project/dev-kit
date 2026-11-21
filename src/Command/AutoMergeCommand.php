@@ -16,7 +16,6 @@ namespace App\Command;
 use App\Config\Projects;
 use App\Domain\Value\Project;
 use App\Github\Api\Repositories;
-use Github\Exception\ExceptionInterface;
 use Github\Exception\RuntimeException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -64,20 +63,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
 
         $this->io->title($title);
 
-        foreach ($projects as $project) {
-            try {
-                $this->io->section($project->name());
-
-                $this->mergeBranches($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($projects, $this->mergeBranches(...));
     }
 
     private function mergeBranches(Project $project): void

@@ -26,7 +26,6 @@ use App\Github\Api\Issues;
 use App\Github\Api\PullRequests;
 use App\Github\Domain\Value\Branch as GithubBranch;
 use App\Github\Domain\Value\Label;
-use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -83,20 +82,7 @@ final class DispatchFilesCommand extends AbstractNeedApplyCommand
 
         $this->io->title($title);
 
-        foreach ($projects as $project) {
-            try {
-                $this->io->section($project->name());
-
-                $this->dispatchFiles($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($projects, $this->dispatchFiles(...));
     }
 
     private function dispatchFiles(Project $project): void

@@ -18,7 +18,6 @@ use App\Config\Projects;
 use App\Domain\Value\Branch;
 use App\Domain\Value\Project;
 use App\Github\Api\BranchProtections;
-use Github\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,20 +62,7 @@ final class DispatchBranchesProtectionCommand extends AbstractNeedApplyCommand
 
         $this->io->title($title);
 
-        foreach ($projects as $project) {
-            try {
-                $this->io->section($project->name());
-
-                $this->updateBranchesProtection($project);
-            } catch (ExceptionInterface $e) {
-                $this->io->error(\sprintf(
-                    'Failed with message: %s',
-                    $e->getMessage()
-                ));
-            }
-        }
-
-        return 0;
+        return $this->processProjects($projects, $this->updateBranchesProtection(...));
     }
 
     private function updateBranchesProtection(Project $project): void
